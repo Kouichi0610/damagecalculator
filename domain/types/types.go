@@ -1,8 +1,10 @@
+/*
+	タイプ相性
+*/
 package types
 
 import "reflect"
 
-// タイプ相性
 type Types struct {
 	t []magnifier
 }

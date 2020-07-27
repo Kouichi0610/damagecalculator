@@ -1,6 +1,7 @@
 package main
 
 import (
+	"damagecalculator/domain/stats"
 	"fmt"
 )
 
