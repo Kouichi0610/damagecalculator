@@ -41,6 +41,8 @@ func categoryPhysical(at, df *Stats) (aval, dval uint) {
 func categorySpecial(at, df *Stats) (aval, dval uint) {
 	return at.SpAttack(), df.SpDefense()
 }
+
+// TODO:damage/skillsに任せるのであればここから先は不要となるはず
 func categoryPsycoShock(at, df *Stats) (aval, dval uint) {
 	return at.SpAttack(), df.Defense()
 }

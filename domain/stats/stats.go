@@ -9,12 +9,12 @@ type Stats struct {
 
 func NewStats(l Level, s *SpeciesStats, i *IndividualStats, b *BasePointStats, n *Nature) *Stats {
 	res := new(Stats)
-	res.hp = n.CalcHP(l, s.hp, i.hp, b.hp)
-	res.at = n.CalcAttack(l, s.at, i.at, b.at)
-	res.df = n.CalcDefense(l, s.df, i.df, b.df)
-	res.sa = n.CalcSpAttack(l, s.sa, i.sa, b.sa)
-	res.sd = n.CalcSpDefense(l, s.sd, i.sd, b.sd)
-	res.sp = n.CalcSpeed(l, s.sp, i.sp, b.sp)
+	res.hp = n.calcHP(l, s.hp, i.hp, b.hp)
+	res.at = n.calcAttack(l, s.at, i.at, b.at)
+	res.df = n.calcDefense(l, s.df, i.df, b.df)
+	res.sa = n.calcSpAttack(l, s.sa, i.sa, b.sa)
+	res.sd = n.calcSpDefense(l, s.sd, i.sd, b.sd)
+	res.sp = n.calcSpeed(l, s.sp, i.sp, b.sp)
 	return res
 }
 

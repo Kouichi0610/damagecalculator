@@ -30,22 +30,33 @@ type Nature struct {
 	hp, at, df, sa, sd, sp statsCalculator
 }
 
-func (n *Nature) CalcHP(l Level, s Species, i Individual, b BasePoint) uint {
+func (n *Nature) CalcStats(l Level, s *SpeciesStats, i *IndividualStats, b *BasePointStats) *Stats {
+	res := new(Stats)
+	res.hp = n.calcHP(l, s.hp, i.hp, b.hp)
+	res.at = n.calcAttack(l, s.at, i.at, b.at)
+	res.df = n.calcDefense(l, s.df, i.df, b.df)
+	res.sa = n.calcSpAttack(l, s.sa, i.sa, b.sa)
+	res.sd = n.calcSpDefense(l, s.sd, i.sd, b.sd)
+	res.sp = n.calcSpeed(l, s.sp, i.sp, b.sp)
+	return res
+}
+
+func (n *Nature) calcHP(l Level, s Species, i Individual, b BasePoint) uint {
 	return n.hp(l, s, i, b)
 }
-func (n *Nature) CalcAttack(l Level, s Species, i Individual, b BasePoint) uint {
+func (n *Nature) calcAttack(l Level, s Species, i Individual, b BasePoint) uint {
 	return n.at(l, s, i, b)
 }
-func (n *Nature) CalcDefense(l Level, s Species, i Individual, b BasePoint) uint {
+func (n *Nature) calcDefense(l Level, s Species, i Individual, b BasePoint) uint {
 	return n.df(l, s, i, b)
 }
-func (n *Nature) CalcSpAttack(l Level, s Species, i Individual, b BasePoint) uint {
+func (n *Nature) calcSpAttack(l Level, s Species, i Individual, b BasePoint) uint {
 	return n.sa(l, s, i, b)
 }
-func (n *Nature) CalcSpDefense(l Level, s Species, i Individual, b BasePoint) uint {
+func (n *Nature) calcSpDefense(l Level, s Species, i Individual, b BasePoint) uint {
 	return n.sd(l, s, i, b)
 }
-func (n *Nature) CalcSpeed(l Level, s Species, i Individual, b BasePoint) uint {
+func (n *Nature) calcSpeed(l Level, s Species, i Individual, b BasePoint) uint {
 	return n.sp(l, s, i, b)
 }
 
