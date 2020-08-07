@@ -7,7 +7,7 @@ type dummy struct {
 }
 
 func (t dummy) Magnification(defense magnifier) Effective {
-	return FlatEffective()
+	return flatEffective()
 }
 
 // 正常範囲チェック intとDamageMagnifier間で相互変換できること

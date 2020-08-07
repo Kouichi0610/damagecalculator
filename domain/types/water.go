@@ -6,9 +6,9 @@ type water struct {
 func (t water) Magnification(defense magnifier) Effective {
 	switch defense.(type) {
 	case *water, *grass, *dragon:
-		return NotVeryEffective()
+		return notVeryEffective()
 	case *fire, *ground, *rock:
-		return SuperEffective()
+		return superEffective()
 	}
-	return FlatEffective()
+	return flatEffective()
 }

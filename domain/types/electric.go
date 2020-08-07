@@ -6,11 +6,11 @@ type electric struct {
 func (t electric) Magnification(defense magnifier) Effective {
 	switch defense.(type) {
 	case *electric, *grass, *dragon:
-		return NotVeryEffective()
+		return notVeryEffective()
 	case *water, *flying:
-		return SuperEffective()
+		return superEffective()
 	case *ground:
-		return NoEffective()
+		return noEffective()
 	}
-	return FlatEffective()
+	return flatEffective()
 }

@@ -6,9 +6,9 @@ type flying struct {
 func (t flying) Magnification(defense magnifier) Effective {
 	switch defense.(type) {
 	case *electric, *rock, *steel:
-		return NotVeryEffective()
+		return notVeryEffective()
 	case *grass, *fighting, *bug:
-		return SuperEffective()
+		return superEffective()
 	}
-	return FlatEffective()
+	return flatEffective()
 }

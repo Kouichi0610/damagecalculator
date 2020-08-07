@@ -30,17 +30,6 @@ type Nature struct {
 	hp, at, df, sa, sd, sp statsCalculator
 }
 
-func (n *Nature) CalcStats(l Level, s *SpeciesStats, i *IndividualStats, b *BasePointStats) *Stats {
-	res := new(Stats)
-	res.hp = n.calcHP(l, s.hp, i.hp, b.hp)
-	res.at = n.calcAttack(l, s.at, i.at, b.at)
-	res.df = n.calcDefense(l, s.df, i.df, b.df)
-	res.sa = n.calcSpAttack(l, s.sa, i.sa, b.sa)
-	res.sd = n.calcSpDefense(l, s.sd, i.sd, b.sd)
-	res.sp = n.calcSpeed(l, s.sp, i.sp, b.sp)
-	return res
-}
-
 func (n *Nature) calcHP(l Level, s Species, i Individual, b BasePoint) uint {
 	return n.hp(l, s, i, b)
 }
