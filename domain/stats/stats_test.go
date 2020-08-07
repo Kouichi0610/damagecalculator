@@ -4,30 +4,30 @@ import "testing"
 
 // 能力値を生成すること
 func Test_Stats(t *testing.T) {
-	l := NewLevel(100)
-	s := NewSpeciesStats(80, 130, 85, 70, 75, 103)
+	l := NewLevel(50)
+	n := NewNature(Bold)
+	s := NewSpeciesStats(95, 109, 105, 75, 85, 56)
 	i := NewIndividualStats(31, 31, 31, 31, 31, 31)
 	b, _ := NewBasePointStats(6, 252, 0, 0, 0, 252)
-	n := NewNature(Jolly)
 
 	stats := NewStats(l, s, i, b, n)
 
-	if stats.HP() != 302 {
-		t.Errorf("HP %d\n", stats.HP())
+	if stats.hp != 171 {
+		t.Errorf("%d", stats.hp)
 	}
-	if stats.Attack() != 359 {
-		t.Errorf("AT %d\n", stats.Attack())
+	if stats.at != 144 {
+		t.Errorf("%d", stats.at)
 	}
-	if stats.Defense() != 206 {
-		t.Errorf("DF %d\n", stats.Defense())
+	if stats.df != 137 {
+		t.Errorf("%d", stats.df)
 	}
-	if stats.SpAttack() != 158 {
-		t.Errorf("SA %d\n", stats.SpAttack())
+	if stats.sa != 95 {
+		t.Errorf("%d", stats.sa)
 	}
-	if stats.SpDefense() != 186 {
-		t.Errorf("SD %d\n", stats.SpDefense())
+	if stats.sd != 105 {
+		t.Errorf("%d", stats.sd)
 	}
-	if stats.Speed() != 335 {
-		t.Errorf("SP %d\n", stats.Speed())
+	if stats.sp != 108 {
+		t.Errorf("%d", stats.sp)
 	}
 }

@@ -30,22 +30,22 @@ type Nature struct {
 	hp, at, df, sa, sd, sp statsCalculator
 }
 
-func (n *Nature) CalcHP(l Level, s Species, i Individual, b BasePoint) uint {
+func (n *Nature) calcHP(l Level, s Species, i Individual, b BasePoint) uint {
 	return n.hp(l, s, i, b)
 }
-func (n *Nature) CalcAttack(l Level, s Species, i Individual, b BasePoint) uint {
+func (n *Nature) calcAttack(l Level, s Species, i Individual, b BasePoint) uint {
 	return n.at(l, s, i, b)
 }
-func (n *Nature) CalcDefense(l Level, s Species, i Individual, b BasePoint) uint {
+func (n *Nature) calcDefense(l Level, s Species, i Individual, b BasePoint) uint {
 	return n.df(l, s, i, b)
 }
-func (n *Nature) CalcSpAttack(l Level, s Species, i Individual, b BasePoint) uint {
+func (n *Nature) calcSpAttack(l Level, s Species, i Individual, b BasePoint) uint {
 	return n.sa(l, s, i, b)
 }
-func (n *Nature) CalcSpDefense(l Level, s Species, i Individual, b BasePoint) uint {
+func (n *Nature) calcSpDefense(l Level, s Species, i Individual, b BasePoint) uint {
 	return n.sd(l, s, i, b)
 }
-func (n *Nature) CalcSpeed(l Level, s Species, i Individual, b BasePoint) uint {
+func (n *Nature) calcSpeed(l Level, s Species, i Individual, b BasePoint) uint {
 	return n.sp(l, s, i, b)
 }
 

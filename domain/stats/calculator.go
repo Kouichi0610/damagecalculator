@@ -11,17 +11,13 @@ func calcHP(l Level, s Species, i Individual, b BasePoint) uint {
 	return uint(y)
 }
 func calcFlat(l Level, s Species, i Individual, b BasePoint) uint {
-	return uint(flatFloat(l, s, i, b))
+	x := uint(s)*2 + uint(i) + uint(b)/4
+	y := uint(float32(x)*float32(l))/100 + 5
+	return y
 }
 func calcUpper(l Level, s Species, i Individual, b BasePoint) uint {
-	return uint(flatFloat(l, s, i, b) * 1.1)
+	return calcFlat(l, s, i, b) * 11 / 10
 }
 func calcLower(l Level, s Species, i Individual, b BasePoint) uint {
-	return uint(flatFloat(l, s, i, b) * 0.9)
-}
-
-func flatFloat(l Level, s Species, i Individual, b BasePoint) float32 {
-	x := uint(s)*2 + uint(i) + uint(b)/4
-	y := float32(x)*float32(l)/100.0 + 5
-	return y
+	return calcFlat(l, s, i, b) * 9 / 10
 }

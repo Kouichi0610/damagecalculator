@@ -3,7 +3,9 @@
 */
 package types
 
-import "reflect"
+import (
+	"reflect"
+)
 
 type Types struct {
 	t []magnifier
@@ -27,12 +29,12 @@ func NewTypes(args ...Type) *Types {
 	return res
 }
 
-// ダメージ倍率を計算
+// ダメージ倍率を計算TODO:private
 func (at *Types) Magnification(df *Types) Effective {
 	if len(at.t) == 0 || len(df.t) == 0 {
-		return FlatEffective()
+		return flatEffective()
 	}
-	res := FlatEffective()
+	res := flatEffective()
 	for _, a := range at.t {
 		for _, d := range df.t {
 			m := a.Magnification(d)
@@ -40,6 +42,11 @@ func (at *Types) Magnification(df *Types) Effective {
 		}
 	}
 	return res
+}
+
+func (ty *Types) Has(t Type) bool {
+	o := NewTypes(t)
+	return ty.PartialMatch(o)
 }
 
 func (t *Types) PartialMatch(o *Types) bool {

@@ -50,6 +50,15 @@ func Test_Nature(t *testing.T) {
 			t.Errorf("shadinja %v %v\n", expect, actual)
 		}
 	}
+	// ヌケニンのHP計算が使用した性格に影響を与えないこと
+	{
+		n := NewNature(Brave)
+		actual := testCalcStats(n)
+		if actual[0] == 1 {
+			t.Error()
+		}
+
+	}
 }
 
 func testCalcStats(n *Nature) [6]uint {
@@ -58,11 +67,11 @@ func testCalcStats(n *Nature) [6]uint {
 	i := newIndividual(31)
 	b := newBasePoint(252)
 	res := [6]uint{0, 0, 0, 0, 0, 0}
-	res[0] = n.CalcHP(l, s, i, b)
-	res[1] = n.CalcAttack(l, s, i, b)
-	res[2] = n.CalcDefense(l, s, i, b)
-	res[3] = n.CalcSpAttack(l, s, i, b)
-	res[4] = n.CalcSpDefense(l, s, i, b)
-	res[5] = n.CalcSpeed(l, s, i, b)
+	res[0] = n.calcHP(l, s, i, b)
+	res[1] = n.calcAttack(l, s, i, b)
+	res[2] = n.calcDefense(l, s, i, b)
+	res[3] = n.calcSpAttack(l, s, i, b)
+	res[4] = n.calcSpDefense(l, s, i, b)
+	res[5] = n.calcSpeed(l, s, i, b)
 	return res
 }

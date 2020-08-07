@@ -14,7 +14,7 @@ func Test_ダメージ倍率_指定なし(t *testing.T) {
 	a := NewTypes()
 	d := NewTypes(Bug)
 
-	if a.Magnification(d) != FlatEffective() {
+	if a.Magnification(d) != flatEffective() {
 		t.Error()
 	}
 }
@@ -31,4 +31,14 @@ func Test_部分一致(t *testing.T) {
 		t.Error()
 	}
 
+}
+
+func Test_Has(t *testing.T) {
+	ty := NewTypes(Fire, Water, Grass)
+	if ty.Has(Ghost) {
+		t.Error()
+	}
+	if !ty.Has(Water) {
+		t.Error()
+	}
 }

@@ -6,11 +6,11 @@ type dragon struct {
 func (t dragon) Magnification(defense magnifier) Effective {
 	switch defense.(type) {
 	case *steel:
-		return NotVeryEffective()
+		return notVeryEffective()
 	case *dragon:
-		return SuperEffective()
+		return superEffective()
 	case *fairy:
-		return NoEffective()
+		return noEffective()
 	}
-	return FlatEffective()
+	return flatEffective()
 }
