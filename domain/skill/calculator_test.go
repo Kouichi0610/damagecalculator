@@ -1,4 +1,4 @@
-package damage
+package skill
 
 import (
 	"reflect"

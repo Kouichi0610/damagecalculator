@@ -30,9 +30,11 @@
 */
 package corrector
 
-// とくせい、わざ、もちものなど
+import "damagecalculator/domain/situation"
+
+// とくせい、わざ、もちものなど TODO:remove
 type CorrectorGenerator interface {
-	Correctors() []Corrector
+	Correctors(situation.SituationChecker) []Corrector
 }
 
 type Corrector interface {

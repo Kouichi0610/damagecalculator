@@ -4,8 +4,11 @@
 package situation
 
 import (
+	_ "damagecalculator/domain/stats"
 	"damagecalculator/domain/status"
 )
+
+// 状況　and 状況問い合わせ
 
 type SituationChecker interface {
 	Attacker() status.StatusChecker
