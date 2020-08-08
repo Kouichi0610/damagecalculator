@@ -14,6 +14,7 @@ func NewCorrectors() *Correctors {
 	}
 }
 
+// TODO:appendDamagesに属するカテゴリなら置き換える(一部の特性で必要　メソッド名を変更するべきか)
 func (c *Correctors) Append(f Corrector) {
 	c.c = append(c.c, f)
 }
@@ -29,6 +30,7 @@ func (c *Correctors) AppendCritical() {
 }
 
 // まもるによるダメージ補正(0.25)
+// TODO:ダイマックスわざでない限り無効なので省いていいかも
 func (c *Correctors) AppendProtect() {
 	c.appendDamages = append(c.appendDamages, newCorrector(Protect, drop5_pick5over, 1, 4))
 }
@@ -60,10 +62,10 @@ func (c *Correctors) CorrectDamage(n uint) uint {
 	return res
 }
 
-func (c *Correctors) correct(n uint, t category) uint {
+func (c *Correctors) correct(n uint, t Category) uint {
 	res := n
 	for _, f := range c.c {
-		if f.caterogy() != t {
+		if f.Caterogy() != t {
 			continue
 		}
 		res = f.Correct(res)

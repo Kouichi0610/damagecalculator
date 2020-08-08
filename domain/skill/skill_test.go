@@ -1,6 +1,8 @@
 package skill
 
 import (
+	"damagecalculator/domain/corrector"
+	"damagecalculator/domain/field"
 	"damagecalculator/domain/skill/category"
 	_ "damagecalculator/domain/stats"
 	"damagecalculator/domain/status"
@@ -9,7 +11,11 @@ import (
 	"testing"
 )
 
+// TODO:correctorsテスト方法(nilを返さないようにする)
 // TODO:AttackCount実装後、AttackCountがCalculateに影響を与えること
+func Test_攻撃回数(t *testing.T) {
+	t.Fail()
+}
 
 // 補正などかけないこと
 func Test_わざ_NoMethod(t *testing.T) {
@@ -54,6 +60,76 @@ func Test_わざ_NoMethod(t *testing.T) {
 	}
 }
 
+func Test_WeatherBall(t *testing.T) {
+	d := &SkillData{
+		types:    []types.Type{types.Bug},
+		power:    150,
+		countMin: 1,
+		countMax: 1,
+		category: category.Special,
+		method:   WeatherBall,
+	}
+	s, _ := NewSkill(d)
+	st := WithWeather(field.NoWeather)
+
+	// 天候なしではskillに設定されているタイプと威力をそのまま使うこと
+	if !s.Types(st).Has(types.Bug) {
+		t.Error()
+	}
+	c := s.Correctors(st)
+	if c != nil {
+		t.Error()
+	}
+
+	correctorCheck := func(cs []corrector.Corrector) {
+		if cs == nil {
+			t.Error()
+			return
+		}
+		if len(cs) != 1 {
+			t.Error()
+		}
+		if cs[0].Caterogy() != corrector.Power {
+			t.Error()
+		}
+		if cs[0].Correct(100) != 200 {
+			t.Error()
+		}
+	}
+
+	// 晴れの時ほのおタイプで威力が倍になること
+	st = WithWeather(field.Sunny)
+	if !s.Types(st).Has(types.Fire) {
+		t.Error()
+	}
+	c = s.Correctors(st)
+	correctorCheck(c)
+
+	// 雨の時水タイプで威力が倍になること
+	st = WithWeather(field.Rainy)
+	if !s.Types(st).Has(types.Water) {
+		t.Error()
+	}
+	c = s.Correctors(st)
+	correctorCheck(c)
+
+	// あられのときこおりタイプで威力が倍になること
+	st = WithWeather(field.Snow)
+	if !s.Types(st).Has(types.Ice) {
+		t.Error()
+	}
+	c = s.Correctors(st)
+	correctorCheck(c)
+
+	// 砂嵐のときいわタイプで威力が倍になること
+	st = WithWeather(field.SandStorm)
+	if !s.Types(st).Has(types.Rock) {
+		t.Error()
+	}
+	c = s.Correctors(st)
+	correctorCheck(c)
+}
+
 /*
 	ダメージはレベル固定であること
 	それ以外はメソッドなしと変化ないこと
@@ -94,6 +170,14 @@ func Test_わざ_ちきゅうなげ(t *testing.T) {
 
 }
 
+func WithWeather(w field.Weather) SituationChecker {
+	return &testSituation{
+		at: status.NewStatus(50, []types.Type{types.Fire}, 999, 100, 20, 200, 40, 180, 0, 0, 0, 0, 0),
+		df: status.NewStatus(50, []types.Type{types.Water}, 500, 20, 40, 60, 10, 120, 0, 0, 0, 0, 0),
+		w:  w,
+	}
+}
+
 func DummySituation() SituationChecker {
 	return &testSituation{
 		at: status.NewStatus(50, []types.Type{types.Fire}, 999, 100, 20, 200, 40, 180, 0, 0, 0, 0, 0),
@@ -104,6 +188,7 @@ func DummySituation() SituationChecker {
 //type
 type testSituation struct {
 	at, df status.StatusChecker
+	w      field.Weather
 }
 
 func (s *testSituation) Attacker() status.StatusChecker {
@@ -111,6 +196,9 @@ func (s *testSituation) Attacker() status.StatusChecker {
 }
 func (s *testSituation) Defender() status.StatusChecker {
 	return s.df
+}
+func (s *testSituation) IsWeather(f field.Weather) bool {
+	return s.w == f
 }
 
 //-------------------------------------------

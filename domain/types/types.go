@@ -11,25 +11,6 @@ type Types struct {
 	t []magnifier
 }
 
-func NewTypes(args []Type) *Types {
-	res := new(Types)
-	res.t = make([]magnifier, 0)
-
-	if len(args) == 0 {
-		return res
-	}
-
-	for _, n := range args {
-		ty, _ := fromType(n)
-		if ty == nil {
-			break
-		}
-		res.t = append(res.t, ty)
-	}
-	return res
-}
-
-/*
 func NewTypes(args ...Type) *Types {
 	res := new(Types)
 	res.t = make([]magnifier, 0)
@@ -47,7 +28,6 @@ func NewTypes(args ...Type) *Types {
 	}
 	return res
 }
-*/
 
 // ダメージ倍率を計算TODO:private
 func (at *Types) Magnification(df *Types) Effective {
@@ -65,7 +45,7 @@ func (at *Types) Magnification(df *Types) Effective {
 }
 
 func (ty *Types) Has(t Type) bool {
-	o := NewTypes([]Type{t})
+	o := NewTypes([]Type{t}...)
 	return ty.PartialMatch(o)
 }
 

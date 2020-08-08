@@ -35,7 +35,7 @@ func NewSkill(d *SkillData) (Skill, error) {
 	if err != nil {
 		return nil, err
 	}
-	t := types.NewTypes(d.types)
+	t := types.NewTypes(d.types...)
 	switch d.method {
 	case None:
 		return &skill{

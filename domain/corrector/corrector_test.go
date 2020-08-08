@@ -65,7 +65,7 @@ func Test_Correctors(t *testing.T) {
 
 func Test_Corrector(t *testing.T) {
 	c := newCorrector(Attack, drop5_pick5over, 1, 2)
-	if c.caterogy() != Attack {
+	if c.Caterogy() != Attack {
 		t.Error()
 	}
 	if c.Correct(27) != 13 {

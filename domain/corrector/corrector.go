@@ -38,17 +38,17 @@ type CorrectorGenerator interface {
 }
 
 type Corrector interface {
-	caterogy() category
+	Caterogy() Category
 	Correct(dmg uint) uint
 }
 
 type corrector struct {
-	t category      // どのパラメータに補正を賭けるか
+	t Category      // どのパラメータに補正を賭けるか
 	f calculateFunc // 補正計算式
 	m uint          // 倍率(4096==1の固定小数点)
 }
 
-func newCorrector(t category, f calculateFunc, numer, denom uint) Corrector {
+func newCorrector(t Category, f calculateFunc, numer, denom uint) Corrector {
 	return &corrector{
 		t: t,
 		f: f,
@@ -56,7 +56,7 @@ func newCorrector(t category, f calculateFunc, numer, denom uint) Corrector {
 	}
 }
 
-func (c *corrector) caterogy() category {
+func (c *corrector) Caterogy() Category {
 	return c.t
 }
 

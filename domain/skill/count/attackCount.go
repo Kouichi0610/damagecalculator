@@ -1,6 +1,9 @@
 package count
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 // 攻撃回数からとりうるダメージを生成する
 type AttackCount struct {
@@ -17,15 +20,34 @@ func NewAttackCount(min, max uint) (*AttackCount, error) {
 	}, nil
 }
 
+/*
+	min回の攻撃ダメージ～max回の攻撃ダメージの総当たり配列
+*/
 func (a *AttackCount) Correct(dmgs []uint) []uint {
-	// TODO:実装
-	return dmgs
-	/*
-		res := make([]uint, 0)
-		for i := a.min; i <= a.max; i++ {
-			d := correct(dmgs, i)
-			res = append(res, d...)
+	res := make([]uint, 0)
+	for i := a.min; i <= a.max; i++ {
+		ap := correct(dmgs, i)
+		res = append(res, ap...)
+	}
+	return res
+}
+
+// d ダメージ c 回数
+func correct(d []uint, c uint) []uint {
+	res := make([]uint, 0)
+	dg := newDigit(int(len(d)), 0)
+	resLength := int(math.Pow(float64(len(d)), float64(c)))
+
+	for dg.Count() != resLength {
+		idx := dg.ToArray(int(c))
+		a := uint(0)
+		for i := 0; i < int(c); i++ {
+			a += d[idx[i]]
 		}
-		return res
-	*/
+		dg.Increment()
+
+		res = append(res, a)
+	}
+
+	return res
 }

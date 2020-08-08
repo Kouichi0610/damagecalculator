@@ -14,7 +14,7 @@ type Status struct {
 
 func NewStatus(lv uint, ty []types.Type, hp, at, df, sa, sd, sp uint, atr, dfr, sar, sdr, spr int) StatusChecker {
 	l := stats.NewLevel(lv)
-	t := types.NewTypes(ty)
+	t := types.NewTypes(ty...)
 	s := NewRankedStats(hp, at, df, sa, sd, sp, atr, dfr, sar, sdr, spr)
 
 	return &Status{

@@ -1,6 +1,7 @@
 package skill
 
 import (
+	"damagecalculator/domain/field"
 	"damagecalculator/domain/status"
 )
 
@@ -14,5 +15,6 @@ import (
 type SituationChecker interface {
 	Attacker() status.StatusChecker
 	Defender() status.StatusChecker
-	// 天候、持ち物、重さ、ダイマックス、壁
+	// 持ち物、重さ、ダイマックス、壁
+	IsWeather(field.Weather) bool
 }
