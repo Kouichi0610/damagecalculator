@@ -6,7 +6,23 @@ import (
 )
 
 func Test_Status(t *testing.T) {
-	stats := NewStatus(50, []types.Type{types.Bug}, 999, 10, 20, 300, 40, 50, -1, +1, 0, +4, -6)
+	sd := &StatusData{
+		Lv:            50,
+		Types:         []types.Type{types.Bug},
+		HP:            999,
+		Attack:        10,
+		Defense:       20,
+		SpAttack:      300,
+		SpDefense:     40,
+		Speed:         50,
+		AttackRank:    -1,
+		DefenseRank:   +1,
+		SpAttackRank:  0,
+		SpDefenseRank: +4,
+		SpeedRank:     -6,
+	}
+
+	stats := sd.Create()
 
 	if stats.Level() != 50 {
 		t.Error()

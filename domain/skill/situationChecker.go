@@ -15,6 +15,6 @@ import (
 type SituationChecker interface {
 	Attacker() status.StatusChecker
 	Defender() status.StatusChecker
-	// 持ち物、重さ、ダイマックス、壁
+	// TODO:持ち物、重さ、ダイマックス、壁
 	IsWeather(field.Weather) bool
 }

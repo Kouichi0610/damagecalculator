@@ -5,6 +5,10 @@ import (
 	"testing"
 )
 
-func Test_Situation(t *testing.T) {
+func Test_SituationDataから生成できること(t *testing.T) {
+}
+
+// Skillインターフェイスに渡しても問題なく動作すること
+func Test_Situation_for_Skill(t *testing.T) {
 
 }

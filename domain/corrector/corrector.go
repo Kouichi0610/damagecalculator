@@ -30,13 +30,6 @@
 */
 package corrector
 
-import "damagecalculator/domain/situation"
-
-// とくせい、わざ、もちものなど
-type CorrectorGenerator interface {
-	Correctors(situation.SituationChecker) []Corrector
-}
-
 type Corrector interface {
 	Caterogy() Category
 	Correct(dmg uint) uint

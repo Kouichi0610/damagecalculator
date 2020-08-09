@@ -43,21 +43,14 @@ const (
 	エレキフィールド	電気
 	サイコフィールド	エスパー
 	グラスフィールド	草
-	ミスとフィールド	フェアリー
+	ミストフィールド	フェアリー
 
-
-	補正計算式自体はcorrectorに持たせる
+	補正計算式はcorrector.Rulesに持たせる
 */
 
 type Fields struct {
 	f Field
 	w Weather
-	// ダメージ補正
-	// hasWeatherPlus
-	// hasWeatherMinus
-	// hasFieldPlus
-
-	// 天候によるステータス補正
 }
 
 func NewFields(f Field, w Weather) *Fields {

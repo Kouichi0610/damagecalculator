@@ -1,11 +1,17 @@
 package corrector
 
+/*
+	TODO:補正に関するモデリング詰める
+	・威力、攻撃、防御、ダメージに補正を掛ける
+	・ルール自体書き換える(スナイパーは急所ダメージを1.5->2.25 てきおうりょく タイプ一致補正を1.5 -> 2.0)
+	同じ個所に置くべきではない
+*/
+
 // わざ、もちもの、とくせい、天候から補正メソッドを収集
 // ダメージ計算時に分類、補正を掛ける
 // TODO:天候、フィールド補正
 type Correctors struct {
-	c             []Corrector
-	appendDamages []Corrector // 状況によるダメージ補正追加
+	c []Corrector
 }
 
 func NewCorrectors() *Correctors {
@@ -14,35 +20,16 @@ func NewCorrectors() *Correctors {
 	}
 }
 
-// TODO:appendDamagesに属するカテゴリなら置き換える(一部の特性で必要　メソッド名を変更するべきか)
 func (c *Correctors) Append(f Corrector) {
 	c.c = append(c.c, f)
 }
-
-// タイプ一致ダメージ補正(1.5)
-func (c *Correctors) AppendTypeMatch() {
-	c.appendDamages = append(c.appendDamages, newCorrector(TypeMatch, drop5_pick5over, 3, 2))
-}
-
-// 急所ダメージ補正(1.5)
-func (c *Correctors) AppendCritical() {
-	c.appendDamages = append(c.appendDamages, newCorrector(Critical, drop5_pick5over, 3, 2))
-}
-
-// まもるによるダメージ補正(0.25)
-// TODO:ダイマックスわざでない限り無効なので省いていいかも
-func (c *Correctors) AppendProtect() {
-	c.appendDamages = append(c.appendDamages, newCorrector(Protect, drop5_pick5over, 1, 4))
-}
-
-// 複数対象によるダメージ補正(0.75)
-func (c *Correctors) AppendMultiTarget() {
-	c.appendDamages = append(c.appendDamages, newCorrector(MultiTarget, drop5_pick5over, 3, 4))
-}
-
-// やけどによるダメージ補正(0.5)
-func (c *Correctors) AppendBurn() {
-	c.appendDamages = append(c.appendDamages, newCorrector(Burn, drop5_pick5over, 1, 2))
+func (c *Correctors) Appends(args ...Corrector) {
+	if args == nil {
+		return
+	}
+	for _, f := range args {
+		c.Append(f)
+	}
 }
 
 func (c *Correctors) CorrectPower(n uint) uint {
@@ -56,9 +43,6 @@ func (c *Correctors) CorrectDefense(n uint) uint {
 }
 func (c *Correctors) CorrectDamage(n uint) uint {
 	res := c.correct(n, Damage)
-	for _, f := range c.appendDamages {
-		res = f.Correct(res)
-	}
 	return res
 }
 
