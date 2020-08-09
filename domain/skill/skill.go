@@ -23,6 +23,7 @@ type skill struct {
 	power  uint
 	count  *count.AttackCount
 	picker category.CategoryFunc
+	part   Part
 }
 
 func (s *skill) Types(SituationChecker) *types.Types {

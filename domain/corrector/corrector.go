@@ -32,7 +32,7 @@ package corrector
 
 import "damagecalculator/domain/situation"
 
-// とくせい、わざ、もちものなど TODO:remove
+// とくせい、わざ、もちものなど
 type CorrectorGenerator interface {
 	Correctors(situation.SituationChecker) []Corrector
 }

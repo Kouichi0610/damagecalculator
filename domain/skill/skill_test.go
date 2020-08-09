@@ -4,17 +4,41 @@ import (
 	"damagecalculator/domain/corrector"
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/skill/category"
-	_ "damagecalculator/domain/stats"
 	"damagecalculator/domain/status"
 	"damagecalculator/domain/types"
+	"math"
 	"reflect"
 	"testing"
 )
 
 // TODO:correctorsテスト方法(nilを返さないようにする)
-// TODO:AttackCount実装後、AttackCountがCalculateに影響を与えること
 func Test_攻撃回数(t *testing.T) {
-	t.Fail()
+	const min = 2
+	const max = 5
+	d := &SkillData{
+		types:    []types.Type{types.Bug},
+		power:    100,
+		countMin: min,
+		countMax: max,
+		category: category.Special,
+		method:   None,
+	}
+	s, _ := NewSkill(d)
+	dmgs := s.Calculate(1, 1, 1, 1)
+
+	var ex int
+	for i := min; i <= max; i++ {
+		ex += int(math.Pow(16, float64(i)))
+	}
+	if len(dmgs) != ex {
+		t.Error()
+	}
+	if dmgs[0] != 1*min {
+		t.Error()
+	}
+	if dmgs[ex-1] != 2*max {
+		t.Errorf("%d", dmgs[ex-1])
+	}
 }
 
 // 補正などかけないこと
@@ -201,50 +225,20 @@ func (s *testSituation) IsWeather(f field.Weather) bool {
 	return s.w == f
 }
 
-//-------------------------------------------
-// 継承実験
-type Hoger interface {
-	add(x, y int) int
-	print() string
-}
-type Fugar interface {
-	Hoger
-	mul(x, y int) int
-}
-
-type hoge struct {
-}
-
-func (h *hoge) add(x, y int) int {
-	return x + y
-}
-func (h *hoge) print() string {
-	return "hoge"
-}
-
-type fuga struct {
-	hoge
-}
-
-func (f *fuga) mul(x, y int) int {
-	return x * y
-}
-func (f *fuga) print() string {
-	return "fuga"
-}
-
-func Test_継承(t *testing.T) {
-	var f Fugar = &fuga{}
-
-	if f.mul(2, 3) != 6 {
+func Test_Parts(t *testing.T) {
+	if Remote.IsContact() {
 		t.Error()
 	}
-	if f.add(2, 3) != 5 {
+	if WaveMotion.IsContact() {
 		t.Error()
 	}
-	if f.print() != "fuga" {
+	if !Contact.IsContact() {
+		t.Error()
+	}
+	if !Knuckle.IsContact() {
+		t.Error()
+	}
+	if !Fang.IsContact() {
 		t.Error()
 	}
 }
-
-//-------------------------------------------

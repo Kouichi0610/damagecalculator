@@ -24,45 +24,44 @@ type SkillData struct {
 	countMax uint
 	category category.Category
 	method   Method
+	part     Part
 }
 
-func NewSkill(d *SkillData) (Skill, error) {
+func newSkill(d *SkillData) (skill, error) {
 	c, err := count.NewAttackCount(d.countMin, d.countMax)
 	if err != nil {
-		return nil, err
+		return skill{}, err
 	}
 	p, err := category.NewCategory(d.category)
 	if err != nil {
-		return nil, err
+		return skill{}, err
 	}
 	t := types.NewTypes(d.types...)
+	return skill{
+		types:  t,
+		power:  d.power,
+		count:  c,
+		picker: p,
+		part:   d.part,
+	}, nil
+}
+
+func NewSkill(d *SkillData) (Skill, error) {
+	s, err := newSkill(d)
+	if err != nil {
+		return nil, err
+	}
 	switch d.method {
 	case None:
-		return &skill{
-			types:  t,
-			power:  d.power,
-			count:  c,
-			picker: p,
-		}, nil
+		return &s, nil
 	case SeismicToss:
 		return &seismicToss{
-			skill: skill{
-				types:  t,
-				power:  d.power,
-				count:  c,
-				picker: p,
-			},
+			skill: s,
 		}, nil
 	case WeatherBall:
 		return &weatherBall{
-			skill: skill{
-				types:  t,
-				power:  d.power,
-				count:  c,
-				picker: p,
-			},
+			skill: s,
 		}, nil
 	}
-
 	return nil, fmt.Errorf("%d not supported.", d.method)
 }
