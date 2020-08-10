@@ -20,7 +20,7 @@ func Test_攻撃回数(t *testing.T) {
 		CountMin: min,
 		CountMax: max,
 		Category: category.Special,
-		method:   None,
+		Method:   NoMethod,
 	}).Create()
 	dmgs := s.Calculate(1, 1, 1, 1)
 
@@ -47,7 +47,7 @@ func Test_わざ_NoMethod(t *testing.T) {
 		CountMin: 1,
 		CountMax: 1,
 		Category: category.Special,
-		method:   None,
+		Method:   NoMethod,
 	}).Create()
 	if err != nil {
 		t.Error()
@@ -111,7 +111,7 @@ func Test_ジャイロボール(t *testing.T) {
 		CountMin: 1,
 		CountMax: 1,
 		Category: category.Physical,
-		method:   GyroBall,
+		Method:   GyroBall,
 	}).Create()
 	st := DummySituation() // 180 vs 120
 	if s.Power(st) != 17 {
@@ -126,7 +126,7 @@ func Test_ウェザーボール(t *testing.T) {
 		CountMin: 1,
 		CountMax: 1,
 		Category: category.Special,
-		method:   WeatherBall,
+		Method:   WeatherBall,
 	}).Create()
 	st := WithWeather(field.NoWeather)
 
@@ -199,7 +199,7 @@ func Test_わざ_ちきゅうなげ(t *testing.T) {
 		CountMin: 1,
 		CountMax: 1,
 		Category: category.FoulPlay,
-		method:   SeismicToss,
+		Method:   SeismicToss,
 	}).Create()
 	st := DummySituation()
 

@@ -10,7 +10,7 @@ import (
 type Method uint
 
 const (
-	None        Method = iota
+	NoMethod        Method = iota
 	SeismicToss        // ちきゅうなげ
 	WeatherBall        // ウェザーボール
 	GyroBall           // ジャイロボール
@@ -19,14 +19,14 @@ const (
 // 攻撃回数
 // 対象(1or複数)
 type SkillData struct {
-	Types    []types.Type
-	Power    uint
-	CountMin uint
-	CountMax uint
-	Category category.Category
-	// TODO:Method&Partの名称
-	method Method
-	part   Part
+	Types     []types.Type
+	Power     uint
+	CountMin  uint
+	CountMax  uint
+	Category  category.Category
+	Method    Method
+	Action    Action
+	Attribute Attribute
 }
 
 func (d *SkillData) Create() (Skill, error) {
@@ -34,8 +34,8 @@ func (d *SkillData) Create() (Skill, error) {
 	if err != nil {
 		return nil, err
 	}
-	switch d.method {
-	case None:
+	switch d.Method {
+	case NoMethod:
 		return &s, nil
 	case SeismicToss:
 		return &seismicToss{
@@ -50,7 +50,7 @@ func (d *SkillData) Create() (Skill, error) {
 			skill: s,
 		}, nil
 	}
-	return nil, fmt.Errorf("%d not supported.", d.method)
+	return nil, fmt.Errorf("%d not supported.", d.Method)
 }
 
 // create default skill.
@@ -69,6 +69,7 @@ func newSkill(d *SkillData) (skill, error) {
 		power:  d.Power,
 		count:  c,
 		picker: p,
-		part:   d.part,
+		action: d.Action,
+		attr:   d.Attribute,
 	}, nil
 }
