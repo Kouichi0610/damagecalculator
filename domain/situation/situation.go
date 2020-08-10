@@ -16,6 +16,7 @@ type SituationChecker interface {
 	Defender() status.StatusChecker
 	Skill() skill.Skill
 	IsWeather(field.Weather) bool
+	IsCritical() bool
 }
 
 type situation struct {
@@ -23,6 +24,8 @@ type situation struct {
 	df status.StatusChecker
 	sk skill.Skill
 	fl *field.Fields
+
+	isCritical bool
 }
 
 func (s *situation) Attacker() status.StatusChecker {
@@ -36,4 +39,7 @@ func (s *situation) Skill() skill.Skill {
 }
 func (s *situation) IsWeather(f field.Weather) bool {
 	return s.fl.HasWeather(f)
+}
+func (s *situation) IsCritical() bool {
+	return s.isCritical
 }

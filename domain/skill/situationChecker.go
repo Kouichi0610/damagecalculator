@@ -7,7 +7,8 @@ import (
 
 /*
 	わざの補正を掛けるために必要な情報を取得する
-	(situation.Situationに実装する。)
+
+	実体はsituation.Situationに
 
 	goはパッケージの相互参照を禁止しているため
 	situation.Situationを直接参照できない。

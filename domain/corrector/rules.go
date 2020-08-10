@@ -8,6 +8,18 @@ type Rules struct {
 	c []Corrector
 }
 
+func NewRules() *Rules {
+	return new(Rules)
+}
+
+func (c *Rules) Correct(n uint) uint {
+	res := n
+	for _, f := range c.c {
+		res = f.Correct(res)
+	}
+	return res
+}
+
 func (r *Rules) Replace(c Category, numer, denom uint) {
 	for i := 0; i < len(r.c); i++ {
 		if r.c[i].Caterogy() == c {

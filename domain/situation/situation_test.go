@@ -34,11 +34,12 @@ func create() (SituationChecker, error) {
 	}
 
 	d := &SituationData{
-		Attacker: at,
-		Defender: df,
-		Skill:    s,
-		Weather:  field.Sunny,
-		Field:    field.ElectricField,
+		Attacker:   at,
+		Defender:   df,
+		Skill:      s,
+		Weather:    field.Sunny,
+		Field:      field.ElectricField,
+		isCritical: false,
 	}
 	return d.Create()
 }
@@ -62,6 +63,10 @@ func Test_Situation機能(t *testing.T) {
 	}
 
 	if !st.IsWeather(field.Sunny) {
+		t.Error()
+	}
+
+	if st.IsCritical() {
 		t.Error()
 	}
 }
