@@ -1,22 +1,33 @@
 package status
 
 import (
-	"damagecalculator/domain/stats"
 	"damagecalculator/domain/types"
 	"testing"
 )
 
 func Test_Status(t *testing.T) {
-	s := NewRankedStats(999, 10, 20, 300, 40, 50, -1, +1, 0, +4, -6)
-	l := stats.NewLevel(50)
-	ty := types.NewTypes(types.Bug)
+	sd := &StatusData{
+		Lv:            50,
+		Types:         []types.Type{types.Bug},
+		HP:            999,
+		Attack:        10,
+		Defense:       20,
+		SpAttack:      300,
+		SpDefense:     40,
+		Speed:         50,
+		AttackRank:    -1,
+		DefenseRank:   +1,
+		SpAttackRank:  0,
+		SpDefenseRank: +4,
+		SpeedRank:     -6,
+	}
 
-	stats := NewStatus(l, ty, s)
+	stats := sd.Create()
 
 	if stats.Level() != 50 {
 		t.Error()
 	}
-	if !stats.Types().PartialMatch(ty) {
+	if !stats.Types().Has(types.Bug) {
 		t.Error()
 	}
 	if stats.HP().value != 999 {

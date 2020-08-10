@@ -4,32 +4,37 @@ import (
 	"testing"
 )
 
-func Test_Correctors_AppendDamage(t *testing.T) {
-	c := NewCorrectors()
-	if c.CorrectDamage(100) != 100 {
-		t.Error()
-	}
-	c.AppendTypeMatch()
-	if c.CorrectDamage(100) != 150 {
-		t.Error()
-	}
-	c.AppendCritical()
-	if c.CorrectDamage(100) != 225 {
-		t.Error()
-	}
-	c.AppendMultiTarget()
-	if c.CorrectDamage(100) != 169 {
-		t.Errorf("%d", c.CorrectDamage(100))
-	}
-	c.AppendProtect()
-	if c.CorrectDamage(100) != 42 {
-		t.Errorf("%d", c.CorrectDamage(100))
-	}
-	c.AppendBurn()
-	if c.CorrectDamage(100) != 21 {
-		t.Errorf("%d", c.CorrectDamage(100))
-	}
+func Test_Correctors_Rules(t *testing.T) {
+}
 
+func Test_Appends(t *testing.T) {
+	c := NewCorrectors()
+	var add []Corrector
+	c.Appends(add...)
+	c.Appends()
+	// nilを渡しても影響がない事
+	if len(c.c) != 0 {
+		t.Error()
+	}
+	add = []Corrector{
+		NewAttack(1, 2),
+		NewDefense(2, 3),
+		NewPower(3, 4),
+		NewDamage(2, 1),
+	}
+	c.Appends(add...)
+	if c.CorrectAttack(100) != 50 {
+		t.Error()
+	}
+	if c.CorrectDefense(100) != 67 {
+		t.Error()
+	}
+	if c.CorrectPower(100) != 75 {
+		t.Error()
+	}
+	if c.CorrectDamage(100) != 200 {
+		t.Error()
+	}
 }
 
 // 他のカテゴリの補正に影響を与えないこと
@@ -57,15 +62,11 @@ func Test_Correctors(t *testing.T) {
 	if c.CorrectDamage(100) != 200 {
 		t.Error()
 	}
-	c.AppendTypeMatch()
-	if c.CorrectDamage(100) != 300 {
-		t.Error()
-	}
 }
 
 func Test_Corrector(t *testing.T) {
 	c := newCorrector(Attack, drop5_pick5over, 1, 2)
-	if c.caterogy() != Attack {
+	if c.Caterogy() != Attack {
 		t.Error()
 	}
 	if c.Correct(27) != 13 {

@@ -6,19 +6,19 @@ import (
 
 func Test_Factories(t *testing.T) {
 	c := NewPower(1, 2)
-	if c.caterogy() != Power {
+	if c.Caterogy() != Power {
 		t.Error()
 	}
 	c = NewAttack(1, 2)
-	if c.caterogy() != Attack {
+	if c.Caterogy() != Attack {
 		t.Error()
 	}
 	c = NewDefense(1, 2)
-	if c.caterogy() != Defense {
+	if c.Caterogy() != Defense {
 		t.Error()
 	}
 	c = NewDamage(1, 2)
-	if c.caterogy() != Damage {
+	if c.Caterogy() != Damage {
 		t.Error()
 	}
 }

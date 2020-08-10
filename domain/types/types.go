@@ -45,7 +45,7 @@ func (at *Types) Magnification(df *Types) Effective {
 }
 
 func (ty *Types) Has(t Type) bool {
-	o := NewTypes(t)
+	o := NewTypes([]Type{t}...)
 	return ty.PartialMatch(o)
 }
 

@@ -1,9 +1,9 @@
 package corrector
 
-type category uint
+type Category uint
 
 const (
-	Power category = iota
+	Power Category = iota
 	Attack
 	Defense
 	Damage

@@ -12,14 +12,6 @@ type Status struct {
 	s *RankedStats
 }
 
-func NewStatus(l stats.Level, t *types.Types, s *RankedStats) StatusChecker {
-	res := new(Status)
-	res.l = l
-	res.t = t
-	res.s = s
-	return res
-}
-
 func (s *Status) Types() *types.Types {
 	return s.t
 }
