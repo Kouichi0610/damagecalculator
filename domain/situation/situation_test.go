@@ -39,7 +39,7 @@ func create() (SituationChecker, error) {
 		Skill:      s,
 		Weather:    field.Sunny,
 		Field:      field.ElectricField,
-		isCritical: false,
+		IsCritical: false,
 	}
 	return d.Create()
 }

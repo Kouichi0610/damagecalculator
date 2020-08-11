@@ -31,17 +31,17 @@
 package corrector
 
 type Corrector interface {
-	Caterogy() Category
+	Caterogy() category
 	Correct(dmg uint) uint
 }
 
 type corrector struct {
-	t Category      // どのパラメータに補正を賭けるか
+	t category      // どのパラメータに補正を賭けるか
 	f calculateFunc // 補正計算式
 	m uint          // 倍率(4096==1の固定小数点)
 }
 
-func newCorrector(t Category, f calculateFunc, numer, denom uint) Corrector {
+func newCorrector(t category, f calculateFunc, numer, denom uint) Corrector {
 	return &corrector{
 		t: t,
 		f: f,
@@ -49,7 +49,7 @@ func newCorrector(t Category, f calculateFunc, numer, denom uint) Corrector {
 	}
 }
 
-func (c *corrector) Caterogy() Category {
+func (c *corrector) Caterogy() category {
 	return c.t
 }
 

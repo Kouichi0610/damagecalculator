@@ -44,19 +44,91 @@ func defaultArgs() *situation.SituationData {
 	}
 	return st
 }
-
-func Test_DamageCalculator(t *testing.T) {
-	// TODO:テストの場合分けをどうするか
-	sd := defaultArgs()
-	st, _ := sd.Create()
-
+func calcDamage(sd *situation.SituationData) *Damages {
 	d := NewDamageCalculator()
+	st, _ := sd.Create()
+	return d.CreateDamage(st)
+}
 
+func Test_タイプ相性(t *testing.T) {
+	d := NewDamageCalculator()
+	a := defaultArgs()
+	a.Attacker.Types = []types.Type{types.Fire}
+	a.Defender.Types = []types.Type{types.Bug}
+	a.Skill.Types = []types.Type{types.Normal}
+
+	// ノーマル->むし
+	st, _ := a.Create()
 	dmgs := d.CreateDamage(st)
-	if len(dmgs.d) != 16 {
-		t.Errorf("%d", len(dmgs.d))
+	if dmgs.Min() != 64 {
+		t.Errorf("%v", dmgs)
 	}
-	t.Errorf("%v", dmgs.d)
+	// いわ->むし
+	a.Skill.Types = []types.Type{types.Rock}
+	st, _ = a.Create()
+	dmgs = d.CreateDamage(st)
+	if dmgs.Min() != 128 {
+		t.Errorf("%v", dmgs)
+	}
+	// ほのお(タイプ一致)->むし
+	a.Skill.Types = []types.Type{types.Fire}
+	st, _ = a.Create()
+	dmgs = d.CreateDamage(st)
+	if dmgs.Min() != 192 {
+		t.Errorf("%v", dmgs)
+	}
+}
+
+func Test_急所(t *testing.T) {
+	a := defaultArgs()
+
+	dmgs := calcDamage(a)
+	if dmgs.Min() != 128 {
+		t.Errorf("%v", dmgs)
+	}
+
+	a.IsCritical = true
+	dmgs = calcDamage(a)
+	if dmgs.Min() != 192 {
+		t.Errorf("%v", dmgs)
+	}
+}
+func Test_天候(t *testing.T) {
+	a := defaultArgs()
+
+	a.Skill.Types = []types.Type{types.Fire}
+	a.Defender.Types = []types.Type{types.Normal}
+	a.Attacker.Types = []types.Type{types.Normal}
+
+	dmgs := calcDamage(a)
+	if dmgs.Min() != 64 {
+		t.Errorf("%v", dmgs)
+	}
+
+	a.Weather = field.Sunny
+	dmgs = calcDamage(a)
+	if dmgs.Min() != 96 {
+		t.Errorf("%v", dmgs)
+	}
+}
+
+func Test_フィールド(t *testing.T) {
+	a := defaultArgs()
+
+	a.Skill.Types = []types.Type{types.Electric}
+	a.Defender.Types = []types.Type{types.Normal}
+	a.Attacker.Types = []types.Type{types.Normal}
+
+	dmgs := calcDamage(a)
+	if dmgs.Min() != 64 {
+		t.Errorf("%v", dmgs)
+	}
+
+	a.Field = field.ElectricField
+	dmgs = calcDamage(a)
+	if dmgs.Min() != 96 {
+		t.Errorf("%v", dmgs)
+	}
 }
 
 func Test_Damages_ソートされていること(t *testing.T) {

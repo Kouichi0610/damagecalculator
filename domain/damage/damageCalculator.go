@@ -24,26 +24,28 @@ func NewDamageCalculator() DamageCalculator {
 }
 
 func (d *impl) CreateDamage(st situation.SituationChecker) *Damages {
-	c := corrector.NewCorrectors()
-	r := corrector.NewRules()
+	c := corrector.NewStatsCorrector()
 	level := uint(st.Attacker().Level())
 	skill := st.Skill()
-
-	// TODO:Situationからまとめて取得してしまうか
-	c.Appends(skill.Correctors(st)...)
 
 	// タイプ相性
 	skillType := skill.Types(st)
 	attacker := st.Attacker()
 	defender := st.Defender()
 	if skillType.PartialMatch(attacker.Types()) {
-		r.AppendTypeMatch()
+		c.ApplyTypeMatch()
 	}
 	ef := skillType.Magnification(defender.Types())
+
+	// 補正
+	c.Appends(skill.Correctors(st)...)
 
 	power := c.CorrectPower(skill.Power(st))
 	at, df := skill.PickStats(st)
 	attack, defense := criticalStats(st.IsCritical(), at, df)
+	if st.IsCritical() {
+		c.ApplyCritical()
+	}
 
 	attack = c.CorrectAttack(attack)
 	defense = c.CorrectDefense(defense)
@@ -56,7 +58,6 @@ func (d *impl) CreateDamage(st situation.SituationChecker) *Damages {
 	for i := 0; i < len(dmgs); i++ {
 		dmgs[i] = ef.Correct(dmgs[i])
 		dmgs[i] = c.CorrectDamage(dmgs[i])
-		dmgs[i] = r.Correct(dmgs[i])
 	}
 	return NewDamages(dmgs)
 }

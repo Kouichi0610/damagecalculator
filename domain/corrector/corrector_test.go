@@ -4,63 +4,112 @@ import (
 	"testing"
 )
 
-func Test_Correctors_Rules(t *testing.T) {
-}
-
-func Test_Appends(t *testing.T) {
-	c := NewCorrectors()
-	var add []Corrector
-	c.Appends(add...)
-	c.Appends()
-	// nilを渡しても影響がない事
-	if len(c.c) != 0 {
+func Test_NewStatsCorrector(t *testing.T) {
+	s := NewStatsCorrector()
+	if len(s.c) != 0 {
 		t.Error()
 	}
-	add = []Corrector{
-		NewAttack(1, 2),
-		NewDefense(2, 3),
-		NewPower(3, 4),
+	if len(s.env) != 0 {
+		t.Error()
+	}
+}
+func Test_Appends(t *testing.T) {
+	s := NewStatsCorrector()
+	s.ApplyTypeMatch()
+	s.Appends(NewAttack(1, 2), NewTypeMatch(2, 1))
+	if len(s.c) != 1 {
+		t.Error()
+	}
+	_, ok := s.env[TypeMatch]
+	if !ok {
+		t.Error()
+	}
+}
+func Test_append(t *testing.T) {
+	s := NewStatsCorrector()
+	// 追加できること
+	s.append(NewDamage(1, 2))
+	if len(s.c) != 1 {
+		t.Error()
+	}
+
+	// 環境補正が追加されていなければ何も追加しないこと
+	s.append(NewCritical(2, 3))
+	if len(s.c) != 1 {
+		t.Error()
+	}
+	_, ok := s.env[Critical]
+	if ok {
+		t.Error()
+	}
+
+	// 環境補正が追加されているなら置き換えること
+	s.ApplyCritical()
+	if s.env[Critical].Correct(100) != 150 {
+		t.Error()
+	}
+	s.append(NewCritical(4, 2))
+	_, ok = s.env[Critical]
+	if !ok {
+		t.Error()
+	}
+
+	if s.env[Critical].Correct(100) != 200 {
+		t.Error()
+	}
+}
+
+func Test_Apply(t *testing.T) {
+	s := NewStatsCorrector()
+	s.ApplyTypeMatch()
+	_, ok := s.env[TypeMatch]
+	if !ok {
+		t.Error()
+	}
+	s.ApplyMultiTarget()
+	_, ok = s.env[MultiTarget]
+	if !ok {
+		t.Error()
+	}
+	s.ApplyCritical()
+	_, ok = s.env[Critical]
+	if !ok {
+		t.Error()
+	}
+	s.ApplyBurn()
+	_, ok = s.env[Burn]
+	if !ok {
+		t.Error()
+	}
+}
+
+func Test_Corrects(t *testing.T) {
+	s := NewStatsCorrector()
+	a := []Corrector{
+		NewAttack(2, 1),
+		NewDefense(3, 2),
+		NewPower(4, 1),
 		NewDamage(2, 1),
 	}
-	c.Appends(add...)
-	if c.CorrectAttack(100) != 50 {
-		t.Error()
-	}
-	if c.CorrectDefense(100) != 67 {
-		t.Error()
-	}
-	if c.CorrectPower(100) != 75 {
-		t.Error()
-	}
-	if c.CorrectDamage(100) != 200 {
-		t.Error()
-	}
-}
+	s.Appends(a...)
+	s.ApplyCritical()
+	s.ApplyBurn()
+	s.ApplyMultiTarget()
+	s.ApplyTypeMatch()
+	// 1.5 * 0.5 * 0.75 * 1.5
+	// 2.25
 
-// 他のカテゴリの補正に影響を与えないこと
-func Test_Correctors(t *testing.T) {
-	c := NewCorrectors()
-	c.Append(NewAttack(1, 2))
-	c.Append(NewDefense(2, 3))
-	c.Append(NewPower(3, 4))
-	c.Append(NewDamage(2, 1))
-
-	if c.CorrectAttack(100) != 50 {
-		t.Error()
+	if s.CorrectPower(100) != 400 {
+		t.Errorf("%d", s.CorrectPower(100))
 	}
-	c.Append(NewAttack(1, 2))
-	if c.CorrectAttack(100) != 25 {
-		t.Error()
+	if s.CorrectAttack(100) != 200 {
+		t.Errorf("%d", s.CorrectAttack(100))
 	}
-
-	if c.CorrectDefense(100) != 67 {
-		t.Error()
+	if s.CorrectDefense(100) != 150 {
+		t.Errorf("%d", s.CorrectDefense(100))
 	}
-	if c.CorrectPower(100) != 75 {
-		t.Error()
-	}
-	if c.CorrectDamage(100) != 200 {
-		t.Error()
+	if s.CorrectDamage(100) != 168 {
+		t.Errorf("%d", s.CorrectDamage(100))
 	}
 }
 
@@ -104,5 +153,51 @@ func Test_小数点以下切り捨て(t *testing.T) {
 	a := omit(49, 409)
 	if a != 4 {
 		t.Errorf("%d", a)
+	}
+}
+
+func Test_Factories(t *testing.T) {
+	c := NewPower(1, 2)
+	if c.Caterogy() != Power {
+		t.Error()
+	}
+	c = NewAttack(1, 2)
+	if c.Caterogy() != Attack {
+		t.Error()
+	}
+	c = NewDefense(1, 2)
+	if c.Caterogy() != Defense {
+		t.Error()
+	}
+	c = NewDamage(1, 2)
+	if c.Caterogy() != Damage {
+		t.Error()
+	}
+	c = NewTypeMatch(1, 2)
+	if c.Caterogy() != TypeMatch {
+		t.Error()
+	}
+	c = NewCritical(1, 2)
+	if c.Caterogy() != Critical {
+		t.Error()
+	}
+}
+
+func Test_IsEnvironment(t *testing.T) {
+	expects := map[category]bool{
+		Power:       false,
+		Attack:      false,
+		Defense:     false,
+		Damage:      false,
+		TypeMatch:   true,
+		Critical:    true,
+		Protect:     true,
+		MultiTarget: true,
+		Burn:        true,
+	}
+	for c, e := range expects {
+		if c.IsEnvironment() != e {
+			t.Errorf("%d", c)
+		}
 	}
 }
