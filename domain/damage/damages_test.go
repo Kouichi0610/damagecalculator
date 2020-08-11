@@ -93,6 +93,8 @@ func Test_急所(t *testing.T) {
 		t.Errorf("%v", dmgs)
 	}
 }
+
+// 天候補正時、1.5倍
 func Test_天候(t *testing.T) {
 	a := defaultArgs()
 
@@ -112,6 +114,7 @@ func Test_天候(t *testing.T) {
 	}
 }
 
+// フィールド補正時、1.3倍
 func Test_フィールド(t *testing.T) {
 	a := defaultArgs()
 
@@ -126,7 +129,28 @@ func Test_フィールド(t *testing.T) {
 
 	a.Field = field.ElectricField
 	dmgs = calcDamage(a)
-	if dmgs.Min() != 96 {
+	if dmgs.Min() != 83 {
+		t.Errorf("%v", dmgs)
+	}
+}
+
+func Test_すなあらし岩タイプ補正(t *testing.T) {
+	a := defaultArgs()
+
+	a.Skill.Types = []types.Type{types.Ghost}
+	a.Skill.Category = category.Special
+	a.Defender.Types = []types.Type{types.Rock}
+	a.Attacker.Types = []types.Type{types.Normal}
+
+	dmgs := calcDamage(a)
+	if dmgs.Min() != 27 {
+		t.Errorf("%v", dmgs)
+	}
+
+	// すなあらし時、とくぼう1.5倍
+	a.Weather = field.SandStorm
+	dmgs = calcDamage(a)
+	if dmgs.Min() != 18 {
 		t.Errorf("%v", dmgs)
 	}
 }

@@ -158,3 +158,121 @@ func Test_Rank(t *testing.T) {
 		t.Error()
 	}
 }
+
+func Test_StatsCorrectors(t *testing.T) {
+	s := NewStatsCorrectors()
+	if s.at.Correct(100) != 100 {
+		t.Error()
+	}
+	if s.df.Correct(100) != 100 {
+		t.Error()
+	}
+	if s.sa.Correct(100) != 100 {
+		t.Error()
+	}
+	if s.sd.Correct(100) != 100 {
+		t.Error()
+	}
+	if s.sp.Correct(100) != 100 {
+		t.Error()
+	}
+
+	s.Attack(2, 1).Defense(3, 1).SpAttack(4, 1).SpDefense(5, 1).Speed(6, 1)
+	if s.at.Correct(100) != 200 {
+		t.Error()
+	}
+	if s.df.Correct(100) != 300 {
+		t.Error()
+	}
+	if s.sa.Correct(100) != 400 {
+		t.Error()
+	}
+	if s.sd.Correct(100) != 500 {
+		t.Error()
+	}
+	if s.sp.Correct(100) != 600 {
+		t.Error()
+	}
+}
+
+// 能力値に補正がかかること
+// ランクなどそれ以外に影響ない事
+func Test_Status補正(t *testing.T) {
+	sd := &StatusData{
+		Lv:            50,
+		Types:         []types.Type{types.Bug},
+		HP:            999,
+		Attack:        100,
+		Defense:       100,
+		SpAttack:      100,
+		SpDefense:     100,
+		Speed:         100,
+		AttackRank:    -4,
+		DefenseRank:   -2,
+		SpAttackRank:  0,
+		SpDefenseRank: +4,
+		SpeedRank:     +6,
+	}
+	st := sd.Create()
+	s := NewStatsCorrectors().Attack(2, 1).Defense(3, 1).SpAttack(4, 1).SpDefense(5, 1).Speed(6, 1)
+
+	ex := s.Create(st)
+	if ex.Level() != 50 {
+		t.Error()
+	}
+	if !ex.Types().Has(types.Bug) {
+		t.Error()
+	}
+	if ex.HP().value != 999 {
+		t.Error()
+	}
+	if ex.Attack().v != 200 {
+		t.Error()
+	}
+	if ex.Attack().r != -4 {
+		t.Error()
+	}
+	if ex.Defense().v != 300 {
+		t.Error()
+	}
+	if ex.Defense().r != -2 {
+		t.Error()
+	}
+	if ex.SpAttack().v != 400 {
+		t.Error()
+	}
+	if ex.SpAttack().r != 0 {
+		t.Error()
+	}
+	if ex.SpDefense().v != 500 {
+		t.Error()
+	}
+	if ex.SpDefense().r != 4 {
+		t.Error()
+	}
+	if ex.Speed().v != 600 {
+		t.Error()
+	}
+	if ex.Speed().r != 6 {
+		t.Error()
+	}
+}
+
+func Test_四捨五入(t *testing.T) {
+	s := newStatsCorrector(1, 2)
+	// 7.5 -> 8
+	a := s.Correct(15)
+	if a != 8 {
+		t.Errorf("%d", a)
+	}
+	// 20.4 -> 20
+	s = newStatsCorrector(2457, 4096)
+	a = s.Correct(34)
+	if a != 20 {
+		t.Errorf("%d", a)
+	}
+
+	if defaultStatsCorrector().Correct(100) != 100 {
+		t.Error()
+	}
+}

@@ -37,23 +37,22 @@ func (d *impl) CreateDamage(st situation.SituationChecker) *Damages {
 	}
 	ef := skillType.Magnification(defender.Types())
 
-	// 補正
-	c.Appends(skill.Correctors(st)...)
-
-	power := c.CorrectPower(skill.Power(st))
 	at, df := skill.PickStats(st)
 	attack, defense := criticalStats(st.IsCritical(), at, df)
 	if st.IsCritical() {
 		c.ApplyCritical()
 	}
 
+	// TODO:c.ApplyCriticalを実行する前にc.Appendで急所補正を追加しても機能しない。
+	//      StatsCorrector側で巻き取るかここで済ませるか
+	// 補正
+	c.Appends(st.Correctors()...)
+
+	power := c.CorrectPower(skill.Power(st))
 	attack = c.CorrectAttack(attack)
 	defense = c.CorrectDefense(defense)
 
 	dmgs := skill.Calculate(level, power, attack, defense)
-
-	// TODO:タイプ相性
-	// TODO:タイプ一致
 
 	for i := 0; i < len(dmgs); i++ {
 		dmgs[i] = ef.Correct(dmgs[i])
@@ -62,15 +61,13 @@ func (d *impl) CreateDamage(st situation.SituationChecker) *Damages {
 	return NewDamages(dmgs)
 }
 
+/*
+	・急所時、攻撃側のマイナスランクを0にする
+	・急所時、防御側のプラスランクを0にする
+*/
 func criticalStats(isCritical bool, at, df *status.RankedValue) (a, d uint) {
 	if isCritical {
 		return at.IgnoreMinusValue(), df.IgnorePlusValue()
 	}
 	return at.Value(), df.Value()
 }
-
-/*
-	・急所時、ダメージ1.5倍
-	・急所時、攻撃側のマイナスランクを0にする
-	・急所時、防御側のプラスランクを0にする
-*/

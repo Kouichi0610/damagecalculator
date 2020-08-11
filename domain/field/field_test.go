@@ -117,25 +117,7 @@ func Test_Field_フィールドなし(t *testing.T) {
 
 func Test_Fields(t *testing.T) {
 	f := NewFields(ElectricField, Sunny)
-	if f.HasFieldPlus(types.NewTypes(types.Electric)) == false {
-		t.Error()
-	}
 	if f.HasWeather(Sunny) == false {
-		t.Error()
-	}
-	if f.HasWeatherPlus(types.NewTypes(types.Fire)) == false {
-		t.Error()
-	}
-	if f.HasWeatherMinus(types.NewTypes(types.Water)) == false {
-		t.Error()
-	}
-
-	if f.HasSpDefensePlus(types.NewTypes(types.Rock)) == true {
-		t.Error()
-	}
-
-	f = NewFields(ElectricField, SandStorm)
-	if f.HasSpDefensePlus(types.NewTypes(types.Rock)) == false {
 		t.Error()
 	}
 }
@@ -191,4 +173,53 @@ func correctCount(m map[types.Type]bool) int {
 		}
 	}
 	return res
+}
+
+func Test_Correctors(t *testing.T) {
+	f := NewFields(NoField, NoWeather)
+	c := f.Correctors(types.NewTypes(types.Fire))
+	if len(c) > 0 {
+		t.Error()
+	}
+	f = NewFields(ElectricField, NoWeather)
+	c = f.Correctors(types.NewTypes(types.Electric))
+	if len(c) != 1 {
+		t.Error()
+	}
+	f = NewFields(NoField, Sunny)
+	c = f.Correctors(types.NewTypes(types.Fire))
+	if len(c) != 1 {
+		t.Error()
+	}
+	f = NewFields(NoField, Sunny)
+	c = f.Correctors(types.NewTypes(types.Water))
+	if len(c) != 1 {
+		t.Error()
+	}
+
+	f = NewFields(PsychoField, Sunny)
+	c = f.Correctors(types.NewTypes(types.Water, types.Psychic))
+	if len(c) != 2 {
+		t.Error()
+	}
+}
+
+// テスト詳細はdamageCalculatorに
+func Test_StatusCorrector(t *testing.T) {
+	f := NewFields(NoField, NoWeather)
+	ac, dc := f.StatusCorrector(types.NewTypes(types.Rock), types.NewTypes(types.Rock))
+	if ac == nil {
+		t.Error()
+	}
+	if dc == nil {
+		t.Error()
+	}
+	f = NewFields(NoField, SandStorm)
+	ac, dc = f.StatusCorrector(types.NewTypes(types.Rock), types.NewTypes(types.Rock))
+	if ac == nil {
+		t.Error()
+	}
+	if dc == nil {
+		t.Error()
+	}
 }
