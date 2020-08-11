@@ -11,6 +11,8 @@ type SituationData struct {
 	Attacker, Defender *status.StatusData
 	Weather            field.Weather
 	Field              field.Field
+
+	IsCritical bool
 }
 
 func (s *SituationData) Create() (SituationChecker, error) {
@@ -19,9 +21,10 @@ func (s *SituationData) Create() (SituationChecker, error) {
 		return nil, err
 	}
 	return &situation{
-		at: s.Attacker.Create(),
-		df: s.Defender.Create(),
-		sk: sk,
-		fl: field.NewFields(s.Field, s.Weather),
+		at:         s.Attacker.Create(),
+		df:         s.Defender.Create(),
+		sk:         sk,
+		fl:         field.NewFields(s.Field, s.Weather),
+		isCritical: s.IsCritical,
 	}, nil
 }

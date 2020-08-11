@@ -29,7 +29,7 @@ func NewTypes(args ...Type) *Types {
 	return res
 }
 
-// ダメージ倍率を計算TODO:private
+// ダメージ倍率を計算
 func (at *Types) Magnification(df *Types) Effective {
 	if len(at.t) == 0 || len(df.t) == 0 {
 		return flatEffective()

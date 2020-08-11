@@ -1,8 +1,11 @@
 // 天候、フィールドの状態
-// 基本判定のみ。補正値は使用側に任せる
 package field
 
-import "damagecalculator/domain/types"
+import (
+	"damagecalculator/domain/corrector"
+	"damagecalculator/domain/status"
+	"damagecalculator/domain/types"
+)
 
 type Weather uint
 type Field uint
@@ -38,20 +41,22 @@ const (
 	晴れ		炎+ 水-
 	雨		水+ 炎-
 	ゆき		補正なし
-	すなあらし	岩タイプ特防補正
+	すなあらし	岩タイプに特防補正
 
 	エレキフィールド	電気
 	サイコフィールド	エスパー
 	グラスフィールド	草
 	ミストフィールド	フェアリー
 
-	補正計算式はcorrector.Rulesに持たせる
+	補正計算式はcorrectorに持たせる
 */
 
 type Fields struct {
 	f Field
 	w Weather
 }
+
+// Skill -> []Corrector
 
 func NewFields(f Field, w Weather) *Fields {
 	return &Fields{
@@ -60,24 +65,39 @@ func NewFields(f Field, w Weather) *Fields {
 	}
 }
 
-func (f *Fields) HasWeather(w Weather) bool {
-	return f.w == w
-}
-func (f *Fields) HasField(fl Field) bool {
-	return f.f == fl
+func (f *Fields) Correctors(skillType *types.Types) []corrector.Corrector {
+	res := make([]corrector.Corrector, 0)
+
+	if f.f.hasPlus(skillType) {
+		res = append(res, corrector.NewDamage(13, 10))
+	}
+	if f.w.hasPlus(skillType) {
+		res = append(res, corrector.NewDamage(15, 10))
+	}
+	if f.w.hasMinus(skillType) {
+		res = append(res, corrector.NewDamage(5, 10))
+	}
+	return res
 }
 
-func (f *Fields) HasWeatherPlus(s *types.Types) bool {
-	return f.w.hasPlus(s)
+// 岩タイプならとくぼう1.5倍
+func (f *Fields) StatusCorrector(at, df *types.Types) (ac, dc *status.StatsCorrectors) {
+	ac = status.NewStatsCorrectors()
+	dc = status.NewStatsCorrectors()
+	if f.w == SandStorm {
+		if at.Has(types.Rock) {
+			ac.SpDefense(3, 2)
+		}
+		if df.Has(types.Rock) {
+			dc.SpDefense(3, 2)
+		}
+		return
+	}
+	return
 }
-func (f *Fields) HasWeatherMinus(s *types.Types) bool {
-	return f.w.hasMinus(s)
-}
-func (f *Fields) HasFieldPlus(s *types.Types) bool {
-	return f.f.hasPlus(s)
-}
-func (f *Fields) HasSpDefensePlus(t *types.Types) bool {
-	return t.Has(types.Rock) && f.HasWeather(SandStorm)
+
+func (f *Fields) HasWeather(w Weather) bool {
+	return f.w == w
 }
 
 func (w Weather) hasPlus(s *types.Types) bool {
