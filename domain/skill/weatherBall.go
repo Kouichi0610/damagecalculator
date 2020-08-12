@@ -23,13 +23,13 @@ type weatherBall struct {
 func (s *weatherBall) Correctors(st SituationChecker) []corrector.Corrector {
 	switch {
 	case st.IsWeather(field.Sunny):
-		return []corrector.Corrector{corrector.NewPower(2, 1)}
+		return []corrector.Corrector{corrector.NewPower(2.0)}
 	case st.IsWeather(field.Rainy):
-		return []corrector.Corrector{corrector.NewPower(2, 1)}
+		return []corrector.Corrector{corrector.NewPower(2.0)}
 	case st.IsWeather(field.Snow):
-		return []corrector.Corrector{corrector.NewPower(2, 1)}
+		return []corrector.Corrector{corrector.NewPower(2.0)}
 	case st.IsWeather(field.SandStorm):
-		return []corrector.Corrector{corrector.NewPower(2, 1)}
+		return []corrector.Corrector{corrector.NewPower(2.0)}
 	}
 	return nil
 }

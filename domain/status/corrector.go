@@ -1,68 +1,59 @@
 package status
 
+import "damagecalculator/domain/fixed"
+
 type StatsCorrectors struct {
-	at, df, sa, sd, sp statsCorrector
+	at, df, sa, sd, sp fixed.FixPN
 }
 
+/*
+	能力値に補正を掛ける
+	チェーンメソッドで設定する
+
+	c := NewStatsCorrectors().Attack(1.5)
+*/
 func NewStatsCorrectors() *StatsCorrectors {
+	at, _ := fixed.NewFixPN(1.0, fixed.Drop4Pick5)
+	df, _ := fixed.NewFixPN(1.0, fixed.Drop4Pick5)
+	sa, _ := fixed.NewFixPN(1.0, fixed.Drop4Pick5)
+	sd, _ := fixed.NewFixPN(1.0, fixed.Drop4Pick5)
+	sp, _ := fixed.NewFixPN(1.0, fixed.Drop4Pick5)
 	return &StatsCorrectors{
-		at: defaultStatsCorrector(),
-		df: defaultStatsCorrector(),
-		sa: defaultStatsCorrector(),
-		sd: defaultStatsCorrector(),
-		sp: defaultStatsCorrector(),
+		at: at,
+		df: df,
+		sa: sa,
+		sd: sd,
+		sp: sp,
 	}
 }
 
-func (s *StatsCorrectors) Attack(numer, denom uint) *StatsCorrectors {
-	s.at = newStatsCorrector(numer, denom)
+func (s *StatsCorrectors) Correct(at, df, sa, sd, sp uint) (a, b, c, d, e uint) {
+	a = s.at.Correct(at)
+	b = s.df.Correct(df)
+	c = s.sa.Correct(sa)
+	d = s.sd.Correct(sd)
+	e = s.sp.Correct(sp)
+	return
+}
+
+// TODO:immutable
+func (s *StatsCorrectors) Attack(m float64) *StatsCorrectors {
+	s.at, _ = fixed.NewFixPN(m, fixed.Drop4Pick5)
 	return s
 }
-func (s *StatsCorrectors) Defense(numer, denom uint) *StatsCorrectors {
-	s.df = newStatsCorrector(numer, denom)
+func (s *StatsCorrectors) Defense(m float64) *StatsCorrectors {
+	s.df, _ = fixed.NewFixPN(m, fixed.Drop4Pick5)
 	return s
 }
-func (s *StatsCorrectors) SpAttack(numer, denom uint) *StatsCorrectors {
-	s.sa = newStatsCorrector(numer, denom)
+func (s *StatsCorrectors) SpAttack(m float64) *StatsCorrectors {
+	s.sa, _ = fixed.NewFixPN(m, fixed.Drop4Pick5)
 	return s
 }
-func (s *StatsCorrectors) SpDefense(numer, denom uint) *StatsCorrectors {
-	s.sd = newStatsCorrector(numer, denom)
+func (s *StatsCorrectors) SpDefense(m float64) *StatsCorrectors {
+	s.sd, _ = fixed.NewFixPN(m, fixed.Drop4Pick5)
 	return s
 }
-func (s *StatsCorrectors) Speed(numer, denom uint) *StatsCorrectors {
-	s.sp = newStatsCorrector(numer, denom)
+func (s *StatsCorrectors) Speed(m float64) *StatsCorrectors {
+	s.sp, _ = fixed.NewFixPN(m, fixed.Drop4Pick5)
 	return s
 }
-
-type statsCorrector interface {
-	Correct(n uint) uint
-}
-
-type statsCorrectorImpl struct {
-	m uint
-}
-
-func defaultStatsCorrector() statsCorrector {
-	return &statsCorrectorImpl{
-		m: 4096,
-	}
-}
-
-func newStatsCorrector(numer, denom uint) statsCorrector {
-	return &statsCorrectorImpl{
-		m: numer * one / denom,
-	}
-}
-
-// 四捨五入
-func (s *statsCorrectorImpl) Correct(n uint) uint {
-	res := n * s.m
-	if res%one >= 2048 {
-		return res/one + 1
-	}
-	return res / one
-}
-
-const one = 4096
-const half = 2048

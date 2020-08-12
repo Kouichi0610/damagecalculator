@@ -1,24 +1,64 @@
 package corrector
 
-func NewPower(numer, denom uint) Corrector {
-	return newCorrector(Power, drop4_pick5, numer, denom)
+import "damagecalculator/domain/fixed"
+
+func NewPower(f float64) Corrector {
+	fu, _ := fixed.NewFixPN(f, fixed.Drop4Pick5)
+	return &corrector{
+		t: Power,
+		f: fu,
+	}
 }
 
-func NewAttack(numer, denom uint) Corrector {
-	return newCorrector(Attack, drop4_pick5, numer, denom)
+func NewAttack(f float64) Corrector {
+	fu, _ := fixed.NewFixPN(f, fixed.Drop4Pick5)
+	return &corrector{
+		t: Attack,
+		f: fu,
+	}
 }
 
-func NewDefense(numer, denom uint) Corrector {
-	return newCorrector(Defense, drop4_pick5, numer, denom)
+func NewDefense(f float64) Corrector {
+	fu, _ := fixed.NewFixPN(f, fixed.Drop4Pick5)
+	return &corrector{
+		t: Defense,
+		f: fu,
+	}
 }
 
-func NewDamage(numer, denom uint) Corrector {
-	return newCorrector(Damage, drop5_pick5over, numer, denom)
+func NewDamage(f float64) Corrector {
+	fu, _ := fixed.NewFixPN(f, fixed.Drop5Pick5Over)
+	return &corrector{
+		t: Damage,
+		f: fu,
+	}
 }
 
-func NewTypeMatch(numer, denom uint) Corrector {
-	return newCorrector(TypeMatch, drop5_pick5over, numer, denom)
+func NewTypeMatch(f float64) Corrector {
+	fu, _ := fixed.NewFixPN(f, fixed.Drop5Pick5Over)
+	return &corrector{
+		t: TypeMatch,
+		f: fu,
+	}
 }
-func NewCritical(numer, denom uint) Corrector {
-	return newCorrector(Critical, drop5_pick5over, numer, denom)
+func NewCritical(f float64) Corrector {
+	fu, _ := fixed.NewFixPN(f, fixed.Drop5Pick5Over)
+	return &corrector{
+		t: Critical,
+		f: fu,
+	}
+}
+func newMultiTarget(f float64) Corrector {
+	fu, _ := fixed.NewFixPN(f, fixed.Drop5Pick5Over)
+	return &corrector{
+		t: MultiTarget,
+		f: fu,
+	}
+}
+func newBurn(f float64) Corrector {
+	fu, _ := fixed.NewFixPN(f, fixed.Drop5Pick5Over)
+	return &corrector{
+		t: Burn,
+		f: fu,
+	}
 }

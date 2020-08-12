@@ -29,16 +29,13 @@ func (s *StatsCorrectors) Create(st StatusChecker) StatusChecker {
 	res.l = st.Level()
 	res.t = st.Types()
 
+	at, df, sa, sd, sp := s.Correct(st.Attack().v, st.Defense().v, st.SpAttack().v, st.SpDefense().v, st.Speed().v)
+
 	hp := st.HP().value
-	at := s.at.Correct(st.Attack().v)
 	atr := int(st.Attack().r)
-	df := s.df.Correct(st.Defense().v)
 	dfr := int(st.Defense().r)
-	sa := s.sa.Correct(st.SpAttack().v)
 	sar := int(st.SpAttack().r)
-	sd := s.sd.Correct(st.SpDefense().v)
 	sdr := int(st.SpDefense().r)
-	sp := s.sp.Correct(st.SpDefense().v)
 	spr := int(st.Speed().r)
 	res.s = NewRankedStats(hp, at, df, sa, sd, sp, atr, dfr, sar, sdr, spr)
 

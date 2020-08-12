@@ -30,23 +30,16 @@
 */
 package corrector
 
+import "damagecalculator/domain/fixed"
+
 type Corrector interface {
 	Caterogy() category
 	Correct(dmg uint) uint
 }
 
 type corrector struct {
-	t category      // どのパラメータに補正を賭けるか
-	f calculateFunc // 補正計算式
-	m uint          // 倍率(4096==1の固定小数点)
-}
-
-func newCorrector(t category, f calculateFunc, numer, denom uint) Corrector {
-	return &corrector{
-		t: t,
-		f: f,
-		m: numer * one / denom,
-	}
+	t category    // どのパラメータに補正を賭けるか
+	f fixed.FixPN // 補正計算
 }
 
 func (c *corrector) Caterogy() category {
@@ -54,33 +47,5 @@ func (c *corrector) Caterogy() category {
 }
 
 func (c *corrector) Correct(dmg uint) uint {
-	return c.f(dmg, c.m)
-}
-
-type calculateFunc func(d uint, m uint) uint
-
-const one = 4096
-const half = 2048
-
-// 四捨五入
-func drop4_pick5(d uint, m uint) uint {
-	res := d * m
-	if res%one >= 2048 {
-		return res/one + 1
-	}
-	return res / one
-}
-
-// 五捨五超入
-func drop5_pick5over(d uint, m uint) uint {
-	res := d * m
-	if res%one > 2048 {
-		return res/one + 1
-	}
-	return res / one
-}
-
-// 切り捨て
-func omit(d uint, m uint) uint {
-	return d * m / one
+	return c.f.Correct(dmg)
 }

@@ -177,7 +177,7 @@ func Test_StatsCorrectors(t *testing.T) {
 		t.Error()
 	}
 
-	s.Attack(2, 1).Defense(3, 1).SpAttack(4, 1).SpDefense(5, 1).Speed(6, 1)
+	s.Attack(2.0).Defense(3.0).SpAttack(4.0).SpDefense(5.0).Speed(6.0)
 	if s.at.Correct(100) != 200 {
 		t.Error()
 	}
@@ -214,7 +214,7 @@ func Test_Status補正(t *testing.T) {
 		SpeedRank:     +6,
 	}
 	st := sd.Create()
-	s := NewStatsCorrectors().Attack(2, 1).Defense(3, 1).SpAttack(4, 1).SpDefense(5, 1).Speed(6, 1)
+	s := NewStatsCorrectors().Attack(2.0).Defense(3.0).SpAttack(4.0).SpDefense(5.0).Speed(6.0)
 
 	ex := s.Create(st)
 	if ex.Level() != 50 {
@@ -254,25 +254,6 @@ func Test_Status補正(t *testing.T) {
 		t.Error()
 	}
 	if ex.Speed().r != 6 {
-		t.Error()
-	}
-}
-
-func Test_四捨五入(t *testing.T) {
-	s := newStatsCorrector(1, 2)
-	// 7.5 -> 8
-	a := s.Correct(15)
-	if a != 8 {
-		t.Errorf("%d", a)
-	}
-	// 20.4 -> 20
-	s = newStatsCorrector(2457, 4096)
-	a = s.Correct(34)
-	if a != 20 {
-		t.Errorf("%d", a)
-	}
-
-	if defaultStatsCorrector().Correct(100) != 100 {
 		t.Error()
 	}
 }

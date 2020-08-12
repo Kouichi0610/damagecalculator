@@ -69,13 +69,13 @@ func (f *Fields) Correctors(skillType *types.Types) []corrector.Corrector {
 	res := make([]corrector.Corrector, 0)
 
 	if f.f.hasPlus(skillType) {
-		res = append(res, corrector.NewDamage(13, 10))
+		res = append(res, corrector.NewDamage(1.3))
 	}
 	if f.w.hasPlus(skillType) {
-		res = append(res, corrector.NewDamage(15, 10))
+		res = append(res, corrector.NewDamage(1.5))
 	}
 	if f.w.hasMinus(skillType) {
-		res = append(res, corrector.NewDamage(5, 10))
+		res = append(res, corrector.NewDamage(0.5))
 	}
 	return res
 }
@@ -86,10 +86,10 @@ func (f *Fields) StatusCorrector(at, df *types.Types) (ac, dc *status.StatsCorre
 	dc = status.NewStatsCorrectors()
 	if f.w == SandStorm {
 		if at.Has(types.Rock) {
-			ac.SpDefense(3, 2)
+			ac.SpDefense(1.5)
 		}
 		if df.Has(types.Rock) {
-			dc.SpDefense(3, 2)
+			dc.SpDefense(1.5)
 		}
 		return
 	}
