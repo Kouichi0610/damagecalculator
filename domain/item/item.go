@@ -1,23 +1,26 @@
 package item
 
 import (
-	_ "damagecalculator/domain/corrector"
-	_ "damagecalculator/domain/status"
-	_ "damagecalculator/domain/types"
+	"damagecalculator/domain/corrector"
+	"damagecalculator/domain/status"
+	"damagecalculator/domain/types"
 )
 
 type (
 	Item interface {
-		// statsCorrector
-		// powerCorrector
-
-		// CorrectStats() []*status.StatsCorrectors
-		//	CorrectPower(sk, df *types.Types) corrector.Corrector
+		statsCorrector
+		powerCorrector
 	}
 )
 
 type item struct {
-	isAttacker bool
-	//s          statsCorrector
-	//p          powerCorrector
+	s statsCorrector
+	p powerCorrector
+}
+
+func (i *item) Correct() *status.StatsCorrectors {
+	return i.s.Correct()
+}
+func (i *item) CorrectPower(at, df, sk *types.Types) corrector.Corrector {
+	return i.p.CorrectPower(at, df, sk)
 }

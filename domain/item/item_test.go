@@ -8,14 +8,105 @@ import (
 	"testing"
 )
 
-func Test_Item(t *testing.T) {
-	/* TODO:ItemCreatotからItemを生成できること
-	var items = []ItemCreator{
+func Test_ItemCreators(t *testing.T) {
+	items := []ItemCreator{
 		&StatsCorrectData{1.0, 1.0, 1.0, 1.0, 1.0},
-		&TypeMatchCorrectData{1.5},
+		&WeightCorrectData{0.5},
+		&TypeCorrectData{types.Dark, 1.5},
+		&PowerCorrectData{1.3},
+		&SuperEffectiveCorrectData{1.5},
 	}
-	*/
+	for i, c := range items {
+		item := c.Create(true)
+		if item == nil {
+			t.Errorf("Failed:%d %v", i, c)
+		}
+	}
+}
 
+func Test_能力値補正(t *testing.T) {
+	item := (&StatsCorrectData{1.1, 1.2, 1.3, 1.4, 1.5}).Create(true)
+	res := testItem(item, 100, []uint{110, 120, 130, 140, 150}, 200.5, t)
+	if !res {
+		t.Error()
+	}
+}
+func Test_重さ補正(t *testing.T) {
+	item := (&WeightCorrectData{0.5}).Create(true)
+	res := testItem(item, 100, []uint{100, 100, 100, 100, 100}, 100.25, t)
+	if !res {
+		t.Error()
+	}
+}
+func Test_タイプ威力補正(t *testing.T) {
+	item := (&TypeCorrectData{types.Water, 1.5}).Create(true)
+	res := testItem(item, 150, []uint{100, 100, 100, 100, 100}, 200.5, t)
+	if !res {
+		t.Error()
+	}
+	// タイプが異なれば補正はかからないこと
+	p := item.CorrectPower(types.NewTypes(types.Bug), types.NewTypes(types.Fire), types.NewTypes(types.Dark))
+	if p.Correct(100) != 100 {
+		t.Error()
+	}
+}
+func Test_威力補正(t *testing.T) {
+	item := (&PowerCorrectData{1.5}).Create(true)
+	res := testItem(item, 150, []uint{100, 100, 100, 100, 100}, 200.5, t)
+	if !res {
+		t.Error()
+	}
+	// タイプに関係なく補正がかかること
+	p := item.CorrectPower(types.NewTypes(types.Bug), types.NewTypes(types.Fire), types.NewTypes(types.Dark))
+	if p.Correct(100) != 150 {
+		t.Error()
+	}
+}
+func Test_こうかばつぐん補正(t *testing.T) {
+	item := (&SuperEffectiveCorrectData{1.5}).Create(true)
+	res := testItem(item, 150, []uint{100, 100, 100, 100, 100}, 200.5, t)
+	if !res {
+		t.Error()
+	}
+	// こうかばつぐんでなければ補正はかからないこと
+	p := item.CorrectPower(types.NewTypes(types.Bug), types.NewTypes(types.Fire), types.NewTypes(types.Dark))
+	if p.Correct(100) != 100 {
+		t.Error()
+	}
+}
+
+func Test_威力補正は攻撃側出なければ効果が無いこと(t *testing.T) {
+	items := []ItemCreator{
+		&TypeCorrectData{types.Water, 1.5},
+		&PowerCorrectData{1.3},
+		&SuperEffectiveCorrectData{1.5},
+	}
+	for i, d := range items {
+		item := d.Create(false)
+		p := item.CorrectPower(types.NewTypes(types.Bug), types.NewTypes(types.Fire), types.NewTypes(types.Water))
+		if p.Correct(100) != 100 {
+			t.Errorf("failed %v", items[i])
+		}
+	}
+}
+
+func testItem(item Item, powerActual uint, statsActual []uint, weightActual float64, t *testing.T) bool {
+	p := item.CorrectPower(types.NewTypes(types.Bug), types.NewTypes(types.Fire), types.NewTypes(types.Water))
+	if p.Correct(100) != powerActual {
+		t.Error()
+		return false
+	}
+	c := item.Correct()
+	expects := correctArray(c)
+	if !reflect.DeepEqual(expects, statsActual) {
+		t.Errorf("%v", expects)
+		return false
+	}
+	if c.CorrectWeight(200.5) != weightActual {
+		t.Error()
+		return false
+	}
+	return true
 }
 
 // 威力補正
@@ -109,6 +200,19 @@ func Test_createStatsCorrector全て指定(t *testing.T) {
 	expects := correctArray(c)
 	if !reflect.DeepEqual(expects, []uint{150, 200, 300, 400, 50}) {
 		t.Errorf("%v", expects)
+	}
+}
+
+func Test_WeightCorrector(t *testing.T) {
+	d := WeightCorrectData{Scale: 2.0}
+	s := d.createStatsCorrector()
+	c := s.Correct()
+	expects := correctArray(c)
+	if !reflect.DeepEqual(expects, []uint{100, 100, 100, 100, 100}) {
+		t.Errorf("%v", expects)
+	}
+	if c.CorrectWeight(200.5) != 401 {
+		t.Error()
 	}
 }
 

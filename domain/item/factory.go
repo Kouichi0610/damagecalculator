@@ -50,20 +50,50 @@ type ItemCreator interface {
 }
 
 func (s *StatsCorrectData) Create(isAttacker bool) Item {
-	return nil
+	return &item{
+		s: s.createStatsCorrector(),
+		p: defaultPowerCorrector(),
+	}
 }
 
 func (s *TypeCorrectData) Create(isAttacker bool) Item {
-	return nil
+	p := s.createTypeCorrector()
+	// 攻撃側でないと効果はない
+	if !isAttacker {
+		p = defaultPowerCorrector()
+	}
+	return &item{
+		s: defaultStatsCorrector(),
+		p: p,
+	}
 }
 func (s *PowerCorrectData) Create(isAttacker bool) Item {
-	return nil
+	p := s.createPowerCorrector()
+	// 攻撃側でないと効果はない
+	if !isAttacker {
+		p = defaultPowerCorrector()
+	}
+	return &item{
+		s: defaultStatsCorrector(),
+		p: p,
+	}
 }
 func (s *WeightCorrectData) Create(isAttacker bool) Item {
-	return nil
+	return &item{
+		s: s.createStatsCorrector(),
+		p: defaultPowerCorrector(),
+	}
 }
 func (s *SuperEffectiveCorrectData) Create(isAttacker bool) Item {
-	return nil
+	p := s.createPowerCorrector()
+	// 攻撃側でないと効果はない
+	if !isAttacker {
+		p = defaultPowerCorrector()
+	}
+	return &item{
+		s: defaultStatsCorrector(),
+		p: p,
+	}
 }
 
 // 能力値補正

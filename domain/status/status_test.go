@@ -20,6 +20,7 @@ func Test_Status(t *testing.T) {
 		SpAttackRank:  0,
 		SpDefenseRank: +4,
 		SpeedRank:     -6,
+		Weight:        100.0,
 	}
 
 	stats := sd.Create()
@@ -48,7 +49,9 @@ func Test_Status(t *testing.T) {
 	if stats.Speed().Value() != 12 {
 		t.Errorf("%d", stats.Speed().Value())
 	}
-
+	if stats.Weight() != 100.0 {
+		t.Error()
+	}
 }
 
 func Test_NewRankedStats(t *testing.T) {
@@ -191,6 +194,14 @@ func Test_StatsCorrectors(t *testing.T) {
 		t.Error()
 	}
 	if s.sp.Correct(100) != 600 {
+		t.Error()
+	}
+
+	if s.CorrectWeight(128.0) != 128.0 {
+		t.Error()
+	}
+	s.Weight(2.0)
+	if s.CorrectWeight(128.0) != 256.0 {
 		t.Error()
 	}
 }

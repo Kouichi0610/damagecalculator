@@ -4,6 +4,7 @@ import "damagecalculator/domain/fixed"
 
 type StatsCorrectors struct {
 	at, df, sa, sd, sp fixed.FixPN
+	weight             float64
 }
 
 /*
@@ -18,12 +19,14 @@ func NewStatsCorrectors() *StatsCorrectors {
 	sa, _ := fixed.NewFixPN(1.0, fixed.Drop4Pick5)
 	sd, _ := fixed.NewFixPN(1.0, fixed.Drop4Pick5)
 	sp, _ := fixed.NewFixPN(1.0, fixed.Drop4Pick5)
+	weight := 1.0
 	return &StatsCorrectors{
-		at: at,
-		df: df,
-		sa: sa,
-		sd: sd,
-		sp: sp,
+		at:     at,
+		df:     df,
+		sa:     sa,
+		sd:     sd,
+		sp:     sp,
+		weight: weight,
 	}
 }
 
@@ -34,6 +37,10 @@ func (s *StatsCorrectors) Correct(at, df, sa, sd, sp uint) (a, b, c, d, e uint) 
 	d = s.sd.Correct(sd)
 	e = s.sp.Correct(sp)
 	return
+}
+
+func (s *StatsCorrectors) CorrectWeight(w float64) float64 {
+	return w * s.weight
 }
 
 // TODO:immutable
@@ -55,5 +62,10 @@ func (s *StatsCorrectors) SpDefense(m float64) *StatsCorrectors {
 }
 func (s *StatsCorrectors) Speed(m float64) *StatsCorrectors {
 	s.sp, _ = fixed.NewFixPN(m, fixed.Drop4Pick5)
+	return s
+}
+
+func (s *StatsCorrectors) Weight(m float64) *StatsCorrectors {
+	s.weight = m
 	return s
 }

@@ -10,16 +10,19 @@ type StatusData struct {
 	Types                                                           []types.Type
 	HP, Attack, Defense, SpAttack, SpDefense, Speed                 uint
 	AttackRank, DefenseRank, SpAttackRank, SpDefenseRank, SpeedRank int
+	Weight                                                          float64
 }
 
 func (s *StatusData) Create() StatusChecker {
 	l := stats.NewLevel(s.Lv)
 	t := types.NewTypes(s.Types...)
 	st := NewRankedStats(s.HP, s.Attack, s.Defense, s.SpAttack, s.SpDefense, s.Speed, s.AttackRank, s.DefenseRank, s.SpAttackRank, s.SpDefenseRank, s.SpeedRank)
+	w := NewWeight(s.Weight)
 	return &Status{
 		l: l,
 		t: t,
 		s: st,
+		w: w,
 	}
 }
 
