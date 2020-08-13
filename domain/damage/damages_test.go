@@ -58,8 +58,6 @@ func calcDamage(sd *situation.SituationData) *Damages {
 	return d.CreateDamage(st)
 }
 
-// TODO:テストコードをsituationに移動
-// TODO:あるいはヘビーボンバー、しんかのきせきテスト
 func Test_重さ(t *testing.T) {
 	a := defaultArgs()
 	a.AttackerItem = &item.WeightCorrectData{2.0}
@@ -67,12 +65,36 @@ func Test_重さ(t *testing.T) {
 	st, _ := a.Create()
 	atWeight := st.Attacker().Weight()
 	dfWeight := st.Defender().Weight()
-
 	if atWeight != 200.0 {
 		t.Errorf("%f", atWeight)
 	}
 	if dfWeight != 50.0 {
 		t.Errorf("%f", dfWeight)
+	}
+}
+func Test_ヘビーボンバー(t *testing.T) {
+	d := NewDamageCalculator()
+	a := defaultArgs()
+	a.Skill = &skill.SkillData{
+		Types:     []types.Type{types.Steel},
+		Power:     1,
+		CountMin:  1,
+		CountMax:  1,
+		Category:  category.Physical,
+		Method:    skill.HeavySlam,
+		Action:    skill.Contact,
+		Attribute: skill.NoAttribute,
+	}
+	st, _ := a.Create()
+	dmgs := d.CreateDamage(st)
+	if dmgs.Min() != 33 {
+		t.Errorf("%v", dmgs)
+	}
+	a.AttackerItem = &item.WeightCorrectData{5.0}
+	st, _ = a.Create()
+	dmgs = d.CreateDamage(st)
+	if dmgs.Min() != 96 {
+		t.Errorf("%v", dmgs)
 	}
 }
 
@@ -93,6 +115,13 @@ func Test_もちもの補正(t *testing.T) {
 	st, _ = a.Create()
 	dmgs = d.CreateDamage(st)
 	if dmgs.Min() != 96 {
+		t.Errorf("%v", dmgs)
+	}
+	// 防御側の持ち物補正が有効であること
+	a.DefenderItem = &item.StatsCorrectData{Defense: 2.0, SpDefense: 2.0}
+	st, _ = a.Create()
+	dmgs = d.CreateDamage(st)
+	if dmgs.Min() != 48 {
 		t.Errorf("%v", dmgs)
 	}
 }
