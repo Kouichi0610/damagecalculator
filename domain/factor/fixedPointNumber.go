@@ -1,6 +1,5 @@
-// fixed-point-number
-// 固定小数点に関する演算
-package fixed
+// 倍率に関する
+package factor
 
 import "fmt"
 
@@ -12,7 +11,7 @@ const (
 	Omit                           // 小数点以下切り捨て
 )
 
-// numer, denom
+// fixed-point-number 4096==1の固定小数点
 type FixPN interface {
 	Correct(d uint) uint
 }

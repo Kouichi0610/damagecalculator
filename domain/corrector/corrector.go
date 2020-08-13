@@ -30,7 +30,7 @@
 */
 package corrector
 
-import "damagecalculator/domain/fixed"
+import "damagecalculator/domain/factor"
 
 type Corrector interface {
 	Caterogy() category
@@ -38,8 +38,8 @@ type Corrector interface {
 }
 
 type corrector struct {
-	t category    // どのパラメータに補正を賭けるか
-	f fixed.FixPN // 補正計算
+	t category     // どのパラメータに補正を賭けるか
+	f factor.FixPN // 補正計算
 }
 
 func (c *corrector) Caterogy() category {

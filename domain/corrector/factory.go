@@ -1,9 +1,9 @@
 package corrector
 
-import "damagecalculator/domain/fixed"
+import "damagecalculator/domain/factor"
 
 func NewPower(f float64) Corrector {
-	fu, _ := fixed.NewFixPN(f, fixed.Drop4Pick5)
+	fu, _ := factor.NewFixPN(f, factor.Drop4Pick5)
 	return &corrector{
 		t: Power,
 		f: fu,
@@ -11,7 +11,7 @@ func NewPower(f float64) Corrector {
 }
 
 func NewAttack(f float64) Corrector {
-	fu, _ := fixed.NewFixPN(f, fixed.Drop4Pick5)
+	fu, _ := factor.NewFixPN(f, factor.Drop4Pick5)
 	return &corrector{
 		t: Attack,
 		f: fu,
@@ -19,7 +19,7 @@ func NewAttack(f float64) Corrector {
 }
 
 func NewDefense(f float64) Corrector {
-	fu, _ := fixed.NewFixPN(f, fixed.Drop4Pick5)
+	fu, _ := factor.NewFixPN(f, factor.Drop4Pick5)
 	return &corrector{
 		t: Defense,
 		f: fu,
@@ -27,7 +27,7 @@ func NewDefense(f float64) Corrector {
 }
 
 func NewDamage(f float64) Corrector {
-	fu, _ := fixed.NewFixPN(f, fixed.Drop5Pick5Over)
+	fu, _ := factor.NewFixPN(f, factor.Drop5Pick5Over)
 	return &corrector{
 		t: Damage,
 		f: fu,
@@ -35,28 +35,28 @@ func NewDamage(f float64) Corrector {
 }
 
 func NewTypeMatch(f float64) Corrector {
-	fu, _ := fixed.NewFixPN(f, fixed.Drop5Pick5Over)
+	fu, _ := factor.NewFixPN(f, factor.Drop5Pick5Over)
 	return &corrector{
 		t: TypeMatch,
 		f: fu,
 	}
 }
 func NewCritical(f float64) Corrector {
-	fu, _ := fixed.NewFixPN(f, fixed.Drop5Pick5Over)
+	fu, _ := factor.NewFixPN(f, factor.Drop5Pick5Over)
 	return &corrector{
 		t: Critical,
 		f: fu,
 	}
 }
 func newMultiTarget(f float64) Corrector {
-	fu, _ := fixed.NewFixPN(f, fixed.Drop5Pick5Over)
+	fu, _ := factor.NewFixPN(f, factor.Drop5Pick5Over)
 	return &corrector{
 		t: MultiTarget,
 		f: fu,
 	}
 }
 func newBurn(f float64) Corrector {
-	fu, _ := fixed.NewFixPN(f, fixed.Drop5Pick5Over)
+	fu, _ := factor.NewFixPN(f, factor.Drop5Pick5Over)
 	return &corrector{
 		t: Burn,
 		f: fu,

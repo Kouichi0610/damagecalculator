@@ -90,6 +90,7 @@ func Test_ヘビーボンバー(t *testing.T) {
 	if dmgs.Min() != 33 {
 		t.Errorf("%v", dmgs)
 	}
+	// 重さがダメージに影響を与えること
 	a.AttackerItem = &item.WeightCorrectData{5.0}
 	st, _ = a.Create()
 	dmgs = d.CreateDamage(st)

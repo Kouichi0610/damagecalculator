@@ -226,13 +226,13 @@ func Test_Status補正(t *testing.T) {
 		Weight:        100,
 	}
 	st := sd.Create()
-	s := NewStatsCorrectors().Attack(2.0).Defense(3.0).SpAttack(4.0).SpDefense(5.0).Speed(6.0)
+	s := NewStatsCorrectors().Attack(2.0).Defense(3.0).SpAttack(4.0).SpDefense(5.0).Speed(6.0).Types([]types.Type{types.Fire, types.Water})
 
 	ex := s.Create(st)
 	if ex.Level() != 50 {
 		t.Error()
 	}
-	if !ex.Types().Has(types.Bug) {
+	if !(ex.Types().Has(types.Fire) && ex.Types().Has(types.Water)) {
 		t.Error()
 	}
 	if ex.HP().value != 999 {
@@ -269,6 +269,68 @@ func Test_Status補正(t *testing.T) {
 		t.Error()
 	}
 	if ex.Weight() != 100 {
+		t.Error()
+	}
+}
+func Test_Status補正_マイナス補正を掛けた場合は補正がかからないこと(t *testing.T) {
+	sd := &StatusData{
+		Lv:            50,
+		Types:         []types.Type{types.Bug},
+		HP:            999,
+		Attack:        100,
+		Defense:       100,
+		SpAttack:      100,
+		SpDefense:     100,
+		Speed:         100,
+		AttackRank:    -4,
+		DefenseRank:   -2,
+		SpAttackRank:  0,
+		SpDefenseRank: +4,
+		SpeedRank:     +6,
+		Weight:        100,
+	}
+	st := sd.Create()
+	s := NewStatsCorrectors().Attack(-2.0).Defense(-3.0).SpAttack(-4.0).SpDefense(-5.0).Speed(-6.0).Weight(-1)
+
+	ex := s.Create(st)
+	if ex.Attack().v != 100 {
+		t.Error()
+	}
+	if ex.Attack().r != -4 {
+		t.Error()
+	}
+	if ex.Defense().v != 100 {
+		t.Error()
+	}
+	if ex.Defense().r != -2 {
+		t.Error()
+	}
+	if ex.SpAttack().v != 100 {
+		t.Error()
+	}
+	if ex.SpAttack().r != 0 {
+		t.Error()
+	}
+	if ex.SpDefense().v != 100 {
+		t.Error()
+	}
+	if ex.SpDefense().r != 4 {
+		t.Error()
+	}
+	if ex.Speed().v != 100 {
+		t.Error()
+	}
+	if ex.Speed().r != 6 {
+		t.Error()
+	}
+	if ex.Weight() != 100 {
+		t.Error()
+	}
+}
+
+func Test_Weight(t *testing.T) {
+	w := NewWeight(-1)
+	if w != 0.01 {
 		t.Error()
 	}
 }

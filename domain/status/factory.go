@@ -31,6 +31,10 @@ func (s *StatsCorrectors) Create(st StatusChecker) StatusChecker {
 	res := new(Status)
 	res.l = st.Level()
 	res.t = st.Types()
+	if s.ty != nil {
+		ty := types.NewTypes(s.ty...)
+		res.t = ty
+	}
 
 	at, df, sa, sd, sp := s.Correct(st.Attack().v, st.Defense().v, st.SpAttack().v, st.SpDefense().v, st.Speed().v)
 
