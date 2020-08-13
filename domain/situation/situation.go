@@ -6,6 +6,7 @@ package situation
 import (
 	"damagecalculator/domain/corrector"
 	"damagecalculator/domain/field"
+	"damagecalculator/domain/item"
 	"damagecalculator/domain/skill"
 	"damagecalculator/domain/status"
 )
@@ -28,18 +29,26 @@ type situation struct {
 	sk skill.Skill
 	fl *field.Fields
 
+	atItem item.Item
+	dfItem item.Item
+
 	isCritical bool
 }
 
 func (s *situation) Attacker() status.StatusChecker {
 	// TODO:dcが無駄になる
 	ac, _ := s.fl.StatusCorrector(s.at.Types(), s.df.Types())
-	return ac.Create(s.at)
+	ic := s.atItem.Correct()
+	res := ac.Create(s.at)
+	res = ic.Create(res)
+	return res
 }
 func (s *situation) Defender() status.StatusChecker {
-	// TODO:
 	_, dc := s.fl.StatusCorrector(s.at.Types(), s.df.Types())
-	return dc.Create(s.df)
+	ic := s.dfItem.Correct()
+	res := dc.Create(s.df)
+	res = ic.Create(res)
+	return res
 }
 func (s *situation) Skill() skill.Skill {
 	return s.sk
@@ -48,6 +57,8 @@ func (s *situation) Correctors() []corrector.Corrector {
 	res := make([]corrector.Corrector, 0)
 	res = append(res, s.sk.Correctors(s)...)
 	res = append(res, s.fl.Correctors(s.sk.Types(s))...)
+	atItem := s.atItem.CorrectPower(s.Attacker().Types(), s.Defender().Types(), s.sk.Types(s))
+	res = append(res, atItem)
 	return res
 }
 func (s *situation) IsWeather(f field.Weather) bool {

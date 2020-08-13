@@ -10,9 +10,6 @@ import (
 	・タイプ
 	・Stats(能力値&ランク)
 	・重さ
-	TODO:
-	・持ち物
-	・特性
 */
 type StatusChecker interface {
 	Level() stats.Level
@@ -23,4 +20,5 @@ type StatusChecker interface {
 	SpAttack() *RankedValue
 	SpDefense() *RankedValue
 	Speed() *RankedValue
+	Weight() Weight
 }

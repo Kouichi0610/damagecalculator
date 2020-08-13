@@ -16,7 +16,8 @@ func Test_NewStatsCorrector(t *testing.T) {
 func Test_Appends(t *testing.T) {
 	s := NewStatsCorrector()
 	s.ApplyTypeMatch()
-	s.Appends(NewAttack(1, 2), NewTypeMatch(2, 1))
+
+	s.Appends(NewAttack(0.5), NewTypeMatch(2.0))
 	if len(s.c) != 1 {
 		t.Error()
 	}
@@ -28,13 +29,13 @@ func Test_Appends(t *testing.T) {
 func Test_append(t *testing.T) {
 	s := NewStatsCorrector()
 	// 追加できること
-	s.append(NewDamage(1, 2))
+	s.append(NewDamage(0.5))
 	if len(s.c) != 1 {
 		t.Error()
 	}
 
 	// 環境補正が追加されていなければ何も追加しないこと
-	s.append(NewCritical(2, 3))
+	s.append(NewCritical(0.66))
 	if len(s.c) != 1 {
 		t.Error()
 	}
@@ -48,7 +49,7 @@ func Test_append(t *testing.T) {
 	if s.env[Critical].Correct(100) != 150 {
 		t.Error()
 	}
-	s.append(NewCritical(4, 2))
+	s.append(NewCritical(2.0))
 	_, ok = s.env[Critical]
 	if !ok {
 		t.Error()
@@ -86,10 +87,10 @@ func Test_Apply(t *testing.T) {
 func Test_Corrects(t *testing.T) {
 	s := NewStatsCorrector()
 	a := []Corrector{
-		NewAttack(2, 1),
-		NewDefense(3, 2),
-		NewPower(4, 1),
-		NewDamage(2, 1),
+		NewAttack(2.0),
+		NewDefense(1.5),
+		NewPower(4.0),
+		NewDamage(2.0),
 	}
 	s.Appends(a...)
 	s.ApplyCritical()
@@ -114,70 +115,37 @@ func Test_Corrects(t *testing.T) {
 }
 
 func Test_Corrector(t *testing.T) {
-	c := newCorrector(Attack, drop5_pick5over, 1, 2)
+	c := NewAttack(0.5)
 	if c.Caterogy() != Attack {
 		t.Error()
 	}
-	if c.Correct(27) != 13 {
-		t.Error()
-	}
-}
-
-func Test_四捨五入(t *testing.T) {
-	// 7.5 -> 8
-	a := drop4_pick5(15, 2048)
-	if a != 8 {
-		t.Errorf("%d", a)
-	}
-	// 20.4 -> 20
-	a = drop4_pick5(34, 2457)
-	if a != 20 {
-		t.Errorf("%d", a)
-	}
-}
-func Test_五捨五超入(t *testing.T) {
-	//drop5_pick5over
-	// 7.5 -> 7
-	a := drop5_pick5over(15, 2048)
-	if a != 7 {
-		t.Errorf("%d", a)
-	}
-	// 2.52 -> 3
-	a = drop5_pick5over(36, 287)
-	if a != 3 {
-		t.Errorf("%d", a)
-	}
-}
-func Test_小数点以下切り捨て(t *testing.T) {
-	//omit
-	a := omit(49, 409)
-	if a != 4 {
-		t.Errorf("%d", a)
+	if c.Correct(27) != 14 {
+		t.Errorf("%d", c.Correct(27))
 	}
 }
 
 func Test_Factories(t *testing.T) {
-	c := NewPower(1, 2)
+	c := NewPower(0.5)
 	if c.Caterogy() != Power {
 		t.Error()
 	}
-	c = NewAttack(1, 2)
+	c = NewAttack(0.5)
 	if c.Caterogy() != Attack {
 		t.Error()
 	}
-	c = NewDefense(1, 2)
+	c = NewDefense(0.5)
 	if c.Caterogy() != Defense {
 		t.Error()
 	}
-	c = NewDamage(1, 2)
+	c = NewDamage(0.5)
 	if c.Caterogy() != Damage {
 		t.Error()
 	}
-	c = NewTypeMatch(1, 2)
+	c = NewTypeMatch(0.5)
 	if c.Caterogy() != TypeMatch {
 		t.Error()
 	}
-	c = NewCritical(1, 2)
+	c = NewCritical(0.5)
 	if c.Caterogy() != Critical {
 		t.Error()
 	}

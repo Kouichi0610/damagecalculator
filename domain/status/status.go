@@ -10,6 +10,7 @@ type Status struct {
 	l stats.Level
 	t *types.Types
 	s *RankedStats
+	w Weight
 }
 
 func (s *Status) Types() *types.Types {
@@ -38,4 +39,7 @@ func (s *Status) SpDefense() *RankedValue {
 }
 func (s *Status) Speed() *RankedValue {
 	return s.s.sp
+}
+func (s *Status) Weight() Weight {
+	return s.w
 }

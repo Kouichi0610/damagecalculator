@@ -2,6 +2,7 @@ package damage
 
 import (
 	"damagecalculator/domain/field"
+	"damagecalculator/domain/item"
 	"damagecalculator/domain/situation"
 	"damagecalculator/domain/skill"
 	"damagecalculator/domain/skill/category"
@@ -26,21 +27,28 @@ func defaultArgs() *situation.SituationData {
 		Types: []types.Type{types.Bug},
 		HP:    100, Attack: 180, Defense: 20, SpAttack: 100, SpDefense: 50, Speed: 130,
 		AttackRank: 0, DefenseRank: 0, SpAttackRank: 0, SpDefenseRank: 0, SpeedRank: 0,
+		Weight: 100.0,
 	}
 	df := &status.StatusData{
 		Lv:    50,
 		Types: []types.Type{types.Grass},
 		HP:    100, Attack: 25, Defense: 85, SpAttack: 45, SpDefense: 115, Speed: 15,
 		AttackRank: 0, DefenseRank: 0, SpAttackRank: 0, SpDefenseRank: 0, SpeedRank: 0,
+		Weight: 100.0,
 	}
 
+	atItem := &item.NoItem{}
+	dfItem := &item.NoItem{}
+
 	st := &situation.SituationData{
-		Skill:      s,
-		Attacker:   at,
-		Defender:   df,
-		Weather:    field.NoWeather,
-		Field:      field.NoField,
-		IsCritical: false,
+		Skill:        s,
+		Attacker:     at,
+		Defender:     df,
+		Weather:      field.NoWeather,
+		Field:        field.NoField,
+		AttackerItem: atItem,
+		DefenderItem: dfItem,
+		IsCritical:   false,
 	}
 	return st
 }
@@ -48,6 +56,74 @@ func calcDamage(sd *situation.SituationData) *Damages {
 	d := NewDamageCalculator()
 	st, _ := sd.Create()
 	return d.CreateDamage(st)
+}
+
+func Test_重さ(t *testing.T) {
+	a := defaultArgs()
+	a.AttackerItem = &item.WeightCorrectData{2.0}
+	a.DefenderItem = &item.WeightCorrectData{0.5}
+	st, _ := a.Create()
+	atWeight := st.Attacker().Weight()
+	dfWeight := st.Defender().Weight()
+	if atWeight != 200.0 {
+		t.Errorf("%f", atWeight)
+	}
+	if dfWeight != 50.0 {
+		t.Errorf("%f", dfWeight)
+	}
+}
+func Test_ヘビーボンバー(t *testing.T) {
+	d := NewDamageCalculator()
+	a := defaultArgs()
+	a.Skill = &skill.SkillData{
+		Types:     []types.Type{types.Steel},
+		Power:     1,
+		CountMin:  1,
+		CountMax:  1,
+		Category:  category.Physical,
+		Method:    skill.HeavySlam,
+		Action:    skill.Contact,
+		Attribute: skill.NoAttribute,
+	}
+	st, _ := a.Create()
+	dmgs := d.CreateDamage(st)
+	if dmgs.Min() != 33 {
+		t.Errorf("%v", dmgs)
+	}
+	a.AttackerItem = &item.WeightCorrectData{5.0}
+	st, _ = a.Create()
+	dmgs = d.CreateDamage(st)
+	if dmgs.Min() != 96 {
+		t.Errorf("%v", dmgs)
+	}
+}
+
+func Test_もちもの補正(t *testing.T) {
+	d := NewDamageCalculator()
+	a := defaultArgs()
+	a.Attacker.Types = []types.Type{types.Fire}
+	a.Defender.Types = []types.Type{types.Bug}
+	a.Skill.Types = []types.Type{types.Normal}
+	a.AttackerItem = &item.TypeCorrectData{types.Bug, 1.5}
+	st, _ := a.Create()
+	dmgs := d.CreateDamage(st)
+	if dmgs.Min() != 64 {
+		t.Errorf("%v", dmgs)
+	}
+	// 補正を掛けること
+	a.AttackerItem = &item.TypeCorrectData{types.Normal, 1.5}
+	st, _ = a.Create()
+	dmgs = d.CreateDamage(st)
+	if dmgs.Min() != 96 {
+		t.Errorf("%v", dmgs)
+	}
+	// 防御側の持ち物補正が有効であること
+	a.DefenderItem = &item.StatsCorrectData{Defense: 2.0, SpDefense: 2.0}
+	st, _ = a.Create()
+	dmgs = d.CreateDamage(st)
+	if dmgs.Min() != 48 {
+		t.Errorf("%v", dmgs)
+	}
 }
 
 func Test_タイプ相性(t *testing.T) {

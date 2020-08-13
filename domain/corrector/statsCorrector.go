@@ -101,22 +101,22 @@ func (s *StatsCorrector) append(c Corrector) {
 
 // タイプ一致補正(1.5)
 func (s *StatsCorrector) ApplyTypeMatch() {
-	s.env[TypeMatch] = newCorrector(TypeMatch, drop5_pick5over, 3, 2)
+	s.env[TypeMatch] = NewTypeMatch(1.5)
 }
 
 // 急所ダメージ補正(1.5)
 func (s *StatsCorrector) ApplyCritical() {
-	s.env[Critical] = newCorrector(Critical, drop5_pick5over, 3, 2)
+	s.env[Critical] = NewCritical(1.5)
 }
 
 // 複数対象によるダメージ補正(0.75)
 func (s *StatsCorrector) ApplyMultiTarget() {
-	s.env[MultiTarget] = newCorrector(MultiTarget, drop5_pick5over, 3, 4)
+	s.env[MultiTarget] = newMultiTarget(0.75)
 }
 
 // やけどによるダメージ補正(0.5)
 func (s *StatsCorrector) ApplyBurn() {
-	s.env[Burn] = newCorrector(Burn, drop5_pick5over, 1, 2)
+	s.env[Burn] = newBurn(0.5)
 }
 
 func (c category) IsEnvironment() bool {
