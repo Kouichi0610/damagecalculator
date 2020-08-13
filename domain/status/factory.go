@@ -41,6 +41,7 @@ func (s *StatsCorrectors) Create(st StatusChecker) StatusChecker {
 	sdr := int(st.SpDefense().r)
 	spr := int(st.Speed().r)
 	res.s = NewRankedStats(hp, at, df, sa, sd, sp, atr, dfr, sar, sdr, spr)
+	res.w = s.CorrectWeight(float64(st.Weight()))
 
 	return res
 }

@@ -49,6 +49,13 @@ type ItemCreator interface {
 	Create(isAttacker bool) Item
 }
 
+func (s *NoItem) Create(isAttacker bool) Item {
+	return &item{
+		s: defaultStatsCorrector(),
+		p: defaultPowerCorrector(),
+	}
+}
+
 func (s *StatsCorrectData) Create(isAttacker bool) Item {
 	return &item{
 		s: s.createStatsCorrector(),
@@ -94,6 +101,10 @@ func (s *SuperEffectiveCorrectData) Create(isAttacker bool) Item {
 		s: defaultStatsCorrector(),
 		p: p,
 	}
+}
+
+// もちものなし
+type NoItem struct {
 }
 
 // 能力値補正

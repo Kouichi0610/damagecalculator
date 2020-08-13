@@ -10,6 +10,7 @@ import (
 
 func Test_ItemCreators(t *testing.T) {
 	items := []ItemCreator{
+		&NoItem{},
 		&StatsCorrectData{1.0, 1.0, 1.0, 1.0, 1.0},
 		&WeightCorrectData{0.5},
 		&TypeCorrectData{types.Dark, 1.5},
@@ -24,6 +25,13 @@ func Test_ItemCreators(t *testing.T) {
 	}
 }
 
+func Test_持ち物なし(t *testing.T) {
+	item := (&NoItem{}).Create(true)
+	res := testItem(item, 100, []uint{100, 100, 100, 100, 100}, 200.5, t)
+	if !res {
+		t.Error()
+	}
+}
 func Test_能力値補正(t *testing.T) {
 	item := (&StatsCorrectData{1.1, 1.2, 1.3, 1.4, 1.5}).Create(true)
 	res := testItem(item, 100, []uint{110, 120, 130, 140, 150}, 200.5, t)

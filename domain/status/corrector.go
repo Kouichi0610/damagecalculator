@@ -39,8 +39,8 @@ func (s *StatsCorrectors) Correct(at, df, sa, sd, sp uint) (a, b, c, d, e uint) 
 	return
 }
 
-func (s *StatsCorrectors) CorrectWeight(w float64) float64 {
-	return w * s.weight
+func (s *StatsCorrectors) CorrectWeight(w float64) Weight {
+	return NewWeight(w * s.weight)
 }
 
 // TODO:immutable

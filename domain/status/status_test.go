@@ -223,6 +223,7 @@ func Test_Status補正(t *testing.T) {
 		SpAttackRank:  0,
 		SpDefenseRank: +4,
 		SpeedRank:     +6,
+		Weight:        100,
 	}
 	st := sd.Create()
 	s := NewStatsCorrectors().Attack(2.0).Defense(3.0).SpAttack(4.0).SpDefense(5.0).Speed(6.0)
@@ -265,6 +266,9 @@ func Test_Status補正(t *testing.T) {
 		t.Error()
 	}
 	if ex.Speed().r != 6 {
+		t.Error()
+	}
+	if ex.Weight() != 100 {
 		t.Error()
 	}
 }
