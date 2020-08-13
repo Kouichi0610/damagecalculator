@@ -224,7 +224,47 @@ func Test_わざ_ちきゅうなげ(t *testing.T) {
 	if !reflect.DeepEqual(dmgs, []uint{50}) {
 		t.Error()
 	}
+}
 
+func Test_ヘビーボンバー(t *testing.T) {
+	s, _ := (&SkillData{
+		Types:    []types.Type{types.Fire},
+		Power:    1,
+		CountMin: 1,
+		CountMax: 1,
+		Category: category.FoulPlay,
+		Method:   HeavySlam,
+	}).Create()
+	st := DummySituation()
+
+	if s.Power(st) != 120 {
+		t.Errorf("%d", s.Power(st))
+	}
+}
+func Test_heavySlamPower(t *testing.T) {
+	type weightData struct {
+		a, d   float64
+		expect uint
+	}
+
+	tests := []weightData{
+		{100, 20, 120},
+		{99, 20, 100},
+		{100, 25, 100},
+		{99, 25, 80},
+		{90, 30, 80},
+		{89, 30, 60},
+		{100, 50, 60},
+		{99, 50, 40},
+	}
+	for _, d := range tests {
+		a := status.NewWeight(d.a)
+		b := status.NewWeight(d.d)
+		act := heavySlamPower(a, b)
+		if act != d.expect {
+			t.Errorf("failed %v act:%d", d, act)
+		}
+	}
 }
 
 func WithWeather(w field.Weather) SituationChecker {
@@ -280,6 +320,7 @@ func DummySituation() SituationChecker {
 		SpAttackRank:  0,
 		SpDefenseRank: 0,
 		SpeedRank:     0,
+		Weight:        100,
 	}
 	df := &status.StatusData{
 		Lv:            50,
@@ -295,6 +336,7 @@ func DummySituation() SituationChecker {
 		SpAttackRank:  0,
 		SpDefenseRank: 0,
 		SpeedRank:     0,
+		Weight:        20,
 	}
 	return &testSituation{
 		at: at.Create(),

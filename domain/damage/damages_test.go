@@ -59,7 +59,7 @@ func calcDamage(sd *situation.SituationData) *Damages {
 }
 
 // TODO:テストコードをsituationに移動
-// あるいはジャイロボールのテスト
+// TODO:あるいはヘビーボンバー、しんかのきせきテスト
 func Test_重さ(t *testing.T) {
 	a := defaultArgs()
 	a.AttackerItem = &item.WeightCorrectData{2.0}

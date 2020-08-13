@@ -10,10 +10,11 @@ import (
 type Method uint
 
 const (
-	NoMethod        Method = iota
+	NoMethod    Method = iota
 	SeismicToss        // ちきゅうなげ
 	WeatherBall        // ウェザーボール
 	GyroBall           // ジャイロボール
+	HeavySlam          // ヘビーボンバー
 )
 
 // 攻撃回数
@@ -47,6 +48,10 @@ func (d *SkillData) Create() (Skill, error) {
 		}, nil
 	case GyroBall:
 		return &gyroBall{
+			skill: s,
+		}, nil
+	case HeavySlam:
+		return &heavySlam{
 			skill: s,
 		}, nil
 	}
