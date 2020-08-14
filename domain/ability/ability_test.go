@@ -4,6 +4,7 @@ import (
 	"damagecalculator/domain/corrector"
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/skill"
+	"damagecalculator/domain/skill/count"
 	"damagecalculator/domain/types"
 	"reflect"
 	"testing"
@@ -23,6 +24,7 @@ func Test_生成(t *testing.T) {
 		new(MimicryData),
 		new(TypePowerCorrectData),
 		new(ActionPowerCorrectData),
+		new(SkillLinkData),
 	}
 
 	if _, ok := datas[0].Create().(*ability); !ok {
@@ -61,11 +63,44 @@ func Test_生成(t *testing.T) {
 	if _, ok := datas[11].Create().(*actionPowerCorrector); !ok {
 		t.Error()
 	}
+	if _, ok := datas[12].Create().(*skillLink); !ok {
+		t.Error()
+	}
 }
 
 func Test_とくせいなし(t *testing.T) {
 	// abilityテスト
 	// 特に効果が無い事
+}
+
+func Test_スキルリンク(t *testing.T) {
+	a := (&SkillLinkData{}).Create()
+	count := func(min, max uint) *count.AttackCount {
+		res, _ := count.NewAttackCount(min, max)
+		return res
+	}
+	// 攻撃時、2～5回を5回にすること
+	a.setAttacker(true)
+	c := a.AttackCount(count(1, 1))
+	if !(c.Min() == 1 && c.Max() == 1) {
+		t.Error()
+	}
+	c = a.AttackCount(count(1, 5))
+	if !(c.Min() == 1 && c.Max() == 5) {
+		t.Error()
+	}
+	c = a.AttackCount(count(2, 5))
+	if !(c.Min() == 5 && c.Max() == 5) {
+		t.Errorf("%d - %d", c.Min(), c.Max())
+	}
+
+	// 防御時、変化ないこと
+	a.setAttacker(false)
+	c = a.AttackCount(count(2, 5))
+	if !(c.Min() == 2 && c.Max() == 5) {
+		t.Errorf("%d - %d", c.Min(), c.Max())
+	}
+
 }
 
 func Test_わざアクション威力補正(t *testing.T) {
@@ -74,6 +109,7 @@ func Test_わざアクション威力補正(t *testing.T) {
 	}
 	// 特定のわざアクションの時補正を掛けること
 	a := (&ActionPowerCorrectData{skill.Fang, 1.5}).Create()
+	a.setAttacker(true)
 	c := a.Correctors(st)
 	if c[0].Caterogy() != corrector.Power {
 		t.Error()
@@ -91,12 +127,21 @@ func Test_わざアクション威力補正(t *testing.T) {
 	if c[0].Correct(100) != 100 {
 		t.Error()
 	}
+
+	// 防御側では補正を掛けないこと
+	a.setAttacker(false)
+	st.action = skill.Fang
+	c = a.Correctors(st)
+	if c[0].Correct(100) != 100 {
+		t.Error()
+	}
 }
 func Test_タイプ威力補正(t *testing.T) {
 	st := &testSituation{
 		skillType: []types.Type{types.Dragon},
 	}
 	a := (&TypePowerCorrectData{Types: []types.Type{types.Dragon, types.Steel}, Scale: 1.5}).Create()
+	a.setAttacker(true)
 
 	// 条件が一致するタイプに補正を掛けること
 	c := a.Correctors(st)
@@ -115,6 +160,14 @@ func Test_タイプ威力補正(t *testing.T) {
 
 	// 一致しなければ補正を掛けないこと
 	st.skillType = []types.Type{types.Fighting}
+	c = a.Correctors(st)
+	if c[0].Correct(100) != 100 {
+		t.Error()
+	}
+
+	// 攻撃側でなければ効果がないこと
+	st.skillType = []types.Type{types.Steel}
+	a.setAttacker(false)
 	c = a.Correctors(st)
 	if c[0].Correct(100) != 100 {
 		t.Error()

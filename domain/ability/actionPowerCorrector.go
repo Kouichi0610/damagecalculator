@@ -13,6 +13,9 @@ type actionPowerCorrector struct {
 }
 
 func (s *actionPowerCorrector) Correctors(st situationChecker) []corrector.Corrector {
+	if !s.ability.isAttacker {
+		return []corrector.Corrector{corrector.NewPower(1.0)}
+	}
 	if st.SkillAction() == s.ac {
 		return []corrector.Corrector{corrector.NewPower(s.sc)}
 	}

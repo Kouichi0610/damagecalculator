@@ -14,6 +14,9 @@ type typePowerCorrector struct {
 }
 
 func (s *typePowerCorrector) Correctors(st situationChecker) []corrector.Corrector {
+	if !s.ability.isAttacker {
+		return []corrector.Corrector{corrector.NewPower(1.0)}
+	}
 	ty := st.SkillTypes()
 	for _, t := range s.ty {
 		if ty.Has(t) {

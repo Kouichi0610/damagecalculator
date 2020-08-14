@@ -46,6 +46,8 @@ type ActionPowerCorrectData struct {
 	Action skill.Action
 	Scale  float64
 }
+type SkillLinkData struct {
+}
 
 func (d *NoEffectData) Create() Ability {
 	return &ability{}
@@ -120,4 +122,7 @@ func (d *ActionPowerCorrectData) Create() Ability {
 		ac: d.Action,
 		sc: d.Scale,
 	}
+}
+func (d *SkillLinkData) Create() Ability {
+	return &skillLink{}
 }
