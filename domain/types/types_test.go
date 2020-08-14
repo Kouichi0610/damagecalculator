@@ -1,6 +1,9 @@
 package types
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func Test_ダメージ倍率(t *testing.T) {
 	a := NewTypes(Fire, Flying)
@@ -39,6 +42,22 @@ func Test_Has(t *testing.T) {
 		t.Error()
 	}
 	if !ty.Has(Water) {
+		t.Error()
+	}
+}
+
+func Test_TypeArray(t *testing.T) {
+	ty := NewTypes(Fire, Water, Grass)
+	ar := ty.TypeArray()
+
+	if !reflect.DeepEqual(ar, []Type{Fire, Water, Grass}) {
+		t.Error()
+	}
+
+	// 変更しても影響ない事
+	ar = append(ar, Rock)
+	ar2 := ty.TypeArray()
+	if !reflect.DeepEqual(ar2, []Type{Fire, Water, Grass}) {
 		t.Error()
 	}
 }

@@ -10,11 +10,14 @@ import (
 
 func Test_生成(t *testing.T) {
 	datas := []AbilityBuilder{
-		&NoEffectData{},
-		&MoldBreakerData{},
-		&NewTralizingGasData{},
-		&WonderGuardData{},
-		&StatusCorrectorData{},
+		new(NoEffectData),
+		new(MoldBreakerData),
+		new(NewTralizingGasData),
+		new(WonderGuardData),
+		new(StatusCorrectorData),
+		new(ProteanData),
+		new(FieldStatusCorrectData),
+		new(WeatherStatusCorrectData),
 	}
 
 	if _, ok := datas[0].Create().(*ability); !ok {
@@ -30,6 +33,82 @@ func Test_生成(t *testing.T) {
 		t.Error()
 	}
 	if _, ok := datas[4].Create().(*statusCorrector); !ok {
+		t.Error()
+	}
+	if _, ok := datas[5].Create().(*protean); !ok {
+		t.Error()
+	}
+	if _, ok := datas[6].Create().(*fieldStatusCorrector); !ok {
+		t.Error()
+	}
+	if _, ok := datas[7].Create().(*weatherStatusCorrector); !ok {
+		t.Error()
+	}
+}
+
+func Test_フラワーギフト(t *testing.T) {
+	st := &testSituation{
+		weather: field.Sunny,
+	}
+	// 晴れの時こうげき、とくぼう1.5倍
+	a := (&WeatherStatusCorrectData{
+		Weather:   field.Sunny,
+		Attack:    1.5,
+		SpDefense: 1.5,
+	}).Create()
+	c := a.CorrectStatus(st)
+	at, _, _, sd, _ := c.Correct(100, 100, 100, 100, 100)
+	if at != 150 || sd != 150 {
+		t.Error()
+	}
+	// 晴れでなければ効果が無い事
+	st.weather = field.Rainy
+	c = a.CorrectStatus(st)
+	at, _, _, sd, _ = c.Correct(100, 100, 100, 100, 100)
+	if at != 100 || sd != 100 {
+		t.Error()
+	}
+}
+
+func Test_サーフテール(t *testing.T) {
+	st := &testSituation{
+		field: field.ElectricField,
+	}
+	// エレキフィールド時、素早さ２倍
+	a := (&FieldStatusCorrectData{
+		Field: field.ElectricField,
+		Speed: 2.0,
+	}).Create()
+	c := a.CorrectStatus(st)
+	_, _, _, _, sp := c.Correct(100, 100, 100, 100, 100)
+	if sp != 200 {
+		t.Error()
+	}
+
+	// 他のフィールドでは効果が無い事
+	st.field = field.PsychoField
+	c = a.CorrectStatus(st)
+	_, _, _, _, sp = c.Correct(100, 100, 100, 100, 100)
+	if sp != 100 {
+		t.Error()
+	}
+}
+
+func Test_へんげんじざい(t *testing.T) {
+	// 攻撃時、技のタイプを補正にかけること
+	st := &testSituation{
+		skillType: []types.Type{types.Fire},
+	}
+	a := (&ProteanData{}).Create()
+	a.setAttacker(true)
+	c := a.CorrectStatus(st)
+	if !reflect.DeepEqual(c.CorrectTypes([]types.Type{types.Water}), []types.Type{types.Fire}) {
+		t.Error()
+	}
+	// 攻撃時でなければ変化が無い事
+	a.setAttacker(false)
+	c = a.CorrectStatus(st)
+	if !reflect.DeepEqual(c.CorrectTypes([]types.Type{types.Water}), []types.Type{types.Water}) {
 		t.Error()
 	}
 }
@@ -170,11 +249,15 @@ func Test_ふしぎなまもり(t *testing.T) {
 }
 
 type testSituation struct {
+	skillType []types.Type
 	effective float64
 	weather   field.Weather
 	field     field.Field
 }
 
+func (st *testSituation) SkillTypes() *types.Types {
+	return types.NewTypes(st.skillType...)
+}
 func (st *testSituation) SkillEffective() types.Effective {
 	return types.Effective(st.effective)
 }

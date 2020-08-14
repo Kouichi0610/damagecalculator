@@ -8,13 +8,14 @@ import (
 )
 
 type Types struct {
-	t []magnifier
+	ty []Type
+	t  []magnifier
 }
 
 func NewTypes(args ...Type) *Types {
 	res := new(Types)
 	res.t = make([]magnifier, 0)
-
+	res.ty = args
 	if len(args) == 0 {
 		return res
 	}
@@ -58,4 +59,10 @@ func (t *Types) PartialMatch(o *Types) bool {
 		}
 	}
 	return false
+}
+
+func (t *Types) TypeArray() []Type {
+	res := make([]Type, 0)
+	res = append(res, t.ty...)
+	return res
 }
