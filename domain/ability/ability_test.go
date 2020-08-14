@@ -18,6 +18,8 @@ func Test_生成(t *testing.T) {
 		new(ProteanData),
 		new(FieldStatusCorrectData),
 		new(WeatherStatusCorrectData),
+		new(ForecastData),
+		new(MimicryData),
 	}
 
 	if _, ok := datas[0].Create().(*ability); !ok {
@@ -43,6 +45,50 @@ func Test_生成(t *testing.T) {
 	}
 	if _, ok := datas[7].Create().(*weatherStatusCorrector); !ok {
 		t.Error()
+	}
+	if _, ok := datas[8].Create().(*forecast); !ok {
+		t.Error()
+	}
+	if _, ok := datas[9].Create().(*mimicry); !ok {
+		t.Error()
+	}
+}
+
+func Test_ぎたい(t *testing.T) {
+	fields := map[field.Field][]types.Type{
+		field.NoField:       []types.Type{types.Normal},
+		field.ElectricField: []types.Type{types.Electric},
+		field.PsychoField:   []types.Type{types.Psychic},
+		field.GrassField:    []types.Type{types.Grass},
+		field.MystField:     []types.Type{types.Fairy},
+	}
+	a := (&MimicryData{}).Create()
+	for f, ex := range fields {
+		st := &testSituation{field: f}
+		c := a.CorrectStatus(st)
+		act := c.CorrectTypes([]types.Type{types.Normal})
+		if !reflect.DeepEqual(act, ex) {
+			t.Errorf("%d -> %v", f, act)
+		}
+	}
+}
+
+func Test_てんきや(t *testing.T) {
+	weathers := map[field.Weather][]types.Type{
+		field.NoWeather: []types.Type{types.Normal},
+		field.Sunny:     []types.Type{types.Fire},
+		field.Rainy:     []types.Type{types.Water},
+		field.Snow:      []types.Type{types.Ice},
+		field.SandStorm: []types.Type{types.Normal},
+	}
+	a := (&ForecastData{}).Create()
+	for f, ex := range weathers {
+		st := &testSituation{weather: f}
+		c := a.CorrectStatus(st)
+		act := c.CorrectTypes([]types.Type{types.Normal})
+		if !reflect.DeepEqual(act, ex) {
+			t.Errorf("%d -> %v", f, act)
+		}
 	}
 }
 

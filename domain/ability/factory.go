@@ -33,6 +33,10 @@ type WeatherStatusCorrectData struct {
 }
 type ProteanData struct {
 }
+type ForecastData struct {
+}
+type MimicryData struct {
+}
 
 func (d *NoEffectData) Create() Ability {
 	return &ability{}
@@ -87,7 +91,12 @@ func (d *WeatherStatusCorrectData) Create() Ability {
 		statusCorrector: st,
 	}
 }
-
 func (d *ProteanData) Create() Ability {
 	return &protean{}
+}
+func (d *ForecastData) Create() Ability {
+	return &forecast{}
+}
+func (d *MimicryData) Create() Ability {
+	return &mimicry{}
 }
