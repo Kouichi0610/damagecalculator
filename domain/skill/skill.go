@@ -15,6 +15,7 @@ type Skill interface {
 	Power(SituationChecker) uint
 	PickStats(SituationChecker) (at, df *status.RankedValue)
 	Calculate(level, power, attack, defense uint) []uint
+	Action() Action
 }
 
 // Skill without method
@@ -43,4 +44,7 @@ func (s *skill) Calculate(level, power, attack, defense uint) []uint {
 }
 func (s *skill) Correctors(SituationChecker) []corrector.Corrector {
 	return nil
+}
+func (s *skill) Action() Action {
+	return s.action
 }

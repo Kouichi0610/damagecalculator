@@ -15,7 +15,8 @@ type Types struct {
 func NewTypes(args ...Type) *Types {
 	res := new(Types)
 	res.t = make([]magnifier, 0)
-	res.ty = args
+	res.ty = make([]Type, 0)
+	res.ty = append(res.ty, args...)
 	if len(args) == 0 {
 		return res
 	}

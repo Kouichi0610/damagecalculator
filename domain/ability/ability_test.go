@@ -3,6 +3,7 @@ package ability
 import (
 	"damagecalculator/domain/corrector"
 	"damagecalculator/domain/field"
+	"damagecalculator/domain/skill"
 	"damagecalculator/domain/types"
 	"reflect"
 	"testing"
@@ -20,6 +21,8 @@ func Test_生成(t *testing.T) {
 		new(WeatherStatusCorrectData),
 		new(ForecastData),
 		new(MimicryData),
+		new(TypePowerCorrectData),
+		new(ActionPowerCorrectData),
 	}
 
 	if _, ok := datas[0].Create().(*ability); !ok {
@@ -50,6 +53,70 @@ func Test_生成(t *testing.T) {
 		t.Error()
 	}
 	if _, ok := datas[9].Create().(*mimicry); !ok {
+		t.Error()
+	}
+	if _, ok := datas[10].Create().(*typePowerCorrector); !ok {
+		t.Error()
+	}
+	if _, ok := datas[11].Create().(*actionPowerCorrector); !ok {
+		t.Error()
+	}
+}
+
+func Test_とくせいなし(t *testing.T) {
+	// abilityテスト
+	// 特に効果が無い事
+}
+
+func Test_わざアクション威力補正(t *testing.T) {
+	st := &testSituation{
+		action: skill.Fang,
+	}
+	// 特定のわざアクションの時補正を掛けること
+	a := (&ActionPowerCorrectData{skill.Fang, 1.5}).Create()
+	c := a.Correctors(st)
+	if c[0].Caterogy() != corrector.Power {
+		t.Error()
+	}
+	if c[0].Correct(100) != 150 {
+		t.Error()
+	}
+
+	// それ以外では補正を掛けないこと
+	st.action = skill.Contact
+	c = a.Correctors(st)
+	if c[0].Caterogy() != corrector.Power {
+		t.Error()
+	}
+	if c[0].Correct(100) != 100 {
+		t.Error()
+	}
+}
+func Test_タイプ威力補正(t *testing.T) {
+	st := &testSituation{
+		skillType: []types.Type{types.Dragon},
+	}
+	a := (&TypePowerCorrectData{Types: []types.Type{types.Dragon, types.Steel}, Scale: 1.5}).Create()
+
+	// 条件が一致するタイプに補正を掛けること
+	c := a.Correctors(st)
+	if c[0].Caterogy() != corrector.Power {
+		t.Error()
+	}
+	if c[0].Correct(100) != 150 {
+		t.Error()
+	}
+
+	st.skillType = []types.Type{types.Steel}
+	c = a.Correctors(st)
+	if c[0].Correct(100) != 150 {
+		t.Error()
+	}
+
+	// 一致しなければ補正を掛けないこと
+	st.skillType = []types.Type{types.Fighting}
+	c = a.Correctors(st)
+	if c[0].Correct(100) != 100 {
 		t.Error()
 	}
 }
@@ -299,6 +366,7 @@ type testSituation struct {
 	effective float64
 	weather   field.Weather
 	field     field.Field
+	action    skill.Action
 }
 
 func (st *testSituation) SkillTypes() *types.Types {
@@ -312,4 +380,7 @@ func (st *testSituation) IsWeather(w field.Weather) bool {
 }
 func (st *testSituation) IsField(f field.Field) bool {
 	return st.field == f
+}
+func (st *testSituation) SkillAction() skill.Action {
+	return st.action
 }

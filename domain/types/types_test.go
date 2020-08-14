@@ -61,3 +61,14 @@ func Test_TypeArray(t *testing.T) {
 		t.Error()
 	}
 }
+
+func Test_Types生成時の引数を書き換えても影響がない事(t *testing.T) {
+	args := []Type{Fire, Water}
+	ty := NewTypes(args...)
+
+	args[0] = Grass
+
+	if ty.TypeArray()[0] == Grass {
+		t.Error()
+	}
+}

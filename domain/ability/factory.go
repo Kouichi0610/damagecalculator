@@ -2,6 +2,7 @@ package ability
 
 import (
 	"damagecalculator/domain/field"
+	"damagecalculator/domain/skill"
 	"damagecalculator/domain/types"
 )
 
@@ -36,6 +37,14 @@ type ProteanData struct {
 type ForecastData struct {
 }
 type MimicryData struct {
+}
+type TypePowerCorrectData struct {
+	Types []types.Type
+	Scale float64
+}
+type ActionPowerCorrectData struct {
+	Action skill.Action
+	Scale  float64
 }
 
 func (d *NoEffectData) Create() Ability {
@@ -99,4 +108,16 @@ func (d *ForecastData) Create() Ability {
 }
 func (d *MimicryData) Create() Ability {
 	return &mimicry{}
+}
+func (d *TypePowerCorrectData) Create() Ability {
+	return &typePowerCorrector{
+		ty: d.Types,
+		sc: d.Scale,
+	}
+}
+func (d *ActionPowerCorrectData) Create() Ability {
+	return &actionPowerCorrector{
+		ac: d.Action,
+		sc: d.Scale,
+	}
 }

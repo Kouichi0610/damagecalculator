@@ -2,7 +2,7 @@ package ability
 
 import (
 	"damagecalculator/domain/field"
-	_ "damagecalculator/domain/skill"
+	"damagecalculator/domain/skill"
 	_ "damagecalculator/domain/status"
 	"damagecalculator/domain/types"
 )
@@ -13,4 +13,5 @@ type situationChecker interface {
 	SkillEffective() types.Effective
 	IsWeather(field.Weather) bool
 	IsField(field.Field) bool
+	SkillAction() skill.Action
 }

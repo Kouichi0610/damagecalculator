@@ -267,6 +267,23 @@ func Test_heavySlamPower(t *testing.T) {
 	}
 }
 
+func Test_SkillAction(t *testing.T) {
+	s, _ := (&SkillData{
+		Types:    []types.Type{types.Fire},
+		Power:    1,
+		CountMin: 1,
+		CountMax: 1,
+		Category: category.FoulPlay,
+		Method:   HeavySlam,
+		Action:   Fang,
+	}).Create()
+
+	if s.Action() != Fang {
+		t.Error()
+	}
+
+}
+
 func WithWeather(w field.Weather) SituationChecker {
 	at := &status.StatusData{
 		Lv:            50,
