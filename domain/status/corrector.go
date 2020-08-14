@@ -48,6 +48,13 @@ func (s *StatsCorrectors) CorrectWeight(w float64) Weight {
 	return NewWeight(w * s.weight)
 }
 
+func (s *StatsCorrectors) CorrectTypes(ty []types.Type) []types.Type {
+	if s.ty != nil {
+		return s.ty
+	}
+	return ty
+}
+
 // TODO:immutableにしておきたい
 func (s *StatsCorrectors) Types(ty []types.Type) *StatsCorrectors {
 	s.ty = ty

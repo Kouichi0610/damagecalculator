@@ -2,6 +2,7 @@ package status
 
 import (
 	"damagecalculator/domain/types"
+	"reflect"
 	"testing"
 )
 
@@ -202,6 +203,17 @@ func Test_StatsCorrectors(t *testing.T) {
 	}
 	s.Weight(2.0)
 	if s.CorrectWeight(128.0) != 256.0 {
+		t.Error()
+	}
+}
+
+func Test_タイプ補正(t *testing.T) {
+	s := NewStatsCorrectors()
+	if !reflect.DeepEqual(s.CorrectTypes([]types.Type{types.Bug}), []types.Type{types.Bug}) {
+		t.Error()
+	}
+	s.Types([]types.Type{types.Fire, types.Water})
+	if !reflect.DeepEqual(s.CorrectTypes([]types.Type{types.Bug}), []types.Type{types.Fire, types.Water}) {
 		t.Error()
 	}
 }

@@ -2,6 +2,7 @@ package ability
 
 import (
 	"damagecalculator/domain/corrector"
+	"damagecalculator/domain/status"
 )
 
 type AbilityField interface {
@@ -10,14 +11,16 @@ type AbilityField interface {
 }
 
 type Ability interface {
+	// 威力補正
+	Correctors(situationChecker) []corrector.Corrector
+	// 能力補正
+	CorrectStatus(situationChecker) *status.StatsCorrectors
+
 	// 場に出たときに効果がある(かがくへんかガス)
 	onField(AbilityField) AbilityField
 	// 攻撃時効果がある(かたやぶり)
 	onAttack(AbilityField) AbilityField
-
-	Correctors(situationChecker) []corrector.Corrector
-
-	// AbilityFieldで使用
+	// AbilityFieldに置かれた時点で設定する
 	setAttacker(isAttacker bool)
 }
 
@@ -69,56 +72,6 @@ func (a *ability) onAttack(f AbilityField) AbilityField {
 func (a *ability) Correctors(situationChecker) []corrector.Corrector {
 	return nil
 }
-
-//--------------------------------
-// かたやぶり
-// 攻撃時、防御側の特性を無視する
-type moldBreaker struct {
-	ability
+func (a *ability) CorrectStatus(situationChecker) *status.StatsCorrectors {
+	return status.NewStatsCorrectors()
 }
-
-func (a *moldBreaker) onAttack(f AbilityField) AbilityField {
-	if !a.ability.isAttacker {
-		return f
-	}
-	return &abilityField{
-		at: a,
-		df: &ability{false},
-	}
-}
-
-//--------------------------------
-// かがくへんかガス
-// 全てのとくせいを無効にする
-type newtralizingGas struct {
-	ability
-}
-
-func (a *newtralizingGas) onField(f AbilityField) AbilityField {
-	return &abilityField{
-		at: &ability{true},
-		df: &ability{false},
-	}
-}
-
-//--------------------------------
-// ふしぎなまもり
-// 効果抜群以外のダメージを受けない
-type wonderGuard struct {
-	ability
-}
-
-func (a *wonderGuard) Correctors(st situationChecker) []corrector.Corrector {
-	// 防御側でのみ有効
-	if a.ability.isAttacker {
-		return nil
-	}
-
-	ef := st.SkillEffective()
-	if ef.IsSuper() {
-		return nil
-	}
-	return []corrector.Corrector{corrector.NewDamage(0)}
-}
-
-//--------------------------------
