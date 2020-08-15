@@ -1,6 +1,7 @@
 package ability
 
 import (
+	"damagecalculator/domain/ability/situation"
 	"damagecalculator/domain/corrector"
 )
 
@@ -10,7 +11,7 @@ type wonderGuard struct {
 	ability
 }
 
-func (a *wonderGuard) Correctors(st situationChecker) []corrector.Corrector {
+func (a *wonderGuard) Correctors(st situation.SituationChecker) []corrector.Corrector {
 	// 防御側でのみ有効
 	if a.ability.isAttacker {
 		return nil

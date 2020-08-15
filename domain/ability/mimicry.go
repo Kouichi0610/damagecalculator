@@ -1,6 +1,7 @@
 package ability
 
 import (
+	"damagecalculator/domain/ability/situation"
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/status"
 	"damagecalculator/domain/types"
@@ -12,7 +13,7 @@ type mimicry struct {
 	ability
 }
 
-func (s *mimicry) CorrectStatus(st situationChecker) *status.StatsCorrectors {
+func (s *mimicry) CorrectStatus(st situation.SituationChecker) *status.StatsCorrectors {
 	c := status.NewStatsCorrectors()
 	switch {
 	case st.IsField(field.ElectricField):

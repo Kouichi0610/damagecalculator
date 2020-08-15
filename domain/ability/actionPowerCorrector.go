@@ -1,23 +1,23 @@
 package ability
 
 import (
+	"damagecalculator/domain/ability/situation"
 	"damagecalculator/domain/corrector"
 	"damagecalculator/domain/skill"
 )
 
 // 特定のわざで威力x倍
 type actionPowerCorrector struct {
-	ability
 	ac skill.Action
 	sc float64
 }
 
-func (s *actionPowerCorrector) Correctors(st situationChecker) []corrector.Corrector {
-	if !s.ability.isAttacker {
-		return []corrector.Corrector{corrector.NewPower(1.0)}
+func (s *actionPowerCorrector) Correct(isAttacker bool, st situation.SituationChecker) corrector.Corrector {
+	if !isAttacker {
+		return nil
 	}
 	if st.SkillAction() == s.ac {
-		return []corrector.Corrector{corrector.NewPower(s.sc)}
+		return corrector.NewPower(s.sc)
 	}
-	return []corrector.Corrector{corrector.NewPower(1.0)}
+	return nil
 }

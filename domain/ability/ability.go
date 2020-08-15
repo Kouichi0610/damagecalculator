@@ -1,6 +1,7 @@
 package ability
 
 import (
+	"damagecalculator/domain/ability/situation"
 	"damagecalculator/domain/corrector"
 	"damagecalculator/domain/skill"
 	"damagecalculator/domain/status"
@@ -11,14 +12,19 @@ type AbilityField interface {
 	Defender() Ability
 }
 
+type PowerCorrector interface {
+	Correct(isAttacker bool, st situation.SituationChecker) corrector.Corrector
+}
+
 type Ability interface {
+	// スキル生成データを書き換える
 	RewriteSkillData(skill.SkillData) *skill.SkillData
 
 	// 威力補正
-	Correctors(situationChecker) []corrector.Corrector
+	Correctors(situation.SituationChecker) []corrector.Corrector
 
 	// 能力補正
-	CorrectStatus(situationChecker) *status.StatsCorrectors
+	CorrectStatus(situation.SituationChecker) *status.StatsCorrectors
 
 	// 場に出たときに効果がある(かがくへんかガス)
 	onField(AbilityField) AbilityField
@@ -74,10 +80,10 @@ func (a *ability) onField(f AbilityField) AbilityField {
 func (a *ability) onAttack(f AbilityField) AbilityField {
 	return f
 }
-func (a *ability) Correctors(situationChecker) []corrector.Corrector {
-	return nil
+func (a *ability) Correctors(situation.SituationChecker) []corrector.Corrector {
+	return []corrector.Corrector{corrector.NewPower(1.0)}
 }
-func (a *ability) CorrectStatus(situationChecker) *status.StatsCorrectors {
+func (a *ability) CorrectStatus(situation.SituationChecker) *status.StatsCorrectors {
 	return status.NewStatsCorrectors()
 }
 func (a *ability) RewriteSkillData(sk skill.SkillData) *skill.SkillData {

@@ -6,10 +6,22 @@ import (
 	"damagecalculator/domain/types"
 )
 
-// TODO:[]AbilitiBuilderを合成してAbilityを生成
-
 type AbilityBuilder interface {
 	Create() Ability
+}
+
+/*
+	TODO:
+	1個のAbilityBuilder,
+	[0...n]のPowerCorrectorBuilder
+
+*/
+type PowerCorrectorBuilder interface {
+	Create() PowerCorrector
+}
+
+type PowerCorrectorData struct {
+	Builders []PowerCorrectorBuilder
 }
 
 type NoEffectData struct {
@@ -40,6 +52,9 @@ type ForecastData struct {
 }
 type MimicryData struct {
 }
+type SkillLinkData struct {
+}
+
 type TypePowerCorrectData struct {
 	Types []types.Type
 	Scale float64
@@ -47,8 +62,6 @@ type TypePowerCorrectData struct {
 type ActionPowerCorrectData struct {
 	Action skill.Action
 	Scale  float64
-}
-type SkillLinkData struct {
 }
 
 func (d *NoEffectData) Create() Ability {
@@ -113,18 +126,31 @@ func (d *ForecastData) Create() Ability {
 func (d *MimicryData) Create() Ability {
 	return &mimicry{}
 }
-func (d *TypePowerCorrectData) Create() Ability {
+
+func (d *TypePowerCorrectData) Create() PowerCorrector {
 	return &typePowerCorrector{
 		ty: d.Types,
 		sc: d.Scale,
 	}
 }
-func (d *ActionPowerCorrectData) Create() Ability {
+
+func (d *ActionPowerCorrectData) Create() PowerCorrector {
 	return &actionPowerCorrector{
 		ac: d.Action,
 		sc: d.Scale,
 	}
 }
+
 func (d *SkillLinkData) Create() Ability {
 	return &skillLink{}
+}
+
+func (d *PowerCorrectorData) Create() Ability {
+	res := &powerCorrector{
+		c: make([]PowerCorrector, 0),
+	}
+	for _, c := range d.Builders {
+		res.c = append(res.c, c.Create())
+	}
+	return res
 }

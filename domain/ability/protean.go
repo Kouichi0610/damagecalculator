@@ -1,6 +1,7 @@
 package ability
 
 import (
+	"damagecalculator/domain/ability/situation"
 	"damagecalculator/domain/status"
 )
 
@@ -10,7 +11,7 @@ type protean struct {
 	ability
 }
 
-func (s *protean) CorrectStatus(st situationChecker) *status.StatsCorrectors {
+func (s *protean) CorrectStatus(st situation.SituationChecker) *status.StatsCorrectors {
 	c := status.NewStatsCorrectors()
 	if !s.isAttacker {
 		return c

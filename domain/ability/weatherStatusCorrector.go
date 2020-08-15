@@ -1,6 +1,7 @@
 package ability
 
 import (
+	"damagecalculator/domain/ability/situation"
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/status"
 )
@@ -12,7 +13,7 @@ type weatherStatusCorrector struct {
 	wt field.Weather
 }
 
-func (s *weatherStatusCorrector) CorrectStatus(st situationChecker) *status.StatsCorrectors {
+func (s *weatherStatusCorrector) CorrectStatus(st situation.SituationChecker) *status.StatsCorrectors {
 	c := status.NewStatsCorrectors()
 	if !st.IsWeather(s.wt) {
 		return c

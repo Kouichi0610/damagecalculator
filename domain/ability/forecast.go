@@ -1,6 +1,7 @@
 package ability
 
 import (
+	"damagecalculator/domain/ability/situation"
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/status"
 	"damagecalculator/domain/types"
@@ -12,7 +13,7 @@ type forecast struct {
 	ability
 }
 
-func (s *forecast) CorrectStatus(st situationChecker) *status.StatsCorrectors {
+func (s *forecast) CorrectStatus(st situation.SituationChecker) *status.StatsCorrectors {
 	c := status.NewStatsCorrectors()
 	switch {
 	case st.IsWeather(field.Sunny):

@@ -1,6 +1,7 @@
 package ability
 
 import (
+	"damagecalculator/domain/ability/situation"
 	"damagecalculator/domain/status"
 	"damagecalculator/domain/types"
 )
@@ -15,7 +16,7 @@ type statusCorrector struct {
 	wt                 float64
 }
 
-func (s *statusCorrector) CorrectStatus(situationChecker) *status.StatsCorrectors {
+func (s *statusCorrector) CorrectStatus(situation.SituationChecker) *status.StatsCorrectors {
 	c := status.NewStatsCorrectors()
 
 	if s.ty != nil {
