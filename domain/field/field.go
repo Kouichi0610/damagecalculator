@@ -102,6 +102,9 @@ func (f *Fields) StatusCorrector(at, df *types.Types) (ac, dc *status.StatsCorre
 func (f *Fields) HasWeather(w Weather) bool {
 	return f.w == w
 }
+func (f *Fields) HasField(fl Field) bool {
+	return f.f == fl
+}
 
 func (w Weather) hasPlus(s *types.Types) bool {
 	if w == Sunny {

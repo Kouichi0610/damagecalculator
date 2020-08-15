@@ -120,6 +120,9 @@ func Test_Fields(t *testing.T) {
 	if f.HasWeather(Sunny) == false {
 		t.Error()
 	}
+	if f.HasField(ElectricField) == false {
+		t.Error()
+	}
 }
 
 var typeArray = []types.Type{

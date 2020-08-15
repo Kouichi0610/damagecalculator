@@ -12,7 +12,7 @@ import (
 
 func Test_生成(t *testing.T) {
 	datas := []AbilityBuilder{
-		new(NoEffectData),
+		new(NoAbilityData),
 		new(MoldBreakerData),
 		new(NewTralizingGasData),
 		new(WonderGuardData),
@@ -103,35 +103,60 @@ func Test_powerCorrector(t *testing.T) {
 	}
 }
 
-func Test_スキルリンク(t *testing.T) {
-	createData := func(min, max uint) *skill.SkillData {
-		return &skill.SkillData{
-			CountMin: min,
-			CountMax: max,
-		}
+func createSkillLinkData(min, max uint) *skill.SkillData {
+	return &skill.SkillData{
+		CountMin: min,
+		CountMax: max,
 	}
+}
+
+func Test_スキルリンク_AbilityFieldに設定して機能すること(t *testing.T) {
+	a := (&SkillLinkData{}).Create()
+	d := (&NoAbilityData{}).Create()
+	af := NewAbilityField(a, d)
+
+	sd := createSkillLinkData(2, 5)
+	act := af.RewriteSkillData(*sd)
+
+	if !(act.CountMin == 5 && act.CountMax == 5) {
+		t.Error()
+	}
+
+	af = NewAbilityField(d, a)
+	sd = createSkillLinkData(2, 5)
+	act = af.RewriteSkillData(*sd)
+	if !(act.CountMin == 2 && act.CountMax == 5) {
+		t.Error()
+	}
+}
+
+func Test_スキルリンク(t *testing.T) {
 	a := (&SkillLinkData{}).Create()
 	a.setAttacker(true)
-	sd := createData(1, 1)
+	sd := createSkillLinkData(1, 1)
 	act := a.RewriteSkillData(*sd)
 	if !(act.CountMin == 1 && act.CountMax == 1) {
 		t.Error()
 	}
 
-	sd = createData(1, 5)
+	sd = createSkillLinkData(1, 5)
 	act = a.RewriteSkillData(*sd)
 	if !(act.CountMin == 1 && act.CountMax == 5) {
 		t.Error()
 	}
-	sd = createData(2, 5)
+	sd = createSkillLinkData(2, 5)
 	act = a.RewriteSkillData(*sd)
 	if !(act.CountMin == 5 && act.CountMax == 5) {
 		t.Errorf("%v", act)
 	}
+	// 元のSkillDataは書き換えられていないこと
+	if sd.CountMin != 2 {
+		t.Error()
+	}
 
 	// 攻撃側でなければ変化ない事
 	a.setAttacker(false)
-	sd = createData(2, 5)
+	sd = createSkillLinkData(2, 5)
 	act = a.RewriteSkillData(*sd)
 	if !(act.CountMin == 2 && act.CountMax == 5) {
 		t.Errorf("%v", act)
@@ -347,6 +372,41 @@ func Test_かがくへんかガス(t *testing.T) {
 	}
 }
 
+func Test_AbilityField_Correctors(t *testing.T) {
+	// ひこうタイプ2倍(フィールド飛行)
+	a := (&PowerCorrectorData{
+		Builders: []correct.PowerCorrectorBuilder{
+			&correct.TypeAttackData{[]types.Type{types.Flying}, 2.0},
+		},
+	}).Create()
+	// ふしぎなまもり(効果は普通)
+	d := (&WonderGuardData{}).Create()
+	af := NewAbilityField(a, d)
+	st := &testSituation{
+		skillType: []types.Type{types.Flying},
+		effective: 1.0,
+	}
+
+	c := af.Correctors(st)
+	if len(c) != 2 {
+		t.Error()
+	}
+
+	// 攻撃側と防御側の補正が反映されていること
+	if c[0].Category() != corrector.Power {
+		t.Error()
+	}
+	if c[0].Correct(100) != 200 {
+		t.Error()
+	}
+	if c[1].Category() != corrector.Damage {
+		t.Error()
+	}
+	if c[1].Correct(100) != 0 {
+		t.Error()
+	}
+}
+
 func Test_ふしぎなまもり(t *testing.T) {
 	st := &testSituation{effective: 2.0}
 	a := &wonderGuard{}
@@ -363,7 +423,7 @@ func Test_ふしぎなまもり(t *testing.T) {
 	if c == nil {
 		t.Error()
 	}
-	if c[0].Caterogy() != corrector.Damage {
+	if c[0].Category() != corrector.Damage {
 		t.Error()
 	}
 	if c[0].Correct(100) != 0 {

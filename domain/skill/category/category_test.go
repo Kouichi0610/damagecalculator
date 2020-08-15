@@ -129,6 +129,7 @@ func newStats(hp, at, df, sa, sd, sp uint) status.StatusChecker {
 type dummyStats struct {
 	hp                 *status.HP
 	at, df, sa, sd, sp *status.RankedValue
+	wt                 float64
 }
 
 func (s *dummyStats) Level() stats.Level {
@@ -155,4 +156,7 @@ func (s *dummyStats) SpDefense() *status.RankedValue {
 }
 func (s *dummyStats) Speed() *status.RankedValue {
 	return s.sp
+}
+func (s *dummyStats) Weight() status.Weight {
+	return status.Weight(s.wt)
 }

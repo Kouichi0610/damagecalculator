@@ -7,13 +7,12 @@ import (
 	"damagecalculator/domain/status"
 )
 
+// TODO:Abilityを隠蔽してAbiliyFieldのみ前に出したい
 type AbilityField interface {
 	Attacker() Ability
 	Defender() Ability
-}
-
-type PowerCorrector interface {
-	Correct(isAttacker bool, st situation.SituationChecker) corrector.Corrector
+	Correctors(situation.SituationChecker) []corrector.Corrector
+	RewriteSkillData(skill.SkillData) *skill.SkillData
 }
 
 type Ability interface {
@@ -60,6 +59,16 @@ func (a *abilityField) Attacker() Ability {
 }
 func (a *abilityField) Defender() Ability {
 	return a.df
+}
+func (a *abilityField) RewriteSkillData(sk skill.SkillData) *skill.SkillData {
+	res := a.at.RewriteSkillData(sk)
+	res = a.df.RewriteSkillData(*res)
+	return res
+}
+func (a *abilityField) Correctors(st situation.SituationChecker) []corrector.Corrector {
+	res := a.Attacker().Correctors(st)
+	res = append(res, a.Defender().Correctors(st)...)
+	return res
 }
 
 //--------------------------------------------------

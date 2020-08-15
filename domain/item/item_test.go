@@ -110,7 +110,7 @@ func testItem(item Item, powerActual uint, statsActual []uint, weightActual floa
 		t.Errorf("%v", expects)
 		return false
 	}
-	if c.CorrectWeight(200.5) != weightActual {
+	if c.CorrectWeight(200.5) != status.Weight(weightActual) {
 		t.Error()
 		return false
 	}
@@ -121,7 +121,7 @@ func testItem(item Item, powerActual uint, statsActual []uint, weightActual floa
 func Test_defaultPowerCorrector(t *testing.T) {
 	s := defaultPowerCorrector()
 	c := s.CorrectPower(types.NewTypes(types.Bug), types.NewTypes(types.Fire), types.NewTypes(types.Rock))
-	if c.Caterogy() != corrector.Power {
+	if c.Category() != corrector.Power {
 		t.Error()
 	}
 	if c.Correct(100) != 100 {
@@ -132,14 +132,14 @@ func Test_createTypeCorrector(t *testing.T) {
 	d := &TypeCorrectData{Scale: 1.5, Type: types.Fire}
 	s := d.createTypeCorrector()
 	c := s.CorrectPower(types.NewTypes(types.Bug), types.NewTypes(types.Water), types.NewTypes(types.Rock))
-	if c.Caterogy() != corrector.Power {
+	if c.Category() != corrector.Power {
 		t.Error()
 	}
 	if c.Correct(100) != 100 {
 		t.Error()
 	}
 	c = s.CorrectPower(types.NewTypes(types.Bug), types.NewTypes(types.Water), types.NewTypes(types.Fire))
-	if c.Caterogy() != corrector.Power {
+	if c.Category() != corrector.Power {
 		t.Error()
 	}
 	if c.Correct(100) != 150 {
@@ -151,7 +151,7 @@ func Test_createPowerCorrector(t *testing.T) {
 	d := &PowerCorrectData{Scale: 1.5}
 	s := d.createPowerCorrector()
 	c := s.CorrectPower(types.NewTypes(types.Bug), types.NewTypes(types.Water), types.NewTypes(types.Rock))
-	if c.Caterogy() != corrector.Power {
+	if c.Category() != corrector.Power {
 		t.Error()
 	}
 	if c.Correct(100) != 150 {
@@ -163,7 +163,7 @@ func Test_superEffectiveCorrect(t *testing.T) {
 	d := &SuperEffectiveCorrectData{Scale: 1.5}
 	s := d.createPowerCorrector()
 	c := s.CorrectPower(types.NewTypes(types.Bug), types.NewTypes(types.Ground), types.NewTypes(types.Rock))
-	if c.Caterogy() != corrector.Power {
+	if c.Category() != corrector.Power {
 		t.Error()
 	}
 	if c.Correct(100) != 100 {

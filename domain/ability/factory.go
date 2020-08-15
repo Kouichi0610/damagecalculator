@@ -15,7 +15,7 @@ type PowerCorrectorData struct {
 	Builders []correct.PowerCorrectorBuilder
 }
 
-type NoEffectData struct {
+type NoAbilityData struct {
 }
 type MoldBreakerData struct {
 }
@@ -46,7 +46,7 @@ type MimicryData struct {
 type SkillLinkData struct {
 }
 
-func (d *NoEffectData) Create() Ability {
+func (d *NoAbilityData) Create() Ability {
 	return &ability{}
 }
 func (d *MoldBreakerData) Create() Ability {
