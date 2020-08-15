@@ -36,22 +36,13 @@ func Test_AttackCount(t *testing.T) {
 	}
 }
 
-func Test_検証(t *testing.T) {
-	expect := make([]uint, 0)
-	dm := []uint{1, 2}
-	for i := 0; i < 2; i++ {
-		for j := 0; j < 2; j++ {
-			for k := 0; k < 2; k++ {
-				for l := 0; l < 2; l++ {
-					expect = append(expect, dm[i]+dm[j]+dm[k]+dm[l])
-				}
-			}
-		}
+func Test_MinMax(t *testing.T) {
+	a, _ := NewAttackCount(5, 2)
+	if a.Min() != 2 {
+		t.Error()
 	}
-	actual := correct([]uint{1, 2}, 4)
-
-	if !reflect.DeepEqual(expect, actual) {
-		t.Errorf("%v", actual)
+	if a.Max() != 5 {
+		t.Error()
 	}
 }
 

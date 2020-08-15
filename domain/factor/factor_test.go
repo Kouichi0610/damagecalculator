@@ -1,4 +1,4 @@
-package fixed
+package factor
 
 import (
 	"testing"
@@ -21,7 +21,7 @@ func Test_四捨五入(t *testing.T) {
 func Test_五捨五超入(t *testing.T) {
 	f, _ := NewFixPN(0.5, Drop5Pick5Over)
 	a := f.Correct(15)
-	// 7.5 -> 8
+	// 7.5 -> 7
 	if a != 7 {
 		t.Errorf("%d", a)
 	}
@@ -65,4 +65,24 @@ func Test_生成(t *testing.T) {
 	if err == nil {
 		t.Error()
 	}
+}
+
+func Test_Float(t *testing.T) {
+	f, err := NewFloat(-0.1)
+	if f != nil {
+		t.Error()
+	}
+	if err == nil {
+		t.Error()
+	}
+
+	f, err = NewFloat(1.5)
+	if err != nil {
+		t.Error()
+	}
+
+	if f.Correct(100) != 150 {
+		t.Error()
+	}
+
 }

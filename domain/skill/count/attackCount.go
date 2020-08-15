@@ -10,14 +10,35 @@ type AttackCount struct {
 	min, max uint
 }
 
+func (a *AttackCount) Min() uint {
+	return a.min
+}
+func (a *AttackCount) Max() uint {
+	return a.max
+}
+
 func NewAttackCount(min, max uint) (*AttackCount, error) {
 	if min == 0 || max == 0 {
 		return nil, fmt.Errorf("0回は指定できない")
 	}
+
 	return &AttackCount{
-		min: min,
-		max: max,
+		min: minUint(min, max),
+		max: maxUint(min, max),
 	}, nil
+}
+
+func maxUint(a, b uint) uint {
+	if a > b {
+		return a
+	}
+	return b
+}
+func minUint(a, b uint) uint {
+	if a < b {
+		return a
+	}
+	return b
 }
 
 /*
