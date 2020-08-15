@@ -1,4 +1,4 @@
-package ability
+package correct
 
 import (
 	"damagecalculator/domain/ability/situation"
@@ -7,13 +7,12 @@ import (
 )
 
 // xxタイプの威力x倍
-
-type typePowerCorrector struct {
+type typeAttack struct {
 	ty []types.Type
 	sc float64
 }
 
-func (s *typePowerCorrector) Correct(isAttacker bool, st situation.SituationChecker) corrector.Corrector {
+func (s *typeAttack) Correct(isAttacker bool, st situation.SituationChecker) corrector.Corrector {
 	if !isAttacker {
 		return nil
 	}

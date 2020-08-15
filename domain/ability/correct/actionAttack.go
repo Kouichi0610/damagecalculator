@@ -1,4 +1,4 @@
-package ability
+package correct
 
 import (
 	"damagecalculator/domain/ability/situation"
@@ -7,12 +7,12 @@ import (
 )
 
 // 特定のわざで威力x倍
-type actionPowerCorrector struct {
+type actionAttack struct {
 	ac skill.Action
 	sc float64
 }
 
-func (s *actionPowerCorrector) Correct(isAttacker bool, st situation.SituationChecker) corrector.Corrector {
+func (s *actionAttack) Correct(isAttacker bool, st situation.SituationChecker) corrector.Corrector {
 	if !isAttacker {
 		return nil
 	}

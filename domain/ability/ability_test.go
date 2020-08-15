@@ -1,6 +1,7 @@
 package ability
 
 import (
+	"damagecalculator/domain/ability/correct"
 	"damagecalculator/domain/corrector"
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/skill"
@@ -8,19 +9,6 @@ import (
 	"reflect"
 	"testing"
 )
-
-func Test_生成_PowerCorrector(t *testing.T) {
-	datas := []PowerCorrectorBuilder{
-		new(TypePowerCorrectData),
-		new(ActionPowerCorrectData),
-	}
-	if _, ok := datas[0].Create().(*typePowerCorrector); !ok {
-		t.Error()
-	}
-	if _, ok := datas[1].Create().(*actionPowerCorrector); !ok {
-		t.Error()
-	}
-}
 
 func Test_生成(t *testing.T) {
 	datas := []AbilityBuilder{
@@ -84,10 +72,10 @@ func Test_powerCorrector(t *testing.T) {
 		skillType: []types.Type{types.Flying},
 	}
 	d := &PowerCorrectorData{
-		Builders: []PowerCorrectorBuilder{
-			&TypePowerCorrectData{[]types.Type{types.Flying}, 2.0},
-			&ActionPowerCorrectData{skill.Fang, 3.0},
-			// TODO:防御側効果追加
+		Builders: []correct.PowerCorrectorBuilder{
+			&correct.TypeAttackData{[]types.Type{types.Flying}, 2.0},
+			&correct.ActionAttackData{skill.Fang, 3.0},
+			&correct.TypeDefenseData{[]types.Type{types.Flying}, 0.0},
 		},
 	}
 
@@ -110,7 +98,7 @@ func Test_powerCorrector(t *testing.T) {
 	if len(c) != 1 {
 		t.Error()
 	}
-	if c[0].Correct(100) != 100 {
+	if c[0].Correct(100) != 0 {
 		t.Error()
 	}
 }
@@ -147,70 +135,6 @@ func Test_スキルリンク(t *testing.T) {
 	act = a.RewriteSkillData(*sd)
 	if !(act.CountMin == 2 && act.CountMax == 5) {
 		t.Errorf("%v", act)
-	}
-}
-
-func Test_わざアクション威力補正(t *testing.T) {
-	st := &testSituation{
-		action: skill.Fang,
-	}
-	// 特定のわざアクションの時補正を掛けること
-	a := (&ActionPowerCorrectData{skill.Fang, 1.5}).Create()
-	c := a.Correct(true, st)
-	if c.Caterogy() != corrector.Power {
-		t.Error()
-	}
-	if c.Correct(100) != 150 {
-		t.Error()
-	}
-
-	// それ以外では補正を掛けないこと
-	st.action = skill.Contact
-	c = a.Correct(true, st)
-	if c != nil {
-		t.Error()
-	}
-
-	// 防御側では補正を掛けないこと
-	st.action = skill.Fang
-	c = a.Correct(false, st)
-	if c != nil {
-		t.Error()
-	}
-}
-func Test_タイプ威力補正(t *testing.T) {
-	st := &testSituation{
-		skillType: []types.Type{types.Dragon},
-	}
-	a := (&TypePowerCorrectData{Types: []types.Type{types.Dragon, types.Steel}, Scale: 1.5}).Create()
-
-	// 条件が一致するタイプに補正を掛けること
-	c := a.Correct(true, st)
-	if c.Caterogy() != corrector.Power {
-		t.Error()
-	}
-	if c.Correct(100) != 150 {
-		t.Error()
-	}
-
-	st.skillType = []types.Type{types.Steel}
-	c = a.Correct(true, st)
-	if c.Correct(100) != 150 {
-		t.Error()
-	}
-
-	// 一致しなければ補正を掛けないこと
-	st.skillType = []types.Type{types.Fighting}
-	c = a.Correct(true, st)
-	if c != nil {
-		t.Error()
-	}
-
-	// 攻撃側でなければ効果がないこと
-	st.skillType = []types.Type{types.Steel}
-	c = a.Correct(false, st)
-	if c != nil {
-		t.Error()
 	}
 }
 

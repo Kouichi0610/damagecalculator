@@ -1,6 +1,7 @@
 package ability
 
 import (
+	"damagecalculator/domain/ability/correct"
 	"damagecalculator/domain/ability/situation"
 	"damagecalculator/domain/corrector"
 )
@@ -8,7 +9,7 @@ import (
 // ダメージ、威力補正をまとめたもの
 type powerCorrector struct {
 	ability
-	c []PowerCorrector
+	c []correct.PowerCorrector
 }
 
 func (s *powerCorrector) Correctors(st situation.SituationChecker) []corrector.Corrector {
