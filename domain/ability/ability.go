@@ -2,8 +2,7 @@ package ability
 
 import (
 	"damagecalculator/domain/corrector"
-	_ "damagecalculator/domain/skill"
-	"damagecalculator/domain/skill/count"
+	"damagecalculator/domain/skill"
 	"damagecalculator/domain/status"
 )
 
@@ -13,18 +12,19 @@ type AbilityField interface {
 }
 
 type Ability interface {
-	// 威力補正 TODO:return types追加 (SkillCorrectors?)
+	RewriteSkillData(skill.SkillData) *skill.SkillData
+
+	// 威力補正
 	Correctors(situationChecker) []corrector.Corrector
+
 	// 能力補正
 	CorrectStatus(situationChecker) *status.StatsCorrectors
-
-	// 攻撃回数変更
-	AttackCount(*count.AttackCount) *count.AttackCount
 
 	// 場に出たときに効果がある(かがくへんかガス)
 	onField(AbilityField) AbilityField
 	// 攻撃時効果がある(かたやぶり)
 	onAttack(AbilityField) AbilityField
+
 	// AbilityFieldに置かれた時点で設定する
 	setAttacker(isAttacker bool)
 }
@@ -80,6 +80,6 @@ func (a *ability) Correctors(situationChecker) []corrector.Corrector {
 func (a *ability) CorrectStatus(situationChecker) *status.StatsCorrectors {
 	return status.NewStatsCorrectors()
 }
-func (a *ability) AttackCount(cnt *count.AttackCount) *count.AttackCount {
-	return cnt
+func (a *ability) RewriteSkillData(sk skill.SkillData) *skill.SkillData {
+	return &sk
 }

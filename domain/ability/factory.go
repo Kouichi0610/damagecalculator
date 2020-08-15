@@ -6,6 +6,8 @@ import (
 	"damagecalculator/domain/types"
 )
 
+// TODO:[]AbilitiBuilderを合成してAbilityを生成
+
 type AbilityBuilder interface {
 	Create() Ability
 }

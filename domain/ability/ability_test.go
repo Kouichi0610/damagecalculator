@@ -4,7 +4,6 @@ import (
 	"damagecalculator/domain/corrector"
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/skill"
-	"damagecalculator/domain/skill/count"
 	"damagecalculator/domain/types"
 	"reflect"
 	"testing"
@@ -74,33 +73,38 @@ func Test_とくせいなし(t *testing.T) {
 }
 
 func Test_スキルリンク(t *testing.T) {
+	createData := func(min, max uint) *skill.SkillData {
+		return &skill.SkillData{
+			CountMin: min,
+			CountMax: max,
+		}
+	}
 	a := (&SkillLinkData{}).Create()
-	count := func(min, max uint) *count.AttackCount {
-		res, _ := count.NewAttackCount(min, max)
-		return res
-	}
-	// 攻撃時、2～5回を5回にすること
 	a.setAttacker(true)
-	c := a.AttackCount(count(1, 1))
-	if !(c.Min() == 1 && c.Max() == 1) {
+	sd := createData(1, 1)
+	act := a.RewriteSkillData(*sd)
+	if !(act.CountMin == 1 && act.CountMax == 1) {
 		t.Error()
-	}
-	c = a.AttackCount(count(1, 5))
-	if !(c.Min() == 1 && c.Max() == 5) {
-		t.Error()
-	}
-	c = a.AttackCount(count(2, 5))
-	if !(c.Min() == 5 && c.Max() == 5) {
-		t.Errorf("%d - %d", c.Min(), c.Max())
 	}
 
-	// 防御時、変化ないこと
+	sd = createData(1, 5)
+	act = a.RewriteSkillData(*sd)
+	if !(act.CountMin == 1 && act.CountMax == 5) {
+		t.Error()
+	}
+	sd = createData(2, 5)
+	act = a.RewriteSkillData(*sd)
+	if !(act.CountMin == 5 && act.CountMax == 5) {
+		t.Errorf("%v", act)
+	}
+
+	// 攻撃側でなければ変化ない事
 	a.setAttacker(false)
-	c = a.AttackCount(count(2, 5))
-	if !(c.Min() == 2 && c.Max() == 5) {
-		t.Errorf("%d - %d", c.Min(), c.Max())
+	sd = createData(2, 5)
+	act = a.RewriteSkillData(*sd)
+	if !(act.CountMin == 2 && act.CountMax == 5) {
+		t.Errorf("%v", act)
 	}
-
 }
 
 func Test_わざアクション威力補正(t *testing.T) {
