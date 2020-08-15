@@ -64,6 +64,8 @@ func Test_ダメージ威力補正(t *testing.T) {
 		},
 	}
 	d.AttackerItem = &item.TypeCorrectData{types.Fire, 3.0}
+	// 防御側に持たせても効果ない事
+	d.DefenderItem = &item.TypeCorrectData{types.Fire, 3.0}
 	st, _ := d.Create()
 
 	c := st.Correctors()
@@ -71,7 +73,6 @@ func Test_ダメージ威力補正(t *testing.T) {
 	dmgs := 0
 	pwrs := 0
 	corrected := make([]uint, 0)
-
 	for _, cc := range c {
 		if cc.Category() == corrector.Damage {
 			dmgs++
