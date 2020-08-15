@@ -33,7 +33,7 @@ package corrector
 import "damagecalculator/domain/factor"
 
 type Corrector interface {
-	Caterogy() category
+	Category() category
 	Correct(dmg uint) uint
 }
 
@@ -42,7 +42,7 @@ type corrector struct {
 	f factor.FixPN // 補正計算
 }
 
-func (c *corrector) Caterogy() category {
+func (c *corrector) Category() category {
 	return c.t
 }
 

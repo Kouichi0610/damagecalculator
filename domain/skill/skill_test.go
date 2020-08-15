@@ -147,7 +147,7 @@ func Test_ウェザーボール(t *testing.T) {
 		if len(cs) != 1 {
 			t.Error()
 		}
-		if cs[0].Caterogy() != corrector.Power {
+		if cs[0].Category() != corrector.Power {
 			t.Error()
 		}
 		if cs[0].Correct(100) != 200 {

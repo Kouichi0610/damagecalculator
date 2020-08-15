@@ -39,7 +39,7 @@ func NewStatsCorrector() *StatsCorrector {
 func (s *StatsCorrector) CorrectPower(n uint) uint {
 	res := n
 	for _, c := range s.c {
-		if c.Caterogy() != Power {
+		if c.Category() != Power {
 			continue
 		}
 		res = c.Correct(res)
@@ -49,7 +49,7 @@ func (s *StatsCorrector) CorrectPower(n uint) uint {
 func (s *StatsCorrector) CorrectAttack(n uint) uint {
 	res := n
 	for _, c := range s.c {
-		if c.Caterogy() != Attack {
+		if c.Category() != Attack {
 			continue
 		}
 		res = c.Correct(res)
@@ -59,7 +59,7 @@ func (s *StatsCorrector) CorrectAttack(n uint) uint {
 func (s *StatsCorrector) CorrectDefense(n uint) uint {
 	res := n
 	for _, c := range s.c {
-		if c.Caterogy() != Defense {
+		if c.Category() != Defense {
 			continue
 		}
 		res = c.Correct(res)
@@ -69,7 +69,7 @@ func (s *StatsCorrector) CorrectDefense(n uint) uint {
 func (s *StatsCorrector) CorrectDamage(n uint) uint {
 	res := n
 	for _, c := range s.c {
-		if c.Caterogy() != Damage {
+		if c.Category() != Damage {
 			continue
 		}
 		res = c.Correct(res)
@@ -88,7 +88,7 @@ func (s *StatsCorrector) Appends(args ...Corrector) {
 
 func (s *StatsCorrector) append(c Corrector) {
 	// 設定しているなら上書き そうでなければなにもしない
-	category := c.Caterogy()
+	category := c.Category()
 	if category.IsEnvironment() {
 		_, ok := s.env[category]
 		if ok {

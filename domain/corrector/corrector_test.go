@@ -116,7 +116,7 @@ func Test_Corrects(t *testing.T) {
 
 func Test_Corrector(t *testing.T) {
 	c := NewAttack(0.5)
-	if c.Caterogy() != Attack {
+	if c.Category() != Attack {
 		t.Error()
 	}
 	if c.Correct(27) != 14 {
@@ -126,27 +126,27 @@ func Test_Corrector(t *testing.T) {
 
 func Test_Factories(t *testing.T) {
 	c := NewPower(0.5)
-	if c.Caterogy() != Power {
+	if c.Category() != Power {
 		t.Error()
 	}
 	c = NewAttack(0.5)
-	if c.Caterogy() != Attack {
+	if c.Category() != Attack {
 		t.Error()
 	}
 	c = NewDefense(0.5)
-	if c.Caterogy() != Defense {
+	if c.Category() != Defense {
 		t.Error()
 	}
 	c = NewDamage(0.5)
-	if c.Caterogy() != Damage {
+	if c.Category() != Damage {
 		t.Error()
 	}
 	c = NewTypeMatch(0.5)
-	if c.Caterogy() != TypeMatch {
+	if c.Category() != TypeMatch {
 		t.Error()
 	}
 	c = NewCritical(0.5)
-	if c.Caterogy() != Critical {
+	if c.Category() != Critical {
 		t.Error()
 	}
 }

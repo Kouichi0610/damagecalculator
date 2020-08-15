@@ -37,7 +37,7 @@ func Test_タイプ防御補正(t *testing.T) {
 
 	// 条件が一致するタイプに補正を掛けること
 	c := a.Correct(false, st)
-	if c.Caterogy() != corrector.Damage {
+	if c.Category() != corrector.Damage {
 		t.Error()
 	}
 	if c.Correct(100) != 50 {
@@ -65,7 +65,7 @@ func Test_アクション防御補正(t *testing.T) {
 	// 特定のわざアクションの時補正を掛けること
 	a := (&ActionDefenseData{skill.Fang, 0.5}).Create()
 	c := a.Correct(false, st)
-	if c.Caterogy() != corrector.Damage {
+	if c.Category() != corrector.Damage {
 		t.Error()
 	}
 	if c.Correct(100) != 50 {
@@ -95,7 +95,7 @@ func Test_タイプ攻撃補正(t *testing.T) {
 
 	// 条件が一致するタイプに補正を掛けること
 	c := a.Correct(true, st)
-	if c.Caterogy() != corrector.Power {
+	if c.Category() != corrector.Power {
 		t.Error()
 	}
 	if c.Correct(100) != 150 {
@@ -129,7 +129,7 @@ func Test_アクション攻撃補正(t *testing.T) {
 	// 特定のわざアクションの時補正を掛けること
 	a := (&ActionAttackData{skill.Fang, 1.5}).Create()
 	c := a.Correct(true, st)
-	if c.Caterogy() != corrector.Power {
+	if c.Category() != corrector.Power {
 		t.Error()
 	}
 	if c.Correct(100) != 150 {

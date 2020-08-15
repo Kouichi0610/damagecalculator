@@ -1,6 +1,7 @@
 package damage
 
 import (
+	"damagecalculator/domain/ability"
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/item"
 	"damagecalculator/domain/situation"
@@ -40,15 +41,20 @@ func defaultArgs() *situation.SituationData {
 	atItem := &item.NoItem{}
 	dfItem := &item.NoItem{}
 
+	atAbility := &ability.NoAbilityData{}
+	dfAbility := &ability.NoAbilityData{}
+
 	st := &situation.SituationData{
-		Skill:        s,
-		Attacker:     at,
-		Defender:     df,
-		Weather:      field.NoWeather,
-		Field:        field.NoField,
-		AttackerItem: atItem,
-		DefenderItem: dfItem,
-		IsCritical:   false,
+		Skill:           s,
+		Attacker:        at,
+		Defender:        df,
+		Weather:         field.NoWeather,
+		Field:           field.NoField,
+		AttackerAbility: atAbility,
+		DefenderAbility: dfAbility,
+		AttackerItem:    atItem,
+		DefenderItem:    dfItem,
+		IsCritical:      false,
 	}
 	return st
 }
