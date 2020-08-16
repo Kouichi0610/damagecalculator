@@ -17,6 +17,6 @@ func (s *protean) CorrectStatus(st situation.SituationChecker) *status.StatsCorr
 		return c
 	}
 	ty := st.SkillTypes()
-	c.Types(ty.TypeArray())
+	c.Types(ty)
 	return c
 }

@@ -2,7 +2,6 @@ package status
 
 import (
 	"damagecalculator/domain/types"
-	"reflect"
 	"testing"
 )
 
@@ -209,11 +208,12 @@ func Test_StatsCorrectors(t *testing.T) {
 
 func Test_タイプ補正(t *testing.T) {
 	s := NewStatsCorrectors()
-	if !reflect.DeepEqual(s.CorrectTypes([]types.Type{types.Bug}), []types.Type{types.Bug}) {
+	if !s.CorrectTypes(types.NewTypes(types.Bug)).Has(types.Bug) {
 		t.Error()
 	}
-	s.Types([]types.Type{types.Fire, types.Water})
-	if !reflect.DeepEqual(s.CorrectTypes([]types.Type{types.Bug}), []types.Type{types.Fire, types.Water}) {
+	s.Types(types.NewTypes(types.Fire, types.Water))
+	ty := s.CorrectTypes(types.NewTypes(types.Bug))
+	if !(ty.Has(types.Water) && ty.Has(types.Fire)) {
 		t.Error()
 	}
 }
@@ -238,7 +238,7 @@ func Test_Status補正(t *testing.T) {
 		Weight:        100,
 	}
 	st := sd.Create()
-	s := NewStatsCorrectors().Attack(2.0).Defense(3.0).SpAttack(4.0).SpDefense(5.0).Speed(6.0).Types([]types.Type{types.Fire, types.Water})
+	s := NewStatsCorrectors().Attack(2.0).Defense(3.0).SpAttack(4.0).SpDefense(5.0).Speed(6.0).Types(types.NewTypes(types.Fire, types.Water))
 
 	ex := s.Create(st)
 	if ex.Level() != 50 {

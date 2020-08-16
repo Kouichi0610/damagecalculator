@@ -17,13 +17,13 @@ func (s *mimicry) CorrectStatus(st situation.SituationChecker) *status.StatsCorr
 	c := status.NewStatsCorrectors()
 	switch {
 	case st.IsField(field.ElectricField):
-		c.Types([]types.Type{types.Electric})
+		c.Types(types.NewTypes(types.Electric))
 	case st.IsField(field.PsychoField):
-		c.Types([]types.Type{types.Psychic})
+		c.Types(types.NewTypes(types.Psychic))
 	case st.IsField(field.MystField):
-		c.Types([]types.Type{types.Fairy})
+		c.Types(types.NewTypes(types.Fairy))
 	case st.IsField(field.GrassField):
-		c.Types([]types.Type{types.Grass})
+		c.Types(types.NewTypes(types.Grass))
 	}
 	return c
 }

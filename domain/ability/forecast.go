@@ -17,11 +17,11 @@ func (s *forecast) CorrectStatus(st situation.SituationChecker) *status.StatsCor
 	c := status.NewStatsCorrectors()
 	switch {
 	case st.IsWeather(field.Sunny):
-		c.Types([]types.Type{types.Fire})
+		c.Types(types.NewTypes(types.Fire))
 	case st.IsWeather(field.Rainy):
-		c.Types([]types.Type{types.Water})
+		c.Types(types.NewTypes(types.Water))
 	case st.IsWeather(field.Snow):
-		c.Types([]types.Type{types.Ice})
+		c.Types(types.NewTypes(types.Ice))
 	}
 	return c
 }
