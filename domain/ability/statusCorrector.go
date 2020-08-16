@@ -20,7 +20,7 @@ func (s *statusCorrector) CorrectStatus(situation.SituationChecker) *status.Stat
 	c := status.NewStatsCorrectors()
 
 	if s.ty != nil {
-		c.Types(s.ty)
+		c.Types(types.NewTypes(s.ty...))
 	}
 	if s.at > 0 {
 		c.Attack(s.at)

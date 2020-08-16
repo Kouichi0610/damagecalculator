@@ -6,7 +6,7 @@ import (
 )
 
 type StatsCorrectors struct {
-	ty                 []types.Type
+	ty                 *types.Types
 	at, df, sa, sd, sp factor.FixPN
 	weight             float64
 }
@@ -48,7 +48,7 @@ func (s *StatsCorrectors) CorrectWeight(w float64) Weight {
 	return NewWeight(w * s.weight)
 }
 
-func (s *StatsCorrectors) CorrectTypes(ty []types.Type) []types.Type {
+func (s *StatsCorrectors) CorrectTypes(ty *types.Types) *types.Types {
 	if s.ty != nil {
 		return s.ty
 	}
@@ -56,7 +56,7 @@ func (s *StatsCorrectors) CorrectTypes(ty []types.Type) []types.Type {
 }
 
 // TODO:immutableにしておきたい
-func (s *StatsCorrectors) Types(ty []types.Type) *StatsCorrectors {
+func (s *StatsCorrectors) Types(ty *types.Types) *StatsCorrectors {
 	s.ty = ty
 	return s
 }

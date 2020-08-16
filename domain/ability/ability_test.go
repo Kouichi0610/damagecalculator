@@ -6,7 +6,6 @@ import (
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/skill"
 	"damagecalculator/domain/types"
-	"reflect"
 	"testing"
 )
 
@@ -164,38 +163,38 @@ func Test_スキルリンク(t *testing.T) {
 }
 
 func Test_ぎたい(t *testing.T) {
-	fields := map[field.Field][]types.Type{
-		field.NoField:       []types.Type{types.Normal},
-		field.ElectricField: []types.Type{types.Electric},
-		field.PsychoField:   []types.Type{types.Psychic},
-		field.GrassField:    []types.Type{types.Grass},
-		field.MystField:     []types.Type{types.Fairy},
+	fields := map[field.Field]types.Type{
+		field.NoField:       types.Normal,
+		field.ElectricField: types.Electric,
+		field.PsychoField:   types.Psychic,
+		field.GrassField:    types.Grass,
+		field.MystField:     types.Fairy,
 	}
 	a := (&MimicryData{}).Create()
 	for f, ex := range fields {
 		st := &testSituation{field: f}
 		c := a.CorrectStatus(st)
-		act := c.CorrectTypes([]types.Type{types.Normal})
-		if !reflect.DeepEqual(act, ex) {
+		act := c.CorrectTypes(types.NewTypes(types.Normal))
+		if !act.Has(ex) {
 			t.Errorf("%d -> %v", f, act)
 		}
 	}
 }
 
 func Test_てんきや(t *testing.T) {
-	weathers := map[field.Weather][]types.Type{
-		field.NoWeather: []types.Type{types.Normal},
-		field.Sunny:     []types.Type{types.Fire},
-		field.Rainy:     []types.Type{types.Water},
-		field.Snow:      []types.Type{types.Ice},
-		field.SandStorm: []types.Type{types.Normal},
+	weathers := map[field.Weather]types.Type{
+		field.NoWeather: types.Normal,
+		field.Sunny:     types.Fire,
+		field.Rainy:     types.Water,
+		field.Snow:      types.Ice,
+		field.SandStorm: types.Normal,
 	}
 	a := (&ForecastData{}).Create()
 	for f, ex := range weathers {
 		st := &testSituation{weather: f}
 		c := a.CorrectStatus(st)
-		act := c.CorrectTypes([]types.Type{types.Normal})
-		if !reflect.DeepEqual(act, ex) {
+		act := c.CorrectTypes(types.NewTypes(types.Normal))
+		if !act.Has(ex) {
 			t.Errorf("%d -> %v", f, act)
 		}
 	}
@@ -257,13 +256,13 @@ func Test_へんげんじざい(t *testing.T) {
 	a := (&ProteanData{}).Create()
 	a.setAttacker(true)
 	c := a.CorrectStatus(st)
-	if !reflect.DeepEqual(c.CorrectTypes([]types.Type{types.Water}), []types.Type{types.Fire}) {
+	if !c.CorrectTypes(types.NewTypes(types.Water)).Has(types.Fire) {
 		t.Error()
 	}
 	// 攻撃時でなければ変化が無い事
 	a.setAttacker(false)
 	c = a.CorrectStatus(st)
-	if !reflect.DeepEqual(c.CorrectTypes([]types.Type{types.Water}), []types.Type{types.Water}) {
+	if !c.CorrectTypes(types.NewTypes(types.Water)).Has(types.Water) {
 		t.Error()
 	}
 }
@@ -293,7 +292,7 @@ func Test_能力補正デフォルト(t *testing.T) {
 		t.Error()
 	}
 
-	if !reflect.DeepEqual(c.CorrectTypes([]types.Type{types.Fire}), []types.Type{types.Fire}) {
+	if !c.CorrectTypes(types.NewTypes(types.Fire)).Has(types.Fire) {
 		t.Error()
 	}
 }
@@ -330,7 +329,7 @@ func Test_能力補正(t *testing.T) {
 	if c.CorrectWeight(100) != 50 {
 		t.Error()
 	}
-	if !reflect.DeepEqual(c.CorrectTypes([]types.Type{types.Fire}), []types.Type{types.Water}) {
+	if !c.CorrectTypes(types.NewTypes(types.Fire)).Has(types.Water) {
 		t.Error()
 	}
 }
