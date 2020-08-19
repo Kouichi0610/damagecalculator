@@ -29,46 +29,6 @@ func Test_Factory(t *testing.T) {
 	}
 }
 
-func Test_Meta(t *testing.T) {
-	for i := 1; i <= 1000; i++ {
-		id := strconv.Itoa(i)
-		move, err := pokeapi.Move(id)
-		if err != nil {
-			break
-		}
-		jname := move.Name
-		for _, n := range move.Names {
-			if n.Language.Name == JpName {
-				jname = n.Name
-				break
-			}
-		}
-		s := new(strings.Builder)
-		s.WriteString(fmt.Sprintf("[%s] ", jname))
-		// AilmentChance > 0 追加効果あり
-		s.WriteString(fmt.Sprintf("Ailment[%s][%d] ", move.Meta.Ailment.Name, move.Meta.AilmentChance))
-		s.WriteString(fmt.Sprintf("Category[%s] ", move.Meta.Category.Name))
-
-		if len(move.PastValues) > 0 {
-			s.WriteString("PastValues[")
-			for _, past := range move.PastValues {
-				s.WriteString(fmt.Sprintf("[%s] ", past))
-
-			}
-			s.WriteString("]")
-		}
-		for _, n := range move.EffectEntries {
-			s.WriteString(fmt.Sprintf("Effect[%s]", n.Effect))
-		}
-
-		// 追加効果発動率
-		// s.WriteString(fmt.Sprintf("EffectChance[%s]", move.EffectChance))
-
-		t.Errorf("%s", s)
-
-	}
-}
-
 func Test_Moves(t *testing.T) {
 	factory := NewRepositoryFactory()
 	mv := factory.Moves()
