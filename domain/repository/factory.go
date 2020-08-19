@@ -1,12 +1,13 @@
 package repository
 
 import (
+	"damagecalculator/domain/skill"
 	"damagecalculator/domain/species"
 )
 
 type (
 	RepositoryFactory interface {
-		Species() species.SpeciesRepository
-		Moves() MovesRepository
+		Species() species.Repository
+		Moves() skill.Repository
 	}
 )

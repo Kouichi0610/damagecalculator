@@ -3,6 +3,7 @@ package pokeapi
 import (
 	"damagecalculator/domain/gender"
 	"damagecalculator/domain/repository"
+	"damagecalculator/domain/skill"
 	"damagecalculator/domain/species"
 	"damagecalculator/domain/stats"
 	"damagecalculator/domain/types"
@@ -39,15 +40,15 @@ func Test_Moves(t *testing.T) {
 	if err != nil {
 		t.Error()
 	}
-	expect := &repository.Move{
+	expect := &skill.Move{
 		Name:     "ロックブラスト",
 		Power:    25,
 		Accuracy: 90,
-		Damage:   repository.Physical,
+		Damage:   skill.Physical,
 		Type:     types.Rock,
 		MinHits:  2,
 		MaxHits:  5,
-		Target:   repository.Select,
+		Target:   skill.Select,
 	}
 
 	if !reflect.DeepEqual(move, expect) {

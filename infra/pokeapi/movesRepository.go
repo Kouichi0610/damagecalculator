@@ -1,7 +1,7 @@
 package pokeapi
 
 import (
-	"damagecalculator/domain/repository"
+	"damagecalculator/domain/skill"
 
 	"github.com/mtslzr/pokeapi-go"
 )
@@ -9,7 +9,7 @@ import (
 type movesRepository struct {
 }
 
-func (r *movesRepository) Get(name string) (*repository.Move, error) {
+func (r *movesRepository) Get(name string) (*skill.Move, error) {
 	move, err := pokeapi.Move(name)
 	if err != nil {
 		return nil, err
@@ -35,7 +35,7 @@ func (r *movesRepository) Get(name string) (*repository.Move, error) {
 	// Has a 3/8 chance each to hit 2 or 3 times, and a 1/8 chance each to hit 4 or 5 times.  Averages to 3 hits per use
 	// スキルリンクでもなければ使わないとしても。
 
-	res := &repository.Move{
+	res := &skill.Move{
 		Name:     jname,
 		Damage:   damage,
 		Power:    move.Power,
@@ -49,16 +49,16 @@ func (r *movesRepository) Get(name string) (*repository.Move, error) {
 	return res, nil
 }
 
-func damageClass(name string) repository.DamageClass {
+func damageClass(name string) skill.DamageClass {
 	switch name {
 	case "physical":
-		return repository.Physical
+		return skill.Physical
 	case "special":
-		return repository.Special
+		return skill.Special
 	case "status":
-		return repository.Status
+		return skill.Status
 	}
-	return repository.Physical
+	return skill.Physical
 }
 func hitCounts(minHits, maxHits interface{}) (min, max int) {
 	if minHits == nil || maxHits == nil {
@@ -79,16 +79,16 @@ func hitCounts(minHits, maxHits interface{}) (min, max int) {
 // all-other-pokemon 他全て
 // all-opponents　相手全て
 // user 自身
-func moveTarget(name string) repository.MoveTarget {
+func moveTarget(name string) skill.MoveTarget {
 	switch name {
 	case "user":
-		return repository.User
+		return skill.User
 	case "selected-pokemon":
-		return repository.Select
+		return skill.Select
 	case "all-other-pokemon":
-		return repository.AllOther
+		return skill.AllOther
 	case "all-opponents":
-		return repository.AllOpponents
+		return skill.AllOpponents
 	}
-	return repository.Select
+	return skill.Select
 }

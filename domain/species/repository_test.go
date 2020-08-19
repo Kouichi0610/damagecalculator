@@ -65,7 +65,7 @@ func Test_Repository(t *testing.T) {
 	}
 }
 
-func newRepository() SpeciesRepository {
+func newRepository() Repository {
 	return new(speciesRepository)
 }
 

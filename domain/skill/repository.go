@@ -1,9 +1,15 @@
-package repository
+package skill
 
 import (
 	"damagecalculator/domain/types"
 )
 
+/*
+	できれば
+	TODO:factoryをリポジトリ経由で
+	TODO:skill -> move
+	TODO:他のパッケージでskill.Knuckleなど定数を使っているところを修正(主にability)
+*/
 type (
 	DamageClass int
 	MoveTarget  int
@@ -19,7 +25,7 @@ type (
 		Target   MoveTarget
 	}
 
-	MovesRepository interface {
+	Repository interface {
 		Get(name string) (*Move, error)
 	}
 )

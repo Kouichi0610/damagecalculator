@@ -26,7 +26,7 @@ type (
 		Moves     []string // 選択可能なわざ一覧
 	}
 
-	SpeciesRepository interface {
+	Repository interface {
 		Get(name string) (*Species, error)
 	}
 
@@ -36,14 +36,14 @@ type (
 	}
 )
 
-func NewStatusFactory(r SpeciesRepository) StatusFactory {
+func NewStatusFactory(r Repository) StatusFactory {
 	return &statusFactory{
 		r: r,
 	}
 }
 
 type statusFactory struct {
-	r SpeciesRepository
+	r Repository
 }
 
 type StatusFactoryArgs struct {
