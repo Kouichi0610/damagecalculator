@@ -27,12 +27,13 @@ func NewMove(
 		return nil, err
 	}
 	mv := &defaultMove{
-		power:     power,
-		ty:        ty,
-		accuracy:  accuracy,
-		picker:    picker,
-		attribute: attribute,
-		target:    target,
+		ty:          ty,
+		power:       power,
+		accuracy:    accuracy,
+		attackCount: count,
+		picker:      picker,
+		attribute:   attribute,
+		target:      target,
 	}
 	switch detail {
 	case Default:

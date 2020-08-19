@@ -14,13 +14,13 @@ import (
 
 // 特殊な効果のないわざの基底クラス
 type defaultMove struct {
-	ty        types.Type
-	power     power.Power
-	accuracy  accuracy.Accuracy
-	count     *count.AttackCount
-	picker    category.CategoryFunc
-	attribute attribute.Attribute
-	target    target.MoveTarget
+	ty          types.Type
+	power       power.Power
+	accuracy    accuracy.Accuracy
+	attackCount *count.AttackCount
+	picker      category.CategoryFunc
+	attribute   attribute.Attribute
+	target      target.MoveTarget
 }
 
 // TODO:[]Correctors -> ?
@@ -40,9 +40,9 @@ func (m *defaultMove) PickStats(st SituationChecker) (at, df *status.RankedValue
 }
 func (m *defaultMove) Calculate(level, power, attack, defense uint) []uint {
 	res := calculateArray(level, power, attack, defense)
-	return m.count.Correct(res)
+	return m.attackCount.Correct(res)
 }
 
 func (m *defaultMove) Attribute() attribute.Attribute {
-	return attribute.NewAttribute(attribute.Fang, attribute.NoAttribute)
+	return m.attribute
 }
