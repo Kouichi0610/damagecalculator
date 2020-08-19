@@ -9,6 +9,7 @@ import (
 	TODO:factoryをリポジトリ経由で
 	TODO:skill -> move
 	TODO:他のパッケージでskill.Knuckleなど定数を使っているところを修正(主にability)
+	TODO:ファイル多すぎるのでrepository以外のフォルダ階層を一段下げる
 */
 type (
 	DamageClass int
