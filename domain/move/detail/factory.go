@@ -38,9 +38,9 @@ func NewMove(
 	switch detail {
 	case Default:
 		return mv, nil
+	case SeismicToss:
+		return &seismicToss{mv}, nil
 		/*
-			case SeismicToss:
-				return nil, nil
 			case WeatherBall:
 				return nil, nil
 			case GyroBall:

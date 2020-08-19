@@ -106,11 +106,28 @@ func Test_DefaultMove機能テスト(t *testing.T) {
 	}
 }
 
-func newTestMove(d Detail) interface{} {
-	attackCnt, err := count.NewAttackCount(1, 1)
-	if err != nil {
-		panic("failed at")
+func Test_ちきゅうなげ(t *testing.T) {
+	attackCnt, _ := count.NewAttackCount(1, 1)
+	res, _ := NewMove(
+		100,
+		types.Fire,
+		80,
+		category.Physical,
+		attackCnt,
+		target.Select,
+		attribute.NewAttribute(attribute.Contact, attribute.Recoil),
+		SeismicToss)
+	mv := res.(*seismicToss)
+
+	// ダメージ計算はレベル固定となること
+	dmgs := mv.Calculate(50, 1, 1, 1)
+	if !reflect.DeepEqual(dmgs, []uint{50}) {
+		t.Error()
 	}
+}
+
+func newTestMove(d Detail) interface{} {
+	attackCnt, _ := count.NewAttackCount(1, 1)
 	res, _ := NewMove(
 		100,
 		types.Fire,
@@ -122,8 +139,6 @@ func newTestMove(d Detail) interface{} {
 		d)
 	return res
 }
-
-// TODO:defaultMoveの機能テスト
 
 func dummySituation() SituationChecker {
 	at := &status.StatusData{
