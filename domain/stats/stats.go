@@ -4,7 +4,7 @@
 package stats
 
 type stats struct {
-	hp, at, df, sa, sd, sp uint
+	HP, Attack, Defense, SpAttack, SpDefense, Speed uint
 }
 
 func NewStats(l Level, s *SpeciesStats, i *IndividualStats, b *BasePointStats, n *Nature) *stats {
@@ -16,11 +16,11 @@ func NewStats(l Level, s *SpeciesStats, i *IndividualStats, b *BasePointStats, n
 	sp := n.calcSpeed(l, s.sp, i.sp, b.sp)
 
 	return &stats{
-		hp: hp,
-		at: at,
-		df: df,
-		sa: sa,
-		sd: sd,
-		sp: sp,
+		HP: hp,
+		Attack: at,
+		Defense: df,
+		SpAttack: sa,
+		SpDefense: sd,
+		Speed: sp,
 	}
 }

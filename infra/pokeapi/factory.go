@@ -2,6 +2,7 @@ package pokeapi
 
 import (
 	"damagecalculator/domain/repository"
+	"damagecalculator/domain/species"
 )
 
 const JpName = "ja-Hrkt"
@@ -13,7 +14,7 @@ func NewRepositoryFactory() repository.RepositoryFactory {
 	return new(repositoryFactory)
 }
 
-func (repositoryFactory) Species() repository.SpeciesRepository {
+func (repositoryFactory) Species() species.SpeciesRepository {
 	return new(speciesRepository)
 }
 

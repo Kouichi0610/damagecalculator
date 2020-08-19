@@ -2,7 +2,7 @@ package pokeapi
 
 import (
 	"damagecalculator/domain/gender"
-	"damagecalculator/domain/repository"
+	"damagecalculator/domain/species"
 	"damagecalculator/domain/stats"
 	"damagecalculator/domain/types"
 	"damagecalculator/infra/index"
@@ -13,8 +13,8 @@ import (
 type speciesRepository struct {
 }
 
-func (s *speciesRepository) Get(name string) (*repository.Species, error) {
-	res := new(repository.Species)
+func (s *speciesRepository) Get(name string) (*species.Species, error) {
+	res := new(species.Species)
 	id, err := index.Index(name)
 	if err != nil {
 		return res, err

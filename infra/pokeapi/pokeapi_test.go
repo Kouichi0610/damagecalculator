@@ -3,6 +3,7 @@ package pokeapi
 import (
 	"damagecalculator/domain/gender"
 	"damagecalculator/domain/repository"
+	"damagecalculator/domain/species"
 	"damagecalculator/domain/stats"
 	"damagecalculator/domain/types"
 	"testing"
@@ -63,7 +64,7 @@ func Test_Species(t *testing.T) {
 	if err != nil {
 		t.Errorf(err.Error())
 	}
-	expect := &repository.Species{
+	expect := &species.Species{
 		Name:      "ツンデツンデ",
 		Stats:     stats.NewSpeciesStats(61, 131, 211, 53, 101, 13),
 		Weight:    820.0,

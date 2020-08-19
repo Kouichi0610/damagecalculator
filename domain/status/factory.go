@@ -5,6 +5,7 @@ import (
 	"damagecalculator/domain/types"
 )
 
+// TODO:リポジトリ経由ならこっちも改修はいる
 type StatusData struct {
 	Lv                                                              uint
 	Types                                                           []types.Type
