@@ -12,22 +12,22 @@ func Test_Stats(t *testing.T) {
 
 	stats := NewStats(l, s, i, b, n)
 
-	if stats.hp != 171 {
-		t.Errorf("%d", stats.hp)
+	if stats.HP != 171 {
+		t.Errorf("%d", stats.HP)
 	}
-	if stats.at != 144 {
-		t.Errorf("%d", stats.at)
+	if stats.Attack != 144 {
+		t.Errorf("%d", stats.Attack)
 	}
-	if stats.df != 137 {
-		t.Errorf("%d", stats.df)
+	if stats.Defense != 137 {
+		t.Errorf("%d", stats.Defense)
 	}
-	if stats.sa != 95 {
-		t.Errorf("%d", stats.sa)
+	if stats.SpAttack != 95 {
+		t.Errorf("%d", stats.SpAttack)
 	}
-	if stats.sd != 105 {
-		t.Errorf("%d", stats.sd)
+	if stats.SpDefense != 105 {
+		t.Errorf("%d", stats.SpDefense)
 	}
-	if stats.sp != 108 {
-		t.Errorf("%d", stats.sp)
+	if stats.Speed != 108 {
+		t.Errorf("%d", stats.Speed)
 	}
 }
