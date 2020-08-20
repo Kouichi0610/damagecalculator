@@ -40,14 +40,12 @@ func NewMove(
 		return mv, nil
 	case SeismicToss:
 		return &seismicToss{mv}, nil
-		/*
-			case WeatherBall:
-				return nil, nil
-			case GyroBall:
-				return nil, nil
-			case HeavySlam:
-				return nil, nil
-		*/
+	case WeatherBall:
+		return &weatherBall{mv}, nil
+	case GyroBall:
+		return &gyroBall{mv}, nil
+	case HeavySlam:
+		return &heavySlam{mv}, nil
 	}
 
 	return nil, fmt.Errorf("%d not supported.", target)

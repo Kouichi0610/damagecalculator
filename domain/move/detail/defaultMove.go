@@ -25,7 +25,7 @@ type defaultMove struct {
 
 // TODO:[]Correctors -> ?
 func (m *defaultMove) Correctors(SituationChecker) []corrector.Corrector {
-	return nil
+	return []corrector.Corrector{corrector.NewPower(1.0)}
 }
 func (m *defaultMove) Types(SituationChecker) *types.Types {
 	return types.NewTypes(m.ty)
