@@ -272,6 +272,7 @@ func weatherSituation(w field.Weather) SituationChecker {
 	st.w = w
 	return st
 }
+
 func dummySituation() SituationChecker {
 	at := &status.StatusData{
 		Lv:            50,

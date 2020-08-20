@@ -1,6 +1,12 @@
 package move
 
 import (
+	"damagecalculator/domain/move/attribute"
+	"damagecalculator/domain/move/category"
+	"damagecalculator/domain/move/count"
+	"damagecalculator/domain/move/detail"
+	"damagecalculator/domain/move/target"
+	"damagecalculator/domain/types"
 	"testing"
 )
 
@@ -9,8 +15,18 @@ import (
 	詳細はDetail側で行っている
 */
 func Test_CreateMove(t *testing.T) {
-	// TODO:これがとおるのは良くないか
-	f := &MoveFactory{}
+	cnt, _ := count.NewAttackCount(1, 1)
+	f := &MoveFactory{
+		Name:      "サイコショック",
+		Power:     80,
+		Type:      types.Psychic,
+		Accuracy:  100,
+		Category:  category.PsycoShock,
+		Count:     cnt,
+		Target:    target.Select,
+		Attribute: attribute.NewAttribute(attribute.Remote, attribute.NoAttribute),
+		Detail:    detail.Default,
+	}
 	mv, err := f.Create()
 	if mv == nil {
 		t.Error()
@@ -19,6 +35,8 @@ func Test_CreateMove(t *testing.T) {
 		t.Error()
 	}
 
-	// TODO:パラメータ確認
-
+	// Moveとして機能していること
+	if mv.Attribute().IsContact() {
+		t.Error()
+	}
 }
