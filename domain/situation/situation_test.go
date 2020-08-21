@@ -1,8 +1,8 @@
 package situation
 
 import (
-	"damagecalculator/domain/ability"
 	"damagecalculator/domain/ability/correct"
+	AbilityDetail "damagecalculator/domain/ability/detail"
 	"damagecalculator/domain/corrector"
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/item"
@@ -36,7 +36,7 @@ func Test_ステータス補正(t *testing.T) {
 	d.Attacker = &status.StatusData{50, []types.Type{types.Water}, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 20.0}
 	d.Defender = &status.StatusData{50, []types.Type{types.Grass}, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 20.0}
 	d.Move = testMoveFactory()
-	d.AttackerAbility = &ability.StatusCorrectorData{[]types.Type{types.Dragon}, 2.0, 1.0, 1.0, 1.0, 1.0, 2.0}
+	d.AttackerAbility = &AbilityDetail.StatusCorrectorBuilder{[]types.Type{types.Dragon}, 2.0, 1.0, 1.0, 1.0, 1.0, 2.0}
 	st, _ := d.Create()
 
 	at := st.Attacker()
@@ -57,12 +57,12 @@ func Test_ダメージ威力補正(t *testing.T) {
 	d.Attacker = &status.StatusData{50, []types.Type{types.Water}, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 20.0}
 	d.Defender = &status.StatusData{50, []types.Type{types.Grass}, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 20.0}
 	d.Move = testMoveFactory()
-	d.AttackerAbility = &ability.PowerCorrectorData{
+	d.AttackerAbility = &AbilityDetail.PowerCorrectorBuilder{
 		[]correct.PowerCorrectorBuilder{
 			&correct.TypeAttackData{[]types.Type{types.Fire}, 2.0},
 		},
 	}
-	d.DefenderAbility = &ability.PowerCorrectorData{
+	d.DefenderAbility = &AbilityDetail.PowerCorrectorBuilder{
 		[]correct.PowerCorrectorBuilder{
 			&correct.ActionDefenseData{attribute.Knuckle, 0.5},
 		},
@@ -140,13 +140,13 @@ func create() (SituationChecker, error) {
 	atItem := &item.NoItem{}
 	dfItem := &item.NoItem{}
 
-	atAbility := &ability.NoAbilityData{}
-	dfAbility := &ability.NoAbilityData{}
+	atAbility := &AbilityDetail.NoEffectBuilder{}
+	dfAbility := &AbilityDetail.NoEffectBuilder{}
 
 	d := &SituationData{
 		Attacker:        at,
 		Defender:        df,
-		Move:           s,
+		Move:            s,
 		Weather:         field.Sunny,
 		Field:           field.ElectricField,
 		AttackerAbility: atAbility,

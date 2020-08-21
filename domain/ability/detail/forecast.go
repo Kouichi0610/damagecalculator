@@ -1,4 +1,4 @@
-package ability
+package detail
 
 import (
 	"damagecalculator/domain/ability/situation"
@@ -10,7 +10,7 @@ import (
 // てんきや
 // 晴れの時ほのおタイプに、雨の時みずタイプに、あられのときこおりタイプになる
 type forecast struct {
-	ability
+	abilityImpl
 }
 
 func (s *forecast) CorrectStatus(st situation.SituationChecker) *status.StatsCorrectors {

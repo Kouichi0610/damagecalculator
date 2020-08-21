@@ -1,4 +1,4 @@
-package ability
+package detail
 
 import (
 	"damagecalculator/domain/ability/situation"
@@ -10,7 +10,7 @@ import (
 // 条件指定なし
 
 type statusCorrector struct {
-	ability
+	abilityImpl
 	ty                 []types.Type
 	at, df, sa, sd, sp float64
 	wt                 float64

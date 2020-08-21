@@ -44,7 +44,7 @@ type situation struct {
 }
 
 func (s *situation) Attacker() status.StatusChecker {
-	ability := s.abilities.Attacker().CorrectStatus(s)
+	ability := s.abilities.CorrectAttackerStatus(s)
 	ac, _ := s.mv.StatusCorrector(s.at.Types(), s.df.Types())
 	ic := s.atItem.Correct()
 	res := ability.Create(s.at)
@@ -53,7 +53,7 @@ func (s *situation) Attacker() status.StatusChecker {
 	return res
 }
 func (s *situation) Defender() status.StatusChecker {
-	ability := s.abilities.Defender().CorrectStatus(s)
+	ability := s.abilities.CorrectDefenderStatus(s)
 	_, dc := s.mv.StatusCorrector(s.at.Types(), s.df.Types())
 	ic := s.dfItem.Correct()
 	res := ability.Create(s.df)

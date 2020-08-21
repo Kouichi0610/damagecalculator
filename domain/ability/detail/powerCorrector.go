@@ -1,4 +1,4 @@
-package ability
+package detail
 
 import (
 	"damagecalculator/domain/ability/correct"
@@ -8,14 +8,14 @@ import (
 
 // ダメージ、威力補正をまとめたもの
 type powerCorrector struct {
-	ability
+	abilityImpl
 	c []correct.PowerCorrector
 }
 
 func (s *powerCorrector) Correctors(st situation.SituationChecker) []corrector.Corrector {
 	res := make([]corrector.Corrector, 0)
 	for _, c := range s.c {
-		cr := c.Correct(s.ability.isAttacker, st)
+		cr := c.Correct(s.isAttacker, st)
 		if cr == nil {
 			continue
 		}

@@ -1,4 +1,4 @@
-package ability
+package detail
 
 import (
 	"damagecalculator/domain/ability/situation"
@@ -8,12 +8,12 @@ import (
 // ふしぎなまもり
 // 効果抜群以外のダメージを受けない
 type wonderGuard struct {
-	ability
+	abilityImpl
 }
 
 func (a *wonderGuard) Correctors(st situation.SituationChecker) []corrector.Corrector {
 	// 防御側でのみ有効
-	if a.ability.isAttacker {
+	if a.isAttacker {
 		return nil
 	}
 

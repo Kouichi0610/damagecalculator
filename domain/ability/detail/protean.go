@@ -1,4 +1,4 @@
-package ability
+package detail
 
 import (
 	"damagecalculator/domain/ability/situation"
@@ -8,7 +8,7 @@ import (
 // へんげんじざい
 // 攻撃時、技のタイプと同じになる
 type protean struct {
-	ability
+	abilityImpl
 }
 
 func (s *protean) CorrectStatus(st situation.SituationChecker) *status.StatsCorrectors {
