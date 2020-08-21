@@ -11,12 +11,6 @@ import (
 	"damagecalculator/domain/types"
 )
 
-/*
-	TODO:skillまるごと削除
-	TODO:リポジトリ書き換え
-	TODO:skill利用していたパッケージの修正
-*/
-
 type (
 	Repository interface {
 		Get(name string) (*MoveFactory, error)

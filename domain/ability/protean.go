@@ -16,7 +16,7 @@ func (s *protean) CorrectStatus(st situation.SituationChecker) *status.StatsCorr
 	if !s.isAttacker {
 		return c
 	}
-	ty := st.SkillTypes()
+	ty := st.MoveTypes()
 	c.Types(ty)
 	return c
 }

@@ -4,24 +4,31 @@ import (
 	"damagecalculator/domain/ability"
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/item"
+	"damagecalculator/domain/move"
+	"damagecalculator/domain/move/attribute"
+	"damagecalculator/domain/move/category"
+	"damagecalculator/domain/move/count"
+	"damagecalculator/domain/move/detail"
+	"damagecalculator/domain/move/target"
 	"damagecalculator/domain/situation"
-	"damagecalculator/domain/skill"
-	"damagecalculator/domain/skill/category"
 	"damagecalculator/domain/status"
 	"damagecalculator/domain/types"
+
 	"testing"
 )
 
 func defaultArgs() *situation.SituationData {
-	s := &skill.SkillData{
-		Types:     []types.Type{types.Fire},
+	cnt, _ := count.NewAttackCount(1, 1)
+	s := &move.MoveFactory{
+		Name:      "unknown",
 		Power:     80,
-		CountMin:  1,
-		CountMax:  1,
+		Type:      types.Fire,
+		Accuracy:  100,
 		Category:  category.Physical,
-		Method:    skill.NoMethod,
-		Action:    skill.Contact,
-		Attribute: skill.NoAttribute,
+		Count:     cnt,
+		Target:    target.Select,
+		Attribute: attribute.NewAttribute(attribute.Contact, attribute.NoAttribute),
+		Detail:    detail.Default,
 	}
 	at := &status.StatusData{
 		Lv:    50,
@@ -45,7 +52,7 @@ func defaultArgs() *situation.SituationData {
 	dfAbility := &ability.NoAbilityData{}
 
 	st := &situation.SituationData{
-		Skill:           s,
+		Move:            s,
 		Attacker:        at,
 		Defender:        df,
 		Weather:         field.NoWeather,
@@ -81,15 +88,17 @@ func Test_重さ(t *testing.T) {
 func Test_ヘビーボンバー(t *testing.T) {
 	d := NewDamageCalculator()
 	a := defaultArgs()
-	a.Skill = &skill.SkillData{
-		Types:     []types.Type{types.Steel},
+	cnt, _ := count.NewAttackCount(1, 1)
+	a.Move = &move.MoveFactory{
+		Name:      "unknown",
 		Power:     1,
-		CountMin:  1,
-		CountMax:  1,
+		Type:      types.Steel,
+		Accuracy:  100,
 		Category:  category.Physical,
-		Method:    skill.HeavySlam,
-		Action:    skill.Contact,
-		Attribute: skill.NoAttribute,
+		Count:     cnt,
+		Target:    target.Select,
+		Attribute: attribute.NewAttribute(attribute.Contact, attribute.NoAttribute),
+		Detail:    detail.HeavySlam,
 	}
 	st, _ := a.Create()
 	dmgs := d.CreateDamage(st)
@@ -110,7 +119,7 @@ func Test_もちもの補正(t *testing.T) {
 	a := defaultArgs()
 	a.Attacker.Types = []types.Type{types.Fire}
 	a.Defender.Types = []types.Type{types.Bug}
-	a.Skill.Types = []types.Type{types.Normal}
+	a.Move.Type = types.Normal
 	a.AttackerItem = &item.TypeCorrectData{types.Bug, 1.5}
 	st, _ := a.Create()
 	dmgs := d.CreateDamage(st)
@@ -138,7 +147,7 @@ func Test_タイプ相性(t *testing.T) {
 	a := defaultArgs()
 	a.Attacker.Types = []types.Type{types.Fire}
 	a.Defender.Types = []types.Type{types.Bug}
-	a.Skill.Types = []types.Type{types.Normal}
+	a.Move.Type = types.Normal
 
 	// ノーマル->むし
 	st, _ := a.Create()
@@ -147,14 +156,14 @@ func Test_タイプ相性(t *testing.T) {
 		t.Errorf("%v", dmgs)
 	}
 	// いわ->むし
-	a.Skill.Types = []types.Type{types.Rock}
+	a.Move.Type = types.Rock
 	st, _ = a.Create()
 	dmgs = d.CreateDamage(st)
 	if dmgs.Min() != 128 {
 		t.Errorf("%v", dmgs)
 	}
 	// ほのお(タイプ一致)->むし
-	a.Skill.Types = []types.Type{types.Fire}
+	a.Move.Type = types.Fire
 	st, _ = a.Create()
 	dmgs = d.CreateDamage(st)
 	if dmgs.Min() != 192 {
@@ -181,7 +190,7 @@ func Test_急所(t *testing.T) {
 func Test_天候(t *testing.T) {
 	a := defaultArgs()
 
-	a.Skill.Types = []types.Type{types.Fire}
+	a.Move.Type = types.Fire
 	a.Defender.Types = []types.Type{types.Normal}
 	a.Attacker.Types = []types.Type{types.Normal}
 
@@ -201,7 +210,7 @@ func Test_天候(t *testing.T) {
 func Test_フィールド(t *testing.T) {
 	a := defaultArgs()
 
-	a.Skill.Types = []types.Type{types.Electric}
+	a.Move.Type = types.Electric
 	a.Defender.Types = []types.Type{types.Normal}
 	a.Attacker.Types = []types.Type{types.Normal}
 
@@ -220,8 +229,8 @@ func Test_フィールド(t *testing.T) {
 func Test_すなあらし岩タイプ補正(t *testing.T) {
 	a := defaultArgs()
 
-	a.Skill.Types = []types.Type{types.Ghost}
-	a.Skill.Category = category.Special
+	a.Move.Type = types.Ghost
+	a.Move.Category = category.Special
 	a.Defender.Types = []types.Type{types.Rock}
 	a.Attacker.Types = []types.Type{types.Normal}
 

@@ -11,20 +11,7 @@ type Damages struct {
 
 type damageSlice []uint
 
-/*
-func NewDamages(args ...uint) *Damages {
-	res := new(Damages)
-	res.d = make([]uint, 0)
-	if len(args) == 0 {
-		return res
-	}
-	for _, n := range args {
-		res.d = append(res.d, n)
-	}
-	sort.Sort(damageSlice(res.d))
-	return res
-}
-*/
+// TODO:改修
 
 func NewDamages(args []uint) *Damages {
 	res := new(Damages)

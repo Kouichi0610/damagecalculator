@@ -3,7 +3,7 @@ package correct
 import (
 	"damagecalculator/domain/corrector"
 	"damagecalculator/domain/field"
-	"damagecalculator/domain/skill"
+	"damagecalculator/domain/move/attribute"
 	"damagecalculator/domain/types"
 	"testing"
 )
@@ -60,10 +60,10 @@ func Test_タイプ防御補正(t *testing.T) {
 }
 func Test_アクション防御補正(t *testing.T) {
 	st := &testSituation{
-		action: skill.Fang,
+		action: attribute.Fang,
 	}
 	// 特定のわざアクションの時補正を掛けること
-	a := (&ActionDefenseData{skill.Fang, 0.5}).Create()
+	a := (&ActionDefenseData{attribute.Fang, 0.5}).Create()
 	c := a.Correct(false, st)
 	if c.Category() != corrector.Damage {
 		t.Error()
@@ -73,14 +73,14 @@ func Test_アクション防御補正(t *testing.T) {
 	}
 
 	// それ以外では補正を掛けないこと
-	st.action = skill.Contact
+	st.action = attribute.Contact
 	c = a.Correct(false, st)
 	if c != nil {
 		t.Error()
 	}
 
 	// 防御側では補正を掛けないこと
-	st.action = skill.Fang
+	st.action = attribute.Fang
 	c = a.Correct(true, st)
 	if c != nil {
 		t.Error()
@@ -124,10 +124,10 @@ func Test_タイプ攻撃補正(t *testing.T) {
 }
 func Test_アクション攻撃補正(t *testing.T) {
 	st := &testSituation{
-		action: skill.Fang,
+		action: attribute.Fang,
 	}
 	// 特定のわざアクションの時補正を掛けること
-	a := (&ActionAttackData{skill.Fang, 1.5}).Create()
+	a := (&ActionAttackData{attribute.Fang, 1.5}).Create()
 	c := a.Correct(true, st)
 	if c.Category() != corrector.Power {
 		t.Error()
@@ -137,14 +137,14 @@ func Test_アクション攻撃補正(t *testing.T) {
 	}
 
 	// それ以外では補正を掛けないこと
-	st.action = skill.Contact
+	st.action = attribute.Contact
 	c = a.Correct(true, st)
 	if c != nil {
 		t.Error()
 	}
 
 	// 防御側では補正を掛けないこと
-	st.action = skill.Fang
+	st.action = attribute.Fang
 	c = a.Correct(false, st)
 	if c != nil {
 		t.Error()
@@ -156,13 +156,13 @@ type testSituation struct {
 	effective float64
 	weather   field.Weather
 	field     field.Field
-	action    skill.Action
+	action    attribute.Action
 }
 
-func (st *testSituation) SkillTypes() *types.Types {
+func (st *testSituation) MoveTypes() *types.Types {
 	return types.NewTypes(st.skillType...)
 }
-func (st *testSituation) SkillEffective() types.Effective {
+func (st *testSituation) MoveEffective() types.Effective {
 	return types.Effective(st.effective)
 }
 func (st *testSituation) IsWeather(w field.Weather) bool {
@@ -171,6 +171,6 @@ func (st *testSituation) IsWeather(w field.Weather) bool {
 func (st *testSituation) IsField(f field.Field) bool {
 	return st.field == f
 }
-func (st *testSituation) SkillAction() skill.Action {
-	return st.action
+func (st *testSituation) MoveAttribute() attribute.Attribute {
+	return attribute.NewAttribute(st.action, attribute.NoAttribute)
 }

@@ -1,8 +1,8 @@
 package pokeapi
 
 import (
+	"damagecalculator/domain/move"
 	"damagecalculator/domain/repository"
-	"damagecalculator/domain/skill"
 	"damagecalculator/domain/species"
 )
 
@@ -19,6 +19,6 @@ func (repositoryFactory) Species() species.Repository {
 	return new(speciesRepository)
 }
 
-func (repositoryFactory) Moves() skill.Repository {
+func (repositoryFactory) Moves() move.Repository {
 	return new(movesRepository)
 }

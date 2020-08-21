@@ -10,6 +10,9 @@ type Attribute interface {
 
 	HasAppendEffect() bool // 追加効果あり
 	HasRecoil() bool       // 反動
+
+	HasAction(Action) bool
+	HasEffect(Effect) bool
 }
 
 type Action uint
@@ -64,4 +67,10 @@ func (a *attribute) HasAppendEffect() bool {
 }
 func (a *attribute) HasRecoil() bool {
 	return a.e == Recoil
+}
+func (a *attribute) HasAction(act Action) bool {
+	return a.a == act
+}
+func (a *attribute) HasEffect(ef Effect) bool {
+	return a.e == ef
 }

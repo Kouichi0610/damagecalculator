@@ -52,3 +52,15 @@ func Test_Attributes_Effect(t *testing.T) {
 		}
 	}
 }
+
+func Test_HasAction(t *testing.T) {
+	attr := NewAttribute(Fang, Recoil)
+
+	if !attr.HasAction(Fang) {
+		t.Error()
+	}
+
+	if !attr.HasEffect(Recoil) {
+		t.Error()
+	}
+}

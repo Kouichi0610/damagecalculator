@@ -5,8 +5,8 @@ package damage
 
 import (
 	"damagecalculator/domain/corrector"
+	_ "damagecalculator/domain/move"
 	"damagecalculator/domain/situation"
-	_ "damagecalculator/domain/skill"
 	"damagecalculator/domain/status"
 )
 
@@ -26,10 +26,10 @@ func NewDamageCalculator() DamageCalculator {
 func (d *impl) CreateDamage(st situation.SituationChecker) *Damages {
 	c := corrector.NewStatsCorrector()
 	level := uint(st.Attacker().Level())
-	skill := st.Skill()
+	move := st.Move()
 
 	// タイプ相性
-	skillType := skill.Types(st)
+	skillType := move.Types(st)
 	attacker := st.Attacker()
 	defender := st.Defender()
 	if skillType.PartialMatch(attacker.Types()) {
@@ -37,7 +37,7 @@ func (d *impl) CreateDamage(st situation.SituationChecker) *Damages {
 	}
 	ef := skillType.Magnification(defender.Types())
 
-	at, df := skill.PickStats(st)
+	at, df := move.PickStats(st)
 	attack, defense := criticalStats(st.IsCritical(), at, df)
 	if st.IsCritical() {
 		c.ApplyCritical()
@@ -48,11 +48,11 @@ func (d *impl) CreateDamage(st situation.SituationChecker) *Damages {
 	// 補正
 	c.Appends(st.Correctors()...)
 
-	power := c.CorrectPower(skill.Power(st))
+	power := c.CorrectPower(move.Power(st))
 	attack = c.CorrectAttack(attack)
 	defense = c.CorrectDefense(defense)
 
-	dmgs := skill.Calculate(level, power, attack, defense)
+	dmgs := move.Calculate(level, power, attack, defense)
 
 	for i := 0; i < len(dmgs); i++ {
 		dmgs[i] = ef.Correct(dmgs[i])

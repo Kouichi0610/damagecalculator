@@ -4,12 +4,12 @@ import (
 	"damagecalculator/domain/ability"
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/item"
-	"damagecalculator/domain/skill"
+	"damagecalculator/domain/move"
 	"damagecalculator/domain/status"
 )
 
 type SituationData struct {
-	Skill              *skill.SkillData
+	Move              *move.MoveFactory
 	Attacker, Defender *status.StatusData
 	Weather            field.Weather
 	Field              field.Field
@@ -41,7 +41,7 @@ func (s *SituationData) Create() (SituationChecker, error) {
 	af := ability.NewAbilityField(aa, da)
 
 	// とくせいによるわざ情報上書き
-	sd := af.RewriteSkillData(*s.Skill)
+	sd := af.RewriteMoveFactory(*s.Move)
 	sk, err := sd.Create()
 	if err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func (s *SituationData) Create() (SituationChecker, error) {
 		at:         s.Attacker.Create(),
 		df:         s.Defender.Create(),
 		sk:         sk,
-		fl:         field.NewFields(s.Field, s.Weather),
+		mv:         field.NewFields(s.Field, s.Weather),
 		atItem:     s.AttackerItem.Create(true),
 		dfItem:     s.DefenderItem.Create(false),
 		abilities:  af,
