@@ -1,4 +1,4 @@
-package skill
+package detail
 
 import (
 	"damagecalculator/domain/field"
@@ -7,11 +7,6 @@ import (
 
 /*
 	わざの補正を掛けるために必要な情報を取得する
-
-	実体はsituation.Situationに
-
-	goはパッケージの相互参照を禁止しているため
-	situation.Situationを直接参照できない。
 */
 type SituationChecker interface {
 	Attacker() status.StatusChecker

@@ -85,7 +85,7 @@ func Test_Category_シェルアームズ(t *testing.T) {
 }
 
 func Test_Category_例外(t *testing.T) {
-	c, err := NewCategory(Category(100))
+	c, err := NewCategory(DamageCategory(100))
 	if c != nil {
 		t.Error()
 	}

@@ -3,7 +3,7 @@ package correct
 import (
 	"damagecalculator/domain/ability/situation"
 	"damagecalculator/domain/corrector"
-	"damagecalculator/domain/skill"
+	"damagecalculator/domain/move/attribute"
 	"damagecalculator/domain/types"
 )
 
@@ -26,7 +26,7 @@ type (
 		Scale float64
 	}
 	ActionAttackData struct {
-		Action skill.Action
+		Action attribute.Action
 		Scale  float64
 	}
 	TypeDefenseData struct {
@@ -34,7 +34,7 @@ type (
 		Scale float64
 	}
 	ActionDefenseData struct {
-		Action skill.Action
+		Action attribute.Action
 		Scale  float64
 	}
 )
@@ -59,7 +59,7 @@ func (d *TypeDefenseData) Create() PowerCorrector {
 }
 func (d *ActionDefenseData) Create() PowerCorrector {
 	return &actionDefense{
-		ac: d.Action,
+		at: d.Action,
 		sc: d.Scale,
 	}
 }

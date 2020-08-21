@@ -6,8 +6,12 @@ import (
 	"damagecalculator/domain/corrector"
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/item"
-	"damagecalculator/domain/skill"
-	"damagecalculator/domain/skill/category"
+	"damagecalculator/domain/move"
+	"damagecalculator/domain/move/attribute"
+	"damagecalculator/domain/move/category"
+	"damagecalculator/domain/move/count"
+	"damagecalculator/domain/move/detail"
+	"damagecalculator/domain/move/target"
 	"damagecalculator/domain/status"
 	"damagecalculator/domain/types"
 	"testing"
@@ -17,7 +21,7 @@ func Test_NewSituation(t *testing.T) {
 	d := NewSituationData()
 	d.Attacker = &status.StatusData{50, []types.Type{types.Water}, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 20.0}
 	d.Defender = &status.StatusData{50, []types.Type{types.Grass}, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 20.0}
-	d.Skill = &skill.SkillData{[]types.Type{types.Fire}, 20, 2, 5, category.Physical, skill.NoMethod, skill.Knuckle, skill.NoAttribute}
+	d.Move = testMoveFactory()
 
 	st, err := d.Create()
 	if st == nil {
@@ -31,7 +35,7 @@ func Test_ステータス補正(t *testing.T) {
 	d := NewSituationData()
 	d.Attacker = &status.StatusData{50, []types.Type{types.Water}, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 20.0}
 	d.Defender = &status.StatusData{50, []types.Type{types.Grass}, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 20.0}
-	d.Skill = &skill.SkillData{[]types.Type{types.Fire}, 20, 2, 5, category.Physical, skill.NoMethod, skill.Knuckle, skill.NoAttribute}
+	d.Move = testMoveFactory()
 	d.AttackerAbility = &ability.StatusCorrectorData{[]types.Type{types.Dragon}, 2.0, 1.0, 1.0, 1.0, 1.0, 2.0}
 	st, _ := d.Create()
 
@@ -52,7 +56,7 @@ func Test_ダメージ威力補正(t *testing.T) {
 	d := NewSituationData()
 	d.Attacker = &status.StatusData{50, []types.Type{types.Water}, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 20.0}
 	d.Defender = &status.StatusData{50, []types.Type{types.Grass}, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 20.0}
-	d.Skill = &skill.SkillData{[]types.Type{types.Fire}, 20, 2, 5, category.Physical, skill.NoMethod, skill.Knuckle, skill.NoAttribute}
+	d.Move = testMoveFactory()
 	d.AttackerAbility = &ability.PowerCorrectorData{
 		[]correct.PowerCorrectorBuilder{
 			&correct.TypeAttackData{[]types.Type{types.Fire}, 2.0},
@@ -60,12 +64,12 @@ func Test_ダメージ威力補正(t *testing.T) {
 	}
 	d.DefenderAbility = &ability.PowerCorrectorData{
 		[]correct.PowerCorrectorBuilder{
-			&correct.ActionDefenseData{skill.Knuckle, 0.5},
+			&correct.ActionDefenseData{attribute.Knuckle, 0.5},
 		},
 	}
 	d.AttackerItem = &item.TypeCorrectData{types.Fire, 3.0}
 	// 防御側に持たせても効果ない事
-	d.DefenderItem = &item.TypeCorrectData{types.Fire, 3.0}
+	d.DefenderItem = &item.TypeCorrectData{types.Fire, 2.9}
 	st, _ := d.Create()
 
 	c := st.Correctors()
@@ -85,21 +89,38 @@ func Test_ダメージ威力補正(t *testing.T) {
 	if dmgs != 1 {
 		t.Error()
 	}
-	if pwrs != 2 {
-		t.Error()
+	if pwrs != 3 {
+		t.Errorf("%d", pwrs)
+	}
+}
+
+func testMoveFactory() *move.MoveFactory {
+	cnt, _ := count.NewAttackCount(2, 5)
+	return &move.MoveFactory{
+		Name:      "unknown",
+		Power:     20,
+		Type:      types.Fire,
+		Accuracy:  100,
+		Category:  category.Physical,
+		Count:     cnt,
+		Target:    target.Select,
+		Attribute: attribute.NewAttribute(attribute.Knuckle, attribute.NoAttribute),
+		Detail:    detail.Default,
 	}
 }
 
 func create() (SituationChecker, error) {
-	s := &skill.SkillData{
-		Types:     []types.Type{types.Fire},
+	cnt, _ := count.NewAttackCount(1, 1)
+	s := &move.MoveFactory{
+		Name:      "unknown",
 		Power:     120,
-		CountMin:  1,
-		CountMax:  1,
+		Type:      types.Fire,
+		Accuracy:  100,
 		Category:  category.Physical,
-		Method:    skill.NoMethod,
-		Action:    skill.Knuckle,
-		Attribute: skill.NoAttribute,
+		Count:     cnt,
+		Target:    target.Select,
+		Attribute: attribute.NewAttribute(attribute.Knuckle, attribute.NoAttribute),
+		Detail:    detail.Default,
 	}
 	at := &status.StatusData{
 		Lv:    50,
@@ -125,7 +146,7 @@ func create() (SituationChecker, error) {
 	d := &SituationData{
 		Attacker:        at,
 		Defender:        df,
-		Skill:           s,
+		Move:           s,
 		Weather:         field.Sunny,
 		Field:           field.ElectricField,
 		AttackerAbility: atAbility,
@@ -158,7 +179,7 @@ func Test_Situation機能(t *testing.T) {
 		t.Errorf("%f", at.Weight())
 	}
 
-	sk := st.Skill()
+	sk := st.Move()
 	if !sk.Types(st).Has(types.Fire) {
 		t.Error()
 	}
@@ -174,29 +195,21 @@ func Test_Situation機能(t *testing.T) {
 	if st.IsCritical() {
 		t.Error()
 	}
-	if st.SkillAction() != skill.Knuckle {
+	attr := st.MoveAttribute()
+	if !attr.HasAction(attribute.Knuckle) {
 		t.Error()
 	}
-	if !st.SkillEffective().IsSuper() {
+	if !st.MoveEffective().IsSuper() {
 		t.Error()
 	}
 }
 
 // Skillインターフェイスに渡しても問題なく動作すること
 func Test_Situation_for_Skill(t *testing.T) {
-	s, _ := (&skill.SkillData{
-		Types:     []types.Type{types.Fire},
-		Power:     120,
-		CountMin:  1,
-		CountMax:  1,
-		Category:  category.Physical,
-		Method:    skill.NoMethod,
-		Action:    skill.Knuckle,
-		Attribute: skill.NoAttribute,
-	}).Create()
+	s, _ := testMoveFactory().Create()
 	st, _ := create()
 
-	if s.Power(st) != 120 {
+	if s.Power(st) != 20 {
 		t.Error()
 	}
 }

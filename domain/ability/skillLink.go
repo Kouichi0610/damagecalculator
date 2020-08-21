@@ -1,7 +1,8 @@
 package ability
 
 import (
-	"damagecalculator/domain/skill"
+	"damagecalculator/domain/move"
+	"damagecalculator/domain/move/count"
 )
 
 type skillLink struct {
@@ -10,16 +11,16 @@ type skillLink struct {
 
 // スキルリンク
 // 攻撃回数2～5の技を5にする
-func (a *skillLink) RewriteSkillData(st skill.SkillData) *skill.SkillData {
-	res := st
+func (a *skillLink) RewriteMoveFactory(mv move.MoveFactory) *move.MoveFactory {
+	res := mv
 	if !a.ability.isAttacker {
 		return &res
 	}
-	if !(st.CountMin == 2 && st.CountMax == 5) {
+
+	if !(mv.Count.Min() == 2 && mv.Count.Max() == 5) {
 		return &res
 	}
-
-	res.CountMin = 5
-	res.CountMax = 5
+	cnt, _ := count.NewAttackCount(5, 5)
+	res.Count = cnt
 	return &res
 }

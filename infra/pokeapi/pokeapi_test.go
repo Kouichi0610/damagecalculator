@@ -2,8 +2,15 @@ package pokeapi
 
 import (
 	"damagecalculator/domain/gender"
+	"damagecalculator/domain/move"
+	"damagecalculator/domain/move/accuracy"
+	"damagecalculator/domain/move/attribute"
+	"damagecalculator/domain/move/category"
+	"damagecalculator/domain/move/count"
+	"damagecalculator/domain/move/detail"
+	"damagecalculator/domain/move/power"
+	"damagecalculator/domain/move/target"
 	"damagecalculator/domain/repository"
-	"damagecalculator/domain/skill"
 	"damagecalculator/domain/species"
 	"damagecalculator/domain/stats"
 	"damagecalculator/domain/types"
@@ -34,25 +41,28 @@ func Test_Factory(t *testing.T) {
 func Test_Moves(t *testing.T) {
 	factory := NewRepositoryFactory()
 	mv := factory.Moves()
-	move, err := mv.Get("rock-blast")
-	//move, err := mv.Get("hyper-voice")
-	//move, err := mv.Get("swallow")
+	mf, err := mv.Get("rock-blast")
+	//mf, err := mv.Get("hyper-voice")
+	//mf, err := mv.Get("swallow")
 	if err != nil {
 		t.Error()
 	}
-	expect := &skill.Move{
-		Name:     "ロックブラスト",
-		Power:    25,
-		Accuracy: 90,
-		Damage:   skill.Physical,
-		Type:     types.Rock,
-		MinHits:  2,
-		MaxHits:  5,
-		Target:   skill.Select,
+
+	cnt, _ := count.NewAttackCount(2, 5)
+	expect := &move.MoveFactory{
+		Name:      "ロックブラスト",
+		Power:     power.NewPower(25),
+		Type:      types.Rock,
+		Accuracy:  accuracy.NewAccuracy(90),
+		Category:  category.Physical,
+		Count:     cnt,
+		Target:    target.Select,
+		Attribute: attribute.NewAttribute(attribute.Remote, attribute.NoAttribute),
+		Detail:    detail.Default,
 	}
 
-	if !reflect.DeepEqual(move, expect) {
-		t.Errorf("%v", move)
+	if !reflect.DeepEqual(mf, expect) {
+		t.Errorf("%v", mf)
 	}
 }
 

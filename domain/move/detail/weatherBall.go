@@ -1,4 +1,4 @@
-package skill
+package detail
 
 import (
 	"damagecalculator/domain/corrector"
@@ -17,7 +17,7 @@ import (
 */
 
 type weatherBall struct {
-	skill
+	*defaultMove
 }
 
 func (s *weatherBall) Correctors(st SituationChecker) []corrector.Corrector {
@@ -31,7 +31,7 @@ func (s *weatherBall) Correctors(st SituationChecker) []corrector.Corrector {
 	case st.IsWeather(field.SandStorm):
 		return []corrector.Corrector{corrector.NewPower(2.0)}
 	}
-	return nil
+	return []corrector.Corrector{corrector.NewPower(1.0)}
 }
 func (s *weatherBall) Types(st SituationChecker) *types.Types {
 	switch {
@@ -44,5 +44,5 @@ func (s *weatherBall) Types(st SituationChecker) *types.Types {
 	case st.IsWeather(field.SandStorm):
 		return types.NewTypes(types.Rock)
 	}
-	return s.skill.types
+	return s.defaultMove.Types(st)
 }

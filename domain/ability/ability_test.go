@@ -4,7 +4,9 @@ import (
 	"damagecalculator/domain/ability/correct"
 	"damagecalculator/domain/corrector"
 	"damagecalculator/domain/field"
-	"damagecalculator/domain/skill"
+	"damagecalculator/domain/move"
+	"damagecalculator/domain/move/attribute"
+	"damagecalculator/domain/move/count"
 	"damagecalculator/domain/types"
 	"testing"
 )
@@ -67,13 +69,13 @@ func Test_とくせいなし(t *testing.T) {
 // PowerCorrector複合のテスト
 func Test_powerCorrector(t *testing.T) {
 	st := &testSituation{
-		action:    skill.Fang,
+		action:    attribute.Fang,
 		skillType: []types.Type{types.Flying},
 	}
 	d := &PowerCorrectorData{
 		Builders: []correct.PowerCorrectorBuilder{
 			&correct.TypeAttackData{[]types.Type{types.Flying}, 2.0},
-			&correct.ActionAttackData{skill.Fang, 3.0},
+			&correct.ActionAttackData{attribute.Fang, 3.0},
 			&correct.TypeDefenseData{[]types.Type{types.Flying}, 0.0},
 		},
 	}
@@ -102,10 +104,10 @@ func Test_powerCorrector(t *testing.T) {
 	}
 }
 
-func createSkillLinkData(min, max uint) *skill.SkillData {
-	return &skill.SkillData{
-		CountMin: min,
-		CountMax: max,
+func createSkillLinkData(min, max uint) *move.MoveFactory {
+	cnt, _ := count.NewAttackCount(min, max)
+	return &move.MoveFactory{
+		Count: cnt,
 	}
 }
 
@@ -115,16 +117,16 @@ func Test_スキルリンク_AbilityFieldに設定して機能すること(t *te
 	af := NewAbilityField(a, d)
 
 	sd := createSkillLinkData(2, 5)
-	act := af.RewriteSkillData(*sd)
+	act := af.RewriteMoveFactory(*sd)
 
-	if !(act.CountMin == 5 && act.CountMax == 5) {
+	if !(act.Count.Min() == 5 && act.Count.Max() == 5) {
 		t.Error()
 	}
 
 	af = NewAbilityField(d, a)
 	sd = createSkillLinkData(2, 5)
-	act = af.RewriteSkillData(*sd)
-	if !(act.CountMin == 2 && act.CountMax == 5) {
+	act = af.RewriteMoveFactory(*sd)
+	if !(act.Count.Min() == 2 && act.Count.Max() == 5) {
 		t.Error()
 	}
 }
@@ -133,31 +135,31 @@ func Test_スキルリンク(t *testing.T) {
 	a := (&SkillLinkData{}).Create()
 	a.setAttacker(true)
 	sd := createSkillLinkData(1, 1)
-	act := a.RewriteSkillData(*sd)
-	if !(act.CountMin == 1 && act.CountMax == 1) {
+	act := a.RewriteMoveFactory(*sd)
+	if !(act.Count.Min() == 1 && act.Count.Max() == 1) {
 		t.Error()
 	}
 
 	sd = createSkillLinkData(1, 5)
-	act = a.RewriteSkillData(*sd)
-	if !(act.CountMin == 1 && act.CountMax == 5) {
+	act = a.RewriteMoveFactory(*sd)
+	if !(act.Count.Min() == 1 && act.Count.Max() == 5) {
 		t.Error()
 	}
 	sd = createSkillLinkData(2, 5)
-	act = a.RewriteSkillData(*sd)
-	if !(act.CountMin == 5 && act.CountMax == 5) {
+	act = a.RewriteMoveFactory(*sd)
+	if !(act.Count.Min() == 5 && act.Count.Max() == 5) {
 		t.Errorf("%v", act)
 	}
 	// 元のSkillDataは書き換えられていないこと
-	if sd.CountMin != 2 {
+	if sd.Count.Min() != 2 {
 		t.Error()
 	}
 
 	// 攻撃側でなければ変化ない事
 	a.setAttacker(false)
 	sd = createSkillLinkData(2, 5)
-	act = a.RewriteSkillData(*sd)
-	if !(act.CountMin == 2 && act.CountMax == 5) {
+	act = a.RewriteMoveFactory(*sd)
+	if !(act.Count.Min() == 2 && act.Count.Max() == 5) {
 		t.Errorf("%v", act)
 	}
 }
@@ -442,13 +444,13 @@ type testSituation struct {
 	effective float64
 	weather   field.Weather
 	field     field.Field
-	action    skill.Action
+	action    attribute.Action
 }
 
-func (st *testSituation) SkillTypes() *types.Types {
+func (st *testSituation) MoveTypes() *types.Types {
 	return types.NewTypes(st.skillType...)
 }
-func (st *testSituation) SkillEffective() types.Effective {
+func (st *testSituation) MoveEffective() types.Effective {
 	return types.Effective(st.effective)
 }
 func (st *testSituation) IsWeather(w field.Weather) bool {
@@ -457,6 +459,6 @@ func (st *testSituation) IsWeather(w field.Weather) bool {
 func (st *testSituation) IsField(f field.Field) bool {
 	return st.field == f
 }
-func (st *testSituation) SkillAction() skill.Action {
-	return st.action
+func (st *testSituation) MoveAttribute() attribute.Attribute {
+	return attribute.NewAttribute(st.action, attribute.NoAttribute)
 }

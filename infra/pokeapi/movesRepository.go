@@ -1,7 +1,14 @@
 package pokeapi
 
 import (
-	"damagecalculator/domain/skill"
+	"damagecalculator/domain/move"
+	"damagecalculator/domain/move/accuracy"
+	"damagecalculator/domain/move/attribute"
+	"damagecalculator/domain/move/category"
+	"damagecalculator/domain/move/count"
+	"damagecalculator/domain/move/detail"
+	"damagecalculator/domain/move/power"
+	"damagecalculator/domain/move/target"
 
 	"github.com/mtslzr/pokeapi-go"
 )
@@ -9,22 +16,26 @@ import (
 type movesRepository struct {
 }
 
-func (r *movesRepository) Get(name string) (*skill.Move, error) {
-	move, err := pokeapi.Move(name)
+func (r *movesRepository) Get(name string) (*move.MoveFactory, error) {
+	mv, err := pokeapi.Move(name)
 	if err != nil {
 		return nil, err
 	}
-	jname := move.Name
-	for _, n := range move.Names {
+	jname := mv.Name
+	for _, n := range mv.Names {
 		if n.Language.Name == JpName {
 			jname = n.Name
 			break
 		}
 	}
 
-	damage := damageClass(move.DamageClass.Name)
-	target := moveTarget(move.Target.Name)
-	min, max := hitCounts(move.Meta.MinHits, move.Meta.MaxHits)
+	target := moveTarget(mv.Target.Name)
+	min, max := hitCounts(mv.Meta.MinHits, mv.Meta.MaxHits)
+
+	attackCount, err := count.NewAttackCount(uint(min), uint(max))
+	if err != nil {
+		panic(err)
+	}
 
 	// 追加効果はmove.Meta.AilmentChanceが0でなければとれる
 
@@ -35,30 +46,37 @@ func (r *movesRepository) Get(name string) (*skill.Move, error) {
 	// Has a 3/8 chance each to hit 2 or 3 times, and a 1/8 chance each to hit 4 or 5 times.  Averages to 3 hits per use
 	// スキルリンクでもなければ使わないとしても。
 
-	res := &skill.Move{
-		Name:     jname,
-		Damage:   damage,
-		Power:    move.Power,
-		Type:     typesMap[move.Type.Name],
-		Accuracy: move.Accuracy,
-		MinHits:  min,
-		MaxHits:  max,
-		Target:   target,
-	}
+	// TODO:DamageCategory & Attribute
+	damage := damageClass(mv.DamageClass.Name)
+	attr := attribute.NewAttribute(attribute.Remote, attribute.NoAttribute)
 
+	res := &move.MoveFactory{
+		Name:      jname,
+		Power:     power.NewPower(uint(mv.Power)),
+		Type:      typesMap[mv.Type.Name],
+		Accuracy:  accuracy.NewAccuracy(uint(mv.Accuracy)),
+		Count:     attackCount,
+		Target:    target,
+		Category:  damage,
+		Attribute: attr,
+		Detail:    detail.Default,
+	}
 	return res, nil
 }
 
-func damageClass(name string) skill.DamageClass {
+func damageClass(name string) category.DamageCategory {
 	switch name {
 	case "physical":
-		return skill.Physical
+		return category.Physical
 	case "special":
-		return skill.Special
-	case "status":
-		return skill.Status
+		return category.Special
+		/*
+				現時点では対応しない
+			case "status":
+				return category.Physical
+		*/
 	}
-	return skill.Physical
+	return category.Physical
 }
 func hitCounts(minHits, maxHits interface{}) (min, max int) {
 	if minHits == nil || maxHits == nil {
@@ -79,16 +97,16 @@ func hitCounts(minHits, maxHits interface{}) (min, max int) {
 // all-other-pokemon 他全て
 // all-opponents　相手全て
 // user 自身
-func moveTarget(name string) skill.MoveTarget {
+func moveTarget(name string) target.MoveTarget {
 	switch name {
 	case "user":
-		return skill.User
+		return target.User
 	case "selected-pokemon":
-		return skill.Select
+		return target.Select
 	case "all-other-pokemon":
-		return skill.AllOther
+		return target.AllOther
 	case "all-opponents":
-		return skill.AllOpponents
+		return target.AllOpponents
 	}
-	return skill.Select
+	return target.Select
 }

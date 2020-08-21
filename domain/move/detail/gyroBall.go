@@ -1,4 +1,4 @@
-package skill
+package detail
 
 /*
 	ジャイロボール
@@ -7,7 +7,7 @@ package skill
 */
 
 type gyroBall struct {
-	skill
+	*defaultMove
 }
 
 func (s *gyroBall) Power(st SituationChecker) uint {

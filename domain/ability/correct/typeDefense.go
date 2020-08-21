@@ -16,7 +16,7 @@ func (s *typeDefense) Correct(isAttacker bool, st situation.SituationChecker) co
 	if isAttacker {
 		return nil
 	}
-	ty := st.SkillTypes()
+	ty := st.MoveTypes()
 	for _, t := range s.ty {
 		if ty.Has(t) {
 			return corrector.NewDamage(s.sc)

@@ -1,4 +1,4 @@
-package skill
+package detail
 
 func calculate(level, power, attack, defense uint) uint {
 	a := level*2/5 + 2

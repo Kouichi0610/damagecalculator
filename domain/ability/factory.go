@@ -3,7 +3,6 @@ package ability
 import (
 	"damagecalculator/domain/ability/correct"
 	"damagecalculator/domain/field"
-	_ "damagecalculator/domain/skill"
 	"damagecalculator/domain/types"
 )
 

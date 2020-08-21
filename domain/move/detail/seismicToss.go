@@ -1,8 +1,8 @@
-package skill
+package detail
 
 // ちきゅうなげ(レベル固定ダメージ)
 type seismicToss struct {
-	skill
+	*defaultMove
 }
 
 func (s *seismicToss) Calculate(level, power, attack, defense uint) []uint {

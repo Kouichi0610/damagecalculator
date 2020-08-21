@@ -1,19 +1,17 @@
-package skill
+package detail
 
 import (
 	"damagecalculator/domain/status"
 )
 
-// ヘビーボンバー
-
+/*
+	ヘビーボンバー
+	攻撃側の重さが相手より重いほど威力が上がる
+*/
 type heavySlam struct {
-	skill
+	*defaultMove
 }
 
-/*
-	攻撃側の重さが相手より重いほど威力が高くなる
-
-*/
 func (s *heavySlam) Power(st SituationChecker) uint {
 	at := st.Attacker().Weight()
 	df := st.Defender().Weight()

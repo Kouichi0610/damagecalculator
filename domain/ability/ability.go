@@ -3,7 +3,7 @@ package ability
 import (
 	"damagecalculator/domain/ability/situation"
 	"damagecalculator/domain/corrector"
-	"damagecalculator/domain/skill"
+	"damagecalculator/domain/move"
 	"damagecalculator/domain/status"
 )
 
@@ -12,12 +12,12 @@ type AbilityField interface {
 	Attacker() Ability
 	Defender() Ability
 	Correctors(situation.SituationChecker) []corrector.Corrector
-	RewriteSkillData(skill.SkillData) *skill.SkillData
+	RewriteMoveFactory(move.MoveFactory) *move.MoveFactory
 }
 
 type Ability interface {
-	// スキル生成データを書き換える
-	RewriteSkillData(skill.SkillData) *skill.SkillData
+	// わざ生成データを書き換える
+	RewriteMoveFactory(move.MoveFactory) *move.MoveFactory
 
 	// 威力補正
 	Correctors(situation.SituationChecker) []corrector.Corrector
@@ -60,9 +60,9 @@ func (a *abilityField) Attacker() Ability {
 func (a *abilityField) Defender() Ability {
 	return a.df
 }
-func (a *abilityField) RewriteSkillData(sk skill.SkillData) *skill.SkillData {
-	res := a.at.RewriteSkillData(sk)
-	res = a.df.RewriteSkillData(*res)
+func (a *abilityField) RewriteMoveFactory(mv move.MoveFactory) *move.MoveFactory {
+	res := a.at.RewriteMoveFactory(mv)
+	res = a.df.RewriteMoveFactory(*res)
 	return res
 }
 func (a *abilityField) Correctors(st situation.SituationChecker) []corrector.Corrector {
@@ -95,6 +95,6 @@ func (a *ability) Correctors(situation.SituationChecker) []corrector.Corrector {
 func (a *ability) CorrectStatus(situation.SituationChecker) *status.StatsCorrectors {
 	return status.NewStatsCorrectors()
 }
-func (a *ability) RewriteSkillData(sk skill.SkillData) *skill.SkillData {
-	return &sk
+func (a *ability) RewriteMoveFactory(mv move.MoveFactory) *move.MoveFactory {
+	return &mv
 }

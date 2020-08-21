@@ -17,7 +17,7 @@ func (a *wonderGuard) Correctors(st situation.SituationChecker) []corrector.Corr
 		return nil
 	}
 
-	ef := st.SkillEffective()
+	ef := st.MoveEffective()
 	if ef.IsSuper() {
 		return nil
 	}

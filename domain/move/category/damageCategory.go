@@ -5,11 +5,11 @@ import (
 	"fmt"
 )
 
-type Category uint
+// 物理、特殊などダメージ計算の攻防パラメータを引き出す
+type DamageCategory uint
 
-// 攻撃、防御の選出方法
 const (
-	Physical Category = iota
+	Physical DamageCategory = iota
 	Special
 	PsycoShock
 	BodyPress
@@ -19,7 +19,7 @@ const (
 
 type CategoryFunc func(attacker, defender status.StatusChecker) (at, df *status.RankedValue)
 
-func NewCategory(c Category) (CategoryFunc, error) {
+func NewCategory(c DamageCategory) (CategoryFunc, error) {
 	switch c {
 	case Physical:
 		return physical, nil
