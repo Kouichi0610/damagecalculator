@@ -3,7 +3,7 @@ package manual
 import (
 	"damagecalculator/domain/ability"
 	"damagecalculator/domain/ability/correct"
-	"damagecalculator/domain/ability/detail"
+	D "damagecalculator/domain/ability/detail"
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/types"
 )
@@ -22,28 +22,27 @@ func (r *abilityRepository) Get(at, df string) ability.AbilityField {
 	該当するAbilityBuilderを取得。
 	該当しなければNoEffectを返す
 */
-func newAbilityBuilder(name string) detail.AbilityBuilder {
+func newAbilityBuilder(name string) D.AbilityBuilder {
 	res, ok := abilityMap[name]
 	if !ok {
-		return &detail.NoEffectBuilder{}
+		return &D.NoEffectBuilder{}
 	}
 	return res
 }
 
-// TODO:短く。とくにすいほう (生成メソッド用意)
-var abilityMap map[string]detail.AbilityBuilder = map[string]detail.AbilityBuilder{
-	"かたやぶり":    &detail.MoldBreakderBuilder{},
-	"ぎたい":      &detail.MimicryBuilder{},
-	"へんげんじざい":  &detail.ProteanBuilder{},
-	"リベロ":      &detail.ProteanBuilder{},
-	"かがくへんかガス": &detail.NewtraizingGasBuilder{},
-	"ふしぎなまもり":  &detail.WonderGuardBuilder{},
-	"スキルリンク":   &detail.SkillLinkBuilder{},
-	"てんきや":     &detail.ForecastBuilder{},
-	"サーフテール":   &detail.FieldStatusCorrectorBuilder{Field: field.ElectricField, Speed: 2.0},
-	"ようりょくそ":   &detail.WeatherStatusCorrectorBuilder{Weather: field.Sunny, Speed: 2.0},
-	"すいすい":     &detail.WeatherStatusCorrectorBuilder{Weather: field.Rainy, Speed: 2.0},
-	"すいほう":     &detail.PowerCorrectorBuilder{[]correct.PowerCorrectorBuilder{&correct.TypeAttackData{[]types.Type{types.Water}, 2.0}, &correct.TypeDefenseData{[]types.Type{types.Fire}, 0.5}}},
-	"ちからもち":    &detail.StatusCorrectorBuilder{Attack: 2.0},
-	"ヨガパワー":    &detail.StatusCorrectorBuilder{Attack: 2.0},
+var abilityMap map[string]D.AbilityBuilder = map[string]D.AbilityBuilder{
+	"かたやぶり":    &D.MoldBreakderBuilder{},
+	"ぎたい":      &D.MimicryBuilder{},
+	"へんげんじざい":  &D.ProteanBuilder{},
+	"リベロ":      &D.ProteanBuilder{},
+	"かがくへんかガス": &D.NewtraizingGasBuilder{},
+	"ふしぎなまもり":  &D.WonderGuardBuilder{},
+	"スキルリンク":   &D.SkillLinkBuilder{},
+	"てんきや":     &D.ForecastBuilder{},
+	"サーフテール":   &D.FieldStatusCorrectorBuilder{Field: field.ElectricField, Speed: 2.0},
+	"ようりょくそ":   &D.WeatherStatusCorrectorBuilder{Weather: field.Sunny, Speed: 2.0},
+	"すいすい":     &D.WeatherStatusCorrectorBuilder{Weather: field.Rainy, Speed: 2.0},
+	"すいほう":     &D.PowerCorrectorBuilder{[]correct.PowerCorrectorBuilder{&correct.TypeAttackData{[]types.Type{types.Water}, 2.0}, &correct.TypeDefenseData{[]types.Type{types.Fire}, 0.5}}},
+	"ちからもち":    &D.StatusCorrectorBuilder{Attack: 2.0},
+	"ヨガパワー":    &D.StatusCorrectorBuilder{Attack: 2.0},
 }
