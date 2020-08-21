@@ -8,6 +8,8 @@ import (
 	"damagecalculator/domain/status"
 )
 
+// TODO:リポジトリ
+
 type (
 	AbilityField interface {
 		CorrectAttackerStatus(situation.SituationChecker) *status.StatsCorrectors
@@ -17,8 +19,6 @@ type (
 	}
 )
 
-//--------------------------------------------------
-// TODO:置き換え
 func NewAbilityField(at, df detail.AbilityBuilder) AbilityField {
 	a := at.Create()
 	d := df.Create()

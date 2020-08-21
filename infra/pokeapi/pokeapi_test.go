@@ -10,7 +10,6 @@ import (
 	"damagecalculator/domain/move/detail"
 	"damagecalculator/domain/move/power"
 	"damagecalculator/domain/move/target"
-	"damagecalculator/domain/repository"
 	"damagecalculator/domain/species"
 	"damagecalculator/domain/stats"
 	"damagecalculator/domain/types"
@@ -24,23 +23,8 @@ import (
 	"github.com/mtslzr/pokeapi-go"
 )
 
-func Test_Factory(t *testing.T) {
-	var factory repository.RepositoryFactory
-	factory = NewRepositoryFactory()
-
-	sp := factory.Species()
-	if _, ok := sp.(*speciesRepository); !ok {
-		t.Error()
-	}
-	mv := factory.Moves()
-	if _, ok := mv.(*movesRepository); !ok {
-		t.Error()
-	}
-}
-
 func Test_Moves(t *testing.T) {
-	factory := NewRepositoryFactory()
-	mv := factory.Moves()
+	mv := new(movesRepository)
 	mf, err := mv.Get("rock-blast")
 	//mf, err := mv.Get("hyper-voice")
 	//mf, err := mv.Get("swallow")
@@ -68,8 +52,7 @@ func Test_Moves(t *testing.T) {
 
 // 任意のポケモンから種族データを取得できること
 func Test_Species(t *testing.T) {
-	factory := NewRepositoryFactory()
-	sp := factory.Species()
+	sp := new(speciesRepository)
 
 	poke, err := sp.Get("ツンデツンデ")
 	if err != nil {
