@@ -27,28 +27,28 @@ func Test_ItemCreators(t *testing.T) {
 
 func Test_持ち物なし(t *testing.T) {
 	item := (&NoItem{}).Create(true)
-	res := testItem(item, 100, []uint{100, 100, 100, 100, 100}, 200.5, t)
+	res := testItem(item, 100, [5]uint{100, 100, 100, 100, 100}, 200.5, t)
 	if !res {
 		t.Error()
 	}
 }
 func Test_能力値補正(t *testing.T) {
 	item := (&StatsCorrectData{1.1, 1.2, 1.3, 1.4, 1.5}).Create(true)
-	res := testItem(item, 100, []uint{110, 120, 130, 140, 150}, 200.5, t)
+	res := testItem(item, 100, [5]uint{110, 120, 130, 140, 150}, 200.5, t)
 	if !res {
 		t.Error()
 	}
 }
 func Test_重さ補正(t *testing.T) {
 	item := (&WeightCorrectData{0.5}).Create(true)
-	res := testItem(item, 100, []uint{100, 100, 100, 100, 100}, 100.25, t)
+	res := testItem(item, 100, [5]uint{100, 100, 100, 100, 100}, 100.25, t)
 	if !res {
 		t.Error()
 	}
 }
 func Test_タイプ威力補正(t *testing.T) {
 	item := (&TypeCorrectData{types.Water, 1.5}).Create(true)
-	res := testItem(item, 150, []uint{100, 100, 100, 100, 100}, 200.5, t)
+	res := testItem(item, 150, [5]uint{100, 100, 100, 100, 100}, 200.5, t)
 	if !res {
 		t.Error()
 	}
@@ -60,7 +60,7 @@ func Test_タイプ威力補正(t *testing.T) {
 }
 func Test_威力補正(t *testing.T) {
 	item := (&PowerCorrectData{1.5}).Create(true)
-	res := testItem(item, 150, []uint{100, 100, 100, 100, 100}, 200.5, t)
+	res := testItem(item, 150, [5]uint{100, 100, 100, 100, 100}, 200.5, t)
 	if !res {
 		t.Error()
 	}
@@ -72,7 +72,7 @@ func Test_威力補正(t *testing.T) {
 }
 func Test_こうかばつぐん補正(t *testing.T) {
 	item := (&SuperEffectiveCorrectData{1.5}).Create(true)
-	res := testItem(item, 150, []uint{100, 100, 100, 100, 100}, 200.5, t)
+	res := testItem(item, 150, [5]uint{100, 100, 100, 100, 100}, 200.5, t)
 	if !res {
 		t.Error()
 	}
@@ -98,14 +98,14 @@ func Test_威力補正は攻撃側出なければ効果が無いこと(t *testin
 	}
 }
 
-func testItem(item Item, powerActual uint, statsActual []uint, weightActual float64, t *testing.T) bool {
+func testItem(item Item, powerActual uint, statsActual [5]uint, weightActual float64, t *testing.T) bool {
 	p := item.CorrectPower(types.NewTypes(types.Bug), types.NewTypes(types.Fire), types.NewTypes(types.Water))
 	if p.Correct(100) != powerActual {
 		t.Error()
 		return false
 	}
 	c := item.Correct()
-	expects := correctArray(c)
+	expects := c.Correct(100, 100, 100, 100, 100)
 	if !reflect.DeepEqual(expects, statsActual) {
 		t.Errorf("%v", expects)
 		return false
@@ -183,8 +183,8 @@ func Test_superEffectiveCorrect(t *testing.T) {
 func Test_defaultStatsCorrector(t *testing.T) {
 	s := defaultStatsCorrector()
 	c := s.Correct()
-	expects := correctArray(c)
-	if !reflect.DeepEqual(expects, []uint{100, 100, 100, 100, 100}) {
+	expects := c.Correct(100, 100, 100, 100, 100)
+	if !reflect.DeepEqual(expects, [5]uint{100, 100, 100, 100, 100}) {
 		t.Errorf("%v", expects)
 	}
 }
@@ -194,8 +194,8 @@ func Test_createStatsCorrector一部指定なし(t *testing.T) {
 	d := StatsCorrectData{Attack: 1.5, Defense: 2.0}
 	s := d.createStatsCorrector()
 	c := s.Correct()
-	expects := correctArray(c)
-	if !reflect.DeepEqual(expects, []uint{150, 200, 100, 100, 100}) {
+	expects := c.Correct(100, 100, 100, 100, 100)
+	if !reflect.DeepEqual(expects, [5]uint{150, 200, 100, 100, 100}) {
 		t.Errorf("%v", expects)
 	}
 }
@@ -205,8 +205,8 @@ func Test_createStatsCorrector全て指定(t *testing.T) {
 	d := StatsCorrectData{Attack: 1.5, Defense: 2.0, SpAttack: 3.0, SpDefense: 4.0, Speed: 0.5}
 	s := d.createStatsCorrector()
 	c := s.Correct()
-	expects := correctArray(c)
-	if !reflect.DeepEqual(expects, []uint{150, 200, 300, 400, 50}) {
+	expects := c.Correct(100, 100, 100, 100, 100)
+	if !reflect.DeepEqual(expects, [5]uint{150, 200, 300, 400, 50}) {
 		t.Errorf("%v", expects)
 	}
 }
@@ -215,18 +215,11 @@ func Test_WeightCorrector(t *testing.T) {
 	d := WeightCorrectData{Scale: 2.0}
 	s := d.createStatsCorrector()
 	c := s.Correct()
-	expects := correctArray(c)
-	if !reflect.DeepEqual(expects, []uint{100, 100, 100, 100, 100}) {
+	expects := c.Correct(100, 100, 100, 100, 100)
+	if !reflect.DeepEqual(expects, [5]uint{100, 100, 100, 100, 100}) {
 		t.Errorf("%v", expects)
 	}
 	if c.CorrectWeight(200.5) != 401 {
 		t.Error()
 	}
-}
-
-func correctArray(s *status.StatsCorrectors) []uint {
-	res := make([]uint, 0)
-	a, b, c, d, e := s.Correct(100, 100, 100, 100, 100)
-	res = append(res, a, b, c, d, e)
-	return res
 }

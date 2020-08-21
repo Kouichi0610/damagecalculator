@@ -1,7 +1,7 @@
 package damage
 
 import (
-	"damagecalculator/domain/ability"
+	AbilityDetail "damagecalculator/domain/ability/detail"
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/item"
 	"damagecalculator/domain/move"
@@ -48,8 +48,8 @@ func defaultArgs() *situation.SituationData {
 	atItem := &item.NoItem{}
 	dfItem := &item.NoItem{}
 
-	atAbility := &ability.NoAbilityData{}
-	dfAbility := &ability.NoAbilityData{}
+	atAbility := &AbilityDetail.NoEffectBuilder{}
+	dfAbility := &AbilityDetail.NoEffectBuilder{}
 
 	st := &situation.SituationData{
 		Move:            s,

@@ -11,8 +11,6 @@ type Damages struct {
 
 type damageSlice []uint
 
-// TODO:改修
-
 func NewDamages(args []uint) *Damages {
 	res := new(Damages)
 

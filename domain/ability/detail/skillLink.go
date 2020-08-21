@@ -1,4 +1,4 @@
-package ability
+package detail
 
 import (
 	"damagecalculator/domain/move"
@@ -6,14 +6,14 @@ import (
 )
 
 type skillLink struct {
-	ability
+	abilityImpl
 }
 
 // スキルリンク
 // 攻撃回数2～5の技を5にする
 func (a *skillLink) RewriteMoveFactory(mv move.MoveFactory) *move.MoveFactory {
 	res := mv
-	if !a.ability.isAttacker {
+	if !a.isAttacker {
 		return &res
 	}
 

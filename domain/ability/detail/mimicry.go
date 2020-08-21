@@ -1,4 +1,4 @@
-package ability
+package detail
 
 import (
 	"damagecalculator/domain/ability/situation"
@@ -10,7 +10,7 @@ import (
 // ぎたい
 // フィールドに合わせてタイプが変わる
 type mimicry struct {
-	ability
+	abilityImpl
 }
 
 func (s *mimicry) CorrectStatus(st situation.SituationChecker) *status.StatsCorrectors {

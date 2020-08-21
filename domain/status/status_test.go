@@ -2,6 +2,7 @@ package status
 
 import (
 	"damagecalculator/domain/types"
+	"reflect"
 	"testing"
 )
 
@@ -181,19 +182,7 @@ func Test_StatsCorrectors(t *testing.T) {
 	}
 
 	s.Attack(2.0).Defense(3.0).SpAttack(4.0).SpDefense(5.0).Speed(6.0)
-	if s.at.Correct(100) != 200 {
-		t.Error()
-	}
-	if s.df.Correct(100) != 300 {
-		t.Error()
-	}
-	if s.sa.Correct(100) != 400 {
-		t.Error()
-	}
-	if s.sd.Correct(100) != 500 {
-		t.Error()
-	}
-	if s.sp.Correct(100) != 600 {
+	if !reflect.DeepEqual(s.Correct(100, 100, 100, 100, 100), [5]uint{200, 300, 400, 500, 600}) {
 		t.Error()
 	}
 

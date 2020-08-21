@@ -1,4 +1,4 @@
-package ability
+package detail
 
 import (
 	"damagecalculator/domain/ability/situation"
@@ -8,7 +8,6 @@ import (
 
 // 特定のフィールドで能力補正
 type fieldStatusCorrector struct {
-	ability
 	statusCorrector
 	fl field.Field
 }

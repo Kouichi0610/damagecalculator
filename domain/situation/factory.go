@@ -2,6 +2,7 @@ package situation
 
 import (
 	"damagecalculator/domain/ability"
+	"damagecalculator/domain/ability/detail"
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/item"
 	"damagecalculator/domain/move"
@@ -9,13 +10,13 @@ import (
 )
 
 type SituationData struct {
-	Move              *move.MoveFactory
+	Move               *move.MoveFactory
 	Attacker, Defender *status.StatusData
 	Weather            field.Weather
 	Field              field.Field
 
-	AttackerAbility ability.AbilityBuilder
-	DefenderAbility ability.AbilityBuilder
+	AttackerAbility detail.AbilityBuilder
+	DefenderAbility detail.AbilityBuilder
 
 	AttackerItem item.ItemCreator
 	DefenderItem item.ItemCreator
@@ -27,8 +28,8 @@ func NewSituationData() *SituationData {
 	return &SituationData{
 		Weather:         field.NoWeather,
 		Field:           field.NoField,
-		AttackerAbility: &ability.NoAbilityData{},
-		DefenderAbility: &ability.NoAbilityData{},
+		AttackerAbility: new(detail.NoEffectBuilder),
+		DefenderAbility: new(detail.NoEffectBuilder),
 		AttackerItem:    &item.NoItem{},
 		DefenderItem:    &item.NoItem{},
 		IsCritical:      false,
@@ -36,9 +37,7 @@ func NewSituationData() *SituationData {
 }
 
 func (s *SituationData) Create() (SituationChecker, error) {
-	aa := s.AttackerAbility.Create()
-	da := s.DefenderAbility.Create()
-	af := ability.NewAbilityField(aa, da)
+	af := ability.NewAbilityField(s.AttackerAbility, s.DefenderAbility)
 
 	// とくせいによるわざ情報上書き
 	sd := af.RewriteMoveFactory(*s.Move)
