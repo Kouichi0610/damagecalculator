@@ -36,7 +36,7 @@ var abilityMap map[string]detail.AbilityBuilder = map[string]detail.AbilityBuild
 	"ぎたい":      &detail.MimicryBuilder{},
 	"へんげんじざい":  &detail.ProteanBuilder{},
 	"リベロ":      &detail.ProteanBuilder{},
-	"かがくへんかガス": &detail.WeatherStatusCorrectorBuilder{},
+	"かがくへんかガス": &detail.NewtraizingGasBuilder{},
 	"ふしぎなまもり":  &detail.WonderGuardBuilder{},
 	"スキルリンク":   &detail.SkillLinkBuilder{},
 	"てんきや":     &detail.ForecastBuilder{},

@@ -2,6 +2,7 @@ package status
 
 import (
 	"damagecalculator/domain/types"
+	"reflect"
 	"testing"
 )
 
@@ -194,6 +195,10 @@ func Test_StatsCorrectors(t *testing.T) {
 		t.Error()
 	}
 	if s.sp.Correct(100) != 600 {
+		t.Error()
+	}
+
+	if !reflect.DeepEqual(s.CorrectArray(100, 100, 100, 100, 100), [5]uint{200, 300, 400, 500, 600}) {
 		t.Error()
 	}
 

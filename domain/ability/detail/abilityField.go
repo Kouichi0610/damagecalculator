@@ -26,6 +26,7 @@ func NewAbilityField(at, df ability) interface{} {
 		at: at,
 		df: df,
 	}
+
 	res.at.onField(res)
 	res.df.onField(res)
 	res.at.onAttack(res)

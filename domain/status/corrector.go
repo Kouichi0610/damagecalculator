@@ -35,6 +35,10 @@ func NewStatsCorrectors() *StatsCorrectors {
 	}
 }
 
+func (s *StatsCorrectors) CorrectArray(at, df, sa, sd, sp uint) [5]uint {
+	a, b, c, d, e := s.Correct(at, df, sa, sd, sp)
+	return [5]uint{a, b, c, d, e}
+}
 func (s *StatsCorrectors) Correct(at, df, sa, sd, sp uint) (a, b, c, d, e uint) {
 	a = s.at.Correct(at)
 	b = s.df.Correct(df)
