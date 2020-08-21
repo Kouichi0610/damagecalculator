@@ -35,17 +35,13 @@ func NewStatsCorrectors() *StatsCorrectors {
 	}
 }
 
-func (s *StatsCorrectors) CorrectArray(at, df, sa, sd, sp uint) [5]uint {
-	a, b, c, d, e := s.Correct(at, df, sa, sd, sp)
+func (s *StatsCorrectors) Correct(at, df, sa, sd, sp uint) [5]uint {
+	a := s.at.Correct(at)
+	b := s.df.Correct(df)
+	c := s.sa.Correct(sa)
+	d := s.sd.Correct(sd)
+	e := s.sp.Correct(sp)
 	return [5]uint{a, b, c, d, e}
-}
-func (s *StatsCorrectors) Correct(at, df, sa, sd, sp uint) (a, b, c, d, e uint) {
-	a = s.at.Correct(at)
-	b = s.df.Correct(df)
-	c = s.sa.Correct(sa)
-	d = s.sd.Correct(sd)
-	e = s.sp.Correct(sp)
-	return
 }
 
 func (s *StatsCorrectors) CorrectWeight(w float64) Weight {

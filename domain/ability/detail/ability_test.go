@@ -46,13 +46,13 @@ func Test_AbilityField機能テスト(t *testing.T) {
 	// 能力値補正を掛けること
 	ac := af.CorrectAttackerStatus(st)
 	dc := af.CorrectDefenderStatus(st)
-	at, _, _, _, _ := ac.Correct(100, 100, 100, 100, 100)
-	if at != 200 {
-		t.Errorf("%d", at)
+	corrected := ac.Correct(100, 100, 100, 100, 100)
+	if !reflect.DeepEqual(corrected, [5]uint{200, 100, 100, 100, 100}) {
+		t.Errorf("%v", corrected)
 	}
-	_, df, _, _, _ := dc.Correct(100, 100, 100, 100, 100)
-	if df != 200 {
-		t.Error()
+	corrected = dc.Correct(100, 100, 100, 100, 100)
+	if !reflect.DeepEqual(corrected, [5]uint{100, 200, 100, 100, 100}) {
+		t.Errorf("%v", corrected)
 	}
 
 	// erase実行後、デフォルトの特性に書き換えられていること
@@ -102,8 +102,8 @@ func Test_abilityImpl(t *testing.T) {
 	}
 
 	sc := a.CorrectStatus(st)
-	at, df, sa, sd, sp := sc.Correct(100, 100, 100, 100, 100)
-	if at != 100 || df != 100 || sa != 100 || sd != 100 || sp != 100 {
+	corrected := sc.Correct(100, 100, 100, 100, 100)
+	if !reflect.DeepEqual(corrected, [5]uint{100, 100, 100, 100, 100}) {
 		t.Error()
 	}
 }
@@ -224,15 +224,15 @@ func Test_フラワーギフト(t *testing.T) {
 		SpDefense: 1.5,
 	}).Create()
 	c := a.CorrectStatus(st)
-	at, _, _, sd, _ := c.Correct(100, 100, 100, 100, 100)
-	if at != 150 || sd != 150 {
+	corrected := c.Correct(100, 100, 100, 100, 100)
+	if !reflect.DeepEqual(corrected, [5]uint{150, 100, 100, 150, 100}) {
 		t.Error()
 	}
 	// 晴れでなければ効果が無い事
 	st.weather = field.Rainy
 	c = a.CorrectStatus(st)
-	at, _, _, sd, _ = c.Correct(100, 100, 100, 100, 100)
-	if at != 100 || sd != 100 {
+	corrected = c.Correct(100, 100, 100, 100, 100)
+	if !reflect.DeepEqual(corrected, [5]uint{100, 100, 100, 100, 100}) {
 		t.Error()
 	}
 }
@@ -246,16 +246,16 @@ func Test_サーフテール(t *testing.T) {
 		Speed: 2.0,
 	}).Create()
 	c := a.CorrectStatus(st)
-	_, _, _, _, sp := c.Correct(100, 100, 100, 100, 100)
-	if sp != 200 {
+	corrected := c.Correct(100, 100, 100, 100, 100)
+	if !reflect.DeepEqual(corrected, [5]uint{100, 100, 100, 100, 200}) {
 		t.Error()
 	}
 
 	// 他のフィールドでは効果が無い事
 	st.field = field.PsychoField
 	c = a.CorrectStatus(st)
-	_, _, _, _, sp = c.Correct(100, 100, 100, 100, 100)
-	if sp != 100 {
+	corrected = c.Correct(100, 100, 100, 100, 100)
+	if !reflect.DeepEqual(corrected, [5]uint{100, 100, 100, 100, 100}) {
 		t.Error()
 	}
 }
@@ -340,20 +340,8 @@ func Test_能力補正(t *testing.T) {
 	st := new(testSituation)
 	c := a.CorrectStatus(st)
 
-	at, df, sa, sd, sp := c.Correct(100, 100, 100, 100, 100)
-	if at != 200 {
-		t.Error()
-	}
-	if df != 300 {
-		t.Error()
-	}
-	if sa != 400 {
-		t.Error()
-	}
-	if sd != 500 {
-		t.Error()
-	}
-	if sp != 600 {
+	corrected := c.Correct(100, 100, 100, 100, 100)
+	if !reflect.DeepEqual(corrected, [5]uint{200, 300, 400, 500, 600}) {
 		t.Error()
 	}
 
