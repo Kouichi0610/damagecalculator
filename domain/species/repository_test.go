@@ -79,7 +79,12 @@ func (s *speciesRepository) Get(name string) (*Species, error) {
 
 	return &Species{
 		Name:      "ツンデツンデ",
-		Stats:     stats.NewSpeciesStats(61, 131, 211, 53, 101, 13),
+		HP:        61,
+		Attack:    131,
+		Defense:   211,
+		SpAttack:  53,
+		SpDefense: 101,
+		Speed:     13,
 		Weight:    820.0,
 		Gender:    gender.Unknown,
 		Types:     []types.Type{types.Rock, types.Steel},

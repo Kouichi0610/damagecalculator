@@ -8,6 +8,36 @@ import (
 	"testing"
 )
 
+func Test_SpeciesRepository(t *testing.T) {
+	rp := new(speciesRepository)
+	sp, err := rp.Get("ランクルス")
+	if err != nil {
+		t.Error()
+	}
+	if sp == nil {
+		t.Error()
+	}
+	if sp.Name != "ランクルス" {
+		t.Error()
+	}
+}
+
+func Test_ItemRepository(t *testing.T) {
+	rp := new(itemRepository)
+	item := rp.Get("こだわりハチマキ", true)
+	co := item.Correct()
+
+	act := co.Correct(100, 100, 100, 100, 100)
+	if !reflect.DeepEqual(act, [5]uint{150, 100, 100, 100, 100}) {
+		t.Error()
+	}
+
+	item = rp.Get("unknown", true)
+	if item == nil {
+		t.Error()
+	}
+}
+
 // 取得と機能チェック
 func Test_AbilitiesRepository(t *testing.T) {
 	rp := new(abilityRepository)

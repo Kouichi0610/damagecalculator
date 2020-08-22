@@ -7,7 +7,6 @@ import (
 	"damagecalculator/domain/move"
 	"damagecalculator/domain/move/attribute"
 	"damagecalculator/domain/move/category"
-	"damagecalculator/domain/move/count"
 	"damagecalculator/domain/move/detail"
 	"damagecalculator/domain/move/target"
 	"damagecalculator/domain/situation"
@@ -18,14 +17,14 @@ import (
 )
 
 func defaultArgs() *situation.SituationData {
-	cnt, _ := count.NewAttackCount(1, 1)
 	s := &move.MoveFactory{
 		Name:      "unknown",
 		Power:     80,
 		Type:      types.Fire,
 		Accuracy:  100,
 		Category:  category.Physical,
-		Count:     cnt,
+		CountMin:  1,
+		CountMax:  1,
 		Target:    target.Select,
 		Attribute: attribute.NewAttribute(attribute.Contact, attribute.NoAttribute),
 		Detail:    detail.Default,
@@ -88,14 +87,14 @@ func Test_重さ(t *testing.T) {
 func Test_ヘビーボンバー(t *testing.T) {
 	d := NewDamageCalculator()
 	a := defaultArgs()
-	cnt, _ := count.NewAttackCount(1, 1)
 	a.Move = &move.MoveFactory{
 		Name:      "unknown",
 		Power:     1,
 		Type:      types.Steel,
 		Accuracy:  100,
 		Category:  category.Physical,
-		Count:     cnt,
+		CountMin:  1,
+		CountMax:  1,
 		Target:    target.Select,
 		Attribute: attribute.NewAttribute(attribute.Contact, attribute.NoAttribute),
 		Detail:    detail.HeavySlam,

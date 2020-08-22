@@ -3,7 +3,6 @@ package move
 import (
 	"damagecalculator/domain/move/attribute"
 	"damagecalculator/domain/move/category"
-	"damagecalculator/domain/move/count"
 	"damagecalculator/domain/move/detail"
 	"damagecalculator/domain/move/target"
 	"damagecalculator/domain/types"
@@ -15,14 +14,14 @@ import (
 	詳細はDetail側で行っている
 */
 func Test_CreateMove(t *testing.T) {
-	cnt, _ := count.NewAttackCount(1, 1)
 	f := &MoveFactory{
 		Name:      "サイコショック",
 		Power:     80,
 		Type:      types.Psychic,
 		Accuracy:  100,
 		Category:  category.PsycoShock,
-		Count:     cnt,
+		CountMin:  1,
+		CountMax:  1,
 		Target:    target.Select,
 		Attribute: attribute.NewAttribute(attribute.Remote, attribute.NoAttribute),
 		Detail:    detail.Default,

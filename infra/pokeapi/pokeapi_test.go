@@ -6,12 +6,10 @@ import (
 	"damagecalculator/domain/move/accuracy"
 	"damagecalculator/domain/move/attribute"
 	"damagecalculator/domain/move/category"
-	"damagecalculator/domain/move/count"
 	"damagecalculator/domain/move/detail"
 	"damagecalculator/domain/move/power"
 	"damagecalculator/domain/move/target"
 	"damagecalculator/domain/species"
-	"damagecalculator/domain/stats"
 	"damagecalculator/domain/types"
 	"testing"
 
@@ -32,14 +30,14 @@ func Test_Moves(t *testing.T) {
 		t.Error()
 	}
 
-	cnt, _ := count.NewAttackCount(2, 5)
 	expect := &move.MoveFactory{
 		Name:      "ロックブラスト",
 		Power:     power.NewPower(25),
 		Type:      types.Rock,
 		Accuracy:  accuracy.NewAccuracy(90),
 		Category:  category.Physical,
-		Count:     cnt,
+		CountMin:  2,
+		CountMax:  5,
 		Target:    target.Select,
 		Attribute: attribute.NewAttribute(attribute.Remote, attribute.NoAttribute),
 		Detail:    detail.Default,
@@ -60,7 +58,12 @@ func Test_Species(t *testing.T) {
 	}
 	expect := &species.Species{
 		Name:      "ツンデツンデ",
-		Stats:     stats.NewSpeciesStats(61, 131, 211, 53, 101, 13),
+		HP:        61,
+		Attack:    131,
+		Defense:   211,
+		SpAttack:  53,
+		SpDefense: 101,
+		Speed:     13,
 		Weight:    820.0,
 		Gender:    gender.Unknown,
 		Types:     []types.Type{types.Rock, types.Steel},

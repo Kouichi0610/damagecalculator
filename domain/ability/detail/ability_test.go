@@ -7,7 +7,6 @@ import (
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/move"
 	"damagecalculator/domain/move/attribute"
-	"damagecalculator/domain/move/count"
 	"damagecalculator/domain/status"
 	"damagecalculator/domain/types"
 	"reflect"
@@ -179,36 +178,33 @@ func Test_スキルリンク(t *testing.T) {
 	a := new(skillLink)
 	a.setAttacker(true)
 	// 2～5を5回に書き換えること
-	cnt, _ := count.NewAttackCount(2, 5)
 	mf := &move.MoveFactory{
-		Count: cnt,
+		CountMin: 2,
+		CountMax: 5,
 	}
 	actual := a.RewriteMoveFactory(*mf)
-	if !(actual.Count.Min() == 5 && actual.Count.Max() == 5) {
-
+	if !(actual.CountMin == 5 && actual.CountMax == 5) {
 		t.Error()
 	}
 
 	// 2～5回でなければ変更無い事
-	cnt, _ = count.NewAttackCount(1, 5)
 	mf = &move.MoveFactory{
-		Count: cnt,
+		CountMin: 1,
+		CountMax: 5,
 	}
 	actual = a.RewriteMoveFactory(*mf)
-	if !(actual.Count.Min() == 1 && actual.Count.Max() == 5) {
-
+	if !(actual.CountMin == 1 && actual.CountMax == 5) {
 		t.Error()
 	}
 
 	// 防御側では効果ない事
 	a.setAttacker(false)
-	cnt, _ = count.NewAttackCount(2, 5)
 	mf = &move.MoveFactory{
-		Count: cnt,
+		CountMin: 2,
+		CountMax: 5,
 	}
 	actual = a.RewriteMoveFactory(*mf)
-	if !(actual.Count.Min() == 2 && actual.Count.Max() == 5) {
-
+	if !(actual.CountMin == 2 && actual.CountMax == 5) {
 		t.Error()
 	}
 }
@@ -395,11 +391,11 @@ func Test_かたやぶり(t *testing.T) {
 }
 
 func createSkillLinkData(min, max uint) *move.MoveFactory {
-	cnt, _ := count.NewAttackCount(min, max)
 	return &move.MoveFactory{
 		Type:     types.Ice,
 		Accuracy: 100,
-		Count:    cnt,
+		CountMin: min,
+		CountMax: max,
 	}
 }
 
