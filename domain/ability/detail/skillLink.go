@@ -2,7 +2,6 @@ package detail
 
 import (
 	"damagecalculator/domain/move"
-	"damagecalculator/domain/move/count"
 )
 
 type skillLink struct {
@@ -17,10 +16,10 @@ func (a *skillLink) RewriteMoveFactory(mv move.MoveFactory) *move.MoveFactory {
 		return &res
 	}
 
-	if !(mv.Count.Min() == 2 && mv.Count.Max() == 5) {
+	if !(mv.CountMin == 2 && mv.CountMax == 5) {
 		return &res
 	}
-	cnt, _ := count.NewAttackCount(5, 5)
-	res.Count = cnt
+	res.CountMin = 5
+	res.CountMax = 5
 	return &res
 }

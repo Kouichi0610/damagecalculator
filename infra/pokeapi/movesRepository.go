@@ -5,7 +5,6 @@ import (
 	"damagecalculator/domain/move/accuracy"
 	"damagecalculator/domain/move/attribute"
 	"damagecalculator/domain/move/category"
-	"damagecalculator/domain/move/count"
 	"damagecalculator/domain/move/detail"
 	"damagecalculator/domain/move/power"
 	"damagecalculator/domain/move/target"
@@ -32,11 +31,6 @@ func (r *movesRepository) Get(name string) (*move.MoveFactory, error) {
 	target := moveTarget(mv.Target.Name)
 	min, max := hitCounts(mv.Meta.MinHits, mv.Meta.MaxHits)
 
-	attackCount, err := count.NewAttackCount(uint(min), uint(max))
-	if err != nil {
-		panic(err)
-	}
-
 	// 追加効果はmove.Meta.AilmentChanceが0でなければとれる
 
 	// TODO:接触、非接触
@@ -55,7 +49,8 @@ func (r *movesRepository) Get(name string) (*move.MoveFactory, error) {
 		Power:     power.NewPower(uint(mv.Power)),
 		Type:      typesMap[mv.Type.Name],
 		Accuracy:  accuracy.NewAccuracy(uint(mv.Accuracy)),
-		Count:     attackCount,
+		CountMin:  uint(min),
+		CountMax:  uint(max),
 		Target:    target,
 		Category:  damage,
 		Attribute: attr,

@@ -22,7 +22,8 @@ type (
 		Type      types.Type
 		Accuracy  accuracy.Accuracy
 		Category  category.DamageCategory
-		Count     *count.AttackCount
+		CountMin  uint
+		CountMax  uint
 		Target    target.MoveTarget
 		Attribute attribute.Attribute
 		Detail    detail.Detail
@@ -31,12 +32,13 @@ type (
 
 // Moveインターフェイスを生成する
 func (m *MoveFactory) Create() (Move, error) {
+	cnt, err := count.NewAttackCount(m.CountMin, m.CountMax)
 	res, err := detail.NewMove(
 		m.Power,
 		m.Type,
 		m.Accuracy,
 		m.Category,
-		m.Count,
+		cnt,
 		m.Target,
 		m.Attribute,
 		m.Detail)

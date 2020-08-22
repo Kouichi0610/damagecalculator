@@ -9,7 +9,6 @@ import (
 	"damagecalculator/domain/move"
 	"damagecalculator/domain/move/attribute"
 	"damagecalculator/domain/move/category"
-	"damagecalculator/domain/move/count"
 	"damagecalculator/domain/move/detail"
 	"damagecalculator/domain/move/target"
 	"damagecalculator/domain/status"
@@ -95,14 +94,14 @@ func Test_ダメージ威力補正(t *testing.T) {
 }
 
 func testMoveFactory() *move.MoveFactory {
-	cnt, _ := count.NewAttackCount(2, 5)
 	return &move.MoveFactory{
 		Name:      "unknown",
 		Power:     20,
 		Type:      types.Fire,
 		Accuracy:  100,
 		Category:  category.Physical,
-		Count:     cnt,
+		CountMin:  2,
+		CountMax:  5,
 		Target:    target.Select,
 		Attribute: attribute.NewAttribute(attribute.Knuckle, attribute.NoAttribute),
 		Detail:    detail.Default,
@@ -110,14 +109,14 @@ func testMoveFactory() *move.MoveFactory {
 }
 
 func create() (SituationChecker, error) {
-	cnt, _ := count.NewAttackCount(1, 1)
 	s := &move.MoveFactory{
 		Name:      "unknown",
 		Power:     120,
 		Type:      types.Fire,
 		Accuracy:  100,
 		Category:  category.Physical,
-		Count:     cnt,
+		CountMin:  1,
+		CountMax:  1,
 		Target:    target.Select,
 		Attribute: attribute.NewAttribute(attribute.Knuckle, attribute.NoAttribute),
 		Detail:    detail.Default,

@@ -6,7 +6,6 @@ import (
 	"damagecalculator/domain/move/accuracy"
 	"damagecalculator/domain/move/attribute"
 	"damagecalculator/domain/move/category"
-	"damagecalculator/domain/move/count"
 	"damagecalculator/domain/move/detail"
 	"damagecalculator/domain/move/power"
 	"damagecalculator/domain/move/target"
@@ -31,14 +30,14 @@ func Test_Moves(t *testing.T) {
 		t.Error()
 	}
 
-	cnt, _ := count.NewAttackCount(2, 5)
 	expect := &move.MoveFactory{
 		Name:      "ロックブラスト",
 		Power:     power.NewPower(25),
 		Type:      types.Rock,
 		Accuracy:  accuracy.NewAccuracy(90),
 		Category:  category.Physical,
-		Count:     cnt,
+		CountMin:  2,
+		CountMax:  5,
 		Target:    target.Select,
 		Attribute: attribute.NewAttribute(attribute.Remote, attribute.NoAttribute),
 		Detail:    detail.Default,
