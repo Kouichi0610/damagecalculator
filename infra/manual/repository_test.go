@@ -8,6 +8,20 @@ import (
 	"testing"
 )
 
+func Test_SpeciesRepository(t *testing.T) {
+	rp := new(speciesRepository)
+	sp, err := rp.Get("ランクルス")
+	if err != nil {
+		t.Error()
+	}
+	if sp == nil {
+		t.Error()
+	}
+	if sp.Name != "ランクルス" {
+		t.Error()
+	}
+}
+
 func Test_ItemRepository(t *testing.T) {
 	rp := new(itemRepository)
 	item := rp.Get("こだわりハチマキ", true)

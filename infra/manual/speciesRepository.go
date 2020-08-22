@@ -1,55 +1,63 @@
 package manual
 
 import (
-	"damagecalculator/domain/gender"
+	"bufio"
 	"damagecalculator/domain/species"
-	"damagecalculator/domain/types"
+	"damagecalculator/infra/index"
+	"encoding/json"
+	"fmt"
+	"io"
+	"os"
 )
 
 type speciesRepository struct {
 }
 
 func (s *speciesRepository) Get(name string) (*species.Species, error) {
-	return nil, nil
+	jname, err := index.Index(name)
+	if err != nil {
+		return nil, err
+	}
+	res, ok := speciesMap[jname]
+	if !ok {
+		return nil, fmt.Errorf("%s not found.", name)
+	}
+	return res, nil
 }
 
-var speciesMap map[string]*species.Species = map[string]*species.Species{
-	"ツンデツンデ": {
-		Name:      "ツンデツンデ",
-		HP:        61,
-		Attack:    131,
-		Defense:   211,
-		SpAttack:  53,
-		SpDefense: 101,
-		Speed:     13,
-		Weight:    820.0,
-		Gender:    gender.Unknown,
-		Types:     []types.Type{types.Rock, types.Steel},
-		Abilities: []string{"ビーストブースト"},
-		Moves: []string{
-			"tackle",
-			"take-down",
-			"double-edge",
-			"rock-throw",
-			"earthquake",
-			"bide",
-			"rock-slide",
-			"return",
-			"frustration",
-			"hidden-power",
-			"facade",
-			"rock-tomb",
-			"rock-blast",
-			"gyro-ball",
-			"giga-impact",
-			"flash-cannon",
-			"iron-head",
-			"stone-edge",
-			"smack-down",
-			"round",
-			"bulldoze",
-			"infestation",
-			"brutal-swing",
-		},
-	},
+var speciesMap map[string]*species.Species
+
+func init() {
+	speciesMap = make(map[string]*species.Species, 0)
+	fp, err := os.Open("species.txt")
+	if err != nil {
+		panic(err)
+	}
+	defer fp.Close()
+
+	reader := bufio.NewReaderSize(fp, 4096)
+	for {
+		buf, isPrefix, err := reader.ReadLine()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			panic(err)
+		}
+		if isPrefix {
+			panic("size over")
+		}
+
+		sp := &species.Species{}
+		err = json.Unmarshal(buf, sp)
+
+		ename := sp.Name
+		jname, err := index.JName(sp.Name)
+		sp.Name = jname
+		if err != nil {
+			panic(err)
+		}
+		speciesMap[ename] = sp
+	}
+
 }

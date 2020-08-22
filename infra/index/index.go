@@ -12,6 +12,16 @@ type pokeIndex struct {
 	jp string // 日本語名
 }
 
+func JName(name string) (string, error) {
+	for _, d := range indices {
+		en := d.en
+		if name == en {
+			return d.jp, nil
+		}
+	}
+	return "", fmt.Errorf("%s not found.", name)
+}
+
 // 英名または和名をIDに変換
 func Index(name string) (string, error) {
 	for _, d := range indices {
