@@ -23,6 +23,11 @@ import (
 	"github.com/mtslzr/pokeapi-go"
 )
 
+func Test_SaveSpecies(t *testing.T) {
+	SaveSpecies()
+
+}
+
 func Test_Moves(t *testing.T) {
 	mv := new(movesRepository)
 	mf, err := mv.Get("rock-blast")

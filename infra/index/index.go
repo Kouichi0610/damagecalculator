@@ -24,6 +24,14 @@ func Index(name string) (string, error) {
 	return "", fmt.Errorf("%s not found.", name)
 }
 
+func IndexArray() []string {
+	res := make([]string, 0)
+	for _, i := range indices {
+		res = append(res, i.en)
+	}
+	return res
+}
+
 // TODO:pokeapiからリスト取れそうなら
 var indices []*pokeIndex = []*pokeIndex{
 	{"bulbasaur", "フシギダネ"},

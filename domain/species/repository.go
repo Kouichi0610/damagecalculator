@@ -12,11 +12,10 @@ import (
 	名前からStatus, わざ、とくせいリストを取得
 */
 type (
-
-	// statusに持たせて status, []abilities, []moves (Gender)
 	Species struct {
 		Name string
 
+		// TODO:ポインタ型はjsonとして記録されない？
 		Stats  *stats.SpeciesStats
 		Types  []types.Type
 		Weight float64
