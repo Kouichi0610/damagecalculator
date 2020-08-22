@@ -3,7 +3,6 @@ package pokeapi
 import (
 	"damagecalculator/domain/gender"
 	"damagecalculator/domain/species"
-	"damagecalculator/domain/stats"
 	"damagecalculator/domain/types"
 	"damagecalculator/infra/index"
 
@@ -44,7 +43,12 @@ func (s *speciesRepository) Get(name string) (*species.Species, error) {
 			sp = uint(s.BaseStat)
 		}
 	}
-	res.Stats = stats.NewSpeciesStats(hp, at, df, sa, sd, sp)
+	res.HP = hp
+	res.Attack = at
+	res.Defense = df
+	res.SpAttack = sa
+	res.SpDefense = sd
+	res.Speed = sp
 
 	res.Weight = float64(poke.Weight) / 10.0
 

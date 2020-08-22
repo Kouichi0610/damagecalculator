@@ -15,6 +15,7 @@ func SaveSpecies() {
 	defer fp.Close()
 
 	rp := new(speciesRepository)
+	cnt := 0
 	indices := index.IndexArray()
 	for _, name := range indices {
 		sp, err := rp.Get(name)
@@ -29,6 +30,10 @@ func SaveSpecies() {
 		fp.WriteString(str)
 
 		fmt.Printf("writed:%s\n", name)
+		cnt++
+		if cnt == 10 {
+			break
+		}
 	}
 }
 

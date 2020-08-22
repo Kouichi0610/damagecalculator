@@ -11,7 +11,6 @@ import (
 	"damagecalculator/domain/move/power"
 	"damagecalculator/domain/move/target"
 	"damagecalculator/domain/species"
-	"damagecalculator/domain/stats"
 	"damagecalculator/domain/types"
 	"testing"
 
@@ -23,10 +22,11 @@ import (
 	"github.com/mtslzr/pokeapi-go"
 )
 
+/*
 func Test_SaveSpecies(t *testing.T) {
 	SaveSpecies()
-
 }
+*/
 
 func Test_Moves(t *testing.T) {
 	mv := new(movesRepository)
@@ -65,7 +65,12 @@ func Test_Species(t *testing.T) {
 	}
 	expect := &species.Species{
 		Name:      "ツンデツンデ",
-		Stats:     stats.NewSpeciesStats(61, 131, 211, 53, 101, 13),
+		HP:        61,
+		Attack:    131,
+		Defense:   211,
+		SpAttack:  53,
+		SpDefense: 101,
+		Speed:     13,
 		Weight:    820.0,
 		Gender:    gender.Unknown,
 		Types:     []types.Type{types.Rock, types.Steel},

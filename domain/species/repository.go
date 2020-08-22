@@ -13,13 +13,11 @@ import (
 */
 type (
 	Species struct {
-		Name string
-
-		// TODO:ポインタ型はjsonとして記録されない？
-		Stats  *stats.SpeciesStats
-		Types  []types.Type
-		Weight float64
-		Gender gender.Gender
+		Name                                            string
+		HP, Attack, Defense, SpAttack, SpDefense, Speed uint
+		Types                                           []types.Type
+		Weight                                          float64
+		Gender                                          gender.Gender
 
 		Abilities []string // 選択可能なとくせい一覧(id intでいいか)
 		Moves     []string // 選択可能なわざ一覧
@@ -63,7 +61,9 @@ func (s *statusFactory) Create(args *StatusFactoryArgs) (st status.StatusChecker
 
 	lv := stats.NewLevel(args.Level)
 	nt := stats.NewNature(args.Nature)
-	stat := stats.NewStats(lv, sp.Stats, args.Individual, args.BasePoint, nt)
+
+	spstat := stats.NewSpeciesStats(sp.HP, sp.Attack, sp.Defense, sp.SpAttack, sp.SpDefense, sp.Speed)
+	stat := stats.NewStats(lv, spstat, args.Individual, args.BasePoint, nt)
 
 	a := &status.StatusData{
 		Lv:            args.Level,
