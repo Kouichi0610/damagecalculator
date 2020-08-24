@@ -5,9 +5,32 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
 )
 
-// TODO:LoadSpecies()
+func SaveMoves() {
+	fp, err := os.Create("moves.txt")
+	if err != nil {
+		panic(err)
+	}
+	defer fp.Close()
+	rp := new(movesRepository)
+
+	for i := 1; i <= 2000; i++ {
+		id := strconv.Itoa(i)
+		move, err := rp.Get(id)
+		if err != nil {
+			break
+		}
+		bin, err := json.Marshal(move)
+		if err != nil {
+			panic(err)
+		}
+		str := fmt.Sprintf("%s\n", string(bin))
+		fp.WriteString(str)
+		fmt.Printf("%s\n", move.Name)
+	}
+}
 
 func SaveSpecies() {
 	fp, err := os.Create("species.txt")

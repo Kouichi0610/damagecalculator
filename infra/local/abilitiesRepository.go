@@ -1,4 +1,4 @@
-package manual
+package local
 
 import (
 	"damagecalculator/domain/ability"

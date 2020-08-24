@@ -1,12 +1,24 @@
-package manual
+package local
 
 import (
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/move/attribute"
+	"damagecalculator/domain/move/category"
 	"damagecalculator/domain/types"
 	"reflect"
 	"testing"
 )
+
+func Test_MovesRepository(t *testing.T) {
+	rp := new(movesRepository)
+	mv, err := rp.Get("イカサマ")
+	if err != nil {
+		t.Error()
+	}
+	if mv.Category != category.FoulPlay {
+		t.Error()
+	}
+}
 
 func Test_SpeciesRepository(t *testing.T) {
 	rp := new(speciesRepository)

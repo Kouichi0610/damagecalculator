@@ -1,4 +1,4 @@
-package manual
+package local
 
 import (
 	"damagecalculator/domain/item"
@@ -19,6 +19,7 @@ var itemMap map[string]item.ItemCreator = map[string]item.ItemCreator{
 	"こだわりハチマキ": &item.StatsCorrectData{Attack: 1.5},
 	"こだわりメガネ":  &item.StatsCorrectData{SpAttack: 1.5},
 	"とつげきチョッキ": &item.StatsCorrectData{SpDefense: 1.5},
+	"くろいてっきゅう": &item.StatsCorrectData{Speed: 0.5},
 }
 
 /*

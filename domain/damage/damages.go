@@ -11,6 +11,12 @@ type Damages struct {
 
 type damageSlice []uint
 
+func NoDamage() *Damages {
+	res := new(Damages)
+	res.d = []uint{0}
+	return res
+}
+
 func NewDamages(args []uint) *Damages {
 	res := new(Damages)
 

@@ -15,16 +15,17 @@ import (
 */
 func Test_CreateMove(t *testing.T) {
 	f := &MoveFactory{
-		Name:      "サイコショック",
-		Power:     80,
-		Type:      types.Psychic,
-		Accuracy:  100,
-		Category:  category.PsycoShock,
-		CountMin:  1,
-		CountMax:  1,
-		Target:    target.Select,
-		Attribute: attribute.NewAttribute(attribute.Remote, attribute.NoAttribute),
-		Detail:    detail.Default,
+		Name:     "サイコショック",
+		Power:    80,
+		Type:     types.Psychic,
+		Accuracy: 100,
+		Category: category.PsycoShock,
+		CountMin: 1,
+		CountMax: 1,
+		Target:   target.Select,
+		Action:   attribute.Remote,
+		Effect:   attribute.NoAttribute,
+		Detail:   detail.Default,
 	}
 	mv, err := f.Create()
 	if mv == nil {
