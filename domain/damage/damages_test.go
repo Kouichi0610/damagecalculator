@@ -7,6 +7,7 @@ import (
 	"damagecalculator/domain/move"
 	"damagecalculator/domain/situation"
 	"damagecalculator/domain/species"
+	"damagecalculator/domain/stats"
 	"damagecalculator/domain/types"
 	"damagecalculator/infra/local"
 
@@ -117,7 +118,45 @@ func Test_ちきゅうなげ(t *testing.T) {
 	}
 }
 
+func Test_ヘビーボンバー(t *testing.T) {
+	a := defaultSituation()
+	a.Move = "ヘビーボンバー"
+	a.Attacker.Name = "ピカチュウ"
+	a.Defender.Name = "ピカチュウ"
+	st := toSituation(a)
+	power := st.Move().Power(st)
+	if power != 40 {
+		t.Errorf("%d", power)
+	}
+	a.Attacker.Name = "ハガネール"
+	st = toSituation(a)
+	power = st.Move().Power(st)
+	if power != 120 {
+		t.Errorf("%d", power)
+	}
+}
+
 func Test_ジャイロボール_くろいてっきゅう(t *testing.T) {
+	a := defaultSituation()
+	a.Move = "ジャイロボール"
+	a.Attacker.Name = "ハガネール"
+	a.Attacker.BasePoints.Speed = 0
+	a.Attacker.Nature = stats.Brave
+	a.Defender.Name = "プテラ"
+	a.Defender.Nature = stats.Jolly
+
+	st := toSituation(a)
+	power := st.Move().Power(st)
+	if power != 92 {
+		t.Errorf("%d", power)
+	}
+	// くろいてっきゅうのすばやさが下がる効果で威力が上がること
+	a.Attacker.Item = "くろいてっきゅう"
+	st = toSituation(a)
+	power = st.Move().Power(st)
+	if power != 150 {
+		t.Errorf("%d", power)
+	}
 }
 
 // フィールド時、1.3倍
@@ -150,189 +189,64 @@ func Test_天候補正(t *testing.T) {
 		t.Error()
 	}
 }
+func Test_すなあらしいわタイプ補正(t *testing.T) {
+	a := defaultSituation()
+	a.Move = "なみのり"
+	a.Defender.Name = "プテラ"
+	a.Weather = field.NoWeather
+	d := calcDamage(a)
+	nmin := d.Min()
+	a.Weather = field.SandStorm
+	d = calcDamage(a)
+	smin := d.Min()
+
+	if nmin != 50 {
+		t.Error()
+	}
+	if smin != 34 {
+		t.Error()
+	}
+}
 
 func Test_タイプ一致補正(t *testing.T) {
-
-}
-
-/*
-func Test_重さ(t *testing.T) {
-	a := defaultArgs()
-	a.AttackerItem = &item.WeightCorrectData{2.0}
-	a.DefenderItem = &item.WeightCorrectData{0.5}
-	st, _ := a.Create()
-	atWeight := st.Attacker().Weight()
-	dfWeight := st.Defender().Weight()
-	if atWeight != 200.0 {
-		t.Errorf("%f", atWeight)
+	// カイリキー,フシギダネ(spAttack65)
+	a := defaultSituation()
+	a.Move = "エナジーボール"
+	a.Attacker.Name = "カイリキー"
+	d := calcDamage(a)
+	nmin := d.Min()
+	a.Attacker.Name = "フシギダネ"
+	d = calcDamage(a)
+	cmin := d.Min()
+	if nmin != 16 {
+		t.Error()
 	}
-	if dfWeight != 50.0 {
-		t.Errorf("%f", dfWeight)
-	}
-}
-func Test_ヘビーボンバー(t *testing.T) {
-	d := NewDamageCalculator()
-	a := defaultArgs()
-	a.Move = &move.MoveFactory{
-		Name:     "unknown",
-		Power:    1,
-		Type:     types.Steel,
-		Accuracy: 100,
-		Category: category.Physical,
-		CountMin: 1,
-		CountMax: 1,
-		Target:   target.Select,
-		Action:   attribute.Contact,
-		Effect:   attribute.NoAttribute,
-		Detail:   detail.HeavySlam,
-	}
-	st, _ := a.Create()
-	dmgs := d.CreateDamage(st)
-	if dmgs.Min() != 33 {
-		t.Errorf("%v", dmgs)
-	}
-	// 重さがダメージに影響を与えること
-	a.AttackerItem = &item.WeightCorrectData{5.0}
-	st, _ = a.Create()
-	dmgs = d.CreateDamage(st)
-	if dmgs.Min() != 96 {
-		t.Errorf("%v", dmgs)
+	if cmin != 24 {
+		t.Error()
 	}
 }
 
 func Test_もちもの補正(t *testing.T) {
-	d := NewDamageCalculator()
-	a := defaultArgs()
-	a.Attacker.Types = []types.Type{types.Fire}
-	a.Defender.Types = []types.Type{types.Bug}
-	a.Move.Type = types.Normal
-	a.AttackerItem = &item.TypeCorrectData{types.Bug, 1.5}
-	st, _ := a.Create()
-	dmgs := d.CreateDamage(st)
-	if dmgs.Min() != 64 {
-		t.Errorf("%v", dmgs)
+	a := defaultSituation()
+	a.Move = "なみのり"
+	d := calcDamage(a)
+	if d.Min() != 27 {
+		t.Error()
 	}
-	// 補正を掛けること
-	a.AttackerItem = &item.TypeCorrectData{types.Normal, 1.5}
-	st, _ = a.Create()
-	dmgs = d.CreateDamage(st)
-	if dmgs.Min() != 96 {
-		t.Errorf("%v", dmgs)
+
+	a.Attacker.Item = "こだわりメガネ"
+	d = calcDamage(a)
+	if d.Min() != 39 {
+		t.Error()
 	}
-	// 防御側の持ち物補正が有効であること
-	a.DefenderItem = &item.StatsCorrectData{Defense: 2.0, SpDefense: 2.0}
-	st, _ = a.Create()
-	dmgs = d.CreateDamage(st)
-	if dmgs.Min() != 48 {
-		t.Errorf("%v", dmgs)
+
+	a.Defender.Item = "とつげきチョッキ"
+	d = calcDamage(a)
+	if d.Min() != 27 {
+		t.Error()
 	}
 }
 
-func Test_タイプ相性(t *testing.T) {
-	d := NewDamageCalculator()
-	a := defaultArgs()
-	a.Attacker.Types = []types.Type{types.Fire}
-	a.Defender.Types = []types.Type{types.Bug}
-	a.Move.Type = types.Normal
-
-	// ノーマル->むし
-	st, _ := a.Create()
-	dmgs := d.CreateDamage(st)
-	if dmgs.Min() != 64 {
-		t.Errorf("%v", dmgs)
-	}
-	// いわ->むし
-	a.Move.Type = types.Rock
-	st, _ = a.Create()
-	dmgs = d.CreateDamage(st)
-	if dmgs.Min() != 128 {
-		t.Errorf("%v", dmgs)
-	}
-	// ほのお(タイプ一致)->むし
-	a.Move.Type = types.Fire
-	st, _ = a.Create()
-	dmgs = d.CreateDamage(st)
-	if dmgs.Min() != 192 {
-		t.Errorf("%v", dmgs)
-	}
-}
-
-func Test_急所(t *testing.T) {
-	a := defaultArgs()
-
-	dmgs := calcDamage(a)
-	if dmgs.Min() != 128 {
-		t.Errorf("%v", dmgs)
-	}
-
-	a.IsCritical = true
-	dmgs = calcDamage(a)
-	if dmgs.Min() != 192 {
-		t.Errorf("%v", dmgs)
-	}
-}
-
-// 天候補正時、1.5倍
-func Test_天候(t *testing.T) {
-	a := defaultArgs()
-
-	a.Move.Type = types.Fire
-	a.Defender.Types = []types.Type{types.Normal}
-	a.Attacker.Types = []types.Type{types.Normal}
-
-	dmgs := calcDamage(a)
-	if dmgs.Min() != 64 {
-		t.Errorf("%v", dmgs)
-	}
-
-	a.Weather = field.Sunny
-	dmgs = calcDamage(a)
-	if dmgs.Min() != 96 {
-		t.Errorf("%v", dmgs)
-	}
-}
-
-// フィールド補正時、1.3倍
-func Test_フィールド(t *testing.T) {
-	a := defaultArgs()
-
-	a.Move.Type = types.Electric
-	a.Defender.Types = []types.Type{types.Normal}
-	a.Attacker.Types = []types.Type{types.Normal}
-
-	dmgs := calcDamage(a)
-	if dmgs.Min() != 64 {
-		t.Errorf("%v", dmgs)
-	}
-
-	a.Field = field.ElectricField
-	dmgs = calcDamage(a)
-	if dmgs.Min() != 83 {
-		t.Errorf("%v", dmgs)
-	}
-}
-
-func Test_すなあらし岩タイプ補正(t *testing.T) {
-	a := defaultArgs()
-
-	a.Move.Type = types.Ghost
-	a.Move.Category = category.Special
-	a.Defender.Types = []types.Type{types.Rock}
-	a.Attacker.Types = []types.Type{types.Normal}
-
-	dmgs := calcDamage(a)
-	if dmgs.Min() != 27 {
-		t.Errorf("%v", dmgs)
-	}
-
-	// すなあらし時、とくぼう1.5倍
-	a.Weather = field.SandStorm
-	dmgs = calcDamage(a)
-	if dmgs.Min() != 18 {
-		t.Errorf("%v", dmgs)
-	}
-}
-*/
 func defaultSituation() *situation.SituationData {
 	d := &situation.SituationData{
 		Move: "かみなりパンチ",
