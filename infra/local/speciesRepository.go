@@ -1,13 +1,14 @@
-package manual
+package local
 
 import (
 	"bufio"
+	"bytes"
+	"damagecalculator/assets"
 	"damagecalculator/domain/species"
 	"damagecalculator/infra/index"
 	"encoding/json"
 	"fmt"
 	"io"
-	"os"
 )
 
 type speciesRepository struct {
@@ -29,13 +30,12 @@ var speciesMap map[string]*species.Species
 
 func init() {
 	speciesMap = make(map[string]*species.Species, 0)
-	fp, err := os.Open("species.txt")
+	res, err := assets.Asset("assets/species.txt")
 	if err != nil {
 		panic(err)
 	}
-	defer fp.Close()
-
-	reader := bufio.NewReaderSize(fp, 4096)
+	rd := bytes.NewReader(res)
+	reader := bufio.NewReaderSize(rd, 4096)
 	for {
 		buf, isPrefix, err := reader.ReadLine()
 		if err == io.EOF {

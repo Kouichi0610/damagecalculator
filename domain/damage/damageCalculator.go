@@ -5,9 +5,9 @@ package damage
 
 import (
 	"damagecalculator/domain/corrector"
-	_ "damagecalculator/domain/move"
 	"damagecalculator/domain/situation"
 	"damagecalculator/domain/status"
+	"damagecalculator/domain/types"
 )
 
 // ダメージ計算の手続き
@@ -37,6 +37,11 @@ func (d *impl) CreateDamage(st situation.SituationChecker) *Damages {
 	}
 	ef := skillType.Magnification(defender.Types())
 
+	// 効果なしなら0を
+	if ef.IsNoEffective() {
+		return NoDamage()
+	}
+
 	at, df := move.PickStats(st)
 	attack, defense := criticalStats(st.IsCritical(), at, df)
 	if st.IsCritical() {
@@ -53,6 +58,10 @@ func (d *impl) CreateDamage(st situation.SituationChecker) *Damages {
 	defense = c.CorrectDefense(defense)
 
 	dmgs := move.Calculate(level, power, attack, defense)
+	// 固定ダメージなら"こうかがない"以外の相性を無効にする
+	if len(dmgs) == 1 {
+		ef = types.Flat
+	}
 
 	for i := 0; i < len(dmgs); i++ {
 		dmgs[i] = ef.Correct(dmgs[i])

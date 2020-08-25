@@ -31,16 +31,17 @@ func Test_Moves(t *testing.T) {
 	}
 
 	expect := &move.MoveFactory{
-		Name:      "ロックブラスト",
-		Power:     power.NewPower(25),
-		Type:      types.Rock,
-		Accuracy:  accuracy.NewAccuracy(90),
-		Category:  category.Physical,
-		CountMin:  2,
-		CountMax:  5,
-		Target:    target.Select,
-		Attribute: attribute.NewAttribute(attribute.Remote, attribute.NoAttribute),
-		Detail:    detail.Default,
+		Name:     "ロックブラスト",
+		Power:    power.NewPower(25),
+		Type:     types.Rock,
+		Accuracy: accuracy.NewAccuracy(90),
+		Category: category.Physical,
+		CountMin: 2,
+		CountMax: 5,
+		Target:   target.Select,
+		Action:   attribute.Remote,
+		Effect:   attribute.NoAttribute,
+		Detail:   detail.Default,
 	}
 
 	if !reflect.DeepEqual(mf, expect) {

@@ -17,22 +17,24 @@ type (
 	}
 
 	MoveFactory struct {
-		Name      string
-		Power     power.Power
-		Type      types.Type
-		Accuracy  accuracy.Accuracy
-		Category  category.DamageCategory
-		CountMin  uint
-		CountMax  uint
-		Target    target.MoveTarget
-		Attribute attribute.Attribute
-		Detail    detail.Detail
+		Name     string
+		Power    power.Power
+		Type     types.Type
+		Accuracy accuracy.Accuracy
+		Category category.DamageCategory
+		CountMin uint
+		CountMax uint
+		Target   target.MoveTarget
+		Action   attribute.Action
+		Effect   attribute.Effect
+		Detail   detail.Detail
 	}
 )
 
 // Moveインターフェイスを生成する
 func (m *MoveFactory) Create() (Move, error) {
 	cnt, err := count.NewAttackCount(m.CountMin, m.CountMax)
+	attr := attribute.NewAttribute(m.Action, m.Effect)
 	res, err := detail.NewMove(
 		m.Power,
 		m.Type,
@@ -40,7 +42,7 @@ func (m *MoveFactory) Create() (Move, error) {
 		m.Category,
 		cnt,
 		m.Target,
-		m.Attribute,
+		attr,
 		m.Detail)
 
 	if err != nil {

@@ -9,3 +9,7 @@ func NewHP(v uint) *HP {
 		value: v,
 	}
 }
+
+func (hp *HP) Value() uint {
+	return hp.value
+}

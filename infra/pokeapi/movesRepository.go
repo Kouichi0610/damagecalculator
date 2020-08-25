@@ -42,21 +42,55 @@ func (r *movesRepository) Get(name string) (*move.MoveFactory, error) {
 
 	// TODO:DamageCategory & Attribute
 	damage := damageClass(mv.DamageClass.Name)
-	attr := attribute.NewAttribute(attribute.Remote, attribute.NoAttribute)
+	action := attribute.Remote
+	effect := attribute.NoAttribute
 
 	res := &move.MoveFactory{
-		Name:      jname,
-		Power:     power.NewPower(uint(mv.Power)),
-		Type:      typesMap[mv.Type.Name],
-		Accuracy:  accuracy.NewAccuracy(uint(mv.Accuracy)),
-		CountMin:  uint(min),
-		CountMax:  uint(max),
-		Target:    target,
-		Category:  damage,
-		Attribute: attr,
-		Detail:    detail.Default,
+		Name:     jname,
+		Power:    power.NewPower(uint(mv.Power)),
+		Type:     typesMap[mv.Type.Name],
+		Accuracy: accuracy.NewAccuracy(uint(mv.Accuracy)),
+		CountMin: uint(min),
+		CountMax: uint(max),
+		Target:   target,
+		Category: damageCategory(jname, damage),
+		Action:   action,
+		Effect:   effect,
+		Detail:   getDetail(jname),
 	}
 	return res, nil
+}
+
+func damageCategory(name string, ct category.DamageCategory) category.DamageCategory {
+	switch name {
+	case "サイコショック":
+		return category.PsycoShock
+	case "サイコブレイク":
+		return category.PsycoShock
+	case "ボディプレス":
+		return category.BodyPress
+	case "イカサマ":
+		return category.FoulPlay
+	case "シェルアームズ":
+		return category.ShellArms
+	}
+	return ct
+}
+
+func getDetail(name string) detail.Detail {
+	switch name {
+	case "ジャイロボール":
+		return detail.GyroBall
+	case "ヘビーボンバー":
+		return detail.HeavySlam
+	case "ちきゅうなげ":
+		return detail.SeismicToss
+	case "ウェザーボール":
+		return detail.WeatherBall
+	case "ヒートスタンプ":
+		return detail.HeavySlam
+	}
+	return detail.Default
 }
 
 func damageClass(name string) category.DamageCategory {
