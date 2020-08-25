@@ -14,6 +14,8 @@ import (
 type movesRepository struct {
 }
 
+// 英語名から取得できること あるいはasset日本語対応
+
 func (r *movesRepository) Get(name string) (*move.MoveFactory, error) {
 	res, ok := movesMap[name]
 	if !ok {
@@ -26,7 +28,7 @@ var movesMap map[string]*move.MoveFactory
 
 func init() {
 	movesMap = make(map[string]*move.MoveFactory, 0)
-	res, err := assets.Asset("assets/moves.txt")
+	res, err := assets.Asset("data/moves.txt")
 	if err != nil {
 		panic(err)
 	}

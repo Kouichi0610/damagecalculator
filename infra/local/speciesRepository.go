@@ -30,7 +30,7 @@ var speciesMap map[string]*species.Species
 
 func init() {
 	speciesMap = make(map[string]*species.Species, 0)
-	res, err := assets.Asset("assets/species.txt")
+	res, err := assets.Asset("data/species.txt")
 	if err != nil {
 		panic(err)
 	}
