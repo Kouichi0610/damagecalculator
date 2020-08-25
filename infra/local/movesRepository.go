@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"strings"
 )
 
 type movesRepository struct {
@@ -28,7 +29,14 @@ var movesMap map[string]*move.MoveFactory
 
 func init() {
 	movesMap = make(map[string]*move.MoveFactory, 0)
-	res, err := assets.Asset("data/moves.txt")
+	path := ""
+	for _, assetName := range assets.AssetNames() {
+		if strings.Contains(assetName, "moves") {
+			path = assetName
+			break
+		}
+	}
+	res, err := assets.Asset(path)
 	if err != nil {
 		panic(err)
 	}

@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"strings"
 )
 
 type speciesRepository struct {
@@ -30,7 +31,14 @@ var speciesMap map[string]*species.Species
 
 func init() {
 	speciesMap = make(map[string]*species.Species, 0)
-	res, err := assets.Asset("data/species.txt")
+	path := ""
+	for _, assetName := range assets.AssetNames() {
+		if strings.Contains(assetName, "species") {
+			path = assetName
+			break
+		}
+	}
+	res, err := assets.Asset(path)
 	if err != nil {
 		panic(err)
 	}

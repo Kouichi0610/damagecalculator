@@ -8,11 +8,7 @@ import (
 	"strconv"
 )
 
-func SaveMoves() {
-	fp, err := os.Create("moves.txt")
-	if err != nil {
-		panic(err)
-	}
+func SaveMoves(fp *os.File) {
 	defer fp.Close()
 	rp := new(movesRepository)
 
@@ -32,11 +28,7 @@ func SaveMoves() {
 	}
 }
 
-func SaveSpecies() {
-	fp, err := os.Create("species.txt")
-	if err != nil {
-		panic(err)
-	}
+func SaveSpecies(fp *os.File) {
 	defer fp.Close()
 
 	rp := new(speciesRepository)
