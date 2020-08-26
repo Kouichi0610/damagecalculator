@@ -24,8 +24,28 @@ import (
 
 
 	設定必要なもの
-
 */
+
+type IndividualType uint
+
+const (
+	Max IndividualType = iota
+	Slowest
+	Weakest
+)
+
+func (i IndividualType) Individuals() situation.Individuals {
+	switch i {
+	case Max:
+		return situation.Individuals{31, 31, 31, 31, 31, 31}
+	case Slowest:
+		return situation.Individuals{31, 31, 31, 31, 31, 0}
+	case Weakest:
+		return situation.Individuals{31, 0, 31, 31, 31, 31}
+	}
+	return situation.Individuals{31, 31, 31, 31, 31, 31}
+}
+
 type CalculateProcessor interface {
 	AttackerName(string)
 	AttackerAbilities() []string
