@@ -303,3 +303,15 @@ func Test_Damages_ソートされていること(t *testing.T) {
 		t.Error()
 	}
 }
+
+func Test_DamageRate(t *testing.T) {
+	d := NewDamageRate(100, NewDamages([]uint{49, 50, 51}))
+	if d.String() != "49.0% ～ 51.0% 確定数3" {
+		t.Errorf("%s", d.String())
+	}
+
+	d = NewDamageRate(100, NewDamages([]uint{250}))
+	if d.String() != "250.0% 確定数1" {
+		t.Errorf("%s", d.String())
+	}
+}
