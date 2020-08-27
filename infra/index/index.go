@@ -41,6 +41,13 @@ func IndexArray() []string {
 	}
 	return res
 }
+func JpNamesArray() []string {
+	res := make([]string, 0)
+	for _, i := range indices {
+		res = append(res, i.jp)
+	}
+	return res
+}
 
 // TODO:pokeapiからリスト取れそうなら
 var indices []*pokeIndex = []*pokeIndex{

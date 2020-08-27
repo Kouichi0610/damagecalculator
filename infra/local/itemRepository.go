@@ -7,6 +7,14 @@ import (
 type itemRepository struct {
 }
 
+func (r *itemRepository) List() []string {
+	res := make([]string, 0)
+	for n, _ := range itemMap {
+		res = append(res, n)
+	}
+	return res
+}
+
 func (r *itemRepository) Get(name string, isAttacker bool) item.Item {
 	res, ok := itemMap[name]
 	if !ok {

@@ -4,8 +4,13 @@ import (
 	"damagecalculator/domain/ability"
 	"damagecalculator/domain/item"
 	"damagecalculator/domain/move"
+	"damagecalculator/domain/pokenames"
 	"damagecalculator/domain/species"
 )
+
+func Names() pokenames.Repository {
+	return new(namesRepository)
+}
 
 func Ability() ability.Repository {
 	return new(abilityRepository)
