@@ -9,10 +9,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"strings"
 )
 
 type movesRepository struct {
 }
+
+// 英語名から取得できること あるいはasset日本語対応
 
 func (r *movesRepository) Get(name string) (*move.MoveFactory, error) {
 	res, ok := movesMap[name]
@@ -26,7 +29,14 @@ var movesMap map[string]*move.MoveFactory
 
 func init() {
 	movesMap = make(map[string]*move.MoveFactory, 0)
-	res, err := assets.Asset("assets/moves.txt")
+	path := ""
+	for _, assetName := range assets.AssetNames() {
+		if strings.Contains(assetName, "moves") {
+			path = assetName
+			break
+		}
+	}
+	res, err := assets.Asset(path)
 	if err != nil {
 		panic(err)
 	}

@@ -34,6 +34,13 @@ func Test_SpeciesRepository(t *testing.T) {
 	}
 }
 
+func Test_ItemList(t *testing.T) {
+	rp := new(itemRepository)
+	list := rp.List()
+	if len(list) == 0 {
+		t.Error()
+	}
+}
 func Test_ItemRepository(t *testing.T) {
 	rp := new(itemRepository)
 	item := rp.Get("こだわりハチマキ", true)

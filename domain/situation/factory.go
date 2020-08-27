@@ -29,8 +29,6 @@ type PokeData struct {
 	Nature      stats.NatureType
 	Ability     string
 	Item        string
-
-	// repositories
 }
 
 func (p *PokeData) Create(sp species.Repository) (*status.StatusData, error) {
