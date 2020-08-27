@@ -5,7 +5,7 @@ import (
 )
 
 /*
-	倒せる攻撃確定数を取得
+	ダメージのHPに対する割合、何回で倒せるか確定数を取得
 */
 type DamageRate interface {
 	RateMin() float64
@@ -16,10 +16,17 @@ type DamageRate interface {
 
 type damageRate struct {
 	hp  float64
-	dmg *Damages
+	dmg Damages
 }
 
-func NewDamageRate(hp uint, dmg *Damages) DamageRate {
+type noDamageRate struct {
+}
+
+func NewNoDamageRate() DamageRate {
+	return new(noDamageRate)
+}
+
+func NewDamageRate(hp uint, dmg Damages) DamageRate {
 	return &damageRate{
 		hp:  float64(hp),
 		dmg: dmg,
@@ -27,16 +34,25 @@ func NewDamageRate(hp uint, dmg *Damages) DamageRate {
 }
 
 func (d *damageRate) RateMin() float64 {
+	if d.hp == 0 {
+		return 0
+	}
 	return float64(d.dmg.Min()) / d.hp * 100
 }
 
 func (d *damageRate) RateMax() float64 {
+	if d.hp == 0 {
+		return 0
+	}
 	return float64(d.dmg.Max()) / d.hp * 100
 }
 
 func (d *damageRate) DetermineCount() uint {
 	hp := uint(d.hp)
 	min := d.dmg.Min()
+	if min == 0 {
+		return 0
+	}
 	res := hp / min
 	if hp%min > 0 {
 		res++
@@ -49,4 +65,17 @@ func (d *damageRate) String() string {
 		return fmt.Sprintf("%0.1f%% 確定数%d", d.RateMin(), d.DetermineCount())
 	}
 	return fmt.Sprintf("%0.1f%% ～ %0.1f%% 確定数%d", d.RateMin(), d.RateMax(), d.DetermineCount())
+}
+
+func (d *noDamageRate) RateMin() float64 {
+	return 0
+}
+func (d *noDamageRate) RateMax() float64 {
+	return 0
+}
+func (d *noDamageRate) DetermineCount() uint {
+	return 0
+}
+func (d *noDamageRate) String() string {
+	return "0%"
 }
