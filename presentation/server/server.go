@@ -6,7 +6,6 @@ import (
 	"damagecalculator/domain/move"
 	"damagecalculator/domain/pokenames"
 	"damagecalculator/domain/species"
-	"fmt"
 
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
@@ -43,10 +42,13 @@ func (s *serverImpl) Serve() error {
 	return router.Run(":8080")
 }
 
+/*
+	名前一覧を返す
+	TODO:入力から候補一覧を取得
+		ex)f -> フシギダネ、フシギソウ、フシギバナ...
+*/
 func (s *serverImpl) names(c *gin.Context) {
 	n := s.n.Get()
-
-	fmt.Printf("Names:%d\n", len(n))
 
 	c.JSON(200, n)
 }
