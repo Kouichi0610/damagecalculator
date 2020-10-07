@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-//import SandBox from '../views/SandBox.vue'
 
 Vue.use(VueRouter)
 
@@ -12,9 +11,29 @@ const routes = [
     component: Home
   },
   {
+    path: '/current',
+    name: 'Current',
+    component: () => import('../views/Current.vue'),
+  },
+  {
+    path: '/attacker',
+    name: 'Attacker',
+    component: () => import('../views/Attacker.vue'),
+  },
+  {
+    path: '/defender',
+    name: 'Defender',
+    component: () => import('../views/Defender.vue'),
+  },
+  {
+    path: '/speed',
+    name: 'Speed',
+    component: () => import('../views/Speed.vue'),
+  },
+  {
     path: '/sandbox',
     name: 'SandBox',
-    component: () => import('../views/SandBox.vue')
+    component: () => import('../views/SandBox.vue'),
   },
   {
     path: '/about',

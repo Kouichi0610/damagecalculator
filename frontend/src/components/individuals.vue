@@ -22,7 +22,7 @@
         >
         最弱
         </b-form-checkbox>
-        {{ toString }}
+        {{ individualsText }}
     </span>
 </template>
 
@@ -52,7 +52,7 @@ export default {
         }
     },
     computed: {
-        toString: function() {
+        individualsText: function() {
             return '個体値 HP:' + this.hp + ' 攻撃:' + this.at + ' 防御:' + this.df + ' 特攻:' + this.sa + '特防:' + this.sd + ' 素早さ:' + this.sp;
         }
     }

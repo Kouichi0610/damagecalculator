@@ -3,7 +3,7 @@
 */
 <template>
     <span class="basePointSlider">
-        {{ tag }}:<input type="range" id="slider" v-model.number="current" step="4" min="0" max="252">{{ current }}
+        {{ tag }}:<input type="range" id="slider" v-model.number="current" step="4" min="0" max="252" :disabled="disabled">{{ current }}
     </span>
 </template>
 
@@ -13,13 +13,14 @@ export default {
     data: function() {
         return {
             current: 0,
+            disabled:false,
         }
     },
     // パラメータ名、初期値一覧、インデックス
     // propsは直接書き換えられない ($emitで変更通知)
-    props: ['tag', 'values', 'index'],
+    props: ['tag', 'values', 'index', 'fixed'],
     created: function() {
-        console.log('tag:' + this.tag + ' values:' + this.values + ' index:' + this.index);
+        this.disabled = (this.fixed == 'true');
         this.current = this.values[this.index];
     },
     watch: {
