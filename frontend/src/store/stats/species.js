@@ -2,12 +2,12 @@
 export const species = {
   namespaced: true,
   state: {
-    hp: 10,
-    at: 10,
-    df: 10,
-    sa: 10,
-    sd: 10,
-    sp: 10,
+    hp: 95,
+    at: 109,
+    df: 105,
+    sa: 75,
+    sd: 85,
+    sp: 56,
   },
   getters: {
     toString (state) {

@@ -43,7 +43,7 @@ export default {
     console.log('Created');
     console.log('pokename ' + store.state.pokename);
 
-    store.commit('stats/nature/setNature', 'ようき');
+    store.commit('stats/nature/setNature', 'ずぶとい');
     store.commit('stats/individuals/toWeakest', true);
     store.commit('stats/individuals/toMax');
     store.commit('stats/individuals/toSlowest', true);

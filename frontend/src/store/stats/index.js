@@ -7,18 +7,6 @@ import { basePoints } from './basepoints';
 import { species } from './species';
 import { nature } from './nature';
 
-/*
-func calcHP(l Level, s Species, i Individual, b BasePoint) uint {
-	x := uint(s)*2 + uint(i) + uint(b)/4
-	y := float32(x)*float32(l)/100.0 + float32(l) + 10
-	return uint(y)
-}
-func calcFlat(l Level, s Species, i Individual, b BasePoint) uint {
-	x := uint(s)*2 + uint(i) + uint(b)/4
-	y := uint(float32(x)*float32(l))/100 + 5
-	return y
-}
-*/
 function calcHP(l, s, i, b) {
     let x = s * 2 + i + b/4;
     let y = x * l / 100.0 + l + 10;
@@ -26,7 +14,7 @@ function calcHP(l, s, i, b) {
 }
 function calcStats(l, s, i, b, n) {
   let x = s * 2 + i + b/4;
-  let y = x * l / 100.0 + 5;
+  let y = Math.floor(x * l / 100.0 + 5);
   let z = y * n;
   return Math.floor(z);
 }
@@ -46,27 +34,30 @@ export const stats = {
   },
   getters: {
     hp: (state) => {
-      return state.level.level;
+      return calcHP(state.level.level, state.species.hp, state.individuals.hp, state.basePoints.hp);
     },
-    attack: (state) => {
-      return state.getters.nature.attack;
+    attack: (state, getters) => {
+      return calcStats(state.level.level, state.species.at, state.individuals.at, state.basePoints.at, getters['nature/attack']);
     },
-    defense: () => {
-      return 150;
-      //return state.getters.nature.defense;
+    defense: (state, getters) => {
+      return calcStats(state.level.level, state.species.df, state.individuals.df, state.basePoints.df, getters['nature/defense']);
     },
     spAttack: (state, getters) => {
-      return getters.defense + 100;
-      //return getters['nature/spAttack'];
+      return calcStats(state.level.level, state.species.sa, state.individuals.sa, state.basePoints.sa, getters['nature/spAttack']);
     },
-    spDefense: (state) => {
-      return state.getters.nature.spDefense
+    spDefense: (state, getters) => {
+      return calcStats(state.level.level, state.species.sd, state.individuals.sd, state.basePoints.sd, getters['nature/spDefense']);
     },
-    speed: (state) => {
-      return state.getters.nature.speed;
+    speed: (state, getters) => {
+      return calcStats(state.level.level, state.species.sp, state.individuals.sp, state.basePoints.sp, getters['nature/speed']);
     },
     toString (state, getters) {
-      let statsStr = 'Stats:' + getters.spAttack;
+      let statsStr = 'Stats HP:' + getters.hp
+      + ' AT:' + getters.attack
+      + ' DF:' + getters.defense
+      + ' SA:' + getters.spAttack
+      + ' SD:' + getters.spDefense
+      + ' SP:' + getters.speed
 
       return 'Level:' + state.level.level
        + getters['species/toString']
