@@ -9,9 +9,30 @@
       <router-link to="/sandbox">SandBox</router-link> |
       <router-link to="/about">About</router-link>
     </div>
+    <names v-bind:tag="pokemon" v-bind:name="name" v-bind:candidates="candidates"></names>
     <router-view/>
   </div>
 </template>
+
+<script>
+import Names from './components/names.vue'
+
+export default {
+  name: 'App',
+  components: {
+    'names': Names,
+  },
+  data: function() {
+    return {
+      pokemon: 'ポケモン',
+      name: 'ピカチュウ',
+      candidates: ['アーボック', 'フシギバナ', 'ギャラドス', 'リザードン', 'カメックス', 'ピカチュウ', 'カイリュー', 'ドサイドン', 'ミュウ', 'ホルード', 'ランクルス', 'エルレイド', 'バタフリー'],
+    }
+  }
+
+
+}
+</script>
 
 <style>
 #app {
