@@ -4,10 +4,13 @@
     最大508まで
     各252まで
 
+    TODO:v-for対応
+    TODO:ボタンによる増減
 */
 <template>
     <div class="basePoints">
         <p>基礎ポイント:{{ total }}</p>
+
         <fieldset>
             <div class="row mb-1">
                 <base-point-slider v-bind:tag="tags[0]" v-bind:values="vals" index="0" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
