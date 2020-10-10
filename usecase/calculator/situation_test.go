@@ -68,17 +68,28 @@ func Test_Factory(t *testing.T) {
 		t.Error()
 	}
 	cl := damage.NewDamageCalculator()
-	dmgs := cl.CreateDamage(situation)
+	dmgs, rate := cl.CreateDamage(situation)
 	if dmgs == nil {
+		t.Error()
+	}
+	if rate == nil {
 		t.Error()
 	}
 
 	if !(dmgs.Min() == 139 && dmgs.Max() == 168) {
 		t.Errorf("%v", dmgs)
 	}
-}
+	if rate.DetermineCount() != 2 {
+		t.Errorf("%s", rate.String())
+	}
 
-// TODO:Attackerを更新するとMoveが無効になること
+	// Attackerを更新するとMoveが無効になること
+	builder.SetAttacker(pb)
+	situation, err = builder.Build()
+	if err == nil {
+		t.Error()
+	}
+}
 
 func repositories() (pk pokenames.Repository, mv move.Repository, sp species.Repository, ab ability.Repository, it item.Repository) {
 	return local.Names(), local.Move(), local.Species(), local.Ability(), local.Item()

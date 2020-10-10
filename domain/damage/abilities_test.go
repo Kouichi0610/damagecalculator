@@ -34,15 +34,21 @@ func Test_とくせい_ふしぎなまもり(t *testing.T) {
 	a.Defender.Ability = "ふしぎなまもり"
 
 	a.Move = "れいとうビーム"
-	d := calcDamage(a)
+	d, r := calcDamage(a)
 	if d.Min() != 0 {
+		t.Error()
+	}
+	if r.DetermineCount() != 0 {
 		t.Error()
 	}
 
 	a.Move = "かえんほうしゃ"
-	d = calcDamage(a)
+	d, r = calcDamage(a)
 	if d.Min() == 0 {
 		t.Error()
+	}
+	if r.DetermineCount() != 2 {
+		t.Errorf("%s", r.String())
 	}
 }
 
@@ -53,7 +59,7 @@ func Test_とくせい_かたやぶり(t *testing.T) {
 	a.Attacker.Ability = "かたやぶり"
 
 	a.Move = "れいとうビーム"
-	d := calcDamage(a)
+	d, _ := calcDamage(a)
 	if d.Min() == 0 {
 		t.Error()
 	}
@@ -63,11 +69,11 @@ func Test_とくせい_ちからもち(t *testing.T) {
 	a := defaultSituation()
 	a.Move = "かわらわり"
 
-	d := calcDamage(a)
+	d, _ := calcDamage(a)
 	min := d.Min()
 
 	a.Attacker.Ability = "ちからもち"
-	d = calcDamage(a)
+	d, _ = calcDamage(a)
 
 	amin := d.Min()
 
@@ -80,11 +86,11 @@ func Test_とくせい_かがくへんかガス(t *testing.T) {
 	a.Move = "かわらわり"
 	a.Defender.Ability = "かがくへんかガス"
 
-	d := calcDamage(a)
+	d, _ := calcDamage(a)
 	min := d.Min()
 
 	a.Attacker.Ability = "ちからもち"
-	d = calcDamage(a)
+	d, _ = calcDamage(a)
 
 	amin := d.Min()
 

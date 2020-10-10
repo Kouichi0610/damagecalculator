@@ -3,22 +3,32 @@
 */
 package damage
 
-import "sort"
+import (
+	"fmt"
+	"sort"
+)
 
-type Damages struct {
+type Damages interface {
+	Array() []uint
+	Min() uint
+	Max() uint
+	String() string
+}
+
+type damages struct {
 	d []uint
 }
 
 type damageSlice []uint
 
-func NoDamage() *Damages {
-	res := new(Damages)
+func NoDamage() Damages {
+	res := new(damages)
 	res.d = []uint{0}
 	return res
 }
 
-func NewDamages(args []uint) *Damages {
-	res := new(Damages)
+func NewDamages(args []uint) Damages {
+	res := new(damages)
 
 	res.d = args
 	sort.Sort(damageSlice(res.d))
@@ -26,12 +36,22 @@ func NewDamages(args []uint) *Damages {
 	return res
 }
 
-func (d *Damages) Min() uint {
+func (d *damages) Array() []uint {
+	res := make([]uint, 0)
+	res = append(res, d.d...)
+	return res
+}
+
+func (d *damages) Min() uint {
 	return d.d[0]
 }
 
-func (d *Damages) Max() uint {
+func (d *damages) Max() uint {
 	return d.d[len(d.d)-1]
+}
+
+func (d *damages) String() string {
+	return fmt.Sprintf("%d ～ %d", d.Min(), d.Max())
 }
 
 func (p damageSlice) Len() int           { return len(p) }

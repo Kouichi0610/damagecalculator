@@ -13,17 +13,18 @@ import (
 // ダメージ計算の手続き
 type (
 	DamageCalculator interface {
-		CreateDamage(situation.SituationChecker) *Damages
-	}
-	impl struct {
+		CreateDamage(situation.SituationChecker) (Damages, DamageRate)
 	}
 )
+
+type impl struct {
+}
 
 func NewDamageCalculator() DamageCalculator {
 	return &impl{}
 }
 
-func (d *impl) CreateDamage(st situation.SituationChecker) *Damages {
+func (d *impl) CreateDamage(st situation.SituationChecker) (Damages, DamageRate) {
 	c := corrector.NewStatsCorrector()
 	level := uint(st.Attacker().Level())
 	move := st.Move()
@@ -39,7 +40,7 @@ func (d *impl) CreateDamage(st situation.SituationChecker) *Damages {
 
 	// 効果なしなら0を
 	if ef.IsNoEffective() {
-		return NoDamage()
+		return NoDamage(), NewNoDamageRate()
 	}
 
 	at, df := move.PickStats(st)
@@ -67,7 +68,10 @@ func (d *impl) CreateDamage(st situation.SituationChecker) *Damages {
 		dmgs[i] = ef.Correct(dmgs[i])
 		dmgs[i] = c.CorrectDamage(dmgs[i])
 	}
-	return NewDamages(dmgs)
+	damages := NewDamages(dmgs)
+	hp := st.Defender().HP().Value()
+	rates := NewDamageRate(hp, damages)
+	return damages, rates
 }
 
 /*
