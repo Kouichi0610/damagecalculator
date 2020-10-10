@@ -1,6 +1,7 @@
 // 能力値コンポーネント
 <template>
     <div class="stats">
+        <p>能力値</p>
         <div v-for="param in statsValues" :key="param.key" class="row mb-1">
             <div class="col-sm-3">{{ param.label }}{{ param.value }}</div>
             <div class="col-sm-8 pt-1">

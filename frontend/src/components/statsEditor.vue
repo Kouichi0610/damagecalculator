@@ -5,11 +5,15 @@
     ・性格
     ・個体値
     ・基礎ポイント
+
+    TODO:種族値、個体値を横に
 */
 <template>
     <div class="statsEditor">
-        <stats :params="status"></stats>
-        <species :params="species"></species>
+        <div class="row mb-1">
+            <stats class="col-sm-4" :params="status"></stats>
+            <species class="col-sm-4" :params="species"></species>
+        </div>
         <nature :current="nature" :natures="natures" @update="updateNature"></nature>
         <individuals :params="individuals" @update="updateIndividuals"></individuals>
         <base-points :params="basepoints" @update="updateBasePoints"></base-points>
