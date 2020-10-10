@@ -1,5 +1,5 @@
 /*
-    個体値スライダー
+    基礎ポイントスライダー
 */
 <template>
     <span class="basePointSlider">

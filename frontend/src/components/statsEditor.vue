@@ -10,13 +10,13 @@
 */
 <template>
     <div class="statsEditor">
+        <nature :current="nature" :natures="natures" @update="updateNature"></nature>
+        <individuals :params="individuals" @update="updateIndividuals"></individuals>
         <div class="row mb-1">
             <stats class="col-sm-3" :params="status"></stats>
             <species class="col-sm-2" :params="species"></species>
             <base-points class="col-sm-2" :params="basepoints" @update="updateBasePoints"></base-points>
         </div>
-        <nature :current="nature" :natures="natures" @update="updateNature"></nature>
-        <individuals :params="individuals" @update="updateIndividuals"></individuals>
     </div>
 </template>
 

@@ -8,17 +8,17 @@
 */
 <template>
     <div class="basePoints">
-        <p>合計値:{{ total }}</p>
-        <div class="row mb-1">
-            <fieldset>
+        <p>基礎ポイント:{{ total }}</p>
+        <fieldset>
+            <div class="row mb-1">
                 <base-point-slider v-bind:tag="tags[0]" v-bind:values="vals" index="0" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
                 <base-point-slider v-bind:tag="tags[1]" v-bind:values="vals" index="1" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
                 <base-point-slider v-bind:tag="tags[2]" v-bind:values="vals" index="2" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
                 <base-point-slider v-bind:tag="tags[3]" v-bind:values="vals" index="3" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
                 <base-point-slider v-bind:tag="tags[4]" v-bind:values="vals" index="4" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
                 <base-point-slider v-bind:tag="tags[5]" v-bind:values="vals" index="5" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
-            </fieldset>
-        </div>
+            </div>
+        </fieldset>
     </div>
 </template>
 
