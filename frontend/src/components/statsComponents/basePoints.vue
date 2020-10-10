@@ -7,7 +7,7 @@
     TODO:v-forなど(スライダーのコンポーネント化)
 */
 <template>
-    <span class="basePoints">
+    <div class="basePoints">
         合計値:{{ total }}<br>
         <fieldset>
             <base-point-slider v-bind:tag="tags[0]" v-bind:values="vals" index="0" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
@@ -17,7 +17,7 @@
             <base-point-slider v-bind:tag="tags[4]" v-bind:values="vals" index="4" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
             <base-point-slider v-bind:tag="tags[5]" v-bind:values="vals" index="5" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
         </fieldset>
-    </span>
+    </div>
 </template>
 
 <script>
@@ -27,6 +27,10 @@ export default {
     name: 'basePoints',
     components: {
         'base-point-slider': BasePointSlider,
+    },
+    props: ['params'],
+    created: function() {
+        this.vals = this.params;
     },
     data: function() {
         return {

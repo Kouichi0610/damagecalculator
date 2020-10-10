@@ -1,22 +1,18 @@
 <template>
   <div class="sandbox">
     <h1>SandBox</h1>
+    <stats-editor></stats-editor>
     名前 {{ pokename }} Count {{ count }}<br>
     <damage-result :min="rateMin" :max="rateMax"></damage-result>
-    <individuals></individuals>
     <names v-bind:tag="pokemon" v-bind:name="name" v-bind:candidates="candidates"></names>
     <rank></rank>
-    <b-form inline>
-      <base-points></base-points>
-      <base-points></base-points>
-    </b-form>
   </div>
 </template>
 
 <script>
+import StatsEditor from '../components/statsEditor'
+
 import Names from '../components/names'
-import Individuals from '../components/individuals'
-import BasePoints from '../components/basePoints'
 import Rank from '../components/rank'
 import DamageResult from '../components/damageResult'
 import store from "../store/index"
@@ -24,9 +20,8 @@ import store from "../store/index"
 export default {
   name: 'SandBox',
   components: {
+    'stats-editor': StatsEditor,
     'names': Names,
-    'individuals': Individuals,
-    'base-points': BasePoints,
     'rank': Rank,
     'damage-result': DamageResult,
   },

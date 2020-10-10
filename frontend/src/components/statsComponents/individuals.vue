@@ -7,7 +7,9 @@
     TODO:v-form-groupについて
 */
 <template>
-    <span class="individuals">
+    <div class="individuals">
+        <p>{{ params }}</p>
+        <p>個体値 HP:{{params[0]}} 攻撃:{{params[1]}} 防御:{{params[2]}} 特攻:{{params[3]}} 特防:{{params[4]}} 素早さ:{{params[5]}}</p>
         <b-form-checkbox
         id="checkbox-1"
         v-model="slowest"
@@ -22,40 +24,29 @@
         >
         最弱
         </b-form-checkbox>
-        {{ individualsText }}
-    </span>
+    </div>
 </template>
 
 <script>
 export default {
     name: 'individuals',
+    props: ['params'],
     data: function() {
         return {
             slowest: false,
             weakest: false,
-            hp:31,
-            at:31,
-            df:31,
-            sa:31,
-            sd:31,
-            sp:31,
         }
+    },
+    created: function() {
     },
     watch: {
         slowest: function() {
-            this.sp = this.slowest ? 0 : 31;
-            console.log('slowest:' + this.slowest);
-
+            this.$emit('update', this.slowest, this.weakest);
         },
         weakest: function() {
-            this.at = this.weakest ? 0 : 31;
+            this.$emit('update', this.slowest, this.weakest);
         }
     },
-    computed: {
-        individualsText: function() {
-            return '個体値 HP:' + this.hp + ' 攻撃:' + this.at + ' 防御:' + this.df + ' 特攻:' + this.sa + '特防:' + this.sd + ' 素早さ:' + this.sp;
-        }
-    }
 }
 </script>
 

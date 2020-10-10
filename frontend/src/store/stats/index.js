@@ -7,6 +7,7 @@ import { basePoints } from './basepoints';
 import { species } from './species';
 import { nature } from './nature';
 
+// TODO:計算式はstoreと別に分ける必要がある(計算対象は複数あるため)
 function calcHP(l, s, i, b) {
     let x = s * 2 + i + b/4;
     let y = x * l / 100.0 + l + 10;

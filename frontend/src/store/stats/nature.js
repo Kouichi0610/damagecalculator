@@ -1,9 +1,6 @@
 // 性格
-/*
-  TODO:設計
-  テストをできれば
-
-*/
+// TODO:性格名の保存、natureクラスのgetterのみに絞る
+// TODO:仕切り直し
 const bashful = {
   name: 'てれや',
   at: 1.0,
@@ -191,6 +188,17 @@ export const nature = {
     spAttack: (state) => state.current.sa,
     spDefense: (state) => state.current.sd,
     speed: (state) => state.current.sp,
+    names: (state) => {
+      return state.natures.map(n => n.name);
+      /* ↓と同義
+      var res = [];
+      for (var i = 0; i < state.natures.length; i++) {
+        res.push(state.natures[i].name);
+      }
+      return res;
+      */
+    },
+
   },
   mutations: {
     setNature (state, natureName) {
