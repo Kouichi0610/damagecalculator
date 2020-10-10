@@ -44,6 +44,7 @@ export default {
         valueChanged: function(v, i) {
             this.vals[i] = v;
             this.total = this.calcTotal();
+            this.$emit('update', this.vals);
         },
         calcTotal: function() {
             let sum = function(arr) {

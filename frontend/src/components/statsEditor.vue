@@ -8,11 +8,11 @@
 */
 <template>
     <div class="statsEditor">
-        <stats :params="stats"></stats>
+        <stats :params="status"></stats>
         <species :params="species"></species>
-        <nature :current="nature" :natures="natures"></nature>
+        <nature :current="nature" :natures="natures" @update="updateNature"></nature>
         <individuals :params="individuals" @update="updateIndividuals"></individuals>
-        <base-points :params="basepoints"></base-points>
+        <base-points :params="basepoints" @update="updateBasePoints"></base-points>
     </div>
 </template>
 
@@ -24,6 +24,7 @@ import BasePoints from './statsComponents/basePoints'
 import Stats from './statsComponents/stats'
 
 import {natureNames, getNature} from '../domain/nature'
+import {calcStats} from '../domain/stats'
 
 export default {
     name: 'statsEditor',
@@ -37,7 +38,7 @@ export default {
     // props species
     data: function() {
         return {
-            stats: [100, 200, 300, 400, 500, 600],    // 能力値
+            status: [0,0,0,0,0,0],
             species: [95, 109, 105, 75, 85, 56],       // 種族値
             individuals: [31, 31, 31, 31, 31, 31],  // 個体値
             basepoints: [100, 0, 0, 0, 0, 0],   // 基礎ポイント
@@ -56,11 +57,28 @@ export default {
          + ' SD:' + n.spDefense(400)
          + ' SP:' + n.speed(500));
     },
+    computed: {
+    },
     methods: {
         updateIndividuals :function(slowest, weakest) {
             this.individuals[1] = weakest ? 0 : 31;
             this.individuals[5] = slowest ? 0 : 31;
+            this.updateStatus();
+        },
+        updateNature: function(name) {
+            this.nature = name;
+            this.updateStatus();
+        },
+        updateBasePoints: function(values) {
+            this.basepoints = values;
+            this.updateStatus();
+        },
+        updateStatus: function() {
+            let nature = getNature(this.nature);
+            // TODO:level
+            this.status = calcStats(50, this.species, this.individuals, this.basepoints, nature);
         }
+
     }
 }
 </script>

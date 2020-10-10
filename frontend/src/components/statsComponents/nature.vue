@@ -16,6 +16,11 @@ export default {
     },
     created: function() {
         this.selected = this.current;
+    },
+    watch: {
+        selected: function() {
+            this.$emit('update', this.selected);
+        }
     }
 
 }
