@@ -11,9 +11,9 @@
         <nature :current="nature" :natures="natures" @update="updateNature"></nature>
         <individuals :params="individuals" @update="updateIndividuals"></individuals>
         <div class="row mb-1">
-            <stats class="col-sm-3" :params="status"></stats>
-            <species class="col-sm-2" :params="species"></species>
-            <base-points class="col-sm-2" :params="basepoints" @update="updateBasePoints"></base-points>
+            <stats class="col-3" :params="status"></stats>
+            <species class="col-2" :params="species"></species>
+            <base-points class="col-2" :params="basepoints" @update="updateBasePoints"></base-points>
         </div>
     </div>
 </template>
@@ -43,7 +43,7 @@ export default {
             status: [0,0,0,0,0,0],
             species: [95, 109, 105, 75, 85, 56],       // 種族値
             individuals: [31, 31, 31, 31, 31, 31],  // 個体値
-            basepoints: [100, 0, 0, 0, 0, 0],   // 基礎ポイント
+            basepoints: [250, 0, 0, 0, 0, 0],   // 基礎ポイント
             nature: 'むじゃき',
             natures: [],
         }

@@ -2,8 +2,11 @@
     基礎ポイントスライダー
 */
 <template>
-    <span class="basePointSlider">
-        {{ tag }}:<input type="range" id="slider" v-model.number="current" step="4" min="0" max="252" :disabled="disabled">{{ current }}
+    <span class="row mb-1">
+        <div class="col-8">
+            <input type="range" class="form-control-change" id="slider" v-model.number="current" step="4" min="0" max="252" :disabled="disabled">
+        </div>
+        <div class="col-3">{{ current }}</div>
     </span>
 </template>
 

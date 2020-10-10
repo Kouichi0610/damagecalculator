@@ -4,7 +4,6 @@
     最大508まで
     各252まで
 
-    TODO:v-forなど(スライダーのコンポーネント化)
 */
 <template>
     <div class="basePoints">
@@ -36,6 +35,14 @@ export default {
     },
     data: function() {
         return {
+            values: [
+                {index:0, value:this.params[0]},
+                {index:1, value:this.params[1]},
+                {index:2, value:this.params[2]},
+                {index:3, value:this.params[3]},
+                {index:4, value:this.params[4]},
+                {index:5, value:this.params[5]},
+                ],
             vals: [0, 0, 0, 0, 0, 0],
             tags: ['HP','攻撃','防御','特攻','特防','素早'],
             hp: 0,
