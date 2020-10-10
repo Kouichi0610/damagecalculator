@@ -8,15 +8,17 @@
 */
 <template>
     <div class="basePoints">
-        合計値:{{ total }}<br>
-        <fieldset>
-            <base-point-slider v-bind:tag="tags[0]" v-bind:values="vals" index="0" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
-            <base-point-slider v-bind:tag="tags[1]" v-bind:values="vals" index="1" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
-            <base-point-slider v-bind:tag="tags[2]" v-bind:values="vals" index="2" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
-            <base-point-slider v-bind:tag="tags[3]" v-bind:values="vals" index="3" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
-            <base-point-slider v-bind:tag="tags[4]" v-bind:values="vals" index="4" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
-            <base-point-slider v-bind:tag="tags[5]" v-bind:values="vals" index="5" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
-        </fieldset>
+        <p>合計値:{{ total }}</p>
+        <div class="row mb-1">
+            <fieldset>
+                <base-point-slider v-bind:tag="tags[0]" v-bind:values="vals" index="0" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
+                <base-point-slider v-bind:tag="tags[1]" v-bind:values="vals" index="1" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
+                <base-point-slider v-bind:tag="tags[2]" v-bind:values="vals" index="2" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
+                <base-point-slider v-bind:tag="tags[3]" v-bind:values="vals" index="3" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
+                <base-point-slider v-bind:tag="tags[4]" v-bind:values="vals" index="4" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
+                <base-point-slider v-bind:tag="tags[5]" v-bind:values="vals" index="5" fixed="false" @value-changed="valueChanged"></base-point-slider><br>
+            </fieldset>
+        </div>
     </div>
 </template>
 
