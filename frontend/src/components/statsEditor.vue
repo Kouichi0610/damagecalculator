@@ -37,7 +37,7 @@ export default {
         'individuals': Individuals,
         'base-points': BasePoints,
     },
-    // props species
+    // TODO:props経由で渡す -> $emitで能力値を送る
     data: function() {
         return {
             status: [0,0,0,0,0,0],

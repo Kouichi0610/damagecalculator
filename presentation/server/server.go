@@ -6,6 +6,9 @@ import (
 	"damagecalculator/domain/move"
 	"damagecalculator/domain/pokenames"
 	"damagecalculator/domain/species"
+	"fmt"
+	"net/http"
+	"strconv"
 
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
@@ -33,22 +36,82 @@ type serverImpl struct {
 	i item.Repository
 }
 
+// TODO:POSTを機能させる
+// TODO*query(name?id=123)
 func (s *serverImpl) Serve() error {
 	router := gin.Default()
 	router.Use(static.Serve("/", static.LocalFile("./frontend/dist", false)))
 
-	router.GET("/names", s.names)
+	router.GET("/get_names", s.getNames)
+	router.GET("/get_sample", s.getSample)
+	router.POST("/post_sample", s.postSample)
+	//router.GET("/post_sample", s.postSample)
 
 	return router.Run(":8080")
 }
 
 /*
-	名前一覧を返す
-	TODO:入力から候補一覧を取得
-		ex)f -> フシギダネ、フシギソウ、フシギバナ...
+	get_names
+	species, abilities, moves
 */
-func (s *serverImpl) names(c *gin.Context) {
-	n := s.n.Get()
 
-	c.JSON(200, n)
+func (s *serverImpl) getNames(c *gin.Context) {
+	n := s.n.Get()
+	fmt.Printf("Names:%d\n", len(n))
+	c.JSON(http.StatusOK, n)
+}
+
+type Sample struct {
+	Name      string `json:"name"`
+	HP        uint   `json:"hp"`
+	Attack    uint   `json:"attack"`
+	Defense   uint   `json:"defense"`
+	SpAttack  uint   `json:"sp_attack"`
+	SpDefense uint   `json:"sp_defense"`
+	Speed     uint   `json:"speed"`
+}
+
+// テスト
+func (s *serverImpl) getSample(c *gin.Context) {
+	type query struct {
+		Name string
+	}
+	//name := "ツンデツンデ"
+	var q query
+	c.BindQuery(&q)
+	sp, _ := s.s.Get(q.Name)
+	res := make([]Sample, 0)
+	res = append(res, Sample{
+		Name:      q.Name,
+		HP:        sp.HP,
+		Attack:    sp.Attack,
+		Defense:   sp.Defense,
+		SpAttack:  sp.SpAttack,
+		SpDefense: sp.SpDefense,
+		Speed:     sp.Speed,
+	})
+
+	c.JSON(http.StatusOK, res)
+}
+
+// POSTは文字列型しか受け付けない？
+type postStruct struct {
+	X string `json:"x"`
+	Y string `json:"y"`
+}
+
+func (s *serverImpl) postSample(c *gin.Context) {
+	var request postStruct
+	c.BindJSON(&request)
+
+	x, err := strconv.Atoi(request.X)
+	if err != nil {
+		x = 0
+	}
+	y, err := strconv.Atoi(request.Y)
+	if err != nil {
+		y = 0
+	}
+
+	c.JSON(http.StatusOK, x+y)
 }
