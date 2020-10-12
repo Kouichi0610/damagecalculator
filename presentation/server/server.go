@@ -15,7 +15,7 @@ import (
 )
 
 type Server interface {
-	Serve() error
+	Serve() (http.Handler, error)
 }
 
 func NewServer(n pokenames.Repository, s species.Repository, m move.Repository, a ability.Repository, i item.Repository) Server {
@@ -38,7 +38,7 @@ type serverImpl struct {
 
 // TODO:POSTを機能させる
 // TODO*query(name?id=123)
-func (s *serverImpl) Serve() error {
+func (s *serverImpl) Serve() (http.Handler, error) {
 	router := gin.Default()
 	router.Use(static.Serve("/", static.LocalFile("./frontend/dist", false)))
 
@@ -47,7 +47,7 @@ func (s *serverImpl) Serve() error {
 	router.POST("/post_sample", s.postSample)
 	//router.GET("/post_sample", s.postSample)
 
-	return router.Run(":8080")
+	return router, router.Run(":8080")
 }
 
 /*

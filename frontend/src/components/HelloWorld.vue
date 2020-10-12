@@ -1,63 +1,67 @@
 <template>
   <div class="hello">
+    <h1>{{ msg }}</h1>
     <input @click="getSample" type="button" value="GetSample">
     <input @click="postSample" type="button" value="PostSample">
     <input @click="getNames" type="button" value="Names">
-    <h1>{{ msg }}</h1>
+    <p>
+      For a guide and recipes on how to configure / customize this project,<br>
+      check out the
+      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
+    </p>
+    <h3>Installed CLI Plugins</h3>
+    <ul>
+      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript" target="_blank" rel="noopener">typescript</a></li>
+    </ul>
+    <h3>Essential Links</h3>
+    <ul>
+      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
+      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
+      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
+      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
+      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
+    </ul>
+    <h3>Ecosystem</h3>
+    <ul>
+      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
+      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
+      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
+      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
+      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
+    </ul>
   </div>
 </template>
 
-<script>
-/*
-class postData {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-  }
-  toURLSearchParams() {
-    let res = new URLSearchParams();
-    res.append('x', this.x);
-    res.append('y', this.y);
-    return res;
-  }
-    //JSON形式の場合
-    //axios.post('post_sample', {
-    //  x: this.x,
-    //  y: this.y,
-    //})
-}
-*/
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import axios from 'axios'
 
-export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  },
-  methods: {
-    getNames() {
-      this.axios.get('get_names')
+@Component
+export default class HelloWorld extends Vue {
+  @Prop() private msg!: string;
+  getNames(): void {
+      axios.get('get_names')
       .then((response) => {
         alert('success : ' + response.data)
       })
       .catch((e) => {
         alert('failed ' + e)
       })
-    },
-    postSample() {
-      //let data = new postData(11, 97);
+  }
+  postSample(): void {
       const data = { x: '11', y: '97' };
-      this.axios.post('post_sample', data)
+      axios.post('post_sample', data)
       .then((response) => {
         alert('success : ' + response.data)
       })
       .catch((e) => {
         alert('failed ' + e)
       })
-    },
-    getSample() {
+  }
+  getSample(): void {
       // クエリパラメータ付き
       // URLに直接付けてもいい'get_sample?Name="ゴローニャ"'
-      this.axios.get('get_sample', {
+      axios.get('get_sample', {
         params: {
           Name: 'ゴローニャ',
         }
@@ -74,19 +78,25 @@ export default {
         msg += ' SA:' + res[0].sp_attack;
         msg += ' SD:' + res[0].sp_defense;
         msg += ' SP:' + res[0].speed;
-
-        alert('success? : ' + msg)
+        alert('success:' + msg);
       })
       .catch((e) => {
         alert('failed ' + e)
       })
-    }
   }
+
+
 }
 </script>
 
+/*
+    postSample() {
+    },
+    getSample() {
+*/
+
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped lang="scss">
 h3 {
   margin: 40px 0 0;
 }

@@ -1,5 +1,6 @@
 // 名前入力 
 // TODO:サジェスト機能入れたい
+// TODO:タイプで絞り込むか
 // $ npm install --save vue-cool-select
 // TODO:picachuなど読み方指定したら行けるか
 

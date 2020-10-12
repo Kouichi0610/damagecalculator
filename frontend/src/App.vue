@@ -22,11 +22,25 @@ export default {
   components: {
     'names': Names,
   },
+  created: function() {
+    // TODO:最初の通信でエラーが出てない場合ローカルモードに切り替える
+    this.axios.get('get_names')
+    .then((response) => {
+      // TODO:絞り込み
+      this.candidates = response.data;
+      console.log('pokeLen:' + this.candidates.length);
+    })
+    .catch((e) => {
+      alert('failed:' + e);
+    })
+  },
+  methods: {
+  },
   data: function() {
     return {
       pokemon: 'ポケモン',
       name: 'ピカチュウ',
-      candidates: ['アーボック', 'フシギバナ', 'ギャラドス', 'リザードン', 'カメックス', 'ピカチュウ', 'カイリュー', 'ドサイドン', 'ミュウ', 'ホルード', 'ランクルス', 'エルレイド', 'バタフリー'],
+      candidates: [],
     }
   }
 
