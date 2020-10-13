@@ -50,14 +50,6 @@ export default {
     },
     created: function() {
         this.natures = natureNames();
-
-        let n = getNature('ようき');
-        console.log('result' + n.name
-         + ' At:' + n.attack(100)
-         + ' Df:' + n.defense(200)
-         + ' SA:' + n.spAttack(300)
-         + ' SD:' + n.spDefense(400)
-         + ' SP:' + n.speed(500));
     },
     computed: {
     },
