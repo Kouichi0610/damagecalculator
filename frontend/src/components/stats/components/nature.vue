@@ -1,31 +1,37 @@
 // 性格設定コンポーネント
 <template>
     <div class="nature">
-        <b-form-select v-model="current" :options="natures" size="sm" class="mt-3"></b-form-select>
+        <!-- {{ selected.Name() }} -->
+        <b-form-select @change="changed" v-model="current" :options="natures" size="sm" class="mt-3"></b-form-select>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
-import { NatureFactory, NatureNames } from '../../../domain/nature'
+import * as nature from '../../../domain/nature'
 
 @Component
 export default class Nature extends Vue {
-    @Prop() private selected!: string;
-    private current: string = "てれや";
+    private current: string;
     private natures: string[];
 
+    @Prop() private selected!: nature.INature;
+
     created(): void {
-        this.current = this.selected;
-        this.natures = NatureNames();
+        this.current = this.selected.Name();
+        this.natures = nature.NatureNames();
+        console.log('start:' + this.current);
     }
 
-    @Watch('current')
-    public currentChanged(newVal: string/*, oldVal: string*/) {
-        let n = NatureFactory(newVal);
+    // dropdown変更時
+    changed(val: string) {
+        this.current = val;
+
+        let n = nature.NatureFactory(this.current);
+        console.log('Nature to ' + n.Name);
         this.$emit("changed", n);
-    }    
+    }
 }
 </script>
 

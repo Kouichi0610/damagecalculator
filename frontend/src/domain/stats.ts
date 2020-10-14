@@ -1,6 +1,6 @@
 import { INature } from './nature';
 
-class StatsCalculator {
+export class StatsCalculator {
   constructor() {
   }
   Calculate(nature: INature, level: number, species: number[], individuals: number[], basePoints: number[]): number[] {

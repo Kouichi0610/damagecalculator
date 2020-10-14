@@ -38,12 +38,12 @@ export default class BasePoints extends Vue {
     private total: number = 0;
 
     private valueChanged(index: number, val: number) {
-        console.log('changed :' + index + ' :' + val);
         this.vals[index] = val;
         this.total = 0;
         for (var i = 0; i < 6; i++) {
             this.total += this.vals[i];
         }
+        this.$emit('changed', this.vals);
     }
 }
 </script>

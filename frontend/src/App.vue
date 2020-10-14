@@ -24,6 +24,7 @@ export default {
     'names': Names,
   },
   created: function() {
+    /*
     // TODO:最初の通信でエラーが出てない場合ローカルモードに切り替える
     this.axios.get('get_names')
     .then((response) => {
@@ -34,6 +35,7 @@ export default {
     .catch((e) => {
       alert('failed:' + e);
     })
+    */
   },
   methods: {
   },
