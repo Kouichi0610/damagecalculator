@@ -1,13 +1,10 @@
 // 
 <template>
     <div class="statsEditor">
-        <!-- TODO:remove -->
-        {{ natureName }}
-
         <nature :selected="nature" @changed="updateNature"></nature>
         <individuals :params="individuals" @changed="updateIndividuals"></individuals>
         <div class="row mb-1">
-            <stats class="col-3" :params="stats"></stats>
+            <stats class="col-4" :params="stats"></stats>
             <species class="col-2" :params="species"></species>
             <base-points class="col-2" :params="basePoints" @changed="updateBasePoints"></base-points>
         </div>
@@ -43,7 +40,7 @@ export default class StatsEditor extends Vue {
     private individuals: number[] = [31,31,31,31,31,31];
     private stats: number[] = [0,0,0,0,0,0];
     private basePoints: number[] = [0,0,0,0,0,0];
-    private nature: nature.INature = nature.NatureFactory('いじっぱり');
+    private nature: nature.INature = nature.NatureFactory('てれや');
     private calculator: stats.StatsCalculator = new stats.StatsCalculator();
 
     created() {

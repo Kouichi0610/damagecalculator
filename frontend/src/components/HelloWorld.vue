@@ -1,7 +1,6 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <HelloChild samplemessage="TEST"></HelloChild>
     <input @click="getSample" type="button" value="GetSample">
     <input @click="postSample" type="button" value="PostSample">
     <input @click="getNames" type="button" value="Names">
@@ -37,13 +36,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import axios from 'axios'
 
-import HelloChild from './HelloChild.vue'
-
-@Component({
-      components: {
-        HelloChild,
-    },
-})
+@Component
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
   getNames(): void {

@@ -37,41 +37,6 @@ export default class BasePointSlider extends Vue {
         }
         this.$emit('value-changed', this.index, this.current);
     }
-    /*
-    name: 'basePointSlider',
-    data: function() {
-        return {
-            current: 0,
-            disabled:false,
-        }
-    },
-    // パラメータ名、初期値一覧、インデックス
-    // propsは直接書き換えられない ($emitで変更通知)
-    props: ['tag', 'values', 'index', 'fixed'],
-    created: function() {
-        this.disabled = (this.fixed == 'true');
-        this.current = this.values[this.index];
-    },
-    watch: {
-        current: function() {
-            const max = 508;
-            var total = 0;
-            for (var i = 0; i < 6; i++) {
-                if (i == this.index) {
-                    continue;
-                }
-                total += this.values[i];
-            }
-            let remain = max - total;
-            if (this.current > remain) {
-                this.current = remain;
-            }
-            this.$emit('value-changed', this.current, this.index);
-        }
-    },
-    methods: {
-    }
-    */
 }
 </script>
 

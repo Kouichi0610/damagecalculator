@@ -6,7 +6,6 @@
       <router-link to="/attacker">攻撃調整</router-link> |
       <router-link to="/defender">耐久調整</router-link> |
       <router-link to="/speed">速度調整</router-link> |
-      <router-link to="/sandbox">SandBox</router-link> |
       <router-link to="/sandboxts">SandBox(TypeScript)</router-link> |
       <router-link to="/about">About</router-link>
     </div>
