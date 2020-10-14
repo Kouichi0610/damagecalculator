@@ -7,6 +7,7 @@
       <router-link to="/defender">耐久調整</router-link> |
       <router-link to="/speed">速度調整</router-link> |
       <router-link to="/sandbox">SandBox</router-link> |
+      <router-link to="/sandboxts">SandBox(TypeScript)</router-link> |
       <router-link to="/about">About</router-link>
     </div>
     <names v-bind:tag="pokemon" v-bind:name="name" v-bind:candidates="candidates"></names>

@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <HelloChild samplemessage="TEST"></HelloChild>
     <input @click="getSample" type="button" value="GetSample">
     <input @click="postSample" type="button" value="PostSample">
     <input @click="getNames" type="button" value="Names">
@@ -33,10 +34,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import axios from 'axios'
 
-@Component
+import HelloChild from './HelloChild.vue'
+
+@Component({
+      components: {
+        HelloChild,
+    },
+})
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
   getNames(): void {
@@ -88,12 +95,6 @@ export default class HelloWorld extends Vue {
 
 }
 </script>
-
-/*
-    postSample() {
-    },
-    getSample() {
-*/
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">

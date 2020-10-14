@@ -147,6 +147,10 @@ let naturesList: INature[] = [
     new Jolly,
     new Naive,
 ];
+export function NatureNames(): string[] {
+    let res = naturesList.map(n => n.Name());
+    return res;
+}
 
 export function NatureFactory(name: string): INature {
     // a! undefinedを許容しない
