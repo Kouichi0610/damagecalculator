@@ -4,18 +4,15 @@ import { ProfileState, User } from './types';
 import { RootState } from '../types';
 
 
-class UserData implements User {
-    firstName: string = '茂';
-    lastName: string = '田中';
-    email: string = 'test@email.com';
-    phone?: string = '123456789';
-}
-
 export const actions: ActionTree<ProfileState, RootState> = {
     fetchData({ commit }): any {
         // コミットで反映
-        let user = new UserData();
-        commit('profileLoaded', user);
+        commit('profileLoaded', {
+            firstName: '茂',
+            lastName: '田中',
+            email: 'test@email.com',
+            phone: '123456789',
+        });
 /*
         // sample.
         axios({

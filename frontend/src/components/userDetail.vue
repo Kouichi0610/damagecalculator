@@ -31,8 +31,8 @@ export default class UserDetail extends Vue {
 
     mounted() {
         // fetching data as soon as the comonent's been mounted
-        console.log('fetch...');
         this.fetchData();
+
     }
 
     get email() {
