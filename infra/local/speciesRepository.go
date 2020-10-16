@@ -15,6 +15,18 @@ import (
 type speciesRepository struct {
 }
 
+func (s *speciesRepository) GetAll() []species.Species {
+	res := make([]species.Species, 0)
+	names := index.IndexArray()
+	for _, name := range names {
+		sp, ok := speciesMap[name]
+		if !ok {
+			continue
+		}
+		res = append(res, *sp)
+	}
+	return res
+}
 func (s *speciesRepository) Get(name string) (*species.Species, error) {
 	jname, err := index.Index(name)
 	if err != nil {

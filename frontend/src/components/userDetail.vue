@@ -2,6 +2,7 @@
 <template>
     <div class="container">
         <div v-if="profile.user">
+            <p>first: {{first}}</p>
             <p>
                 FullName: {{ fullName }}
             </p>
@@ -29,15 +30,21 @@ export default class UserDetail extends Vue {
     @Action('fetchData', { namespace }) fetchData: any;
     @Getter('fullName', { namespace }) fullName: string;
 
+
     mounted() {
         // fetching data as soon as the comonent's been mounted
         this.fetchData();
-
     }
 
     get email() {
         const user: User = this.profile && this.profile.user;
         return (user && user.email) || '';
+    }
+    get first() {
+        console.log('error:' + this.profile.error);
+        console.log('title:' + this.profile.title);
+        const user: User = this.profile && this.profile.user;
+        return (user && user.firstName) || '';
     }
 }
 </script>

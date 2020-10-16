@@ -6,6 +6,7 @@ export interface User {
 }
 
 export interface ProfileState {
+    title: string;
     user?: User;
     error: boolean;
 }

@@ -12,6 +12,20 @@ import (
 type speciesRepository struct {
 }
 
+// TODO:Pokeapi経由だと通信時間が
+func (s *speciesRepository) GetAll() []species.Species {
+	list := index.IndexArray()
+	res := make([]species.Species, 0)
+	for _, id := range list {
+		sp, err := s.Get(id)
+		if err != nil {
+			continue
+		}
+		res = append(res, *sp)
+	}
+	return res
+}
+
 func (s *speciesRepository) Get(name string) (*species.Species, error) {
 	res := new(species.Species)
 	id, err := index.Index(name)
