@@ -20,6 +20,26 @@ func Test_MovesRepository(t *testing.T) {
 	}
 }
 
+func Test_SpeciesAll(t *testing.T) {
+	rp := new(speciesRepository)
+	splist := rp.GetAll()
+
+	if len(splist) < 100 {
+		t.Error()
+	}
+
+	// TODO:getter経由で書き換えできないようにしておくべきか
+	s := splist[0]
+	s.Name = "sample"
+
+	splist = rp.GetAll()
+
+	s = splist[0]
+	if s.Name == "sample" {
+		t.Errorf("%s", s.Name)
+	}
+}
+
 func Test_SpeciesRepository(t *testing.T) {
 	rp := new(speciesRepository)
 	sp, err := rp.Get("ランクルス")

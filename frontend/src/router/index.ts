@@ -34,9 +34,9 @@ const router = new VueRouter({
       component: () => import('../views/Speed.vue'),
     },
     {
-      path: '/sandbox',
-      name: 'SandBox',
-      component: () => import('../views/SandBox.vue'),
+      path: '/sandboxts',
+      name: 'SandBoxTs',
+      component: () => import('../views/SandBoxTs.vue'),
     },
     {
       path: '/about',

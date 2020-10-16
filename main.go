@@ -15,9 +15,11 @@ func Repositories() (pokenames.Repository, species.Repository, move.Repository, 
 	return local.Names(), local.Species(), local.Move(), local.Ability(), local.Item()
 }
 
+// 古いビルドのキャッシュが残っていた？
+// \node_modules\@vue\cli-plugin-router\generator\template\src\views
 func main() {
 	s := server.NewServer(Repositories())
-	err := s.Serve()
+	_, err := s.Serve()
 	if err != nil {
 		log.Fatal("server run failed ", err)
 	}

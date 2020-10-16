@@ -25,6 +25,7 @@ type (
 
 	Repository interface {
 		Get(name string) (*Species, error)
+		GetAll() []Species
 	}
 
 	// statuschecker生成
