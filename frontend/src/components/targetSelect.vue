@@ -1,7 +1,7 @@
 // 対象ポケモンの選択
 <template>
     <div class="targetSelect">
-        <p>ポケモン選択</p>
+        <p>ポケモン選択 {{ candidatesCount }}</p>
         <input @click="getSample" type="button" value="試作">
     </div>
 </template>
@@ -9,7 +9,7 @@
 <script lang="ts">
 //import { Vue } from 'vue-property-decorator';
 import Vue from 'vue';
-import { State, /*State, Getter, */ Action } from 'vuex-class';
+import { State, Getter, Action } from 'vuex-class';
 import Component from 'vue-class-component';
 
 //import {Species, TargetsState} from '../store/targets/types'
@@ -22,6 +22,8 @@ export default class TargetSelect extends Vue {
     @State('targets') targets: TargetsState;
     @Action('getCandidates', { namespace })
     private getCandidates!: (Filter) => Promise<boolean>;
+    @Getter('candidatesCount', { namespace })
+    private candidatesCount: number;
 
     getSample(): void {
         console.log('todo:');
