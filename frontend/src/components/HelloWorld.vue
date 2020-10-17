@@ -3,7 +3,7 @@
     <h1>{{ msg }}</h1>
     <input @click="getSample" type="button" value="GetSample">
     <input @click="postSample" type="button" value="PostSample">
-    <input @click="getNames" type="button" value="Names">
+    <input @click="filteredList" type="button" value="リスト取得">
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -36,13 +36,75 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import axios from 'axios'
 
+// TODO:使っているのにエラーが出る、わけわからない
+//import {Species} from '../store/targets/types'
+
+class SpeciesImpl implements Species {
+    name: string;
+    types: string;
+    hp: number;
+    attack: number;
+    defense: number;
+    spAttack: number;
+    spDefense: number;
+    speed: number;
+
+    toString():string{
+      return '' + this.name;
+    }
+
+    constructor (d: any) {
+      this.name = d.name;
+      this.types = d.types;
+      this.hp = d.hp;
+      this.attack = d.attack;
+      this.defense = d.defense;
+      this.spAttack = d.sp_attack;
+      this.spDefense = d.sp_defense;
+      this.speed = d.speed;
+    }
+}
+
+/*
+  クエリ指定方法1
+  axios.get('filtered_list?Types=はがね&Total=540')
+  クエリ指定方法2
+  axios.get('filtered_list', {
+    params: {
+      Types: 'ほのお',
+      Total: '530',
+    }
+  })
+*/
+
 @Component
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
-  getNames(): void {
-      axios.get('get_names')
+  filteredList(): void {
+      //axios.get('filtered_list?Types=はがね&Total=540')
+      axios.get('filtered_list', {
+        params: {
+          Types: 'ドラゴン',
+          Total: '530',
+        }
+      })
       .then((response) => {
-        alert('success : ' + response.data)
+        let json = JSON.stringify(response.data);
+        console.log('json:' + json)
+
+        let sp = JSON.parse(json);
+        let species: Species[] = new Array();
+        for (var i = 0; i < sp.length; i++) {
+          let s = new SpeciesImpl(sp[i]);
+          species.push(s);
+        }
+        for (i = 0; i < species.length; i++) {
+          let s = species[i]
+          console.log('Species:' + i + ':' + s.name + ' HP:' + s.hp + ' Attack:' + s.attack 
+          + ' Defense:' + s.defense + ' SpAttack:' + s.spAttack + ' SpDefense:' + s.spDefense + ' Speed:' + s.speed);
+
+
+        }
       })
       .catch((e) => {
         alert('failed ' + e)

@@ -6,6 +6,7 @@ import { RootState } from '../types';
 
 export const actions: ActionTree<ProfileState, RootState> = {
     fetchData({ commit }): any {
+        console.log('fetchData...');
         // コミットで反映
         commit('profileLoaded', {
             firstName: '茂',

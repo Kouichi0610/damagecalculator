@@ -7,11 +7,27 @@ import (
 	"testing"
 )
 
+func Test_Filter_種族値制限なし(t *testing.T) {
+	rp := local.Species()
+	filter := NewFilter(Rock, "570")
+	res := filter.Filter(rp)
+
+	filteredCount := len(res)
+
+	filter = NewFilter(Rock, "")
+	res = filter.Filter(rp)
+	noFilteredCount := len(res)
+
+	if !(noFilteredCount > filteredCount) {
+		t.Error()
+	}
+}
+
 func Test_Filter(t *testing.T) {
 	rp := local.Species()
 
 	// いわ570属リストを作成
-	filter := NewFilter(Rock, 570)
+	filter := NewFilter(Rock, "570")
 	res := filter.Filter(rp)
 
 	if len(res) == 0 {
@@ -61,6 +77,15 @@ func Test_TotalFilter(t *testing.T) {
 	if a != Exclude {
 		t.Error()
 	}
+
+	// 合計種族値0でも通すこと
+	f = createNoLimitTotalFilter()
+	s = &species.Species{HP: 0, Attack: 0, Defense: 0, SpAttack: 0, SpDefense: 0, Speed: 0}
+	a = f.Filter(s)
+	if a != Include {
+		t.Error()
+	}
+
 }
 
 func Test_TypeFilter(t *testing.T) {

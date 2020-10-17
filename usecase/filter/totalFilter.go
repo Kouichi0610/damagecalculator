@@ -9,6 +9,10 @@ type TotalFilter interface {
 	Filter(s *species.Species) FilterResult
 }
 
+func createNoLimitTotalFilter() TotalFilter {
+	return createTotalFilter(0)
+}
+
 func createTotalFilter(total uint) TotalFilter {
 	return &totalFilter{total: total}
 }

@@ -4,12 +4,20 @@
 <template>
   <div class="current">
     <h1>現在のポケモン</h1>
+    <target-select></target-select>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Current',
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import TargetSelect from '../components/targetSelect.vue'
+
+@Component({
+  components: {
+    TargetSelect,
+  },
+})
+export default class Current extends Vue {
 }
 </script>
 

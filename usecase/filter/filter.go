@@ -10,6 +10,7 @@ package filter
 import (
 	"damagecalculator/domain/species"
 	"damagecalculator/domain/types"
+	"strconv"
 )
 
 const (
@@ -37,10 +38,23 @@ type (
 	}
 )
 
-func NewFilter(ty Type, total uint) SpeciesFilter {
+/*
+	ty フィルタータイプ 指定されたタイプ以外を除く
+	total 種族値合計
+
+*/
+func NewFilter(ty Type, total string) SpeciesFilter {
+	t, err := strconv.Atoi(total)
+	var totalFilter TotalFilter
+	if err != nil {
+		totalFilter = createNoLimitTotalFilter()
+	} else {
+		totalFilter = createTotalFilter(uint(t))
+	}
+
 	return &filterImpl{
 		ty: createTypeFilter(ty),
-		to: createTotalFilter(total),
+		to: totalFilter,
 	}
 }
 
