@@ -2,8 +2,6 @@
 <template>
     <div class="targetSelect">
         <p>ポケモン選択 {{ candidatesCount }}</p>
-        <input @click="getSample" type="button" value="試作"><br>
-
         <div class="btn-group-vertical">
             <b-button-group>
                 <types-button type="すべて" @clicked="setType"></types-button>
@@ -98,16 +96,12 @@ export default class TargetSelect extends Vue {
 
     updateCandidates() {
         console.log('update. types:' + this.types + " total:" + this.total + " enableTotal:" + this.enableTotal);
-    }
-
-    getSample(): void {
-        console.log('todo:');
+        let total = this.enableTotal ? this.total : 0;
         this.getCandidates({
-            types: 'ほのお',
-            total: 530,
+            types: this.types,
+            total: total,
         });
     }
-    
 }
 </script>
 
