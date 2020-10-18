@@ -26,7 +26,6 @@ class SpeciesImpl implements Species {
 
 export const actions: ActionTree<TargetsState, RootState> = {
     getCandidates: ({ commit }, filter: Filter) => {
-        console.log('Get Candidates...');
         axios.get('filtered_list', {
             params: {
               Types: filter.types,

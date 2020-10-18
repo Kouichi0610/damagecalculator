@@ -1,7 +1,7 @@
 // 対象ポケモンの選択
 <template>
     <div class="targetSelect">
-        <p>ポケモン選択 {{ candidatesCount }}</p>
+        <p>ポケモン選択 {{types}} {{total}}</p>
         <div class="btn-group-vertical">
             <b-button-group>
                 <types-button type="すべて" @clicked="setType"></types-button>
@@ -34,15 +34,21 @@
 
         <div class="input-group mb-3">
         <p>種族値合計</p>
-        <div class="input-group-prepend">
-            <div class="input-group-text">
-            <input type="checkbox" v-model="enableTotal" aria-label="Checkbox for following text input">
-            </div>
-        </div>
         <input type="number" v-model="total" class="form-control" aria-label="Text input with checkbox">
         <p>以上</p>
         </div>
 
+        <!-- 候補一覧 -->
+        <div class="candidates">
+            候補 {{ candidatesCount }}
+            <ul class="list-group" v-for="candidate in candidates" :key="candidate.name">
+                <!-- <li class="list-group-item">{{ candidate.name }}</li> -->
+                <li class="list-group-item">
+                    <b-button class="TypeButton" v-on:click="onButton(candidate)">{{ candidate.name }}</b-button>
+                    {{ candidate.types }} HP:{{candidate.hp}} AT:{{candidate.attack}} DF:{{candidate.defense}} SA:{{candidate.spAttack}} SD:{{candidate.spDefense}} SP:{{candidate.speed}}
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
@@ -53,7 +59,12 @@ import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
 import TypesButton from './types/typesButton.vue'
 //import {Species, TargetsState} from '../store/targets/types'
+//import router from '../router'
+
 const namespace: string = 'targets';
+
+
+// TODO:選択したポケモンを別のstoreに(あるいはルートに)渡す
 
 @Component({
     components: {
@@ -62,24 +73,27 @@ const namespace: string = 'targets';
 })
 export default class TargetSelect extends Vue {
     @State('targets') targets: TargetsState;
+    // 候補一覧を取得
     @Action('getCandidates', { namespace })
     private getCandidates!: (Filter) => Promise<boolean>;
+    // 候補者数
     @Getter('candidatesCount', { namespace })
     private candidatesCount: number;
+    // 候補一覧
+    @Getter('candidates', { namespace })
+    private candidates: Species[];
 
     private types: string = 'すべて';
-    private enableTotal: boolean = true;
-    private total: number = 480;
+    private total: number = 500;
+
+    created() {
+    }
 
     @Watch('total')
     totalChanged(after: number, before: number) {
         if (before == after) {
             return;
         }
-        this.updateCandidates();
-    }
-    @Watch('enableTotal')
-    enableTotalChanged() {
         this.updateCandidates();
     }
     @Watch('types')
@@ -90,22 +104,42 @@ export default class TargetSelect extends Vue {
         this.updateCandidates();
     }
 
+    @Watch('candidates')
+    candidatesChanged() {
+        // TODO:UIに反映させる
+        console.log('changed.');
+        for (var i = 0; i < this.candidates.length; i++) {
+            let c = this.candidates[i];
+            console.log('' + c.name + ' types:' + c.types);
+        }
+    }
+
     setType(type: string) {
         this.types = type;
     }
 
     updateCandidates() {
-        console.log('update. types:' + this.types + " total:" + this.total + " enableTotal:" + this.enableTotal);
-        let total = this.enableTotal ? this.total : 0;
+        console.log('Update.');
         this.getCandidates({
             types: this.types,
-            total: total,
+            total: this.total,
         });
+    }
+
+    onButton(candidate: Species) {
+        console.log('Select:' + candidate.name);
+        // TODO:攻撃調整に遷移
+        //router.push({ path: 'sandboxts' });
     }
 }
 </script>
 
 <style scoped>
+.candidates {
+    width: 600px;
+    height: 800px;
+    overflow: scroll;
+}
 .targetSelect {
     width: 480px;
 }
