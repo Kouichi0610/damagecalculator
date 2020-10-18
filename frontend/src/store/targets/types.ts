@@ -18,7 +18,8 @@ export interface Species {
 }
 
 export interface TargetsState {
-    filter: Filter;
+    defaultTotal: number,
+    defaultTypes: string,
     target: Species;
     candidates: Species[];
 }

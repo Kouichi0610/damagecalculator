@@ -9,5 +9,11 @@ export const getters: GetterTree<TargetsState, RootState> = {
     candidates: (state: TargetsState) => {
         return state.candidates;
     },
+    defaultTypes: (state: TargetsState) => {
+        return state.defaultTypes;
+    },
+    defaultTotal: (state: TargetsState) => {
+        return state.defaultTotal;
+    }
 }
 

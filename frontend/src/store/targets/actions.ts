@@ -41,6 +41,8 @@ export const actions: ActionTree<TargetsState, RootState> = {
               species.push(s);
             }
             commit('setCandidates', species);
+            commit('setDefaultTypes', filter.types);
+            commit('setDefaultTotal', filter.total);
           })
           .catch((e) => {
               console.log('failed:' + e);

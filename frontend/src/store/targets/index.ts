@@ -7,7 +7,8 @@ import { TargetsState } from './types';
 import { RootState } from '@/store/types';
 
 export const state: TargetsState = {
-    filter: {types: 'ほのお', total: 500},
+    defaultTotal: 530,
+    defaultTypes: 'でんき',
     target: {name: '', types: '', hp: 0, attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0},
     candidates: [],
 }

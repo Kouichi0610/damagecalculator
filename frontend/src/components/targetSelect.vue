@@ -63,7 +63,6 @@ import TypesButton from './types/typesButton.vue'
 
 const namespace: string = 'targets';
 
-
 // TODO:選択したポケモンを別のstoreに(あるいはルートに)渡す
 
 @Component({
@@ -82,11 +81,17 @@ export default class TargetSelect extends Vue {
     // 候補一覧
     @Getter('candidates', { namespace })
     private candidates: Species[];
+    @Getter('defaultTypes', { namespace })
+    private defaultTypes: string;
+    @Getter('defaultTotal', { namespace })
+    private defaultTotal: number;
 
-    private types: string = 'すべて';
-    private total: number = 500;
+    private types: string;
+    private total: number;
 
     created() {
+        this.types = this.defaultTypes;
+        this.total = this.defaultTotal;
     }
 
     @Watch('total')
@@ -106,7 +111,6 @@ export default class TargetSelect extends Vue {
 
     @Watch('candidates')
     candidatesChanged() {
-        // TODO:UIに反映させる
         console.log('changed.');
         for (var i = 0; i < this.candidates.length; i++) {
             let c = this.candidates[i];
