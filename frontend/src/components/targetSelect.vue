@@ -42,7 +42,6 @@
         <div class="candidates">
             候補 {{ candidatesCount }}
             <ul class="list-group" v-for="candidate in candidates" :key="candidate.name">
-                <!-- <li class="list-group-item">{{ candidate.name }}</li> -->
                 <li class="list-group-item">
                     <b-button class="TypeButton" v-on:click="onButton(candidate)">{{ candidate.name }}</b-button>
                     {{ candidate.types }} HP:{{candidate.hp}} AT:{{candidate.attack}} DF:{{candidate.defense}} SA:{{candidate.spAttack}} SD:{{candidate.spDefense}} SP:{{candidate.speed}}
@@ -86,8 +85,8 @@ export default class TargetSelect extends Vue {
     @Getter('defaultTotal', { namespace })
     private defaultTotal: number;
 
-    private types: string;
-    private total: number;
+    private types: string = 'すべて';
+    private total: number = 0;
 
     created() {
         this.types = this.defaultTypes;
