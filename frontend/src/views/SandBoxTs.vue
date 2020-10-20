@@ -3,7 +3,7 @@
         SandBox from TypeScript.
         <Todo></Todo>
         <user-detail></user-detail>
-        <StatsEditor :species="species"></StatsEditor>
+        <StatsEditor></StatsEditor>
     </div>
 </template>
 

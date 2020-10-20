@@ -53,12 +53,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { State, Getter, Action } from 'vuex-class';
+import { State, Getter, Action, Mutation } from 'vuex-class';
 import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
 import TypesButton from './types/typesButton.vue'
 //import {Species, TargetsState} from '../store/targets/types'
-//import router from '../router'
+import router from '../router'
 
 const namespace: string = 'targets';
 
@@ -84,6 +84,9 @@ export default class TargetSelect extends Vue {
     private defaultTypes: string;
     @Getter('defaultTotal', { namespace })
     private defaultTotal: number;
+
+    @Mutation('setTarget', {namespace})
+    private setTarget!: (Species) => void;
 
     private types: string = 'すべて';
     private total: number = 0;
@@ -131,8 +134,8 @@ export default class TargetSelect extends Vue {
 
     onButton(candidate: Species) {
         console.log('Select:' + candidate.name);
-        // TODO:攻撃調整に遷移
-        //router.push({ path: 'sandboxts' });
+        this.setTarget(candidate);
+        router.push({ path: 'attacker' });
     }
 }
 </script>

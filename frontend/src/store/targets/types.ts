@@ -1,3 +1,4 @@
+import * as nature from "../../domain/nature"
 
 // リストフィルター
 // この条件を満たしているものだけ通す
@@ -16,10 +17,30 @@ export interface Species {
     spDefense: number;
     speed: number;
 }
+export interface Individuals {
+    hp: number;
+    attack: number;
+    defense: number;
+    spAttack: number;
+    spDefense: number;
+    speed: number;
+}
+export interface BasePoints {
+    hp: number;
+    attack: number;
+    defense: number;
+    spAttack: number;
+    spDefense: number;
+    speed: number;
+}
 
 export interface TargetsState {
+    target: Species;
+    nature: nature.INature;
+    individuals: Individuals;
+    basePoints: BasePoints;
+
     defaultTotal: number,
     defaultTypes: string,
-    target: Species;
     candidates: Species[];
 }
