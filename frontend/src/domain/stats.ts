@@ -16,12 +16,12 @@ export class StatsCalculator {
   }
 
   private hp(l: number, s: number, i: number, b: number): number {
-    let x = s * 2 + i + b/4;
+    let x = s * 2 + i + b / 4;
     let y = x * l / 100.0 + l + 10;
     return Math.floor(y);
   }
   private stats(l: number, s: number, i: number, b: number): number {
-    let x = s * 2 + i + b/4;
+    let x = s * 2 + i + b / 4;
     let y = Math.floor(x * l / 100.0 + 5);
     return Math.floor(y);
   }

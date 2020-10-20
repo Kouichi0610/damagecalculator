@@ -1,8 +1,6 @@
 // 
 <template>
   <div class="statsEditor">
-    <p>Indi{{ targetIndividuals }}</p>
-    <p>Base{{ targetBasePoints }}</p>
     <nature :selected="targetNature" @changed="updateNature"></nature>
     <individuals
       :params="targetIndividuals"
@@ -34,6 +32,7 @@ import Stats from "./components/stats.vue";
 import { State, Getter, Mutation } from "vuex-class";
 
 //import * as nature from "../../domain/nature";
+//import { INature } from "../../domain/nature"
 import * as stats from "../../domain/stats";
 
 const namespace: string = "targets";
@@ -75,7 +74,7 @@ export default class StatsEditor extends Vue {
     this.calcStats();
   }
 
-  private updateNature(nature: nature.INature) {
+  private updateNature(nature: INature) {
     this.setTargetNature(nature);
     this.calcStats();
   }
