@@ -9,25 +9,24 @@ import * as nature from "../../domain/nature"
 
 // TODO:他stateとのやり取り
 export const state: TargetsState = {
-    // 現在選択しているポケモン
-    target: {name: '', types: '', hp: 0, attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0},
-    nature: nature.NatureFactory('てれや'),
-    individuals: {hp: 31, attack: 31, defense: 31, spAttack: 31, spDefense: 31, speed: 31},
-    basePoints: {hp: 0, attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0},
+  // 現在選択しているポケモン
+  target: {name: '', types: '', hp: 0, attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0},
+  nature: nature.NatureFactory('てれや'),
+  individuals: {hp: 31, attack: 31, defense: 31, spAttack: 31, spDefense: 31, speed: 31},
+  basePoints: {hp: 0, attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0},
 
-    // 候補選択
-    defaultTotal: 500,
-    defaultTypes: 'ノーマル',
-    candidates: [],
-
+  // 候補選択
+  defaultTotal: 500,
+  defaultTypes: 'ノーマル',
+  candidates: [],
 }
 
 const namespaced: boolean = true;
 
 export const targets: Module<TargetsState, RootState> = {
-    namespaced,
-    state,
-    getters,
-    actions,
-    mutations,
+  namespaced,
+  state,
+  getters,
+  actions,
+  mutations,
 }
