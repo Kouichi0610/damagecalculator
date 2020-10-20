@@ -5,8 +5,6 @@ import Vue from 'vue'
 import Vuex, { StoreOptions } from 'vuex'
 
 import { RootState } from './types'
-import { profile } from './profile/index'
-import { todos } from './todo/index'
 import { targets } from './targets/index'
 
 Vue.use(Vuex);
@@ -17,8 +15,6 @@ const store: StoreOptions<RootState> = {
   },
   modules: {
     targets,
-    profile,
-    todos,
   }
 }
 
