@@ -1,20 +1,26 @@
 // 
 <template>
   <div class="statsEditor">
-    <nature :selected="targetNature" @changed="updateNature"></nature>
-    <individuals
-      :params="targetIndividuals"
-      @changed="updateIndividuals"
-    ></individuals>
-    <div class="row mb-1">
-      <stats class="col-4" :params="stats"></stats>
-      <species class="col-2" :params="species"></species>
-      <base-points
-        class="col-2"
-        :params="targetBasePoints"
-        @changed="updateBasePoints"
-      ></base-points>
-    </div>
+    <template v-if="hasTarget">
+      <nature :selected="targetNature" @changed="updateNature"></nature>
+      <individuals
+        :params="targetIndividuals"
+        @changed="updateIndividuals"
+      ></individuals>
+      <div class="row mb-1">
+        <stats class="col-4" :params="stats"></stats>
+        <species class="col-2" :params="species"></species>
+        <base-points
+          class="col-2"
+          :params="targetBasePoints"
+          @changed="updateBasePoints"
+        ></base-points>
+      </div>
+    </template>
+    <template v-else>
+      <p>対象を選択してください</p>
+      <button type="button" class="btn btn-warning" @click="toSelect">対象選択</button>
+    </template>
   </div>
 </template>
 
@@ -31,6 +37,7 @@ import { State, Getter, Mutation } from "vuex-class";
 //import * as nature from "../../domain/nature";
 //import { INature } from "../../domain/nature"
 import * as stats from "../../domain/stats";
+import router from '../../router'
 
 const namespace: string = "targets";
 
@@ -48,6 +55,8 @@ const namespace: string = "targets";
 export default class StatsEditor extends Vue {
   @State('targets') targets: TargetsState;
 
+  @Getter('hasTarget', { namespace })
+  private hasTarget!: boolean;
   @Getter('targetNature', { namespace })
   private targetNature!: INature;
   @Getter('targetSpecies', { namespace })
@@ -94,6 +103,10 @@ export default class StatsEditor extends Vue {
     );
     console.log("Stats:" + this.stats);
     return this.stats;
+  }
+
+  private toSelect() {
+    router.push({ path: 'current' });
   }
 }
 </script>
