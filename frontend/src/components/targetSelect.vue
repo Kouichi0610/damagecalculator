@@ -76,14 +76,14 @@ export default class TargetSelect extends Vue {
     private getCandidates!: (Filter) => Promise<boolean>;
     // 候補者数
     @Getter('candidatesCount', { namespace })
-    private candidatesCount: number;
+    private candidatesCount!: number;
     // 候補一覧
     @Getter('candidates', { namespace })
-    private candidates: Species[];
+    private candidates!: Species[];
     @Getter('defaultTypes', { namespace })
-    private defaultTypes: string;
+    private defaultTypes!: string;
     @Getter('defaultTotal', { namespace })
-    private defaultTotal: number;
+    private defaultTotal!: number;
 
     @Mutation('setTarget', {namespace})
     private setTarget!: (Species) => void;

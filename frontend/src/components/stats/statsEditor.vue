@@ -18,9 +18,6 @@
   </div>
 </template>
 
-/*
-*/
-
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
@@ -52,20 +49,20 @@ export default class StatsEditor extends Vue {
   @State('targets') targets: TargetsState;
 
   @Getter('targetNature', { namespace })
-  private targetNature: INature;
+  private targetNature!: INature;
   @Getter('targetSpecies', { namespace })
-  private species: number[];
+  private species!: number[];
   @Getter('targetIndividuals', { namespace })
-  private targetIndividuals: number[];
+  private targetIndividuals!: number[];
   @Getter('targetBasePoints', { namespace })
-  private targetBasePoints: number[];
+  private targetBasePoints!: number[];
 
   @Mutation('setTargetNature', { namespace })
-  private setTargetNature: (INature) => void;
+  private setTargetNature!: (INature) => void;
   @Mutation('setTargetIndividuals', { namespace })
-  private setTargetIndividuals: (Individuals) => void;
+  private setTargetIndividuals!: (Individuals) => void;
   @Mutation('setTargetBasePoints', { namespace })
-  private setTargetBasePoints: (BasePoints) => void;
+  private setTargetBasePoints!: (BasePoints) => void;
 
   private stats: number[] = [0, 0, 0, 0, 0, 0];
   private calculator: stats.StatsCalculator = new stats.StatsCalculator();
