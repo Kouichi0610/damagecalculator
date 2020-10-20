@@ -3,6 +3,9 @@ import { TargetsState } from './types';
 import { RootState } from '@/store/types';
 
 export const getters: GetterTree<TargetsState, RootState> = {
+    targetNature: (state: TargetsState) => {
+        return state.nature;
+    },
     targetSpecies: (state: TargetsState) => {
         return [
             state.target.hp,

@@ -3,7 +3,7 @@
   <div class="statsEditor">
     <p>Indi{{ targetIndividuals }}</p>
     <p>Base{{ targetBasePoints }}</p>
-    <nature :selected="nature" @changed="updateNature"></nature>
+    <nature :selected="targetNature" @changed="updateNature"></nature>
     <individuals
       :params="targetIndividuals"
       @changed="updateIndividuals"
@@ -33,7 +33,7 @@ import Species from "./components/species.vue";
 import Stats from "./components/stats.vue";
 import { State, Getter, Mutation } from "vuex-class";
 
-import * as nature from "../../domain/nature";
+//import * as nature from "../../domain/nature";
 import * as stats from "../../domain/stats";
 
 const namespace: string = "targets";
@@ -52,6 +52,8 @@ const namespace: string = "targets";
 export default class StatsEditor extends Vue {
   @State('targets') targets: TargetsState;
 
+  @Getter('targetNature', { namespace })
+  private targetNature: INature;
   @Getter('targetSpecies', { namespace })
   private species: number[];
   @Getter('targetIndividuals', { namespace })
@@ -59,27 +61,22 @@ export default class StatsEditor extends Vue {
   @Getter('targetBasePoints', { namespace })
   private targetBasePoints: number[];
 
+  @Mutation('setTargetNature', { namespace })
+  private setTargetNature: (INature) => void;
   @Mutation('setTargetIndividuals', { namespace })
   private setTargetIndividuals: (Individuals) => void;
   @Mutation('setTargetBasePoints', { namespace })
   private setTargetBasePoints: (BasePoints) => void;
 
-
   private stats: number[] = [0, 0, 0, 0, 0, 0];
-  private nature: nature.INature = nature.NatureFactory('てれや');
   private calculator: stats.StatsCalculator = new stats.StatsCalculator();
 
   created() {
     this.calcStats();
   }
 
-  private get natureName(): string {
-    return this.nature.Name();
-  }
-
   private updateNature(nature: nature.INature) {
-    this.nature = nature;
-    console.log("next:" + this.nature.Name());
+    this.setTargetNature(nature);
     this.calcStats();
   }
   private updateIndividuals(params: number[]) {
@@ -93,7 +90,7 @@ export default class StatsEditor extends Vue {
 
   private calcStats(): number[] {
     this.stats = this.calculator.Calculate(
-      this.nature,
+      this.targetNature,
       50,
       this.species,
       this.targetIndividuals,
