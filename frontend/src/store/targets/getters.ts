@@ -4,14 +4,34 @@ import { RootState } from '@/store/types';
 
 export const getters: GetterTree<TargetsState, RootState> = {
     targetSpecies: (state: TargetsState) => {
-        return state.target;
+        return [
+            state.target.hp,
+            state.target.attack,
+            state.target.defense,
+            state.target.spAttack,
+            state.target.spDefense,
+            state.target.speed,
+        ];
     },
-    targetStr: (state: TargetsState) => {
-        if (state.target == null) {
-            return "(none)";
-        }
-        let t = state.target;
-        return '' + t.name + ' ' + t.types + ' HP:' + t.hp + ' AT:' + t.attack + ' DF:' + t.defense + ' SA:' + t.spAttack + ' SD:' + t.spDefense + ' SP:' + t.speed;
+    targetIndividuals : (state: TargetsState) => {
+        return [
+            state.individuals.hp,
+            state.individuals.attack,
+            state.individuals.defense,
+            state.individuals.spAttack,
+            state.individuals.spDefense,
+            state.individuals.speed,
+        ];
+    },
+    targetBasePoints: (state: TargetsState) => {
+        return [
+            state.basePoints.hp,
+            state.basePoints.attack,
+            state.basePoints.defense,
+            state.basePoints.spAttack,
+            state.basePoints.spDefense,
+            state.basePoints.speed,
+        ];
     },
     candidatesCount: (state: TargetsState) => {
         return state.candidates.length;

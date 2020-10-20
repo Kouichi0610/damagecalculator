@@ -1,9 +1,11 @@
 // 
 <template>
   <div class="statsEditor">
+    <p>Indi{{ targetIndividuals }}</p>
+    <p>Base{{ targetBasePoints }}</p>
     <nature :selected="nature" @changed="updateNature"></nature>
     <individuals
-      :params="individuals"
+      :params="targetIndividuals"
       @changed="updateIndividuals"
     ></individuals>
     <div class="row mb-1">
@@ -11,7 +13,7 @@
       <species class="col-2" :params="species"></species>
       <base-points
         class="col-2"
-        :params="basePoints"
+        :params="targetBasePoints"
         @changed="updateBasePoints"
       ></base-points>
     </div>
@@ -29,7 +31,7 @@ import BasePoints from "./components/basePoints.vue";
 import Individuals from "./components/individuals.vue";
 import Species from "./components/species.vue";
 import Stats from "./components/stats.vue";
-import { State, Getter } from "vuex-class";
+import { State, Getter, Mutation } from "vuex-class";
 
 import * as nature from "../../domain/nature";
 import * as stats from "../../domain/stats";
@@ -48,29 +50,26 @@ const namespace: string = "targets";
   },
 })
 export default class StatsEditor extends Vue {
-  @State("targets") targets: TargetsState;
+  @State('targets') targets: TargetsState;
 
-  @Getter("targetSpecies", { namespace })
-  private target: Species;
-
-  private individuals: number[] = [31, 31, 31, 31, 31, 31];
+  @Getter('targetSpecies', { namespace })
   private species: number[];
+  @Getter('targetIndividuals', { namespace })
+  private targetIndividuals: number[];
+  @Getter('targetBasePoints', { namespace })
+  private targetBasePoints: number[];
+
+  @Mutation('setTargetIndividuals', { namespace })
+  private setTargetIndividuals: (Individuals) => void;
+  @Mutation('setTargetBasePoints', { namespace })
+  private setTargetBasePoints: (BasePoints) => void;
+
+
   private stats: number[] = [0, 0, 0, 0, 0, 0];
-  private basePoints: number[] = [0, 0, 0, 0, 0, 0];
   private nature: nature.INature = nature.NatureFactory('てれや');
   private calculator: stats.StatsCalculator = new stats.StatsCalculator();
 
   created() {
-    console.log("select:" + this.target.name);
-    let t = this.target;
-    this.species = [
-      t.hp,
-      t.attack,
-      t.defense,
-      t.spAttack,
-      t.spDefense,
-      t.speed,
-    ];
     this.calcStats();
   }
 
@@ -84,13 +83,11 @@ export default class StatsEditor extends Vue {
     this.calcStats();
   }
   private updateIndividuals(params: number[]) {
-    this.individuals = params;
-    console.log("individuals:" + this.individuals);
+    this.setTargetIndividuals({hp: params[0], attack: params[1], defense: params[2], spAttack: params[3], spDefense: params[4], speed: params[5]});
     this.calcStats();
   }
   private updateBasePoints(params: number[]) {
-    this.basePoints = params;
-    console.log("basePoints:" + this.basePoints);
+    this.setTargetBasePoints({hp: params[0], attack: params[1], defense: params[2], spAttack: params[3], spDefense: params[4], speed: params[5]});
     this.calcStats();
   }
 
@@ -99,8 +96,8 @@ export default class StatsEditor extends Vue {
       this.nature,
       50,
       this.species,
-      this.individuals,
-      this.basePoints
+      this.targetIndividuals,
+      this.targetBasePoints
     );
     console.log("Stats:" + this.stats);
     return this.stats;

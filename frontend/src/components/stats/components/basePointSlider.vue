@@ -21,6 +21,10 @@ export default class BasePointSlider extends Vue {
     private current: number = 0;
     private disabled: boolean = false;
 
+    created() {
+        this.current = this.values[this.index];
+    }
+
     @Watch('current')
     public currentChanged(/*newVal: number*/) {
         const max = 508;

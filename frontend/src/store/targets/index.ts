@@ -12,7 +12,7 @@ export const state: TargetsState = {
     // 現在選択しているポケモン
     target: {name: '', types: '', hp: 0, attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0},
     nature: nature.NatureFactory('てれや'),
-    individuals: {hp: 0, attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0},
+    individuals: {hp: 31, attack: 31, defense: 31, spAttack: 31, spDefense: 31, speed: 31},
     basePoints: {hp: 0, attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0},
 
     // 候補選択

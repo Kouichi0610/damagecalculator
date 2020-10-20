@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import BasePointSlider from './basePointSlider.vue';
 
 @Component({
@@ -36,6 +36,11 @@ import BasePointSlider from './basePointSlider.vue';
 export default class BasePoints extends Vue {
     private vals: number[] = [0, 0, 0, 0, 0, 0];
     private total: number = 0;
+    @Prop() private params!: number[];
+
+    created() {
+        this.vals = this.params;
+    }
 
     private valueChanged(index: number, val: number) {
         this.vals[index] = val;
