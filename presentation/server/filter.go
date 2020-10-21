@@ -26,7 +26,6 @@ func (s *serverImpl) filteredList(c *gin.Context) {
 	f := filter.NewFilter(strToFilterType(q.Types), q.Total)
 	list := f.Filter(s.s)
 
-	// TODO:json 返していない
 	res := make([]filterTypeResult, 0)
 	for _, r := range list {
 		d := filterTypeResult{

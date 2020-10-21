@@ -44,6 +44,7 @@ func (s *serverImpl) Serve() (http.Handler, error) {
 	router.GET("/get_sample", s.getSample)
 	router.POST("/post_sample", s.postSample)
 	router.GET("/filtered_list", s.filteredList)
+	router.GET("/speed_list", s.speedList)
 	//router.GET("/post_sample", s.postSample)
 
 	return router, router.Run(":8080")

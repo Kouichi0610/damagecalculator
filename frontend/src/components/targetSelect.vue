@@ -1,7 +1,6 @@
 // 対象ポケモンの選択
 <template>
     <div class="targetSelect">
-        <p>ポケモン選択 {{types}} {{total}}</p>
         <div class="btn-group-vertical">
             <b-button-group>
                 <types-button type="すべて" @clicked="setType"></types-button>

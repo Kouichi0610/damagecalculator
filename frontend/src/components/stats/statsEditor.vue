@@ -101,7 +101,9 @@ export default class StatsEditor extends Vue {
       this.targetIndividuals,
       this.targetBasePoints
     );
-    console.log("Stats:" + this.stats);
+
+    this.$emit('speed', this.stats[5]);
+    // emit stats
     return this.stats;
   }
 
