@@ -6,6 +6,20 @@
     <template v-if="hasList && display.length > 1">
       <div class="row mb-1">
         <div class="col-4">
+          <ul class="list-group" v-for="info in nearDisplay" :key="info.info">
+            <template v-if="info.info == ''">
+              <li class="list-group-item list-group-item-primary">
+                {{ speed }}
+              </li>
+            </template>
+            <template v-else>
+              <li class="list-group-item">
+                {{ info.speed }} {{ info.info }}
+              </li>
+            </template>
+          </ul>
+        </div>
+        <div class="col-4">
           <ul class="list-group" v-for="info in display" :key="info.info">
             <template v-if="info.info == ''">
               <li class="list-group-item list-group-item-primary">
@@ -30,6 +44,7 @@ import { State, Action, Getter } from 'vuex-class';
 import Component from 'vue-class-component';
 
 import StatsEditor from '../components/stats/statsEditor.vue'
+//import { SpeedInfo } from '../store/speedlist/types';
 
 const namespace: string = 'speedList';
 
@@ -70,7 +85,27 @@ export default class Speed extends Vue {
       this.getList();
     }
 
-    // TODO:↑5つ&↓5つあたり
+    get nearDisplay(): SpeedInfo[] {
+      let disp = this.display;
+
+      var idx = 0;
+      for (var i = 0; i < disp.length; i++) {
+        if (disp[i].info == '') {
+          idx = i;
+          break;
+        }
+      }
+
+      const count = 5
+      let start = (idx-count < 0) ? 0 : idx-count;
+      let end = start + count*2;
+      let res: SpeedInfo[] = [];
+      for (i = start; i <= end; i++) {
+        res.push(disp[i]);
+      }
+      return res;
+    }
+
     get display(): SpeedInfo[] {
       let a: SpeedInfo[] = [new InfoImpl('', this.speed)];
       let disp:SpeedInfo[] = a.concat(this.list);
