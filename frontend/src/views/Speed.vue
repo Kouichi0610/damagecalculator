@@ -120,14 +120,21 @@ export default class Speed extends Vue {
     get display(): SpeedInfo[] {
       let a: SpeedInfo[] = [new InfoImpl('', this.speed)];
       let disp:SpeedInfo[] = a.concat(this.list);
-      disp.sort(
-        function(a, b) {
+
+      let decending = function(a, b) {
           if (a.speed > b.speed) return -1;
           if (a.speed < b.speed) return 1;
           return 0;
-        }
-      );
-      return disp;
+      }
+      let ascending = function(a, b) {
+          if (a.speed < b.speed) return -1;
+          if (a.speed > b.speed) return 1;
+          return 0;
+      }
+      let order = this.trickroom ? ascending : decending;
+      disp.sort(order);
+
+return disp;
     }
 
     speedChanged(val: number) {
