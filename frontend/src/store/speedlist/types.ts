@@ -1,7 +1,7 @@
 
 export interface SpeedInfo {
   info: string;     // 同速のポケモン
-  species: number;  // 素早さ種族値
+  speed: number;  // 素早さ(実数)
 }
 
 export interface SpeedListState {

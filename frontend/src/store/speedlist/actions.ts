@@ -3,18 +3,21 @@ import axios from 'axios';
 import { SpeedListState, SpeedInfo } from './types';
 import { RootState } from '../types';
 
+// TODO:何処かstoreに
+const Level = 50;
+
 class SpeedInfoImpl implements SpeedInfo {
   info: string;
-  species: number;
-  constructor(info: string, species: number) {
+  speed: number;
+  constructor(info: string, speed: number) {
     this.info = info;
-    this.species = species;
+    this.speed = speed;
   }
 }
 
 export const actions: ActionTree<SpeedListState, RootState> = {
   getList: ({ commit }) => {
-    axios.get('speed_list')
+    axios.get('speed_list?Level=' + Level)
     .then((response) => {
       let json = JSON.stringify(response.data);
       let list = JSON.parse(json);

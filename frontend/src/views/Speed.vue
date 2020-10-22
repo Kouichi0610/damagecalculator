@@ -18,9 +18,9 @@ import StatsEditor from '../components/stats/statsEditor.vue'
 
 const namespace: string = 'speedList';
 
-// TODO:速度の仮想敵一覧
-// TODO:vuex経由で取得しておく。
 // TODO:トリックルーム(反転)
+// TODO:すいすいようりょくそ(特性選択する必要が)
+// TODO:スカーフ
 @Component({
       components: {
           StatsEditor,
@@ -41,7 +41,7 @@ export default class Speed extends Vue {
       if (this.hasList) {
         for (var i = 0; i < this.list.length; i++) {
           let l = this.list[i];
-          console.log('' + l.species + ' info:' + l.info);
+          console.log('' + l.speed + ' info:' + l.info);
         }
         return;
       }
@@ -55,6 +55,7 @@ export default class Speed extends Vue {
 
     speedChanged(val: number) {
       console.log('Speed:' + val);
+      //let myinfo = {info:'', speed: val};
     }
 
 }
