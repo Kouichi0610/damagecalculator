@@ -3,6 +3,7 @@
   <div class="speed">
     <StatsEditor @speed="speedChanged"></StatsEditor>
     <div class="environment">
+      <b-form-checkbox id="check-trickroom" v-model="trickroom" name="check-trickroom">トリックルーム</b-form-checkbox>
     </div>
     <template v-if="hasList && display.length > 1">
       <div class="row mb-1">

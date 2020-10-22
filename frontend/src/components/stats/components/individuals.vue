@@ -5,8 +5,8 @@
 <template>
     <div class="individuals">
         <p>個体値 HP:{{disp[0]}} 攻撃:{{disp[1]}} 防御:{{disp[2]}} 特攻:{{disp[3]}} 特防:{{disp[4]}} 素早さ:{{disp[5]}}</p>
-        <b-form-checkbox id="checkbox-1" v-model="slowest" name="checkbox-1">最遅</b-form-checkbox>
-        <b-form-checkbox id="checkbox-2" v-model="weakest" name="checkbox-2">最弱</b-form-checkbox>
+        <b-form-checkbox id="check-slowest" v-model="slowest" name="check-slowest">最遅</b-form-checkbox>
+        <b-form-checkbox id="check-weakest" v-model="weakest" name="check-weakest">最弱</b-form-checkbox>
     </div>
 </template>
 
