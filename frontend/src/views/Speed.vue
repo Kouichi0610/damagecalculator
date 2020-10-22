@@ -1,7 +1,6 @@
 // 速度調整
 <template>
   <div class="speed">
-    <h1>速度調整</h1>
     <StatsEditor @speed="speedChanged"></StatsEditor>
     <template v-if="hasList && display.length > 1">
       <div class="row mb-1">
@@ -60,6 +59,12 @@ class InfoImpl implements SpeedInfo {
 // TODO:トリックルーム(反転)
 // TODO:すいすいようりょくそ(特性選択する必要が)
 // TODO:スカーフ
+/*
+  TODO:
+  トリックルーム
+  すいすい、ようりょくそ
+  スカーフorくろいてっきゅう
+*/
 @Component({
       components: {
           StatsEditor,
