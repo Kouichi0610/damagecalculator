@@ -3,20 +3,20 @@
   <div class="speed">
     <h1>速度調整</h1>
     <StatsEditor @speed="speedChanged"></StatsEditor>
-    <template v-if="hasList">
+    <template v-if="hasList && display.length > 1">
       <div class="row mb-1">
-        <div class="col-6">
-          <ul class="list-group" v-for="info in list" :key="info.speed">
-            <li class="list-group-item">
-              {{ info.speed }} {{ info.info }}
-            </li>
-          </ul>
-        </div>
-        <div class="col-2">
-          <ul class="list-group" v-for="info in display" :key="info.speed">
-            <li class="list-group-item">
-              {{ info.speed }} {{ info.info }}
-            </li>
+        <div class="col-4">
+          <ul class="list-group" v-for="info in display" :key="info.info">
+            <template v-if="info.info == ''">
+              <li class="list-group-item list-group-item-primary">
+                {{ speed }}
+              </li>
+            </template>
+            <template v-else>
+              <li class="list-group-item">
+                {{ info.speed }} {{ info.info }}
+              </li>
+            </template>
           </ul>
         </div>
       </div>
@@ -61,50 +61,41 @@ export default class Speed extends Vue {
     @Action('getList', { namespace })
     private getList!: () => Promise<boolean>;
 
-    private display: InfoImpl[]
+    private speed: number = 0;
 
     created() {
       if (this.hasList) {
-        for (var i = 0; i < this.list.length; i++) {
-          let l = this.list[i];
-          console.log('' + l.speed + ' info:' + l.info);
-        }
         return;
       }
       this.getList();
-
     }
 
-    speedChanged(val: number) {
-      console.log('Speed:' + val);
-
-      this.display = [];
-      for (var i = 0; i < 10; i++) {
-        this.display.push(new InfoImpl('', 0));
-      }
-      this.display.push(new InfoImpl('TODO:Mine', val));
-
-      /*
-      let a: SpeedInfo[] = [new InfoImpl('TODO:Mine', val)];
-
-      this.display = a.concat(this.list);
-      this.display.sort(
+    // TODO:↑5つ&↓5つあたり
+    get display(): SpeedInfo[] {
+      let a: SpeedInfo[] = [new InfoImpl('', this.speed)];
+      let disp:SpeedInfo[] = a.concat(this.list);
+      disp.sort(
         function(a, b) {
-          if (a.speed < b.speed) return -1;
-          if (a.speed > b.speed) return 1;
+          if (a.speed > b.speed) return -1;
+          if (a.speed < b.speed) return 1;
           return 0;
         }
       );
-      for (var i = 0; i < this.display.length; i++) {
-        let d = this.display[i];
-        console.log('' + d.speed + ':' + d.info);
-      }
-      */
+      return disp;
+    }
+
+    speedChanged(val: number) {
+      this.speed = val;
     }
 
 }
 </script>
 
 <style scoped>
+.list-group-item {
+  height:28px;
+  font-size: 12px;
+  text-align: center;
+}
 
 </style>
