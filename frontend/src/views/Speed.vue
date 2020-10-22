@@ -2,6 +2,8 @@
 <template>
   <div class="speed">
     <StatsEditor @speed="speedChanged"></StatsEditor>
+    <div class="environment">
+    </div>
     <template v-if="hasList && display.length > 1">
       <div class="row mb-1">
         <div class="col-4">
@@ -58,6 +60,7 @@ class InfoImpl implements SpeedInfo {
 
 // TODO:トリックルーム(反転)
 // TODO:すいすいようりょくそ(特性選択する必要が)
+//      -> 特性は問い合わせる必要が？
 // TODO:スカーフ
 /*
   TODO:
@@ -82,6 +85,7 @@ export default class Speed extends Vue {
     private getList!: () => Promise<boolean>;
 
     private speed: number = 0;
+    private trickroom: boolean = false;
 
     created() {
       if (this.hasList) {
@@ -91,7 +95,7 @@ export default class Speed extends Vue {
     }
 
     get nearDisplay(): SpeedInfo[] {
-      let disp = this.display;
+      let disp = [].concat(this.display);
 
       var idx = 0;
       for (var i = 0; i < disp.length; i++) {
@@ -103,7 +107,8 @@ export default class Speed extends Vue {
 
       const count = 5
       let start = (idx-count < 0) ? 0 : idx-count;
-      let end = start + count*2;
+      let last = start + count*2;
+      let end = (last < this.display.length) ? last : this.display.length-1;
       let res: SpeedInfo[] = [];
       for (i = start; i <= end; i++) {
         res.push(disp[i]);
