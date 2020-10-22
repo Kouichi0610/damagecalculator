@@ -59,6 +59,7 @@ import TypesButton from './types/typesButton.vue'
 //import {Species, TargetsState} from '../store/targets/types'
 import router from '../router'
 
+// TODO:statsEditorのtargetsと分離できないか
 const namespace: string = 'targets';
 
 // TODO:選択したポケモンを別のstoreに(あるいはルートに)渡す

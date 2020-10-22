@@ -2,17 +2,18 @@
 <template>
   <div class="speed">
     <StatsEditor @speed="speedChanged"></StatsEditor>
+    <speed-environment :baseSpeed="baseSpeed" @correctedSpeed="correctedChanged"></speed-environment>
     <div class="environment">
       <b-form-checkbox id="check-trickroom" v-model="trickroom" name="check-trickroom">トリックルーム</b-form-checkbox>
-
     </div>
+
     <template v-if="hasList && display.length > 1">
       <div class="row mb-1">
         <div class="col-4">
           <ul class="list-group" v-for="info in nearDisplay" :key="info.info">
             <template v-if="info.info == ''">
               <li class="list-group-item list-group-item-primary">
-                {{ speed }}
+                {{ correctedSpeed }}
               </li>
             </template>
             <template v-else>
@@ -26,7 +27,7 @@
           <ul class="list-group" v-for="info in display" :key="info.info">
             <template v-if="info.info == ''">
               <li class="list-group-item list-group-item-primary">
-                {{ speed }}
+                {{ correctedSpeed }}
               </li>
             </template>
             <template v-else>
@@ -47,6 +48,7 @@ import { State, Action, Getter } from 'vuex-class';
 import Component from 'vue-class-component';
 
 import StatsEditor from '../components/stats/statsEditor.vue'
+import SpeedEnvironment from '../components/speed/speedEnvironment.vue'
 //import { SpeedInfo } from '../store/speedlist/types';
 
 const namespace: string = 'speedList';
@@ -72,6 +74,7 @@ class InfoImpl implements SpeedInfo {
 @Component({
       components: {
           StatsEditor,
+          SpeedEnvironment,
     },
 })
 export default class Speed extends Vue {
@@ -85,8 +88,9 @@ export default class Speed extends Vue {
     @Action('getList', { namespace })
     private getList!: () => Promise<boolean>;
 
-    private speed: number = 0;
-    private trickroom: boolean = false;
+    private baseSpeed: number = 0;
+    private correctedSpeed: number = 0;
+    private trickroom = false;
 
     created() {
       if (this.hasList) {
@@ -94,6 +98,7 @@ export default class Speed extends Vue {
       }
       this.getList();
     }
+
 
     get nearDisplay(): SpeedInfo[] {
       let disp = [].concat(this.display);
@@ -118,7 +123,7 @@ export default class Speed extends Vue {
     }
 
     get display(): SpeedInfo[] {
-      let a: SpeedInfo[] = [new InfoImpl('', this.speed)];
+      let a: SpeedInfo[] = [new InfoImpl('', this.correctedSpeed)];
       let disp:SpeedInfo[] = a.concat(this.list);
 
       let decending = function(a, b) {
@@ -134,12 +139,17 @@ export default class Speed extends Vue {
       let order = this.trickroom ? ascending : decending;
       disp.sort(order);
 
-return disp;
+      return disp;
     }
 
     speedChanged(val: number) {
-      this.speed = val;
+      this.baseSpeed = val;
     }
+
+    correctedChanged(val: number) {
+      this.correctedSpeed = val;
+    }
+
 
 }
 </script>
