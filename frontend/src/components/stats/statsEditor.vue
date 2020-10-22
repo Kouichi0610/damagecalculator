@@ -112,7 +112,7 @@ export default class StatsEditor extends Vue {
   }
 
   private toSelect() {
-    router.push({ path: 'current' });
+    router.push({ path: 'select' });
   }
 }
 </script>

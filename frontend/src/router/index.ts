@@ -14,9 +14,9 @@ const router = new VueRouter({
       component: Home
     },
     {
-      path: '/current',
-      name: 'Current',
-      component: () => import('../views/Current.vue'),
+      path: '/select',
+      name: 'SelectPomkemon',
+      component: () => import('../views/SelectPokemon.vue'),
     },
     {
       path: '/attacker',

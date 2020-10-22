@@ -4,6 +4,7 @@
     <StatsEditor @speed="speedChanged"></StatsEditor>
     <div class="environment">
       <b-form-checkbox id="check-trickroom" v-model="trickroom" name="check-trickroom">トリックルーム</b-form-checkbox>
+
     </div>
     <template v-if="hasList && display.length > 1">
       <div class="row mb-1">
@@ -59,13 +60,12 @@ class InfoImpl implements SpeedInfo {
   }
 }
 
-// TODO:トリックルーム(反転)
 // TODO:すいすいようりょくそ(特性選択する必要が)
 //      -> 特性は問い合わせる必要が？
 // TODO:スカーフ
+
 /*
   TODO:
-  トリックルーム
   すいすい、ようりょくそ
   スカーフorくろいてっきゅう
 */

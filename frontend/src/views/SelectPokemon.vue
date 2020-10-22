@@ -2,7 +2,7 @@
 // 現在の振り方
 // TODO:変更時に保存確認
 <template>
-  <div class="current">
+  <div class="select-okemon">
     <target-select></target-select>
   </div>
 </template>
@@ -16,7 +16,7 @@ import TargetSelect from '../components/targetSelect.vue'
     TargetSelect,
   },
 })
-export default class Current extends Vue {
+export default class SelectPokemon extends Vue {
 }
 </script>
 
