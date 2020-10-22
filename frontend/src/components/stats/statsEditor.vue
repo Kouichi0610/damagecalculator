@@ -94,6 +94,8 @@ export default class StatsEditor extends Vue {
   }
 
   private calcStats(): number[] {
+    let oldSpeed = this.stats[5];
+
     this.stats = this.calculator.Calculate(
       this.targetNature,
       50,
@@ -102,9 +104,11 @@ export default class StatsEditor extends Vue {
       this.targetBasePoints
     );
 
-    this.$emit('speed', this.stats[5]);
-    // emit stats
-    return this.stats;
+    let newSpeed = this.stats[5];
+    if (oldSpeed != newSpeed) {
+      this.$emit('speed', this.stats[5]);
+    }
+   return this.stats;
   }
 
   private toSelect() {
