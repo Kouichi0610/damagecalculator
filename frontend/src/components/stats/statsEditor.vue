@@ -39,6 +39,8 @@ import { State, Getter, Mutation } from "vuex-class";
 import * as stats from "../../domain/stats";
 import router from '../../router'
 
+// TODO:コンポーネントとvuexstoreを1対1nにしておきたい
+// TODO:targetsから対象ポケモンの種族値など取得しているのを別コンポーネントから渡すように変更
 const namespace: string = "targets";
 
 // TODO: $emit stats
