@@ -2,6 +2,31 @@ package stats
 
 type statsCalculator func(l Level, s Species, i Individual, b BasePoint) uint
 
+// 最高値(上昇補正&基礎ポイント+252)
+func Highest(l Level, s Species) uint {
+	return calcUpper(l, s, Individual(31), BasePoint(252))
+}
+
+// 最低値(下降補正&個体値0&基礎ポイント無振り)
+func Lowest(l Level, s Species) uint {
+	return calcLower(l, s, Individual(0), BasePoint(0))
+}
+
+// 補正なし無振り
+func Raw(l Level, s Species) uint {
+	return calcFlat(l, s, Individual(31), BasePoint(0))
+}
+
+// Raw & 基礎ポイント+4
+func Raw4(l Level, s Species) uint {
+	return calcFlat(l, s, Individual(31), BasePoint(4))
+}
+
+// Raw & 基礎ポイント+252
+func Raw252(l Level, s Species) uint {
+	return calcFlat(l, s, Individual(31), BasePoint(252))
+}
+
 func calcShadinjaHP(l Level, s Species, i Individual, b BasePoint) uint {
 	return 1
 }

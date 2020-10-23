@@ -13,8 +13,8 @@ import * as nature from '../../../domain/nature'
 
 @Component
 export default class Nature extends Vue {
-    private current: string;
-    private natures: string[];
+    private current!: string;
+    private natures!: string[];
 
     @Prop() private selected!: nature.INature;
 

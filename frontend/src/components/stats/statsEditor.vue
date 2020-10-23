@@ -1,83 +1,123 @@
 // 
 <template>
-    <div class="statsEditor">
-        <nature :selected="nature" @changed="updateNature"></nature>
-        <individuals :params="individuals" @changed="updateIndividuals"></individuals>
-        <div class="row mb-1">
-            <stats class="col-4" :params="stats"></stats>
-            <species class="col-2" :params="species"></species>
-            <base-points class="col-2" :params="basePoints" @changed="updateBasePoints"></base-points>
-        </div>
-    </div>
+  <div class="statsEditor">
+    <template v-if="hasTarget">
+      <nature :selected="targetNature" @changed="updateNature"></nature>
+      <individuals
+        :params="targetIndividuals"
+        @changed="updateIndividuals"
+      ></individuals>
+      <div class="row mb-1">
+        <stats class="col-4" :params="stats"></stats>
+        <species class="col-2" :params="species"></species>
+        <base-points
+          class="col-2"
+          :params="targetBasePoints"
+          @changed="updateBasePoints"
+        ></base-points>
+      </div>
+    </template>
+    <template v-else>
+      <p>対象を選択してください</p>
+      <button type="button" class="btn btn-warning" @click="toSelect">対象選択</button>
+    </template>
+  </div>
 </template>
 
-/*
-*/
-
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue } from "vue-property-decorator";
 
-import Nature from './components/nature.vue'
-import BasePoints from './components/basePoints.vue'
-import Individuals from './components/individuals.vue'
-import Species from './components/species.vue'
-import Stats from './components/stats.vue'
+import Nature from "./components/nature.vue";
+import BasePoints from "./components/basePoints.vue";
+import Individuals from "./components/individuals.vue";
+import Species from "./components/species.vue";
+import Stats from "./components/stats.vue";
+import { State, Getter, Mutation } from "vuex-class";
 
-import * as nature from '../../domain/nature'
-import * as stats from '../../domain/stats'
+//import * as nature from "../../domain/nature";
+//import { INature } from "../../domain/nature"
+import * as stats from "../../domain/stats";
+import router from '../../router'
+
+// TODO:コンポーネントとvuexstoreを1対1nにしておきたい
+// TODO:targetsから対象ポケモンの種族値など取得しているのを別コンポーネントから渡すように変更
+const namespace: string = "targets";
 
 // TODO: $emit stats
+// TODO:名前被るのでSpeciesComponent当たりに(変えなくても動作はする)
 @Component({
-      components: {
-        Nature,
-        BasePoints,
-        Individuals,
-        Species,
-        Stats,
-    },
+  components: {
+    Nature,
+    BasePoints,
+    Individuals,
+    Species,
+    Stats,
+  },
 })
 export default class StatsEditor extends Vue {
-    private individuals: number[] = [31,31,31,31,31,31];
-    private stats: number[] = [0,0,0,0,0,0];
-    private basePoints: number[] = [0,0,0,0,0,0];
-    private nature: nature.INature = nature.NatureFactory('てれや');
-    private calculator: stats.StatsCalculator = new stats.StatsCalculator();
+  @State('targets') targets: TargetsState;
 
-    created() {
-        this.calcStats();
-    }
+  @Getter('hasTarget', { namespace })
+  private hasTarget!: boolean;
+  @Getter('targetNature', { namespace })
+  private targetNature!: INature;
+  @Getter('targetSpecies', { namespace })
+  private species!: number[];
+  @Getter('targetIndividuals', { namespace })
+  private targetIndividuals!: number[];
+  @Getter('targetBasePoints', { namespace })
+  private targetBasePoints!: number[];
 
-    @Prop()
-    private species!: number[];
+  @Mutation('setTargetNature', { namespace })
+  private setTargetNature!: (INature) => void;
+  @Mutation('setTargetIndividuals', { namespace })
+  private setTargetIndividuals!: (Individuals) => void;
+  @Mutation('setTargetBasePoints', { namespace })
+  private setTargetBasePoints!: (BasePoints) => void;
 
-    private get natureName(): string {
-        return this.nature.Name();
-    }
+  private stats: number[] = [0, 0, 0, 0, 0, 0];
+  private calculator: stats.StatsCalculator = new stats.StatsCalculator();
 
-    private updateNature(nature: nature.INature) {
-        this.nature = nature;
-        console.log('next:' + this.nature.Name());
-        this.calcStats();
-    }
-    private updateIndividuals(params: number[]) {
-        this.individuals = params;
-        console.log('individuals:' + this.individuals);
-        this.calcStats();
-    }
-    private updateBasePoints(params: number[]) {
-        this.basePoints = params;
-        console.log('basePoints:' + this.basePoints);
-        this.calcStats();
-    }
+  created() {
+    this.calcStats();
+  }
 
-    private calcStats(): number[] {
-        this.stats = this.calculator.Calculate(this.nature, 50, this.species, this.individuals, this.basePoints);
-        console.log('Stats:' + this.stats);
-        return this.stats;
+  private updateNature(nature: INature) {
+    this.setTargetNature(nature);
+    this.calcStats();
+  }
+  private updateIndividuals(params: number[]) {
+    this.setTargetIndividuals({hp: params[0], attack: params[1], defense: params[2], spAttack: params[3], spDefense: params[4], speed: params[5]});
+    this.calcStats();
+  }
+  private updateBasePoints(params: number[]) {
+    this.setTargetBasePoints({hp: params[0], attack: params[1], defense: params[2], spAttack: params[3], spDefense: params[4], speed: params[5]});
+    this.calcStats();
+  }
+
+  private calcStats(): number[] {
+    let oldSpeed = this.stats[5];
+
+    this.stats = this.calculator.Calculate(
+      this.targetNature,
+      50,
+      this.species,
+      this.targetIndividuals,
+      this.targetBasePoints
+    );
+
+    let newSpeed = this.stats[5];
+    if (oldSpeed != newSpeed) {
+      this.$emit('speed', this.stats[5]);
     }
+   return this.stats;
+  }
+
+  private toSelect() {
+    router.push({ path: 'select' });
+  }
 }
 </script>
 
 <style>
-
 </style>

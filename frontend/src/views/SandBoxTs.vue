@@ -1,9 +1,7 @@
 <template>
     <div class="sandboxts">
         SandBox from TypeScript.
-        <Todo></Todo>
-        <user-detail></user-detail>
-        <StatsEditor :species="species"></StatsEditor>
+        <StatsEditor></StatsEditor>
     </div>
 </template>
 
@@ -11,14 +9,10 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 import StatsEditor from '../components/stats/statsEditor.vue'
-import UserDetail from '../components/userDetail.vue'
-import Todo from '../components/todo.vue'
 
 @Component({
       components: {
           StatsEditor,
-          UserDetail,
-          Todo,
     },
 })
 export default class SandBoxTs extends Vue {

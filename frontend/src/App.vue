@@ -2,25 +2,22 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/current">ポケモン選択(HOME)</router-link> |
+      <router-link to="/select">ポケモン選択</router-link> |
       <router-link to="/attacker">攻撃調整</router-link> |
       <router-link to="/defender">耐久調整</router-link> |
       <router-link to="/speed">速度調整</router-link> |
       <router-link to="/sandboxts">SandBox(TypeScript)</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <names v-bind:tag="pokemon" v-bind:name="name" v-bind:candidates="candidates"></names>
     <router-view/>
   </div>
 </template>
 
 <script>
-import Names from './components/names.vue'
 
 export default {
   name: 'App',
   components: {
-    'names': Names,
   },
   created: function() {
     /*
@@ -39,11 +36,6 @@ export default {
   methods: {
   },
   data: function() {
-    return {
-      pokemon: 'ポケモン',
-      name: 'ピカチュウ',
-      candidates: [],
-    }
   }
 
 
