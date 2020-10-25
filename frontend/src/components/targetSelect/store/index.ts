@@ -9,8 +9,9 @@ import { TargetSelectState } from './types';
 import { RootState } from '@/store/types';
 
 export const state: TargetSelectState = {
-  initialTotal: 430,
-  initialType: 'いわ',
+  initialTotal: 500,
+  initialType: 'すべて',
+  candidates: [],
 }
 
 const namespaced: boolean = true;

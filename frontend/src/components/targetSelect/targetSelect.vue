@@ -12,16 +12,19 @@
   <div class="targetSelect">
     <TypeButtons :initialType="initialType" @selected="onSelectType"></TypeButtons>
     <species-total :initialTotal="initialTotal" @changed="onChangeTotal"></species-total>
+    <candidates :candidates="candidates" @selected="onSelect"></candidates>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-property-decorator';
-import { State, Getter, Mutation } from 'vuex-class';
+import { Vue, Watch } from 'vue-property-decorator';
+import { State, Getter, Mutation, Action } from 'vuex-class';
 import Component from 'vue-class-component';
 
 import TypeButtons from './components/typeButtons.vue'
 import SpeciesTotal from './components/speciesTotal.vue'
+import Candidates from './components/candidates.vue'
+import { CandidatesFilter } from './store/types'
 
 const namespace: string = 'targetSelect';
 
@@ -29,6 +32,7 @@ const namespace: string = 'targetSelect';
   components: {
     TypeButtons,
     SpeciesTotal,
+    Candidates,
   }
 })
 export default class TaretSelect extends Vue {
@@ -37,23 +41,49 @@ export default class TaretSelect extends Vue {
   private initialTotal!: number;
   @Getter('initialType', { namespace })
   private initialType!: string;
+  @Getter('candidates', { namespace })
+  private candidates!: Species[];
+
+  @Action('getCandidates', { namespace })
+  private getCandidates!: (CandidatesFilter) => Promise<boolean>;
 
   @Mutation('setInitialTotal', { namespace })
   private setInitialTotal!: (number) => void;
   @Mutation('setInitialType', { namespace })
   private setInitialType!: (string) => void;
 
-  // TODO:candidates
   created() {
   }
 
+  @Watch('initialTotal')
+  totalChanged() {
+    console.log('Candidates.' + this.candidates.length);
+    this.getCandidates(new CandidatesFilter(this.initialType, this.initialTotal));
+  }
+  @Watch('initialType')
+  typeChanged() {
+    console.log('Candidates.' + this.candidates.length);
+    this.getCandidates(new CandidatesFilter(this.initialType, this.initialTotal));
+  }
+
+  @Watch('candidates')
+  candidatesChanged() {
+    console.log('Candidates.' + this.candidates.length);
+    for (var i = 0; i < this.candidates.length; i++) {
+      let s = this.candidates[i];
+      console.log(s.toString());
+    }
+  }
+
   onSelectType(typeName: string) {
-    console.log('st');
     this.setInitialType(typeName);
   }
   onChangeTotal(total: number) {
-    console.log('stt');
     this.setInitialTotal(total);
+  }
+  onSelect(name: string) {
+    // TODO:別のstoreに通知する
+    console.log('selected.' + name);
   }
 }
 </script>
