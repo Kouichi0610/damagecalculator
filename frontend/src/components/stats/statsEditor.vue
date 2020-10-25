@@ -40,6 +40,10 @@ import * as stats from "../../domain/stats";
 import router from '../../router'
 
 // TODO:コンポーネントとvuexstoreを1対1nにしておきたい
+// stats
+//   +---components
+//   +---store
+//   +---logic
 // TODO:targetsから対象ポケモンの種族値など取得しているのを別コンポーネントから渡すように変更
 const namespace: string = "targets";
 

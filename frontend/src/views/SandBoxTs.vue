@@ -1,6 +1,7 @@
 <template>
     <div class="sandboxts">
-        SandBox from TypeScript.
+        <TargetSelect></TargetSelect>
+        SandBox from TypeScript.(1.1)
         <StatsEditor></StatsEditor>
     </div>
 </template>
@@ -9,10 +10,12 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 import StatsEditor from '../components/stats/statsEditor.vue'
+import TargetSelect from '../components/targetSelect/targetSelect.vue'
 
 @Component({
       components: {
           StatsEditor,
+          TargetSelect,
     },
 })
 export default class SandBoxTs extends Vue {

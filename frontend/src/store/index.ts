@@ -7,6 +7,7 @@ import Vuex, { StoreOptions } from 'vuex'
 import { RootState } from './types'
 import { targets } from './targets/index'
 import { speedList } from './speedlist/index'
+import { targetSelect } from '../components/targetSelect/store/index'
 
 Vue.use(Vuex);
 
@@ -17,6 +18,7 @@ const store: StoreOptions<RootState> = {
   modules: {
     targets,
     speedList,
+    targetSelect,
   }
 }
 

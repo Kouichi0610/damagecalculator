@@ -1,4 +1,5 @@
 // 対象ポケモンの選択
+// (old)
 <template>
     <div class="targetSelect">
         <div class="btn-group-vertical">
