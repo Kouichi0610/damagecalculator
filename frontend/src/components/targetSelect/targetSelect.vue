@@ -57,22 +57,15 @@ export default class TaretSelect extends Vue {
 
   @Watch('initialTotal')
   totalChanged() {
-    console.log('Candidates.' + this.candidates.length);
     this.getCandidates(new CandidatesFilter(this.initialType, this.initialTotal));
   }
   @Watch('initialType')
   typeChanged() {
-    console.log('Candidates.' + this.candidates.length);
     this.getCandidates(new CandidatesFilter(this.initialType, this.initialTotal));
   }
 
   @Watch('candidates')
   candidatesChanged() {
-    console.log('Candidates.' + this.candidates.length);
-    for (var i = 0; i < this.candidates.length; i++) {
-      let s = this.candidates[i];
-      console.log(s.toString());
-    }
   }
 
   onSelectType(typeName: string) {
@@ -82,8 +75,7 @@ export default class TaretSelect extends Vue {
     this.setInitialTotal(total);
   }
   onSelect(name: string) {
-    // TODO:別のstoreに通知する
-    console.log('selected.' + name);
+    this.$emit('selectPokemon', name);
   }
 }
 </script>

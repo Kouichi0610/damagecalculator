@@ -1,5 +1,5 @@
 /*
-  
+  対象となるポケモンを選択するためのStore
 */
 export interface TargetSelectState {
   initialTotal: number; // 種族値合計(この値以下をリストから除く)

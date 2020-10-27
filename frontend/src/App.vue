@@ -3,6 +3,7 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/select">ポケモン選択</router-link> |
+      <router-link to="/selectold">ポケモン選択(旧)</router-link> |
       <router-link to="/attacker">攻撃調整</router-link> |
       <router-link to="/defender">耐久調整</router-link> |
       <router-link to="/speed">速度調整</router-link> |

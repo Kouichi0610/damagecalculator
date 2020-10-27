@@ -2,7 +2,6 @@ package server
 
 import (
 	"damagecalculator/usecase/speed"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -18,7 +17,6 @@ func (s *serverImpl) speedList(c *gin.Context) {
 	c.BindQuery(&q)
 
 	lv, err := strconv.Atoi(q.Level)
-	fmt.Printf("Level:%d\n", lv)
 	if err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
 	}

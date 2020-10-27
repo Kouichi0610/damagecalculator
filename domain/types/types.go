@@ -137,3 +137,11 @@ func (t *Types) String() string {
 	}
 	return s.String()
 }
+
+func (t *Types) Strings() []string {
+	res := make([]string, 0)
+	for _, ty := range t.ty {
+		res = append(res, ty.String())
+	}
+	return res
+}

@@ -16,6 +16,11 @@ const router = new VueRouter({
     {
       path: '/select',
       name: 'SelectPomkemon',
+      component: () => import('../views/Select.vue'),
+    },
+    {
+      path: '/selectold',
+      name: 'SelectPomkemonOld',
       component: () => import('../views/SelectPokemon.vue'),
     },
     {
