@@ -28,7 +28,7 @@ export interface TargetState {
   //moves: string[];
 }
 
-interface Species {
+export interface Species {
   hp: number;
   at: number;
   df: number;
@@ -36,7 +36,7 @@ interface Species {
   sd: number;
   sp: number;
 }
-interface Individuals {
+export interface Individuals {
   hp: number;
   at: number;
   df: number;
@@ -44,7 +44,7 @@ interface Individuals {
   sd: number;
   sp: number;
 }
-interface BasePoints {
+export interface BasePoints {
   hp: number;
   at: number;
   df: number;
