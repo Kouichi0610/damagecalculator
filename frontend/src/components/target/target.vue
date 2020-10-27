@@ -6,12 +6,21 @@
 */
 <template>
   <div class="target">
-    <div>対象(changeweakest):{{ name }}</div>
-    <div>{{ species }}</div><!-- TODO:component -->
-    <div>{{ types }}</div><!-- TODO:component -->
-    <div>{{ weight }}</div><!-- TODO:component -->
-    <individuals-adjuster :individuals="individuals" @slowest="changeSlowest" @weakest="changeWeakest"></individuals-adjuster>
-    <div></div>
+    <template v-if="hasTarget">
+      <div>対象:{{ name }}</div>
+      <div>{{ species }}</div><!-- TODO:component -->
+      <div>{{ types }}</div><!-- TODO:component -->
+      <div>{{ weight }}</div><!-- TODO:component -->
+      <individuals-adjuster :individuals="individuals" @slowest="changeSlowest" @weakest="changeWeakest"></individuals-adjuster>
+      <div class="row mb-1">
+        <species-display class="col-2" :species="species"></species-display>
+        <base-points-adjuster class="col-2" :basePoints="basePoints" @changed="changeBasePoints"></base-points-adjuster>
+      </div>
+      <div></div>
+    </template>
+    <template v-else>
+      <div>No Target.</div>
+    </template>
   </div>
  </template>
 
@@ -21,12 +30,16 @@ import { State, Action, Getter, Mutation } from 'vuex-class';
 
 //import {Species} from './store/types'
 import IndividualsAdjuster from './components/individualsAdjuster.vue'
+import SpeciesDisplay from './components/speciesDisplay.vue'
+import BasePointsAdjuster from './components/basePointsAdjuster.vue'
 
 const namespace: string = "target";
 
 @Component({
   components: {
     IndividualsAdjuster,
+    SpeciesDisplay,
+    BasePointsAdjuster,
   }
 })
 export default class Target extends Vue {
@@ -37,6 +50,8 @@ export default class Target extends Vue {
   // この名前の情報を取ってくる
   @Prop() private targetName: string;
 
+  @Getter('hasTarget', { namespace })
+  private hasTarget!: boolean;
   @Getter('name', { namespace })
   private name!: string;
   @Getter('species', { namespace })
@@ -56,6 +71,8 @@ export default class Target extends Vue {
   private changeSlowest!: (boolean) => void;
   @Mutation('changeWeakest', { namespace })
   private changeWeakest!: (boolean) => void;
+  @Mutation('changeBasePoints', { namespace })
+  private changeBasePoints!: (BasePoints) => void;
   
 
   @Watch('targetName')
@@ -65,7 +82,6 @@ export default class Target extends Vue {
     }
     this.getSpecies(this.targetName);
   }
-
 
 }
 </script>

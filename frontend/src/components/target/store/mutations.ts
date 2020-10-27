@@ -1,6 +1,8 @@
 import { StatsCalculator } from '@/domain/stats';
 import { MutationTree } from 'vuex';
-import { TargetState, Species } from './types';
+import Individuals, { TargetState } from './types';
+import Species from './types';
+import BasePoints from './types';
 
 export const mutations: MutationTree<TargetState> = {
   setName(state, payload: string) {
@@ -18,11 +20,29 @@ export const mutations: MutationTree<TargetState> = {
   setAbilities(state, payload: string[]) {
     state.abilities = payload;
   },
-  changeSlowest(state, payload: boolean) {
-    state.individuals.changeSlowest(payload);
+  changeSlowest(state, isSlowest: boolean) {
+    state.individuals = {
+      hp: 31,
+      at: 31,
+      df: 31,
+      sa: 31,
+      sd: 31,
+      sp: isSlowest ? 0 : 31,
+    };
   },
-  changeWeakest(state, payload: boolean) {
-    state.individuals.changeWeakest(payload);
+  changeWeakest(state, isWeakest: boolean) {
+    state.individuals = {
+      hp: 31,
+      at: isWeakest ? 0 : 31,
+      df: 31,
+      sa: 31,
+      sd: 31,
+      sp: 31,
+    };
   },
+  changeBasePoints(state, payload: BasePoints) {
+    state.basePoints = payload;
+  },
+
 }
 

@@ -2,7 +2,8 @@ import { Module } from 'vuex'
 import { getters } from './getters';
 import { actions } from './actions';
 import { mutations } from './mutations';
-import { TargetState, Species } from './types';
+import TargetState from './types';
+import Species from './types'
 import Individuals from './types'
 import BasePoints from './types'
 import { RootState } from '@/store/types';
@@ -16,7 +17,7 @@ export const state: TargetState = {
   abilities: [''],
 
   nature: nature.NatureFactory('てれや'),
-  individuals: new Individuals(31,31,31,31,31,31),
+  individuals: {hp: 31, at: 31, df: 31, sa: 31, sd: 31, sp: 31},
   basePoints: {hp: 0, at: 0, df: 0, sa: 0, sd: 0, sp: 0},
 }
 

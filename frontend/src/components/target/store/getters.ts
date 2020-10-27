@@ -3,6 +3,9 @@ import { TargetState } from './types';
 import { RootState } from '@/store/types'
 
 export const getters: GetterTree<TargetState, RootState> = {
+  hasTarget: (state: TargetState) => {
+    return state.name != '';
+  },
   name: (state: TargetState) => {
     return state.name;
   },
