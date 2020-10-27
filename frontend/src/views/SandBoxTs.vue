@@ -1,9 +1,9 @@
 <template>
     <div class="sandboxts">
+        <Target :targetName="name"></Target>
         <TargetSelect @selectPokemon="onNameChanged"></TargetSelect>
         SandBox from TypeScript.(1.1)
         <StatsEditor></StatsEditor>
-        <Target :name="name"></Target>
     </div>
 </template>
 

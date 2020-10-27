@@ -1,3 +1,4 @@
+import { StatsCalculator } from '@/domain/stats';
 import { MutationTree } from 'vuex';
 import { TargetState, Species } from './types';
 
@@ -16,9 +17,12 @@ export const mutations: MutationTree<TargetState> = {
   },
   setAbilities(state, payload: string[]) {
     state.abilities = payload;
-    for (var i = 0; i < state.abilities.length; i++) {
-      console.log(' ' + state.abilities[i]);
-    }
-  }
+  },
+  changeSlowest(state, payload: boolean) {
+    state.individuals.changeSlowest(payload);
+  },
+  changeWeakest(state, payload: boolean) {
+    state.individuals.changeWeakest(payload);
+  },
 }
 

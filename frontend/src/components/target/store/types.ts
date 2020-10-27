@@ -28,7 +28,7 @@ export interface TargetState {
   //moves: string[];
 }
 
-export interface Species {
+export default interface Species {
   hp: number;
   at: number;
   df: number;
@@ -36,13 +36,28 @@ export interface Species {
   sd: number;
   sp: number;
 }
-export interface Individuals {
+export default class Individuals {
   hp: number;
   at: number;
   df: number;
   sa: number;
   sd: number;
   sp: number;
+  constructor(hp: number, at: number, df: number, sa: number, sd: number, sp: number) {
+    this.hp = hp;
+    this.at = at;
+    this.df = df;
+    this.sa = sa;
+    this.sd = sd;
+    this.sp = sp;
+  }
+
+  changeSlowest(isSlowest: boolean) {
+    this.sp = isSlowest ? 0 : 31;
+  }
+  changeWeakest(isWeakest: boolean) {
+    this.at = isWeakest ? 0 : 31;
+  }
 }
 export interface BasePoints {
   hp: number;
