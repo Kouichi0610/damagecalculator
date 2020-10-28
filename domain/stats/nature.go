@@ -30,6 +30,43 @@ type Nature struct {
 	hp, at, df, sa, sd, sp statsCalculator
 }
 
+type NatureDesc struct {
+	Name, Desc string
+}
+
+func NatureDescriptions() []NatureDesc {
+	res := make([]NatureDesc, 0)
+	list := []NatureType{
+		Bashful,
+		Lonely,
+		Adamant,
+		Naughty,
+		Brave,
+		Bold,
+		Impish,
+		Lax,
+		Relaxed,
+		Modest,
+		Mild,
+		Rash,
+		Quiet,
+		Calm,
+		Gentle,
+		Careful,
+		Sassy,
+		Timid,
+		Hasty,
+		Jolly,
+		Naive,
+	}
+	for _, n := range list {
+		name := nameMap[n]
+		desc := descMap[n]
+		res = append(res, NatureDesc{Name: name, Desc: desc})
+	}
+	return res
+}
+
 func (n *Nature) calcHP(l Level, s Species, i Individual, b BasePoint) uint {
 	return n.hp(l, s, i, b)
 }
@@ -60,7 +97,56 @@ type newNatureFunc func() *Nature
 
 var newNatureFuncs map[NatureType]newNatureFunc
 
+var nameMap map[NatureType]string
+var descMap map[NatureType]string
+
 func init() {
+	descMap = map[NatureType]string{
+		Bashful: "補正なし",
+		Lonely:  "攻撃1.1 防御0.9",
+		Adamant: "攻撃1.1 特攻0.9",
+		Naughty: "攻撃1.1 特防0.9",
+		Brave:   "攻撃1.1 素早さ0.9",
+		Bold:    "防御1.1 攻撃0.9",
+		Impish:  "防御1.1 特攻0.9",
+		Lax:     "防御1.1 特防0.9",
+		Relaxed: "防御1.1 素早さ0.9",
+		Modest:  "特攻1.1 攻撃0.9",
+		Mild:    "特攻1.1 防御0.9",
+		Rash:    "特攻1.1 特防0.9",
+		Quiet:   "特攻1.1 素早さ0.9",
+		Calm:    "特防1.1　攻撃0.9",
+		Gentle:  "特防1.1 防御0.9",
+		Careful: "特防1.1 特攻0.9",
+		Sassy:   "特防1.1　素早さ0.9",
+		Timid:   "素早さ1.1 攻撃0.9",
+		Hasty:   "素早さ1.1 防御0.9",
+		Jolly:   "素早さ1.1 特攻0.9",
+		Naive:   "素早さ1.1 特防0.9",
+	}
+	nameMap = map[NatureType]string{
+		Bashful: "てれや",
+		Lonely:  "さみしがり",
+		Adamant: "いじっぱり",
+		Naughty: "やんちゃ",
+		Brave:   "ゆうかん",
+		Bold:    "ずぶとい",
+		Impish:  "わんぱく",
+		Lax:     "のうてんき",
+		Relaxed: "のんき",
+		Modest:  "ひかえめ",
+		Mild:    "おっとり",
+		Rash:    "うっかりや",
+		Quiet:   "れいせい",
+		Calm:    "おだやか",
+		Gentle:  "おとなしい",
+		Careful: "しんちょう",
+		Sassy:   "なまいき",
+		Timid:   "おくびょう",
+		Hasty:   "せっかち",
+		Jolly:   "ようき",
+		Naive:   "むじゃき",
+	}
 	newNatureFuncs = map[NatureType]newNatureFunc{
 		Bashful: bashful,
 		Lonely:  lonely,

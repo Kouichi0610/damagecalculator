@@ -46,15 +46,10 @@ func (s *serverImpl) Serve() (http.Handler, error) {
 	router.GET("/filtered_list", s.filteredList)
 	router.GET("/speed_list", s.speedList)
 	router.GET("/get_species", s.getSpecies)
-	//router.GET("/post_sample", s.postSample)
+	router.GET("/nature_list", s.natureList)
 
 	return router, router.Run(":8080")
 }
-
-/*
-	get_names
-	species, abilities, moves
-*/
 
 func (s *serverImpl) getNames(c *gin.Context) {
 	n := s.n.Get()

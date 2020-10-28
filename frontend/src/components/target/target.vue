@@ -11,6 +11,7 @@
       <div>{{ species }}</div><!-- TODO:component -->
       <div>{{ types }}</div><!-- TODO:component -->
       <div>{{ weight }}</div><!-- TODO:component -->
+      <nature></nature>
       <individuals-adjuster :individuals="individuals" @slowest="changeSlowest" @weakest="changeWeakest"></individuals-adjuster>
       <div class="row mb-1">
         <species-display class="col-2" :species="species"></species-display>
@@ -32,6 +33,7 @@ import { State, Action, Getter, Mutation } from 'vuex-class';
 import IndividualsAdjuster from './components/individualsAdjuster.vue'
 import SpeciesDisplay from './components/speciesDisplay.vue'
 import BasePointsAdjuster from './components/basePointsAdjuster.vue'
+import Nature from '../nature/nature.vue';
 
 const namespace: string = "target";
 
@@ -40,6 +42,7 @@ const namespace: string = "target";
     IndividualsAdjuster,
     SpeciesDisplay,
     BasePointsAdjuster,
+    Nature,
   }
 })
 export default class Target extends Vue {

@@ -9,6 +9,7 @@ import { targets } from './targets/index'
 import { speedList } from './speedlist/index'
 import { targetSelect } from '../components/targetSelect/store/index'
 import { target } from '../components/target/store/index'
+import { nature } from "../components/nature/store/index"
 
 Vue.use(Vuex);
 
@@ -21,6 +22,7 @@ const store: StoreOptions<RootState> = {
     speedList,
     targetSelect,
     target,
+    nature,
   }
 }
 

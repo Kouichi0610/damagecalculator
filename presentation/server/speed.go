@@ -24,9 +24,9 @@ func (s *serverImpl) speedList(c *gin.Context) {
 	gen := speed.NewGenerator()
 	list := gen.Generate(uint(lv), s.s)
 
-	res := make([]result, 0)
+	res := make([]speedResult, 0)
 	for _, sp := range list {
-		info := result{
+		info := speedResult{
 			Info:  sp.Info(),
 			Speed: sp.Speed(),
 		}
@@ -35,7 +35,7 @@ func (s *serverImpl) speedList(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
-type result struct {
+type speedResult struct {
 	Info  string `json:"info"`
 	Speed uint   `json:"speed"`
 }
