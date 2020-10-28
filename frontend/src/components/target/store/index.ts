@@ -7,7 +7,6 @@ import { Species } from './types'
 import { Individuals } from './types'
 import { BasePoints } from './types'
 import { RootState } from '@/store/types';
-import * as nature from "../../../domain/nature"
 
 export const state: TargetState = {
   name: '',
@@ -16,7 +15,7 @@ export const state: TargetState = {
   weight: 0.0,
   abilities: [''],
 
-  nature: nature.NatureFactory('てれや'),
+  nature: '',
   individuals: {hp: 31, at: 31, df: 31, sa: 31, sd: 31, sp: 31},
   basePoints: {hp: 0, at: 0, df: 0, sa: 0, sd: 0, sp: 0},
 }

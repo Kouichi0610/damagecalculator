@@ -13,7 +13,6 @@
 
   TODO:サーバから計算式を渡せないか
 */
-import { INature } from "../../../domain/nature";
 
 export interface TargetState {
   name: string;
@@ -22,7 +21,7 @@ export interface TargetState {
   weight: number;
   abilities: string[];
 
-  nature: INature;
+  nature: string;
   individuals: Individuals;
   basePoints: BasePoints;
   //moves: string[];

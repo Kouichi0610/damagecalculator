@@ -7,4 +7,7 @@ export const mutations: MutationTree<NatureState> = {
     state.list = payload;
     state.current = state.list[0].name;
   },
+  change(state, payload: string) {
+    state.current = payload;
+  }
 }

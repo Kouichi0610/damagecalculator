@@ -86,6 +86,15 @@ func (n *Nature) calcSpeed(l Level, s Species, i Individual, b BasePoint) uint {
 	return n.sp(l, s, i, b)
 }
 
+func NameToNature(name string) *Nature {
+	for k, v := range nameMap {
+		if v == name {
+			return NewNature(k)
+		}
+	}
+	return NewNature(Bashful)
+}
+
 func NewNature(n NatureType) *Nature {
 	return newNatureFuncs[n]()
 }

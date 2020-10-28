@@ -7,11 +7,12 @@
 <template>
   <div class="target">
     <template v-if="hasTarget">
+      <div>TODO:from server {{calcState}}</div>
       <div>対象:{{ name }}</div>
       <div>{{ species }}</div><!-- TODO:component -->
       <div>{{ types }}</div><!-- TODO:component -->
       <div>{{ weight }}</div><!-- TODO:component -->
-      <nature></nature>
+      <nature @changed="changeNature"></nature>
       <individuals-adjuster :individuals="individuals" @slowest="changeSlowest" @weakest="changeWeakest"></individuals-adjuster>
       <div class="row mb-1">
         <species-display class="col-2" :species="species"></species-display>
@@ -57,14 +58,14 @@ export default class Target extends Vue {
   private hasTarget!: boolean;
   @Getter('name', { namespace })
   private name!: string;
+  @Getter('nature', { namespace })
+  private nature!: string;
   @Getter('species', { namespace })
   private species!: Species;
   @Getter('types', { namespace })
   private types!: string[];
   @Getter('weight', { namespace })
   private weight: number;
-  //@Getter('nature', { namespace })// TODO:性格リストサーバーから取る
-  //private nature: INature;
   @Getter('individuals', { namespace })
   private individuals: Individuals;
   @Getter('basePoints', { namespace })
@@ -76,6 +77,21 @@ export default class Target extends Vue {
   private changeWeakest!: (boolean) => void;
   @Mutation('changeBasePoints', { namespace })
   private changeBasePoints!: (BasePoints) => void;
+  @Mutation('changeNature', { namespace })
+  private changeNature!: (string) => void;
+
+  private get calcState(): string {
+    // TODO:サーバーから能力値表一覧を取得
+    let res = '' + this.name + ' ' + this.nature
+    + ' HP:' + this.individuals.hp
+    + ' AT:' + this.individuals.at
+    + ' DF:' + this.individuals.df
+    + ' SA:' + this.individuals.sa
+    + ' SD:' + this.individuals.sd
+    + ' SP:' + this.individuals.sp;
+    console.log('calcState.' + res);
+    return res;
+  }
   
 
   @Watch('targetName')
@@ -85,7 +101,6 @@ export default class Target extends Vue {
     }
     this.getSpecies(this.targetName);
   }
-
 }
 </script>
 

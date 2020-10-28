@@ -43,6 +43,9 @@ export const mutations: MutationTree<TargetState> = {
   changeBasePoints(state, payload: BasePoints) {
     state.basePoints = payload;
   },
+  changeNature(state, payload: string) {
+    state.nature = payload;
+  }
 
 }
 

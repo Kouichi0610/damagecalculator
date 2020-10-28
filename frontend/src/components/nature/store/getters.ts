@@ -9,4 +9,7 @@ export const getters: GetterTree<NatureState, RootState> = {
   natures: (state: NatureState) => {
     return state.list;
   },
+  current: (state: NatureState) => {
+    return state.current;
+  }
 }

@@ -4,7 +4,6 @@ import "testing"
 
 func Test_NatureDescriptions(t *testing.T) {
 	list := NatureDescriptions()
-
 	if len(list) != 21 {
 		t.Error()
 	}
