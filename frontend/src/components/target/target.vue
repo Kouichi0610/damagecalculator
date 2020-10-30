@@ -7,7 +7,6 @@
 <template>
   <div class="target">
     <template v-if="hasTarget">
-      <div>TODO:from server {{calcState}}</div>
       <div>対象:{{ name }}</div>
       <div>{{ types }}</div><!-- TODO:component -->
       <div>{{ weight }}kg</div><!-- TODO:component -->
@@ -99,19 +98,18 @@ export default class Target extends Vue {
   @Mutation('changeNature', { namespace })
   private changeNature!: (string) => void;
 
-  private get calcState(): string {
-    // TODO:サーバーから能力値表一覧を取得
-    // TODO:ここではなくwatch(name, individual, nature)で実行
-    // TODO:promiseの実験(1秒後に値返すでいい)
-
-    let res = '' + this.name + ' ' + this.nature
-    + ' HP:' + this.individuals.hp
-    + ' AT:' + this.individuals.at
-    + ' DF:' + this.individuals.df
-    + ' SA:' + this.individuals.sa
-    + ' SD:' + this.individuals.sd
-    + ' SP:' + this.individuals.sp;
-
+  @Watch('name')
+  @Watch('individual')
+  @Watch('nature')
+  private getCalculate() {
+    // TODO:Level50 prop経由で
+    if (this.name.length == 0) {
+      return;
+    }
+    if (this.nature.length == 0) {
+      return;
+    }
+      console.log('get stats.');
     let args = new StatsPatternArgs(50, this.name, this.nature,
      this.individuals.hp,
      this.individuals.at,
@@ -120,10 +118,7 @@ export default class Target extends Vue {
      this.individuals.sd,
      this.individuals.sp);
     this.getStatsPattern(args);
-
-    return res;
   }
-  
 
   @Watch('targetName')
   private nameChanged() {
