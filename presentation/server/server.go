@@ -47,6 +47,7 @@ func (s *serverImpl) Serve() (http.Handler, error) {
 	router.GET("/speed_list", s.speedList)
 	router.GET("/get_species", s.getSpecies)
 	router.GET("/nature_list", s.natureList)
+	router.GET("/stats_pattern", s.statsPattern)
 
 	return router, router.Run(":8080")
 }

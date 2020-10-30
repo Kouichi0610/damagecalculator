@@ -9,14 +9,14 @@
     <template v-if="hasTarget">
       <div>TODO:from server {{calcState}}</div>
       <div>対象:{{ name }}</div>
-      <div>{{ species }}</div><!-- TODO:component -->
       <div>{{ types }}</div><!-- TODO:component -->
-      <div>{{ weight }}</div><!-- TODO:component -->
+      <div>{{ weight }}kg</div><!-- TODO:component -->
       <nature @changed="changeNature"></nature>
       <individuals-adjuster :individuals="individuals" @slowest="changeSlowest" @weakest="changeWeakest"></individuals-adjuster>
       <div class="row mb-1">
         <species-display class="col-2" :species="species"></species-display>
         <base-points-adjuster class="col-2" :basePoints="basePoints" @changed="changeBasePoints"></base-points-adjuster>
+        <stats-display class="col-4" :hp="hp" :attack="attack" :defense="defense" :spAttack="spAttack" :spDefense="spDefense" :speed="speed"></stats-display>
       </div>
       <div></div>
     </template>
@@ -35,6 +35,9 @@ import IndividualsAdjuster from './components/individualsAdjuster.vue'
 import SpeciesDisplay from './components/speciesDisplay.vue'
 import BasePointsAdjuster from './components/basePointsAdjuster.vue'
 import Nature from '../nature/nature.vue';
+import StatsDisplay from './components/statsDisplay.vue'
+
+import {StatsPatternArgs} from "./store/types"
 
 const namespace: string = "target";
 
@@ -44,12 +47,15 @@ const namespace: string = "target";
     SpeciesDisplay,
     BasePointsAdjuster,
     Nature,
+    StatsDisplay,
   }
 })
 export default class Target extends Vue {
   @State('target') target: TargetState;
   @Action('getSpecies', { namespace })
   private getSpecies!: (string) => Promise<boolean>;
+  @Action('getStatsPattern', { namespace })
+  private getStatsPattern!: (StatsPatternArgs) => void;
 
   // この名前の情報を取ってくる
   @Prop() private targetName: string;
@@ -70,6 +76,19 @@ export default class Target extends Vue {
   private individuals: Individuals;
   @Getter('basePoints', { namespace })
   private basePoints: BasePoints;
+  @Getter('hp', { namespace })
+  private hp: number;
+  @Getter('attack', { namespace })
+  private attack: number;
+  @Getter('defense', { namespace })
+  private defense: number;
+  @Getter('spAttack', { namespace })
+  private spAttack: number;
+  @Getter('spDefense', { namespace })
+  private spDefense: number;
+  @Getter('speed', { namespace })
+  private speed: number;
+
 
   @Mutation('changeSlowest', { namespace })
   private changeSlowest!: (boolean) => void;
@@ -82,6 +101,9 @@ export default class Target extends Vue {
 
   private get calcState(): string {
     // TODO:サーバーから能力値表一覧を取得
+    // TODO:ここではなくwatch(name, individual, nature)で実行
+    // TODO:promiseの実験(1秒後に値返すでいい)
+
     let res = '' + this.name + ' ' + this.nature
     + ' HP:' + this.individuals.hp
     + ' AT:' + this.individuals.at
@@ -89,7 +111,16 @@ export default class Target extends Vue {
     + ' SA:' + this.individuals.sa
     + ' SD:' + this.individuals.sd
     + ' SP:' + this.individuals.sp;
-    console.log('calcState.' + res);
+
+    let args = new StatsPatternArgs(50, this.name, this.nature,
+     this.individuals.hp,
+     this.individuals.at,
+     this.individuals.df,
+     this.individuals.sa,
+     this.individuals.sd,
+     this.individuals.sp);
+    this.getStatsPattern(args);
+
     return res;
   }
   

@@ -18,6 +18,13 @@ export const state: TargetState = {
   nature: '',
   individuals: {hp: 31, at: 31, df: 31, sa: 31, sd: 31, sp: 31},
   basePoints: {hp: 0, at: 0, df: 0, sa: 0, sd: 0, sp: 0},
+  // TODO:species-individuals-basepoints-patternsセットでコンポーネントにする
+  hppattern: [],
+  atpattern: [],
+  dfpattern: [],
+  sapattern: [],
+  sdpattern: [],
+  sppattern: [],
 }
 
 const namespaced: boolean = true;

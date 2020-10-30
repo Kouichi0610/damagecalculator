@@ -1,11 +1,11 @@
-package statslist
+package statspattern
 
 import (
 	"damagecalculator/infra/local"
 	"testing"
 )
 
-func Test_statslist(t *testing.T) {
+func Test_statsPattern(t *testing.T) {
 	rp := local.Species()
 	l := NewLoader(rp)
 

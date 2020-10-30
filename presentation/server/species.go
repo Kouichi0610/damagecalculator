@@ -33,6 +33,8 @@ func (s *serverImpl) getSpecies(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
+// intarfaceは無理
+// privatememberも無理
 type speciesResult struct {
 	Name      string   `json:name`
 	Types     []string `json:types`
@@ -40,11 +42,3 @@ type speciesResult struct {
 	Weight    float64  `json:weight`
 	Abilities []string `json:abilities`
 }
-
-/*
-	name      string
-	types     []string
-	species   []uint
-	weight    float64
-	abilities []string
-*/

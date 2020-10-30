@@ -1,16 +1,19 @@
-package statslist
+package statspattern
 
 import (
 	"damagecalculator/domain/species"
 	"damagecalculator/domain/stats"
 )
 
+/*
+	名前と性格、個体値から
+	基礎ポイント0～252(4刻み)ごとの能力値一覧を取得する
+*/
 type (
 	Loader interface {
-		Get(level int, name string, nature string, hp int, at int, df int, sa int, sd int, sp int) (StatsList, error)
+		Get(level int, name string, nature string, hp int, at int, df int, sa int, sd int, sp int) (StatsPattern, error)
 	}
-	// 基礎ポイント0 ～ 252までの全ての能力値一覧
-	StatsList interface {
+	StatsPattern interface {
 		HP() []uint
 		Attack() []uint
 		Defense() []uint
@@ -29,7 +32,7 @@ func NewLoader(rp species.Repository) Loader {
 type loader struct {
 	rp species.Repository
 }
-type statsList struct {
+type statsPattern struct {
 	hp []uint
 	at []uint
 	df []uint
@@ -38,26 +41,26 @@ type statsList struct {
 	sp []uint
 }
 
-func (s *statsList) HP() []uint {
+func (s *statsPattern) HP() []uint {
 	return s.hp
 }
-func (s *statsList) Attack() []uint {
+func (s *statsPattern) Attack() []uint {
 	return s.at
 }
-func (s *statsList) Defense() []uint {
+func (s *statsPattern) Defense() []uint {
 	return s.df
 }
-func (s *statsList) SpAttack() []uint {
+func (s *statsPattern) SpAttack() []uint {
 	return s.sa
 }
-func (s *statsList) SpDefense() []uint {
+func (s *statsPattern) SpDefense() []uint {
 	return s.sd
 }
-func (s *statsList) Speed() []uint {
+func (s *statsPattern) Speed() []uint {
 	return s.sp
 }
 
-func (l *loader) Get(level int, name string, nature string, hp int, at int, df int, sa int, sd int, sp int) (StatsList, error) {
+func (l *loader) Get(level int, name string, nature string, hp int, at int, df int, sa int, sd int, sp int) (StatsPattern, error) {
 	s, err := l.rp.Get(name)
 	if err != nil {
 		return nil, err
@@ -88,7 +91,7 @@ func (l *loader) Get(level int, name string, nature string, hp int, at int, df i
 		spval = append(spval, stats.CalcSpeed(lv, sstats, istats, uint(i), nt))
 	}
 
-	return &statsList{
+	return &statsPattern{
 		hp: hpval,
 		at: atval,
 		df: dfval,

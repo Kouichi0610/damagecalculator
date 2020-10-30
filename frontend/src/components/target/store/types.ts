@@ -24,7 +24,39 @@ export interface TargetState {
   nature: string;
   individuals: Individuals;
   basePoints: BasePoints;
+
+  // 基礎ポイント0～252(4刻み)
+  hppattern: number[];
+  atpattern: number[];
+  dfpattern: number[];
+  sapattern: number[];
+  sdpattern: number[];
+  sppattern: number[];
+
   //moves: string[];
+}
+
+export class StatsPatternArgs {
+  level: number;
+  name: string;
+  nature: string;
+  hp: number;
+  at: number;
+  df: number;
+  sa: number;
+  sd: number;
+  sp: number;
+  constructor(level: number, name: string, nature: string, hp: number, at: number, df: number, sa: number, sd: number, sp: number) {
+    this.level = level;
+    this.name = name;
+    this.nature = nature;
+    this.hp = hp;
+    this.at = at;
+    this.df = df;
+    this.sa = sa;
+    this.sd = sd;
+    this.sp = sp;
+  }
 }
 
 export interface Species {
