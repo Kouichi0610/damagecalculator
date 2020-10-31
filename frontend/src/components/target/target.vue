@@ -6,37 +6,58 @@
 */
 <template>
   <div class="target">
-    <template v-if="hasTarget">
-      <div>対象:{{ name }}</div>
-      <div>{{ types }}</div><!-- TODO:component -->
-      <div>{{ weight }}kg</div><!-- TODO:component -->
-      <nature @changed="changeNature"></nature>
-      <individuals-adjuster :individuals="individuals" @slowest="changeSlowest" @weakest="changeWeakest"></individuals-adjuster>
-      <div class="row mb-1">
-        <species-display class="col-2" :species="species"></species-display>
-        <base-points-adjuster class="col-2" :basePoints="basePoints" @changed="changeBasePoints"></base-points-adjuster>
-        <stats-display class="col-4" :hp="hp" :attack="attack" :defense="defense" :spAttack="spAttack" :spDefense="spDefense" :speed="speed"></stats-display>
-      </div>
-      <div></div>
-    </template>
+    <template v-if="show == false"> </template>
     <template v-else>
-      <div>No Target.</div>
+      <template v-if="hasTarget">
+        <div>対象:{{ name }}</div>
+        <div>{{ types }}</div>
+        <!-- TODO:component -->
+        <div>{{ weight }}kg</div>
+        <!-- TODO:component -->
+        <nature @changed="changeNature"></nature>
+        <individuals-adjuster
+          :individuals="individuals"
+          @slowest="changeSlowest"
+          @weakest="changeWeakest"
+        ></individuals-adjuster>
+        <div class="row mb-1">
+          <species-display class="col-2" :species="species"></species-display>
+          <base-points-adjuster
+            class="col-2"
+            :basePoints="basePoints"
+            @changed="changeBasePoints"
+          ></base-points-adjuster>
+          <stats-display
+            class="col-4"
+            :hp="hp"
+            :attack="attack"
+            :defense="defense"
+            :spAttack="spAttack"
+            :spDefense="spDefense"
+            :speed="speed"
+          ></stats-display>
+        </div>
+        <div></div>
+      </template>
+      <template v-else>
+        <div>No Target.</div>
+      </template>
     </template>
   </div>
- </template>
+</template>
 
 <script lang="ts">
-import { Vue, Prop, Watch, Component } from 'vue-property-decorator';
-import { State, Action, Getter, Mutation } from 'vuex-class';
+import { Vue, Prop, Watch, Component } from "vue-property-decorator";
+import { State, Action, Getter, Mutation } from "vuex-class";
 
 //import {Species} from './store/types'
-import IndividualsAdjuster from './components/individualsAdjuster.vue'
-import SpeciesDisplay from './components/speciesDisplay.vue'
-import BasePointsAdjuster from './components/basePointsAdjuster.vue'
-import Nature from '../nature/nature.vue';
-import StatsDisplay from './components/statsDisplay.vue'
+import IndividualsAdjuster from "./components/individualsAdjuster.vue";
+import SpeciesDisplay from "./components/speciesDisplay.vue";
+import BasePointsAdjuster from "./components/basePointsAdjuster.vue";
+import Nature from "../nature/nature.vue";
+import StatsDisplay from "./components/statsDisplay.vue";
 
-import {StatsPatternArgs} from "./store/types"
+import { StatsPatternArgs } from "./store/types";
 
 const namespace: string = "target";
 
@@ -47,83 +68,87 @@ const namespace: string = "target";
     BasePointsAdjuster,
     Nature,
     StatsDisplay,
-  }
+  },
 })
 export default class Target extends Vue {
   @Prop() private targetName: string;
+  @Prop() private show: boolean;
 
-  @State('target') target: TargetState;
+  @State("target") target: TargetState;
 
-  @Action('getSpecies', { namespace })
+  @Action("getSpecies", { namespace })
   private getSpecies!: (string) => Promise<boolean>;
-  @Action('getStatsPattern', { namespace })
+  @Action("getStatsPattern", { namespace })
   private getStatsPattern!: (StatsPatternArgs) => void;
 
-  @Getter('level', { namespace })
+  @Getter("level", { namespace })
   private level!: number;
-  @Getter('hasTarget', { namespace })
+  @Getter("hasTarget", { namespace })
   private hasTarget!: boolean;
-  @Getter('name', { namespace })
+  @Getter("name", { namespace })
   private name!: string;
-  @Getter('nature', { namespace })
+  @Getter("nature", { namespace })
   private nature!: string;
-  @Getter('species', { namespace })
+  @Getter("species", { namespace })
   private species!: Species;
-  @Getter('types', { namespace })
+  @Getter("types", { namespace })
   private types!: string[];
-  @Getter('weight', { namespace })
+  @Getter("weight", { namespace })
   private weight: number;
-  @Getter('individuals', { namespace })
+  @Getter("individuals", { namespace })
   private individuals: Individuals;
-  @Getter('basePoints', { namespace })
+  @Getter("basePoints", { namespace })
   private basePoints: BasePoints;
-  @Getter('hp', { namespace })
+  @Getter("hp", { namespace })
   private hp: number;
-  @Getter('attack', { namespace })
+  @Getter("attack", { namespace })
   private attack: number;
-  @Getter('defense', { namespace })
+  @Getter("defense", { namespace })
   private defense: number;
-  @Getter('spAttack', { namespace })
+  @Getter("spAttack", { namespace })
   private spAttack: number;
-  @Getter('spDefense', { namespace })
+  @Getter("spDefense", { namespace })
   private spDefense: number;
-  @Getter('speed', { namespace })
+  @Getter("speed", { namespace })
   private speed: number;
 
-
-  @Mutation('changeSlowest', { namespace })
+  @Mutation("changeSlowest", { namespace })
   private changeSlowest!: (boolean) => void;
-  @Mutation('changeWeakest', { namespace })
+  @Mutation("changeWeakest", { namespace })
   private changeWeakest!: (boolean) => void;
-  @Mutation('changeBasePoints', { namespace })
+  @Mutation("changeBasePoints", { namespace })
   private changeBasePoints!: (BasePoints) => void;
-  @Mutation('changeNature', { namespace })
+  @Mutation("changeNature", { namespace })
   private changeNature!: (string) => void;
 
-  @Watch('name')
-  @Watch('individuals')
-  @Watch('nature')
+  @Watch("name")
+  @Watch("individuals")
+  @Watch("nature")
   private getCalculate() {
-    console.log('this.individuals:' + this.individuals);
+    console.log("this.individuals:" + this.individuals);
     if (this.name.length == 0) {
       return;
     }
     if (this.nature.length == 0) {
       return;
     }
-    let args = new StatsPatternArgs(this.level, this.name, this.nature,
-     this.individuals.hp,
-     this.individuals.at,
-     this.individuals.df,
-     this.individuals.sa,
-     this.individuals.sd,
-     this.individuals.sp);
+    let args = new StatsPatternArgs(
+      this.level,
+      this.name,
+      this.nature,
+      this.individuals.hp,
+      this.individuals.at,
+      this.individuals.df,
+      this.individuals.sa,
+      this.individuals.sd,
+      this.individuals.sp
+    );
     this.getStatsPattern(args);
   }
 
-  @Watch('targetName')
+  @Watch("targetName")
   private nameChanged() {
-    if (this.targetName == '') {
+    if (this.targetName == "") {
       return;
     }
     this.getSpecies(this.targetName);

@@ -1,7 +1,7 @@
 // 耐久調整
 <template>
   <div class="defender">
-    <Target></Target>
+    <target :show="true"></target>
   </div>
 </template>
 
