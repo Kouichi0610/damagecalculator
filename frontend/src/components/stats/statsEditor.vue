@@ -46,6 +46,7 @@ import router from '../../router'
 //   +---logic
 // TODO:targetsから対象ポケモンの種族値など取得しているのを別コンポーネントから渡すように変更
 const namespace: string = "targets";
+// TODO:remove targetsともに
 
 // TODO: $emit stats
 // TODO:名前被るのでSpeciesComponent当たりに(変えなくても動作はする)

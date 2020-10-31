@@ -1,6 +1,6 @@
 <template>
     <div class="sandboxts">
-        <Target :targetName="name"></Target>
+        <Target :targetName="name" :level="50"></Target>
         <TargetSelect @selectPokemon="onNameChanged"></TargetSelect>
         SandBox from TypeScript.(1.1)
         <StatsEditor></StatsEditor>

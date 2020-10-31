@@ -50,14 +50,15 @@ const namespace: string = "target";
   }
 })
 export default class Target extends Vue {
+  @Prop() private targetName: string;
+  @Prop() private level!: number;
+
   @State('target') target: TargetState;
+
   @Action('getSpecies', { namespace })
   private getSpecies!: (string) => Promise<boolean>;
   @Action('getStatsPattern', { namespace })
   private getStatsPattern!: (StatsPatternArgs) => void;
-
-  // この名前の情報を取ってくる
-  @Prop() private targetName: string;
 
   @Getter('hasTarget', { namespace })
   private hasTarget!: boolean;
@@ -99,18 +100,17 @@ export default class Target extends Vue {
   private changeNature!: (string) => void;
 
   @Watch('name')
-  @Watch('individual')
+  @Watch('individuals')
   @Watch('nature')
   private getCalculate() {
-    // TODO:Level50 prop経由で
+    console.log('this.individuals:' + this.individuals);
     if (this.name.length == 0) {
       return;
     }
     if (this.nature.length == 0) {
       return;
     }
-      console.log('get stats.');
-    let args = new StatsPatternArgs(50, this.name, this.nature,
+    let args = new StatsPatternArgs(this.level, this.name, this.nature,
      this.individuals.hp,
      this.individuals.at,
      this.individuals.df,
