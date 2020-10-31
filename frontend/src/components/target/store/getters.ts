@@ -6,6 +6,9 @@ export const getters: GetterTree<TargetState, RootState> = {
   hasTarget: (state: TargetState) => {
     return state.name != '';
   },
+  level: (state: TargetState, getters, rootState: RootState) => {
+    return rootState.level;
+  },
   name: (state: TargetState) => {
     return state.name;
   },

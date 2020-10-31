@@ -51,7 +51,6 @@ const namespace: string = "target";
 })
 export default class Target extends Vue {
   @Prop() private targetName: string;
-  @Prop() private level!: number;
 
   @State('target') target: TargetState;
 
@@ -60,6 +59,8 @@ export default class Target extends Vue {
   @Action('getStatsPattern', { namespace })
   private getStatsPattern!: (StatsPatternArgs) => void;
 
+  @Getter('level', { namespace })
+  private level!: number;
   @Getter('hasTarget', { namespace })
   private hasTarget!: boolean;
   @Getter('name', { namespace })

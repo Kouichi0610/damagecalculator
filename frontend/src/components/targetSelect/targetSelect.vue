@@ -1,8 +1,6 @@
 /*
   対象ポケモンを選択する
   TODO:components/targetSelect.vueと関連クラス削除
-
-  TODO:構成変えてみる
   stats
    +---components
    +---store

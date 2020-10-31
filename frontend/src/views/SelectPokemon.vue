@@ -1,8 +1,10 @@
 // 調整するポケモンを選択
 // 現在の振り方
 // TODO:変更時に保存確認
+// TODO:remove
 <template>
-  <div class="select-okemon">
+  <div class="select-pokemon">
+    <p>old</p>
     <target-select></target-select>
   </div>
 </template>
