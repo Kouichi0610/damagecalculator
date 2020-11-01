@@ -10,10 +10,11 @@
     <template v-else>
       <template v-if="hasTarget">
         <div>対象:{{ name }}</div>
+        <ability-selector :abilities="abilities" :current="currentAbility" @changed="setCurrentAbility"></ability-selector>
+        <!-- TODO:component -->
         <div>{{ types }}</div>
         <!-- TODO:component -->
         <div>{{ weight }}kg</div>
-        <!-- TODO:component -->
         <nature @changed="changeNature"></nature>
         <individuals-adjuster
           :individuals="individuals"
@@ -56,6 +57,7 @@ import SpeciesDisplay from "./components/speciesDisplay.vue";
 import BasePointsAdjuster from "./components/basePointsAdjuster.vue";
 import Nature from "../nature/nature.vue";
 import StatsDisplay from "./components/statsDisplay.vue";
+import AbilitySelector from './components/abilitySelector.vue'
 
 import { StatsPatternArgs } from "./store/types";
 
@@ -68,6 +70,7 @@ const namespace: string = "target";
     BasePointsAdjuster,
     Nature,
     StatsDisplay,
+    AbilitySelector,
   },
 })
 export default class Target extends Vue {
@@ -80,6 +83,8 @@ export default class Target extends Vue {
   private getSpecies!: (string) => Promise<boolean>;
   @Action("getStatsPattern", { namespace })
   private getStatsPattern!: (StatsPatternArgs) => void;
+  @Action("setCurrentAbility", { namespace })
+  private setCurrentAbility!: (string) => void;
 
   @Getter("level", { namespace })
   private level!: number;
@@ -87,6 +92,11 @@ export default class Target extends Vue {
   private hasTarget!: boolean;
   @Getter("name", { namespace })
   private name!: string;
+  @Getter("abilities", { namespace })
+  private abilities!: string[];
+  @Getter("currentAbility", { namespace })
+  private currentAbility!: string;
+
   @Getter("nature", { namespace })
   private nature!: string;
   @Getter("species", { namespace })

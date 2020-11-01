@@ -60,4 +60,10 @@ export const getters: GetterTree<TargetState, RootState> = {
     let idx = state.basePoints.sp/4;
     return state.sppattern[idx];
   },
+  abilities (state: TargetState) {
+    return state.abilities;
+  },
+  currentAbility (state: TargetState) {
+    return state.currentAbility;
+  }
 }

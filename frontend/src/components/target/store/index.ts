@@ -14,6 +14,7 @@ export const state: TargetState = {
   species: {hp: 0, at: 0, df: 0, sa: 0, sd: 0, sp: 0},
   weight: 0.0,
   abilities: [''],
+  currentAbility: '',
 
   nature: '',
   individuals: {hp: 31, at: 31, df: 31, sa: 31, sd: 31, sp: 31},

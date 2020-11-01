@@ -20,6 +20,7 @@ export interface TargetState {
   species: Species;
   weight: number;
   abilities: string[];
+  currentAbility: string;
 
   nature: string;
   individuals: Individuals;

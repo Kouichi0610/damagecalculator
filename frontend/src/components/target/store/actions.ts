@@ -4,6 +4,9 @@ import { RootState } from '@/store/types'
 import { TargetState, Species, StatsPatternArgs } from './types'
 
 export const actions: ActionTree<TargetState, RootState> = {
+  setCurrentAbility: ({commit}, name: string) => {
+    commit('setCurrentAbility', name);
+  },
   getStatsPattern: ({commit}, args: StatsPatternArgs) => {
     axios.get('stats_pattern', {
       params: {
@@ -50,6 +53,6 @@ export const actions: ActionTree<TargetState, RootState> = {
         console.log('failed:' + e);
         return false;
     });
-  }
+  },
 }
 

@@ -28,6 +28,10 @@ export const mutations: MutationTree<TargetState> = {
   },
   setAbilities(state, payload: string[]) {
     state.abilities = payload;
+    state.currentAbility = payload[0];
+  },
+  setCurrentAbility(state, payload: string) {
+    state.currentAbility = payload;
   },
   changeSlowest(state, isSlowest: boolean) {
     state.individuals = {
