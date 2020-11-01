@@ -156,6 +156,11 @@ export default class Target extends Vue {
     this.getStatsPattern(args);
   }
 
+  @Watch("currentAbility")
+  private abilityChanged() {
+    this.$emit('ability', this.currentAbility);
+  }
+
   @Watch("targetName")
   private nameChanged() {
     if (this.targetName == "") {

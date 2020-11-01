@@ -36,6 +36,11 @@ const router = new VueRouter({
     {
       path: '/speed',
       name: 'Speed',
+      component: () => import ('../views/SpeedAdjuster.vue'),
+    },
+    {
+      path: '/speedold',
+      name: 'SpeedOld',
       component: () => import('../views/Speed.vue'),
     },
     {
