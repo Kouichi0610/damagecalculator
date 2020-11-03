@@ -168,6 +168,40 @@ export default class Target extends Vue {
     }
     this.getSpecies(this.targetName);
   }
+
+  @Watch("hp")
+  private hpChanged() {
+    this.$emit('hp', this.hp);
+  }
+  @Watch("attack")
+  private attackChanged() {
+    this.$emit('attack', this.attack);
+  }
+  @Watch("defense")
+  private defenseChanged() {
+    this.$emit('defense', this.defense);
+  }
+  @Watch("spAttack")
+  private spAttackChanged() {
+    this.$emit('spAttack', this.spAttack);
+  }
+  @Watch("spDefense")
+  private spDefenseChanged() {
+    this.$emit('spDefense', this.spDefense);
+  }
+  @Watch("speed")
+  private speedChanged() {
+    this.$emit('speed', this.speed);
+  }
+
+  created() {
+    this.$emit('hp', this.hp);
+    this.$emit('attack', this.attack);
+    this.$emit('defense', this.defense);
+    this.$emit('spAttack', this.spAttack);
+    this.$emit('spDefense', this.spDefense);
+    this.$emit('speed', this.speed);
+  }
 }
 </script>
 
