@@ -3,20 +3,17 @@
         <Target :targetName="name"></Target>
         <TargetSelect @selectPokemon="onNameChanged"></TargetSelect>
         SandBox from TypeScript.(1.1)
-        <StatsEditor></StatsEditor>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-import StatsEditor from '../components/stats/statsEditor.vue'
 import TargetSelect from '../components/targetSelect/targetSelect.vue'
 import Target from '../components/target/target.vue'
 
 @Component({
       components: {
-          StatsEditor,
           TargetSelect,
           Target,
     },
