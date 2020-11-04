@@ -1,6 +1,7 @@
 package server
 
 import (
+	"damagecalculator/domain/ability"
 	"damagecalculator/usecase/speed"
 	"net/http"
 	"strconv"
@@ -32,6 +33,32 @@ func (s *serverImpl) speedList(c *gin.Context) {
 		}
 		res = append(res, info)
 	}
+	c.JSON(http.StatusOK, res)
+}
+
+// とくせいによる自身のすばやさ補正
+func (s *serverImpl) abilitiesOwnerSpeedEffect(c *gin.Context) {
+	type query struct {
+		ability string
+	}
+	var q query
+	c.BindQuery(&q)
+
+	gen := ability.NewOwnerSpeedCorrectorGenerator()
+	res := gen.Create(q.ability)
+	c.JSON(http.StatusOK, res)
+}
+
+// とくせいによる他のポケモンへのすばやさ補正
+func (s *serverImpl) abilitiesOtherSpeedEffect(c *gin.Context) {
+	type query struct {
+		ability string
+	}
+	var q query
+	c.BindQuery(&q)
+
+	gen := ability.NewOtherSpeedCorrectorGenerator()
+	res := gen.Create(q.ability)
 	c.JSON(http.StatusOK, res)
 }
 

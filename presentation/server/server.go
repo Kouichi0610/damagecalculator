@@ -48,6 +48,8 @@ func (s *serverImpl) Serve() (http.Handler, error) {
 	router.GET("/get_species", s.getSpecies)
 	router.GET("/nature_list", s.natureList)
 	router.GET("/stats_pattern", s.statsPattern)
+	router.GET("/ability_owner_speed", s.abilitiesOwnerSpeedEffect)
+	router.GET("/ability_other_speed", s.abilitiesOtherSpeedEffect)
 
 	return router, router.Run(":8080")
 }

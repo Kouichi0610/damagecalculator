@@ -1,7 +1,6 @@
 <template>
   <div class="speed-order">
-    <p>速度一覧x {{ targetSpeed }}</p>
-    <p>サーバーから速度一覧を取得</p>
+    <p>速度一覧 {{ targetSpeed }}</p>
     <p>TODO:とくせい、もちものをサーバから取得</p>
     <p>TODO:表示</p>
     <template v-if="hasList">
