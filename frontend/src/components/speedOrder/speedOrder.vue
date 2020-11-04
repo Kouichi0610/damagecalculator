@@ -2,7 +2,6 @@
   <div class="speed-order">
     <p>速度一覧</p>
     <template v-if="hasList">
-      <corrector-checker></corrector-checker>
       <template v-if="abilityOwnerCorrector.effective()">
         <b-form-checkbox id="check-ability-owner" v-model="useAbility">{{ ability }} {{ abilityOwnerCorrector.comment }}</b-form-checkbox>
       </template>
@@ -34,7 +33,6 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { State, Action, Getter } from 'vuex-class';
 
 import SpeedRanking from "./components/SpeedRanking.vue"
-import CorrectorChecker from "./components/correctorChecker.vue"
 //import { SpeedCorrector } from './store/types';
 
 const namespace: string ="speedOrder"
@@ -51,7 +49,6 @@ class InfoImpl implements SpeedInfo {
 @Component({
   components: {
     SpeedRanking,
-    CorrectorChecker,
   }
 })
 export default class SpeedOrder extends Vue {
@@ -122,7 +119,7 @@ export default class SpeedOrder extends Vue {
   }
   get display(): SpeedInfo[] {
     let a: SpeedInfo[] = [new InfoImpl('', this.correctedTargetSpeed())];
-    let disp:SpeedInfo[] = a.concat(this.list);
+    let disp:SpeedInfo[] = a.concat(this.correctedList());
 
     let decending = function(a, b) {
         if (a.speed > b.speed) return -1;
@@ -138,6 +135,19 @@ export default class SpeedOrder extends Vue {
     disp.sort(order);
 
     return disp;
+  }
+
+  correctedList(): SpeedInfo[] {
+    let res: SpeedInfo[] = [];
+    for (var i = 0; i < this.list.length; i++) {
+      let info = this.list[i].info;
+      let speed = this.list[i].speed;
+      if (this.useAbility) {
+        speed = this.abilityOtherCorrector.correct(speed);
+      }
+      res.push(new InfoImpl(info, speed));
+    }
+    return res;
   }
 
 }
