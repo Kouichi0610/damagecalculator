@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex';
-import { SpeedOrderState } from './types';
+import { DefaultSpeedCorrector, SpeedOrderState, SpeedCorrector } from './types';
 import { RootState } from '@/store/types'
 
 export const getters: GetterTree<SpeedOrderState, RootState> = {
@@ -9,8 +9,13 @@ export const getters: GetterTree<SpeedOrderState, RootState> = {
   list: (state: SpeedOrderState) => {
     return state.list;
   },
-  correctedSpeed: (state: SpeedOrderState) => {
-    // TODO:もちもの補正
-    return state.abilityOwner.correct(state.targetSpeed, true);
+  abilityOwnerCorrector: (state: SpeedOrderState): SpeedCorrector => {
+    return state.abilityOwner;
+  },
+  abilityOtherCorrector: (state: SpeedOrderState): SpeedCorrector => {
+    return state.abilityOther;
+  },
+  itemCorrectors: (state: SpeedOrderState): SpeedCorrector[] => {
+    return state.item;
   },
 }

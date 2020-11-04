@@ -6,7 +6,6 @@ export interface SpeedInfo {
 }
 
 export interface SpeedOrderState {
-  targetSpeed: number;
   list: SpeedInfo[];
   // とくせい自身 とくせい相手 もちもの[]
   abilityOwner: SpeedCorrector;
@@ -30,6 +29,9 @@ export class SpeedCorrector {
   correct(stats: number): number {
     let res = this.rank.RankedStatus(stats);
     return Math.floor(res * this.magnification);
+  }
+  effective(): boolean {
+    return this.comment.length > 0;
   }
   toString(): string {
     return '' + this.comment + ' Rank:' + this.rank.value + ' Mag:' + this.magnification;

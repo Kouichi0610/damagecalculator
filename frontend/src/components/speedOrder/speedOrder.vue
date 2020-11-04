@@ -1,9 +1,15 @@
 <template>
   <div class="speed-order">
     <p>速度一覧</p>
-    <p>TODO:とくせい、もちものをサーバから取得</p>
-    <p>Corrected: {{ correctedSpeed }}</p>
     <template v-if="hasList">
+      <corrector-checker></corrector-checker>
+      <template v-if="abilityOwnerCorrector.effective()">
+        <b-form-checkbox id="check-ability-owner" v-model="useAbility">{{ ability }} {{ abilityOwnerCorrector.comment }}</b-form-checkbox>
+      </template>
+      <template v-if="abilityOtherCorrector.effective()">
+        <b-form-checkbox id="check-ability-other" v-model="useAbility">{{ ability }} {{ abilityOtherCorrector.comment }}</b-form-checkbox>
+      </template>
+
       <div class="environment">
         <b-form-checkbox id="check-trickroom" v-model="trickRoom" name="check-trickroom">トリックルーム</b-form-checkbox>
       </div>
@@ -25,10 +31,11 @@
 <script lang="ts">
 // 速度一覧
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { State, Action, Getter, Mutation } from 'vuex-class';
+import { State, Action, Getter } from 'vuex-class';
 
 import SpeedRanking from "./components/SpeedRanking.vue"
-import { SpeedCorrector } from './store/types';
+import CorrectorChecker from "./components/correctorChecker.vue"
+//import { SpeedCorrector } from './store/types';
 
 const namespace: string ="speedOrder"
 
@@ -44,6 +51,7 @@ class InfoImpl implements SpeedInfo {
 @Component({
   components: {
     SpeedRanking,
+    CorrectorChecker,
   }
 })
 export default class SpeedOrder extends Vue {
@@ -60,12 +68,16 @@ export default class SpeedOrder extends Vue {
   private hasList!: boolean;
   @Getter('list', { namespace })
   private list!: SpeedInfo[];
-  @Mutation('setTargetSpeed', { namespace })
-  private setTargetSpeed!: (number) => void;
-  @Getter('correctedSpeed', { namespace })
-  private correctedSpeed!: number;
+
+  @Getter('abilityOwnerCorrector', { namespace })
+  private abilityOwnerCorrector!: SpeedCorrector;
+  @Getter('abilityOtherCorrector', { namespace })
+  private abilityOtherCorrector!: SpeedCorrector;
+  @Getter('itemCorrectors', { namespace })
+  private itemCorrectors!: SpeedCorrector[];
 
   private trickRoom: boolean = false;
+  private useAbility: boolean = false;
 
   created() {
     // TODO:level
@@ -75,10 +87,16 @@ export default class SpeedOrder extends Vue {
   @Watch('ability')
   abilityChanged() {
     this.getAbilityEffect(this.ability);
+    this.useAbility = false;
   }
-  @Watch('targetSpeed')
-  targetSpeedChanged() {
-    this.setTargetSpeed(this.targetSpeed);
+
+  correctedTargetSpeed(): number {
+    let res = this.targetSpeed;
+    if (this.useAbility) {
+      res = this.abilityOwnerCorrector.correct(res);
+    }
+    // TODO:item
+    return res;
   }
 
   get nearDisplay(): SpeedInfo[] {
@@ -103,7 +121,7 @@ export default class SpeedOrder extends Vue {
     return res;
   }
   get display(): SpeedInfo[] {
-    let a: SpeedInfo[] = [new InfoImpl('', this.targetSpeed)];
+    let a: SpeedInfo[] = [new InfoImpl('', this.correctedTargetSpeed())];
     let disp:SpeedInfo[] = a.concat(this.list);
 
     let decending = function(a, b) {

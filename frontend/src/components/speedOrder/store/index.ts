@@ -7,7 +7,6 @@ import { RootState } from '@/store/types';
 import { DefaultSpeedCorrector } from './types'
 
 export const state: SpeedOrderState = {
-  targetSpeed: 0,
   list: [],
   abilityOwner: DefaultSpeedCorrector(),
   abilityOther: DefaultSpeedCorrector(),
