@@ -8,6 +8,9 @@ export const getters: GetterTree<SpeedOrderState, RootState> = {
   },
   list: (state: SpeedOrderState) => {
     return state.list;
-  }
-
+  },
+  correctedSpeed: (state: SpeedOrderState) => {
+    // TODO:もちもの補正
+    return state.abilityOwner.correct(state.targetSpeed, true);
+  },
 }

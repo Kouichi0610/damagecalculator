@@ -201,6 +201,7 @@ export default class Target extends Vue {
     this.$emit('spAttack', this.spAttack);
     this.$emit('spDefense', this.spDefense);
     this.$emit('speed', this.speed);
+    this.$emit('ability', this.currentAbility);
   }
 }
 </script>

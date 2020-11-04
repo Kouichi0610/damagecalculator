@@ -1,8 +1,8 @@
 <template>
   <div class="speed-order">
-    <p>速度一覧 {{ targetSpeed }}</p>
+    <p>速度一覧</p>
     <p>TODO:とくせい、もちものをサーバから取得</p>
-    <p>TODO:表示</p>
+    <p>Corrected: {{ correctedSpeed }}</p>
     <template v-if="hasList">
       <div class="environment">
         <b-form-checkbox id="check-trickroom" v-model="trickRoom" name="check-trickroom">トリックルーム</b-form-checkbox>
@@ -24,10 +24,11 @@
 
 <script lang="ts">
 // 速度一覧
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { State, Action, Getter } from 'vuex-class';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { State, Action, Getter, Mutation } from 'vuex-class';
 
 import SpeedRanking from "./components/SpeedRanking.vue"
+import { SpeedCorrector } from './store/types';
 
 const namespace: string ="speedOrder"
 
@@ -47,21 +48,37 @@ class InfoImpl implements SpeedInfo {
 })
 export default class SpeedOrder extends Vue {
   @Prop() private targetSpeed: number;
+  @Prop() private ability: string;
 
   @State('speedOrder') speedOrder: SpeedOrderState;
 
   @Action('getOrders', { namespace })
   private getOrders!: (number) => void;
+  @Action('getAbilityEffect', { namespace })
+  private getAbilityEffect!: (string) => void;
   @Getter('hasList', { namespace })
   private hasList!: boolean;
   @Getter('list', { namespace })
   private list!: SpeedInfo[];
+  @Mutation('setTargetSpeed', { namespace })
+  private setTargetSpeed!: (number) => void;
+  @Getter('correctedSpeed', { namespace })
+  private correctedSpeed!: number;
 
   private trickRoom: boolean = false;
 
   created() {
     // TODO:level
     this.getOrders(50);
+  }
+
+  @Watch('ability')
+  abilityChanged() {
+    this.getAbilityEffect(this.ability);
+  }
+  @Watch('targetSpeed')
+  targetSpeedChanged() {
+    this.setTargetSpeed(this.targetSpeed);
   }
 
   get nearDisplay(): SpeedInfo[] {

@@ -1,7 +1,7 @@
 <template>
   <div class="speed-adjuster">
     <target @ability="abilityChanged" @speed="speedChanged"></target>
-    <speed-order :targetSpeed="speed"></speed-order>
+    <speed-order :ability="ability" :targetSpeed="speed"></speed-order>
   </div>
 </template>
 
@@ -19,13 +19,14 @@ import SpeedOrder from "../components/speedOrder/speedOrder.vue";
 })
 export default class SpeedAdjuster extends Vue {
   private speed: number = 0;
+  private ability: string = ""
 
   speedChanged(speed: number) {
     this.speed = speed;
   }
 
   abilityChanged(ability: string) {
-    console.log("" + ability);
+    this.ability = ability;
   }
 }
 </script>

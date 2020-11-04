@@ -4,9 +4,14 @@ import { actions } from './actions';
 import { mutations } from './mutations';
 import { SpeedOrderState } from './types';
 import { RootState } from '@/store/types';
+import { DefaultSpeedCorrector } from './types'
 
 export const state: SpeedOrderState = {
+  targetSpeed: 0,
   list: [],
+  abilityOwner: DefaultSpeedCorrector(),
+  abilityOther: DefaultSpeedCorrector(),
+  item: [],
 }
 
 const namespaced: boolean = true;

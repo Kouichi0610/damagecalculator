@@ -39,26 +39,26 @@ func (s *serverImpl) speedList(c *gin.Context) {
 // とくせいによる自身のすばやさ補正
 func (s *serverImpl) abilitiesOwnerSpeedEffect(c *gin.Context) {
 	type query struct {
-		ability string
+		Ability string
 	}
 	var q query
 	c.BindQuery(&q)
 
 	gen := ability.NewOwnerSpeedCorrectorGenerator()
-	res := gen.Create(q.ability)
+	res := gen.Create(q.Ability)
 	c.JSON(http.StatusOK, res)
 }
 
 // とくせいによる他のポケモンへのすばやさ補正
 func (s *serverImpl) abilitiesOtherSpeedEffect(c *gin.Context) {
 	type query struct {
-		ability string
+		Ability string
 	}
 	var q query
 	c.BindQuery(&q)
 
 	gen := ability.NewOtherSpeedCorrectorGenerator()
-	res := gen.Create(q.ability)
+	res := gen.Create(q.Ability)
 	c.JSON(http.StatusOK, res)
 }
 
