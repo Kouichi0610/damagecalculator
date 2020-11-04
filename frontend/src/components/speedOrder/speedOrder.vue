@@ -8,7 +8,16 @@
       <template v-if="abilityOtherCorrector.effective()">
         <b-form-checkbox id="check-ability-other" v-model="useAbility">{{ ability }} {{ abilityOtherCorrector.comment }}</b-form-checkbox>
       </template>
-
+      <!-- TODO:items -->
+      <div class="row mb-1">
+        <b-dropdown class="col-1" id="item-dropdown" text="もちもの">
+          <b-dropdown-item v-for="(item, index) in itemCorrectors" :key="item.comment" @click="usedItem = index">{{ item.comment }}</b-dropdown-item>
+        </b-dropdown>
+        <div class="col-1">
+          {{itemCorrectors[usedItem].comment}}
+        </div>
+      </div>
+ 
       <div class="environment">
         <b-form-checkbox id="check-trickroom" v-model="trickRoom" name="check-trickroom">トリックルーム</b-form-checkbox>
       </div>
@@ -75,6 +84,7 @@ export default class SpeedOrder extends Vue {
 
   private trickRoom: boolean = false;
   private useAbility: boolean = false;
+  private usedItem: number = 0;
 
   created() {
     // TODO:level
@@ -92,7 +102,8 @@ export default class SpeedOrder extends Vue {
     if (this.useAbility) {
       res = this.abilityOwnerCorrector.correct(res);
     }
-    // TODO:item
+    let item = this.itemCorrectors[this.usedItem];
+    res = item.correct(res);
     return res;
   }
 
@@ -151,7 +162,6 @@ export default class SpeedOrder extends Vue {
   }
 
 }
-
 
 </script>
 
