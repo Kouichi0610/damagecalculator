@@ -5,18 +5,23 @@ import Vue from 'vue'
 import Vuex, { StoreOptions } from 'vuex'
 
 import { RootState } from './types'
-import { targets } from './targets/index'
-import { speedList } from './speedlist/index'
+import { targetSelect } from '../components/targetSelect/store/index'
+import { target } from '../components/target/store/index'
+import { nature } from "../components/nature/store/index"
+import { speedOrder } from "../components/speedOrder/store/index"
 
 Vue.use(Vuex);
 
 const store: StoreOptions<RootState> = {
   state: {
-    version: '1.0.0'
+    version: '1.0.0',
+    level: 50,
   },
   modules: {
-    targets,
-    speedList,
+    target,
+    targetSelect,
+    nature,
+    speedOrder,
   }
 }
 

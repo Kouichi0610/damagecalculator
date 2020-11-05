@@ -1,0 +1,16 @@
+import { GetterTree } from 'vuex';
+import { TargetSelectState, Species } from './types';
+import { RootState } from '@/store/types'
+
+export const getters: GetterTree<TargetSelectState, RootState> = {
+  initialTotal: (state: TargetSelectState) => {
+    return state.initialTotal;
+  },
+  initialType: (state: TargetSelectState) => {
+    return state.initialType;
+  },
+  candidates: (state: TargetSelectState) => {
+    return state.candidates;
+  }
+}
+

@@ -16,7 +16,7 @@ const router = new VueRouter({
     {
       path: '/select',
       name: 'SelectPomkemon',
-      component: () => import('../views/SelectPokemon.vue'),
+      component: () => import('../views/Select.vue'),
     },
     {
       path: '/attacker',
@@ -31,7 +31,7 @@ const router = new VueRouter({
     {
       path: '/speed',
       name: 'Speed',
-      component: () => import('../views/Speed.vue'),
+      component: () => import ('../views/SpeedAdjuster.vue'),
     },
     {
       path: '/sandboxts',

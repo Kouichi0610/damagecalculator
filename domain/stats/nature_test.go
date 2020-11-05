@@ -2,6 +2,13 @@ package stats
 
 import "testing"
 
+func Test_NatureDescriptions(t *testing.T) {
+	list := NatureDescriptions()
+	if len(list) != 21 {
+		t.Error()
+	}
+}
+
 func Test_Nature(t *testing.T) {
 	const h = 404
 	const f = 299

@@ -1,6 +1,7 @@
 package types
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -116,6 +117,13 @@ func Test_TypesString(t *testing.T) {
 
 	if NewTypes(Fire, Water, Grass).String() != "ほのお/みず/くさ" {
 		t.Error()
+	}
+}
+func Test_TypesStrings(t *testing.T) {
+	actual := NewTypes(Fire, Water, Grass).Strings()
+	expects := []string{"ほのお", "みず", "くさ"}
+	if !reflect.DeepEqual(actual, expects) {
+		t.Errorf("%v", actual)
 	}
 }
 
