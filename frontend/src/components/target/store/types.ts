@@ -41,22 +41,18 @@ export class StatsPatternArgs {
   level: number;
   name: string;
   nature: string;
-  hp: number;
-  at: number;
-  df: number;
-  sa: number;
-  sd: number;
-  sp: number;
+  individual: string;
   constructor(level: number, name: string, nature: string, hp: number, at: number, df: number, sa: number, sd: number, sp: number) {
     this.level = level;
     this.name = name;
     this.nature = nature;
-    this.hp = hp;
-    this.at = at;
-    this.df = df;
-    this.sa = sa;
-    this.sd = sd;
-    this.sp = sp;
+    this.individual = "Max";
+    if (at == 0) {
+      this.individual = "Weakest";
+    }
+    if (sp == 0) {
+      this.individual = "Slowest";
+    }
   }
 }
 

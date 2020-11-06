@@ -1,6 +1,9 @@
 package stats
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func Test_IndividualRange(t *testing.T) {
 	min := newIndividual(0)
@@ -17,8 +20,24 @@ func Test_IndividualRange(t *testing.T) {
 	}
 }
 
+func Test_IndividualTypes(t *testing.T) {
+	actual := IndividualTypeMax.Create()
+	if !reflect.DeepEqual(actual, newIndividualStats(31, 31, 31, 31, 31, 31)) {
+		t.Error()
+	}
+
+	actual = IndividualTypeSlowest.Create()
+	if !reflect.DeepEqual(actual, newIndividualStats(31, 31, 31, 31, 31, 0)) {
+		t.Error()
+	}
+	actual = IndividualTypeWeakest.Create()
+	if !reflect.DeepEqual(actual, newIndividualStats(31, 0, 31, 31, 31, 31)) {
+		t.Error()
+	}
+}
+
 func Test_IndividualStats(t *testing.T) {
-	i := NewIndividualStats(0, 1, 2, 3, 4, 5)
+	i := newIndividualStats(0, 1, 2, 3, 4, 5)
 	if i.HP() != 0 {
 		t.Error()
 	}

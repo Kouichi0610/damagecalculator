@@ -13,19 +13,12 @@ export const actions: ActionTree<TargetState, RootState> = {
         Level: args.level,
         Name: args.name,
         Nature: args.nature,
-        HP: args.hp,
-        Attack: args.at,
-        Defense: args.df,
-        SpAttack: args.sa,
-        SpDefense: args.sd,
-        Speed: args.sp,
+        Individual: args.individual,
       }
     })
     .then((response) => {
       let json = JSON.stringify(response.data);
       let res = JSON.parse(json);
-      // TODO:getter
-      // TODO:args多すぎ＆res多すぎ
       commit('setStatsPattern', res);
     })
     .catch((e) => {

@@ -15,12 +15,13 @@ func Test_Speed(t *testing.T) {
 	if len(res) == 0 {
 		t.Error()
 	}
+	/*
+		t.Errorf("len[%d]", len(res))
 
-	t.Errorf("len[%d]", len(res))
-
-	for _, info := range res {
-		t.Errorf("%d %s", info.Speed(), info.Info())
-	}
+		for _, info := range res {
+			t.Errorf("%d %s", info.Speed(), info.Info())
+		}
+	*/
 	/*
 
 
