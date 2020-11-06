@@ -2,6 +2,7 @@ package situation
 
 import (
 	"damagecalculator/domain/ability"
+	"damagecalculator/domain/condition"
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/item"
 	"damagecalculator/domain/move"
@@ -20,7 +21,6 @@ type SituationData struct {
 
 	// Condition
 	IsCritical    bool
-	IsBurn        bool
 	IsReflector   bool
 	IsLightScreen bool
 }
@@ -34,6 +34,7 @@ type PokeData struct {
 	Nature      stats.NatureType
 	Ability     string
 	Item        string
+	Condition   condition.ConditionType
 }
 
 type BasePoints struct {

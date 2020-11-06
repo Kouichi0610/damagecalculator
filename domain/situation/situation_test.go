@@ -38,7 +38,6 @@ func Test_Situation生成(t *testing.T) {
 		Weather:       field.Sunny,
 		Field:         field.ElectricField,
 		IsCritical:    false,
-		IsBurn:        false,
 		IsReflector:   false,
 		IsLightScreen: false,
 	}

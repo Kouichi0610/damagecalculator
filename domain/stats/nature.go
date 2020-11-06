@@ -94,6 +94,14 @@ func NameToNature(name string) *Nature {
 	}
 	return NewNature(Bashful)
 }
+func NameToNatureType(name string) NatureType {
+	for k, v := range nameMap {
+		if v == name {
+			return k
+		}
+	}
+	return Bashful
+}
 
 func NewNature(n NatureType) *Nature {
 	return newNatureFuncs[n]()
