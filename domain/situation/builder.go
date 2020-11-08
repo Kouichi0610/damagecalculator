@@ -8,10 +8,11 @@ import (
 	"damagecalculator/domain/move"
 	"damagecalculator/domain/species"
 	"damagecalculator/domain/stats"
+	"fmt"
 )
 
 /*
-	TODO:factory.go置き換え
+	TODO:factory.go を置き換え、こっちに統一
 */
 type (
 	PokeParams struct {
@@ -33,6 +34,10 @@ type (
 		ToSituation(level stats.Level, attacker, defender *PokeParams, move string, cd *FieldCondition) (SituationChecker, error)
 	}
 )
+
+func (p *PokeParams) Info() string {
+	return fmt.Sprintf("%s %s ", p.Name, p.Nature)
+}
 
 func NewBuilder(sp species.Repository, ab ability.Repository, mv move.Repository, it item.Repository) Builder {
 	return &builder{
