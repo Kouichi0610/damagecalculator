@@ -1,0 +1,100 @@
+package situation
+
+import (
+	"damagecalculator/domain/ability"
+	"damagecalculator/domain/condition"
+	"damagecalculator/domain/field"
+	"damagecalculator/domain/item"
+	"damagecalculator/domain/move"
+	"damagecalculator/domain/species"
+	"damagecalculator/domain/stats"
+)
+
+/*
+	TODO:factory.go置き換え
+*/
+type (
+	PokeParams struct {
+		Name        string
+		Nature      string
+		Individuals string
+		BasePoints  []uint
+		Ranks       []int
+		Ability     string
+		Item        string
+		Condition   string
+	}
+	FieldCondition struct {
+		Weather      string
+		Field        string
+		HasReflector bool // リフレクター、ひかりのかべ
+	}
+	Builder interface {
+		ToSituation(level stats.Level, attacker, defender *PokeParams, move string, cd *FieldCondition) (SituationChecker, error)
+	}
+)
+
+func NewBuilder(sp species.Repository, ab ability.Repository, mv move.Repository, it item.Repository) Builder {
+	return &builder{
+		sp: sp,
+		ab: ab,
+		mv: mv,
+		it: it,
+	}
+}
+
+type builder struct {
+	sp species.Repository
+	ab ability.Repository
+	mv move.Repository
+	it item.Repository
+}
+
+func (b *builder) ToSituation(level stats.Level, attacker, defender *PokeParams, move string, cd *FieldCondition) (SituationChecker, error) {
+	d := &SituationData{
+		Move: move,
+		Attacker: PokeData{
+			Name:        attacker.Name,
+			Level:       uint(level),
+			Individuals: stats.ToIndividualType(attacker.Individuals),
+			BasePoints:  toBasePoints(attacker.BasePoints),
+			Ranks:       Ranks{0, 0, 0, 0, 0},
+			Ability:     attacker.Ability,
+			Item:        attacker.Item,
+			Nature:      stats.NameToNatureType(attacker.Nature),
+			Condition:   condition.FromString(attacker.Condition),
+		},
+		Defender: PokeData{
+			Name:        defender.Name,
+			Level:       uint(level),
+			Individuals: stats.ToIndividualType(defender.Individuals),
+			BasePoints:  toBasePoints(defender.BasePoints),
+			Ranks:       Ranks{0, 0, 0, 0, 0},
+			Ability:     defender.Ability,
+			Item:        defender.Item,
+			Nature:      stats.NameToNatureType(defender.Nature),
+			Condition:   condition.FromString(defender.Condition),
+		},
+		Weather:       field.ToWeather(cd.Weather),
+		Field:         field.ToField(cd.Field),
+		IsCritical:    false,
+		IsReflector:   cd.HasReflector,
+		IsLightScreen: cd.HasReflector,
+	}
+	st, err := d.Create(b.mv, b.sp, b.ab, b.it)
+	if err != nil {
+		return nil, err
+	}
+	return st, nil
+}
+
+func toBasePoints(p []uint) BasePoints {
+	return BasePoints{
+		HP:        p[0],
+		Attack:    p[1],
+		Defense:   p[2],
+		SpAttack:  p[3],
+		SpDefense: p[4],
+		Speed:     p[5],
+	}
+}

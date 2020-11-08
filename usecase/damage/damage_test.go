@@ -1,6 +1,7 @@
 package damage
 
 import (
+	"damagecalculator/domain/situation"
 	"damagecalculator/infra/local"
 	"testing"
 )
@@ -12,25 +13,25 @@ func Test_DamgeRateService(t *testing.T) {
 	it := local.Item()
 	sv := NewService(sp, mv, ab, it)
 
-	fields := &FieldCondition{
+	fields := &situation.FieldCondition{
 		Weather:      "なし",
 		Field:        "なし",
 		HasReflector: false,
 	}
-	attacker := &PokeParams{
+	attacker := &situation.PokeParams{
 		Name:        "ピカチュウ",
 		Individuals: "Max",
-		BasePoints:  []int{6, 252, 0, 0, 0, 252},
+		BasePoints:  []uint{6, 252, 0, 0, 0, 252},
 		Ranks:       []int{0, 0, 0, 0, 0},
 		Ability:     "せいでんき",
 		Item:        "None",
 		Nature:      "のんき",
 		Condition:   "なし",
 	}
-	defender := &PokeParams{
+	defender := &situation.PokeParams{
 		Name:        "シェルダー",
 		Individuals: "Max",
-		BasePoints:  []int{252, 0, 252, 0, 0, 0},
+		BasePoints:  []uint{252, 0, 252, 0, 0, 0},
 		Ranks:       []int{0, 0, 0, 0, 0},
 		Ability:     "げきりゅう",
 		Item:        "None",
@@ -46,16 +47,10 @@ func Test_DamgeRateService(t *testing.T) {
 		t.Error()
 		return
 	}
-	if rate.RateMin() != 72.3 {
-		t.Errorf("RateMin:%f", rate.RateMin())
-	}
-	if rate.RateMax() != 85.4 {
-		t.Errorf("RateMax:%f", rate.RateMax())
+
+	if rate.String() != "72.3% ～ 85.4% 確定数2" {
+		t.Errorf("%s", rate.String())
 	}
 
-	// TODO:ちょっとずれてるのでダメージ計算式確認
-
-	//t.Errorf("Damage:%s", damages.String())
-	//t.Errorf("%s", rate.String())
-
+	// TODO:ダメージがちょっとずれてるのでダメージ計算式確認
 }
