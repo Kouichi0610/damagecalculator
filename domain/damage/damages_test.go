@@ -254,6 +254,7 @@ func Test_もちもの補正(t *testing.T) {
 	}
 }
 
+/*
 func Test_Default(t *testing.T) {
 	a := defaultSituation()
 	a.Defender.Name = "ゼニガメ"
@@ -261,6 +262,7 @@ func Test_Default(t *testing.T) {
 	t.Errorf("Damages:%s", dmg.String())
 	t.Errorf("Rate:%s", rate.String())
 }
+*/
 
 func defaultSituation() *situation.SituationData {
 	d := &situation.SituationData{
