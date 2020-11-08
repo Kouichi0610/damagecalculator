@@ -41,6 +41,11 @@ func (t IndividualType) Create() *IndividualStats {
 	return newIndividualStats(31, 31, 31, 31, 31, 31)
 }
 
+// TODO:
+func NewIndividualStats(hp, at, df, sa, sd, sp uint) *IndividualStats {
+	return newIndividualStats(hp, at, df, sa, sd, sp)
+}
+
 func newIndividualStats(hp, at, df, sa, sd, sp uint) *IndividualStats {
 	res := new(IndividualStats)
 	res.hp = newIndividual(hp)

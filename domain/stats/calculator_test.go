@@ -1,6 +1,9 @@
 package stats
 
-import "testing"
+import (
+	"damagecalculator/domain/basepoints"
+	"testing"
+)
 
 func Test_外部用(t *testing.T) {
 	l := NewLevel(100)
@@ -66,6 +69,6 @@ func Test_Lower(t *testing.T) {
 	}
 }
 
-func getStats() (Level, Species, Individual, BasePoint) {
-	return NewLevel(50), newSpecies(80), newIndividual(31), newBasePoint(252)
+func getStats() (Level, Species, Individual, basePoints.BasePoint) {
+	return NewLevel(50), newSpecies(80), newIndividual(31), basePoints.NewBasePoint(252)
 }

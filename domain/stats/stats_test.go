@@ -1,6 +1,9 @@
 package stats
 
-import "testing"
+import (
+	"damagecalculator/domain/basepoints"
+	"testing"
+)
 
 // 能力値を生成すること
 func Test_Stats(t *testing.T) {
@@ -8,7 +11,7 @@ func Test_Stats(t *testing.T) {
 	n := NewNature(Bold)
 	s := NewSpeciesStats(95, 109, 105, 75, 85, 56)
 	i := IndividualTypeMax.Create()
-	b, _ := NewBasePointStats(6, 252, 0, 0, 0, 252)
+	b := basePoints.New(6, 252, 0, 0, 0, 252)
 
 	stats := NewStats(l, s, i, b, n)
 

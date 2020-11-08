@@ -1,6 +1,7 @@
 package species
 
 import (
+	"damagecalculator/domain/basepoints"
 	"damagecalculator/domain/gender"
 	"damagecalculator/domain/stats"
 	"damagecalculator/domain/status"
@@ -50,7 +51,7 @@ type StatusFactoryArgs struct {
 	Ranks      [5]int
 	Nature     stats.NatureType
 	Individual *stats.IndividualStats
-	BasePoint  *stats.BasePointStats
+	BasePoint  basePoints.BasePoints
 }
 
 // name(id), Level, Ranks Nature, Individual, BasePoint

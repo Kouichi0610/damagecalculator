@@ -1,6 +1,7 @@
 package species
 
 import (
+	"damagecalculator/domain/basepoints"
 	"damagecalculator/domain/gender"
 	"damagecalculator/domain/stats"
 	"damagecalculator/domain/status"
@@ -18,14 +19,14 @@ func Test_Repository(t *testing.T) {
 	if err == nil {
 		t.Error()
 	}
-	basePoints, err := stats.NewBasePointStats(6, 252, 0, 0, 0, 252)
+	bps := basePoints.New(6, 252, 0, 0, 0, 252)
 	args = &StatusFactoryArgs{
 		Name:       "ツンデツンデ",
 		Level:      100,
 		Ranks:      [5]int{1, 2, -1, 4, 6},
 		Nature:     stats.Adamant,
 		Individual: stats.NewIndividualStats(31, 31, 31, 31, 31, 31),
-		BasePoint:  basePoints,
+		BasePoint:  bps,
 	}
 	stats, ab, mv, g, err := s.Create(args)
 	if err != nil {
@@ -70,6 +71,10 @@ func newRepository() Repository {
 }
 
 type speciesRepository struct {
+}
+
+func (s *speciesRepository) GetAll() []Species {
+	return nil
 }
 
 func (s *speciesRepository) Get(name string) (*Species, error) {
