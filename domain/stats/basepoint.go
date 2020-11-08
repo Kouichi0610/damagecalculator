@@ -2,18 +2,21 @@ package stats
 
 import "fmt"
 
-/*
-	基礎ポイント
-	・HP、こうげき、ぼうぎょ、とくこう、とくぼう、すばやさそれぞれに設定
-	・個別の範囲は0～252
-	・合計値は510以内であること
-*/
 var MinBasePoint uint = 0
 var MaxBasePoint uint = 252
 
 type BasePoint uint
 
 var totalBasePoint uint = 510
+
+/*
+TODO:よくあるパターン
+	フルアタックなど
+	説明追加
+
+	他の[]uint BasePointsなどを置き換え
+
+*/
 
 type BasePointStats struct {
 	hp, at, df, sa, sd, sp BasePoint

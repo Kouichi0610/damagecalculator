@@ -154,3 +154,25 @@ func Test_string(t *testing.T) {
 		}
 	}
 }
+
+func Test_List(t *testing.T) {
+	list := List()
+	if len(list) != 18 {
+		t.Error()
+	}
+	list[0] = Fire
+
+	other := List()
+	if other[0] == Fire {
+		t.Error()
+	}
+}
+
+func Test_攻撃が有効なタイプ一覧(t *testing.T) {
+	actuals := Bug.AttackEffectiveTypes()
+	expects := []Type{Normal, Water, Electric, Grass, Ice, Ground, Psychic, Bug, Rock, Dragon, Dark}
+
+	if !reflect.DeepEqual(actuals, expects) {
+		t.Errorf("%v", actuals)
+	}
+}

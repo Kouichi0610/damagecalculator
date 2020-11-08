@@ -2,6 +2,7 @@ package situation
 
 import (
 	"damagecalculator/domain/ability"
+	"damagecalculator/domain/condition"
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/item"
 	"damagecalculator/domain/move"
@@ -10,25 +11,37 @@ import (
 	"damagecalculator/domain/status"
 )
 
-type Individuals struct {
-	HP, Attack, Defense, SpAttack, SpDefense, Speed uint
-}
-type BasePoints struct {
-	HP, Attack, Defense, SpAttack, SpDefense, Speed uint
-}
-type Ranks struct {
-	Attack, Defense, SpAttack, SpDefense, Speed int
+type SituationData struct {
+	Move string
+
+	Attacker, Defender PokeData
+
+	Weather field.Weather
+	Field   field.Field
+
+	// Condition
+	IsCritical    bool
+	IsReflector   bool
+	IsLightScreen bool
 }
 
 type PokeData struct {
 	Name        string
 	Level       uint
-	Individuals Individuals
+	Individuals stats.IndividualType
 	BasePoints  BasePoints
 	Ranks       Ranks
 	Nature      stats.NatureType
 	Ability     string
 	Item        string
+	Condition   condition.ConditionType
+}
+
+type BasePoints struct {
+	HP, Attack, Defense, SpAttack, SpDefense, Speed uint
+}
+type Ranks struct {
+	Attack, Defense, SpAttack, SpDefense, Speed int
 }
 
 func (p *PokeData) Create(sp species.Repository) (*status.StatusData, error) {
@@ -40,7 +53,7 @@ func (p *PokeData) Create(sp species.Repository) (*status.StatusData, error) {
 	l := stats.NewLevel(p.Level)
 	n := stats.NewNature(p.Nature)
 	s := stats.NewSpeciesStats(d.HP, d.Attack, d.Defense, d.SpAttack, d.SpDefense, d.Speed)
-	i := stats.NewIndividualStats(p.Individuals.HP, p.Individuals.Attack, p.Individuals.Defense, p.Individuals.SpAttack, p.Individuals.SpDefense, p.Individuals.Speed)
+	i := p.Individuals.Create()
 	b, err := stats.NewBasePointStats(p.BasePoints.HP, p.BasePoints.Attack, p.BasePoints.Defense, p.BasePoints.SpAttack, p.BasePoints.SpDefense, p.BasePoints.Speed)
 	if err != nil {
 		return nil, err
@@ -63,21 +76,6 @@ func (p *PokeData) Create(sp species.Repository) (*status.StatusData, error) {
 		SpeedRank:     p.Ranks.Speed,
 		Weight:        d.Weight,
 	}, nil
-}
-
-type SituationData struct {
-	Move string
-
-	Attacker, Defender PokeData
-
-	Weather field.Weather
-	Field   field.Field
-
-	// Condition
-	IsCritical    bool
-	IsBurn        bool
-	IsReflector   bool
-	IsLightScreen bool
 }
 
 func (s *SituationData) Create(mv move.Repository, sp species.Repository, ab ability.Repository, it item.Repository) (SituationChecker, error) {

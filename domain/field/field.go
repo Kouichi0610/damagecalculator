@@ -25,6 +25,24 @@ const (
 	MystField
 )
 
+func ToWeather(name string) Weather {
+	for k, v := range weatherNames {
+		if v == name {
+			return k
+		}
+	}
+	return NoWeather
+}
+
+func ToField(name string) Field {
+	for k, v := range fieldNames {
+		if v == name {
+			return k
+		}
+	}
+	return NoField
+}
+
 // 技のタイプから補正がかかっているか確認
 
 /*
@@ -137,4 +155,23 @@ func (f Field) hasPlus(s *types.Types) bool {
 		return s.Has(types.Grass)
 	}
 	return false
+}
+
+var weatherNames map[Weather]string
+var fieldNames map[Field]string
+
+func init() {
+	weatherNames = make(map[Weather]string)
+	fieldNames = make(map[Field]string)
+	weatherNames[NoWeather] = "なし"
+	weatherNames[Sunny] = "はれ"
+	weatherNames[Rainy] = "あめ"
+	weatherNames[Snow] = "あられ"
+	weatherNames[SandStorm] = "すなあらし"
+
+	fieldNames[NoField] = "なし"
+	fieldNames[ElectricField] = "エレキフィールド"
+	fieldNames[PsychoField] = "サイコフィールド"
+	fieldNames[GrassField] = "グラスフィールド"
+	fieldNames[MystField] = "ミストフィールド"
 }

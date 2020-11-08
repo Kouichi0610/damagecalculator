@@ -7,7 +7,7 @@ func Test_Stats(t *testing.T) {
 	l := NewLevel(50)
 	n := NewNature(Bold)
 	s := NewSpeciesStats(95, 109, 105, 75, 85, 56)
-	i := NewIndividualStats(31, 31, 31, 31, 31, 31)
+	i := IndividualTypeMax.Create()
 	b, _ := NewBasePointStats(6, 252, 0, 0, 0, 252)
 
 	stats := NewStats(l, s, i, b, n)

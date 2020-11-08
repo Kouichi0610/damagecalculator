@@ -5,6 +5,39 @@ import (
 	"testing"
 )
 
+func Test_ToWeather(t *testing.T) {
+	expects := map[string]Weather{
+		"なし":    NoWeather,
+		"はれ":    Sunny,
+		"あめ":    Rainy,
+		"あられ":   Snow,
+		"すなあらし": SandStorm,
+		"その他":   NoWeather,
+	}
+	for k, expect := range expects {
+		actual := ToWeather(k)
+		if actual != expect {
+			t.Errorf("Actual:%d Expect:%d", actual, expect)
+		}
+	}
+}
+func Test_ToField(t *testing.T) {
+	expects := map[string]Field{
+		"なし":       NoField,
+		"エレキフィールド": ElectricField,
+		"サイコフィールド": PsychoField,
+		"ミストフィールド": MystField,
+		"グラスフィールド": GrassField,
+		"その他":      NoField,
+	}
+	for k, expect := range expects {
+		actual := ToField(k)
+		if actual != expect {
+			t.Errorf("Actual:%d Expect:%d", actual, expect)
+		}
+	}
+}
+
 func Test_Weather_晴れ(t *testing.T) {
 	w := Sunny
 	plus := weatherToPlusCorrectMap(w)

@@ -2,12 +2,59 @@ package situation
 
 import (
 	"damagecalculator/domain/field"
+	"damagecalculator/domain/stats"
 	"damagecalculator/domain/types"
 	"damagecalculator/infra/local"
 	"encoding/json"
 	"reflect"
 	"testing"
 )
+
+func Test_Builder(t *testing.T) {
+	builder := NewBuilder(local.Species(), local.Ability(), local.Move(), local.Item())
+	if builder == nil {
+		t.Error()
+	}
+	fields := &FieldCondition{
+		Weather:      "なし",
+		Field:        "なし",
+		HasReflector: false,
+	}
+	attacker := &PokeParams{
+		Name:        "ピカチュウ",
+		Individuals: "Max",
+		BasePoints:  []uint{6, 252, 0, 0, 0, 252},
+		Ranks:       []int{0, 0, 0, 0, 0},
+		Ability:     "せいでんき",
+		Item:        "None",
+		Nature:      "のんき",
+		Condition:   "なし",
+	}
+	defender := &PokeParams{
+		Name:        "シェルダー",
+		Individuals: "Max",
+		BasePoints:  []uint{252, 0, 252, 0, 0, 0},
+		Ranks:       []int{0, 0, 0, 0, 0},
+		Ability:     "げきりゅう",
+		Item:        "None",
+		Condition:   "なし",
+	}
+	move := "ボルテッカー"
+
+	st, err := builder.ToSituation(50, attacker, defender, move, fields)
+	if err != nil {
+		t.Error()
+	}
+	if st == nil {
+		t.Error()
+	}
+	if st.Attacker().Attack().Value() != 107 {
+		t.Errorf("%d", st.Attacker().Attack().Value())
+	}
+	if st.Defender().SpDefense().Value() != 45 {
+		t.Errorf("%d", st.Defender().SpDefense().Value())
+	}
+}
 
 func Test_Situation生成(t *testing.T) {
 	mv := local.Move()
@@ -19,7 +66,7 @@ func Test_Situation生成(t *testing.T) {
 		Attacker: PokeData{
 			Name:        "ピカチュウ",
 			Level:       50,
-			Individuals: Individuals{31, 31, 31, 31, 31, 31},
+			Individuals: stats.IndividualTypeMax,
 			BasePoints:  BasePoints{6, 252, 0, 0, 0, 252},
 			Ranks:       Ranks{1, 2, 3, 4, 5},
 			Ability:     "none",
@@ -28,7 +75,7 @@ func Test_Situation生成(t *testing.T) {
 		Defender: PokeData{
 			Name:        "ゼニガメ",
 			Level:       50,
-			Individuals: Individuals{31, 31, 31, 31, 31, 31},
+			Individuals: stats.IndividualTypeMax,
 			BasePoints:  BasePoints{252, 0, 252, 0, 6, 0},
 			Ranks:       Ranks{-1, -2, -3, -4, -5},
 			Ability:     "none",
@@ -37,7 +84,6 @@ func Test_Situation生成(t *testing.T) {
 		Weather:       field.Sunny,
 		Field:         field.ElectricField,
 		IsCritical:    false,
-		IsBurn:        false,
 		IsReflector:   false,
 		IsLightScreen: false,
 	}
