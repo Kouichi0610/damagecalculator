@@ -14,19 +14,6 @@ import (
 )
 
 // 仮想敵のダメージ結果リスト作成
-// virtual?
-//TODO:Domain層に作っておくべき
-
-/*
-	TODO:仮想敵リストをDomainに
-
-	args types, moves
-
-
-	戦える相手
-	戦えない相手
-
-*/
 
 type (
 	Result interface {
@@ -64,7 +51,7 @@ func (s *vdService) Create(level stats.Level, attacker *situation.PokeParams, mo
 	if err != nil {
 		return nil
 	}
-	rateService := NewService(s.sp, s.mv, s.ab, s.it)
+	rateService := damage.NewDamageService(s.sp, s.mv, s.ab, s.it)
 
 	fmt.Printf("Attacker:%s\n", attacker.Name)
 
