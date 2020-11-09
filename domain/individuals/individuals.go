@@ -25,12 +25,20 @@ const (
 	Weakest
 )
 
-func ToIndividuals(name string) Individuals {
+func NewIndividual(v uint) Individual {
+	return clamp(v)
+}
+
+func ToIndividualType(name string) Type {
 	t, ok := typesMap[name]
 	if !ok {
-		return Max.ToIndividuals()
+		return Max
 	}
-	return t.ToIndividuals()
+	return t
+}
+
+func ToIndividuals(name string) Individuals {
+	return ToIndividualType(name).ToIndividuals()
 }
 
 func (t Type) ToIndividuals() Individuals {

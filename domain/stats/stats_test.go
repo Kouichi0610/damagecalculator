@@ -2,6 +2,7 @@ package stats
 
 import (
 	"damagecalculator/domain/basepoints"
+	"damagecalculator/domain/individuals"
 	"testing"
 )
 
@@ -10,7 +11,7 @@ func Test_Stats(t *testing.T) {
 	l := NewLevel(50)
 	n := NewNature(Bold)
 	s := NewSpeciesStats(95, 109, 105, 75, 85, 56)
-	i := IndividualTypeMax.Create()
+	i := individuals.Max.ToIndividuals()
 	b := basePoints.New(6, 252, 0, 0, 0, 252)
 
 	stats := NewStats(l, s, i, b, n)

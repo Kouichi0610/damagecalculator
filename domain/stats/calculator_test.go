@@ -2,6 +2,7 @@ package stats
 
 import (
 	"damagecalculator/domain/basepoints"
+	"damagecalculator/domain/individuals"
 	"testing"
 )
 
@@ -69,6 +70,6 @@ func Test_Lower(t *testing.T) {
 	}
 }
 
-func getStats() (Level, Species, Individual, basePoints.BasePoint) {
-	return NewLevel(50), newSpecies(80), newIndividual(31), basePoints.NewBasePoint(252)
+func getStats() (Level, Species, individuals.Individual, basePoints.BasePoint) {
+	return NewLevel(50), newSpecies(80), individuals.NewIndividual(31), basePoints.NewBasePoint(252)
 }

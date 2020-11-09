@@ -2,6 +2,7 @@ package stats
 
 import (
 	"damagecalculator/domain/basepoints"
+	"damagecalculator/domain/individuals"
 )
 
 type NatureType uint
@@ -71,22 +72,22 @@ func NatureDescriptions() []NatureDesc {
 	return res
 }
 
-func (n *Nature) calcHP(l Level, s Species, i Individual, b basePoints.BasePoint) uint {
+func (n *Nature) calcHP(l Level, s Species, i individuals.Individual, b basePoints.BasePoint) uint {
 	return n.hp(l, s, i, b)
 }
-func (n *Nature) calcAttack(l Level, s Species, i Individual, b basePoints.BasePoint) uint {
+func (n *Nature) calcAttack(l Level, s Species, i individuals.Individual, b basePoints.BasePoint) uint {
 	return n.at(l, s, i, b)
 }
-func (n *Nature) calcDefense(l Level, s Species, i Individual, b basePoints.BasePoint) uint {
+func (n *Nature) calcDefense(l Level, s Species, i individuals.Individual, b basePoints.BasePoint) uint {
 	return n.df(l, s, i, b)
 }
-func (n *Nature) calcSpAttack(l Level, s Species, i Individual, b basePoints.BasePoint) uint {
+func (n *Nature) calcSpAttack(l Level, s Species, i individuals.Individual, b basePoints.BasePoint) uint {
 	return n.sa(l, s, i, b)
 }
-func (n *Nature) calcSpDefense(l Level, s Species, i Individual, b basePoints.BasePoint) uint {
+func (n *Nature) calcSpDefense(l Level, s Species, i individuals.Individual, b basePoints.BasePoint) uint {
 	return n.sd(l, s, i, b)
 }
-func (n *Nature) calcSpeed(l Level, s Species, i Individual, b basePoints.BasePoint) uint {
+func (n *Nature) calcSpeed(l Level, s Species, i individuals.Individual, b basePoints.BasePoint) uint {
 	return n.sp(l, s, i, b)
 }
 

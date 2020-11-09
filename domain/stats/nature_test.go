@@ -2,6 +2,7 @@ package stats
 
 import (
 	"damagecalculator/domain/basepoints"
+	"damagecalculator/domain/individuals"
 	"testing"
 )
 
@@ -74,7 +75,7 @@ func Test_Nature(t *testing.T) {
 func testCalcStats(n *Nature) [6]uint {
 	l := NewLevel(100)
 	s := newSpecies(100)
-	i := newIndividual(31)
+	i := individuals.NewIndividual(31)
 	b := basePoints.NewBasePoint(252)
 	res := [6]uint{0, 0, 0, 0, 0, 0}
 	res[0] = n.calcHP(l, s, i, b)

@@ -2,7 +2,7 @@ package situation
 
 import (
 	"damagecalculator/domain/field"
-	"damagecalculator/domain/stats"
+	"damagecalculator/domain/individuals"
 	"damagecalculator/domain/types"
 	"damagecalculator/infra/local"
 	"encoding/json"
@@ -66,7 +66,7 @@ func Test_Situation生成(t *testing.T) {
 		Attacker: PokeData{
 			Name:        "ピカチュウ",
 			Level:       50,
-			Individuals: stats.IndividualTypeMax,
+			Individuals: individuals.Max,
 			BasePoints:  BasePoints{6, 252, 0, 0, 0, 252},
 			Ranks:       Ranks{1, 2, 3, 4, 5},
 			Ability:     "none",
@@ -75,7 +75,7 @@ func Test_Situation生成(t *testing.T) {
 		Defender: PokeData{
 			Name:        "ゼニガメ",
 			Level:       50,
-			Individuals: stats.IndividualTypeMax,
+			Individuals: individuals.Max,
 			BasePoints:  BasePoints{252, 0, 252, 0, 6, 0},
 			Ranks:       Ranks{-1, -2, -3, -4, -5},
 			Ability:     "none",

@@ -5,6 +5,7 @@ import (
 	"damagecalculator/domain/basepoints"
 	"damagecalculator/domain/condition"
 	"damagecalculator/domain/field"
+	"damagecalculator/domain/individuals"
 	"damagecalculator/domain/item"
 	"damagecalculator/domain/move"
 	"damagecalculator/domain/species"
@@ -29,7 +30,7 @@ type SituationData struct {
 type PokeData struct {
 	Name        string
 	Level       uint
-	Individuals stats.IndividualType
+	Individuals individuals.Type
 	BasePoints  BasePoints
 	Ranks       Ranks
 	Nature      stats.NatureType
@@ -54,7 +55,7 @@ func (p *PokeData) Create(sp species.Repository) (*status.StatusData, error) {
 	l := stats.NewLevel(p.Level)
 	n := stats.NewNature(p.Nature)
 	s := stats.NewSpeciesStats(d.HP, d.Attack, d.Defense, d.SpAttack, d.SpDefense, d.Speed)
-	i := p.Individuals.Create()
+	i := p.Individuals.ToIndividuals()
 	b := basePoints.New(p.BasePoints.HP, p.BasePoints.Attack, p.BasePoints.Defense, p.BasePoints.SpAttack, p.BasePoints.SpDefense, p.BasePoints.Speed)
 	if err != nil {
 		return nil, err

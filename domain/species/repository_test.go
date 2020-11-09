@@ -3,6 +3,7 @@ package species
 import (
 	"damagecalculator/domain/basepoints"
 	"damagecalculator/domain/gender"
+	"damagecalculator/domain/individuals"
 	"damagecalculator/domain/stats"
 	"damagecalculator/domain/status"
 	"damagecalculator/domain/types"
@@ -25,7 +26,7 @@ func Test_Repository(t *testing.T) {
 		Level:      100,
 		Ranks:      [5]int{1, 2, -1, 4, 6},
 		Nature:     stats.Adamant,
-		Individual: stats.NewIndividualStats(31, 31, 31, 31, 31, 31),
+		Individual: individuals.Max.ToIndividuals(),
 		BasePoint:  bps,
 	}
 	stats, ab, mv, g, err := s.Create(args)

@@ -4,6 +4,7 @@ import (
 	"damagecalculator/domain/ability"
 	"damagecalculator/domain/condition"
 	"damagecalculator/domain/field"
+	"damagecalculator/domain/individuals"
 	"damagecalculator/domain/item"
 	"damagecalculator/domain/move"
 	"damagecalculator/domain/species"
@@ -61,7 +62,7 @@ func (b *builder) ToSituation(level stats.Level, attacker, defender *PokeParams,
 		Attacker: PokeData{
 			Name:        attacker.Name,
 			Level:       uint(level),
-			Individuals: stats.ToIndividualType(attacker.Individuals),
+			Individuals: individuals.ToIndividualType(attacker.Individuals),
 			BasePoints:  toBasePoints(attacker.BasePoints),
 			Ranks:       Ranks{0, 0, 0, 0, 0},
 			Ability:     attacker.Ability,
@@ -72,7 +73,7 @@ func (b *builder) ToSituation(level stats.Level, attacker, defender *PokeParams,
 		Defender: PokeData{
 			Name:        defender.Name,
 			Level:       uint(level),
-			Individuals: stats.ToIndividualType(defender.Individuals),
+			Individuals: individuals.ToIndividualType(defender.Individuals),
 			BasePoints:  toBasePoints(defender.BasePoints),
 			Ranks:       Ranks{0, 0, 0, 0, 0},
 			Ability:     defender.Ability,
