@@ -1,7 +1,7 @@
 package server
 
 import (
-	"damagecalculator/domain/stats"
+	"damagecalculator/domain/individuals"
 	"damagecalculator/usecase/statspattern"
 	"net/http"
 
@@ -18,7 +18,7 @@ func (s *serverImpl) statsPattern(c *gin.Context) {
 	var q query
 	c.BindQuery(&q)
 
-	individual := stats.ToIndividualType(q.Individual)
+	individual := individuals.ToIndividualType(q.Individual)
 
 	ld := statspattern.NewLoader(s.s)
 	r, err := ld.Get(q.Level, q.Name, q.Nature, individual)

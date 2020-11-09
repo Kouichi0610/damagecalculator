@@ -3,6 +3,7 @@ package damage
 import (
 	"damagecalculator/domain/ability"
 	"damagecalculator/domain/field"
+	"damagecalculator/domain/individuals"
 	"damagecalculator/domain/item"
 	"damagecalculator/domain/move"
 	"damagecalculator/domain/situation"
@@ -254,6 +255,7 @@ func Test_もちもの補正(t *testing.T) {
 	}
 }
 
+/*
 func Test_Default(t *testing.T) {
 	a := defaultSituation()
 	a.Defender.Name = "ゼニガメ"
@@ -261,6 +263,7 @@ func Test_Default(t *testing.T) {
 	t.Errorf("Damages:%s", dmg.String())
 	t.Errorf("Rate:%s", rate.String())
 }
+*/
 
 func defaultSituation() *situation.SituationData {
 	d := &situation.SituationData{
@@ -268,7 +271,7 @@ func defaultSituation() *situation.SituationData {
 		Attacker: situation.PokeData{
 			Name:        "ピカチュウ",
 			Level:       50,
-			Individuals: stats.IndividualTypeMax,
+			Individuals: individuals.Max,
 			BasePoints:  situation.BasePoints{6, 252, 0, 0, 0, 252},
 			Ranks:       situation.Ranks{0, 0, 0, 0, 0},
 			Ability:     "none",
@@ -277,7 +280,7 @@ func defaultSituation() *situation.SituationData {
 		Defender: situation.PokeData{
 			Name:        "ピジョット",
 			Level:       50,
-			Individuals: stats.IndividualTypeMax,
+			Individuals: individuals.Max,
 			BasePoints:  situation.BasePoints{252, 0, 252, 0, 6, 0},
 			Ranks:       situation.Ranks{0, 0, 0, 0, 0},
 			Ability:     "none",

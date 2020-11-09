@@ -1,7 +1,7 @@
 package statspattern
 
 import (
-	"damagecalculator/domain/stats"
+	"damagecalculator/domain/individuals"
 	"damagecalculator/infra/local"
 	"testing"
 )
@@ -10,7 +10,7 @@ func Test_statsPattern(t *testing.T) {
 	rp := local.Species()
 	l := NewLoader(rp)
 
-	stats, err := l.Get(50, "ツンデツンデ", "いじっぱり", stats.IndividualTypeMax)
+	stats, err := l.Get(50, "ツンデツンデ", "いじっぱり", individuals.Max)
 	if err != nil {
 		t.Error()
 	}
@@ -39,7 +39,7 @@ func Test_ヌケニン(t *testing.T) {
 	rp := local.Species()
 	l := NewLoader(rp)
 
-	stats, err := l.Get(50, "ヌケニン", "いじっぱり", stats.IndividualTypeMax)
+	stats, err := l.Get(50, "ヌケニン", "いじっぱり", individuals.Max)
 	if err != nil {
 		t.Error()
 	}

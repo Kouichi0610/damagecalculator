@@ -1,6 +1,7 @@
 package statspattern
 
 import (
+	"damagecalculator/domain/individuals"
 	"damagecalculator/domain/species"
 	"damagecalculator/domain/stats"
 )
@@ -11,7 +12,7 @@ import (
 */
 type (
 	Loader interface {
-		Get(level int, name string, nature string, individual stats.IndividualType) (StatsPattern, error)
+		Get(level int, name string, nature string, individual individuals.Type) (StatsPattern, error)
 	}
 	StatsPattern interface {
 		HP() []uint
@@ -60,7 +61,7 @@ func (s *statsPattern) Speed() []uint {
 	return s.sp
 }
 
-func (l *loader) Get(level int, name string, nature string, individual stats.IndividualType) (StatsPattern, error) {
+func (l *loader) Get(level int, name string, nature string, individual individuals.Type) (StatsPattern, error) {
 	s, err := l.rp.Get(name)
 	if err != nil {
 		return nil, err
@@ -69,7 +70,7 @@ func (l *loader) Get(level int, name string, nature string, individual stats.Ind
 	lv := stats.NewLevel(uint(level))
 
 	sstats := stats.NewSpeciesStats(s.HP, s.Attack, s.Defense, s.SpAttack, s.SpDefense, s.Speed)
-	istats := individual.Create()
+	istats := individual.ToIndividuals()
 
 	hpval := make([]uint, 0)
 	atval := make([]uint, 0)
