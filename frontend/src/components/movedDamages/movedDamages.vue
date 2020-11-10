@@ -18,6 +18,8 @@
 // class="col-2"
 import { Vue, Component } from "vue-property-decorator";
 
+import {DefenderDamages} from "../attacker/defenderDamages"
+
 /*
   わざと仮想敵へのダメージ一覧
 
@@ -28,6 +30,12 @@ export default class MovedDamages extends Vue {
   private move: string = "はかいこうせん";
   private min: number = 43;
   private max: number = 50;
+
+  created() {
+    console.log('test.');
+    var d = new(DefenderDamages);
+    d.getSample();
+  }
   
 }
 </script>

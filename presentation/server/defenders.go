@@ -10,20 +10,26 @@ import (
 )
 
 /*
-	ダメージ計算
-
+	攻撃側ポケモンとわざ、環境を元に
+	仮想敵一覧を取得して
+	そのダメージ一覧をGETする
 */
 func (s *serverImpl) defenderDamages(c *gin.Context) {
 	type query struct {
-		Level       uint
-		BasePoints  []uint
-		Individuals string
-		Name        string
-		Move        string
-		Ability     string
-		Nature      string
-		Item        string
-		Condition   string
+		Level         uint
+		BaseHP        uint
+		BaseAttack    uint
+		BaseDefense   uint
+		BaseSpAttack  uint
+		BaseSpDefense uint
+		BaseSpeed     uint
+		Individuals   string
+		Name          string
+		Move          string
+		Ability       string
+		Nature        string
+		Item          string
+		Condition     string
 	}
 	var q query
 	c.BindQuery(&q)
@@ -34,15 +40,20 @@ func (s *serverImpl) defenderDamages(c *gin.Context) {
 	attacker := &situation.PokeParams{
 		Name:        q.Name,
 		Individuals: q.Individuals,
-		BasePoints:  q.BasePoints,
+		BasePoints:  []uint{q.BaseHP, q.BaseAttack, q.BaseDefense, q.BaseSpAttack, q.BaseSpDefense, q.BaseSpeed},
 		Ranks:       []int{0, 0, 0, 0, 0},
 		Ability:     q.Ability,
 		Item:        q.Item,
 		Nature:      q.Nature,
 		Condition:   q.Condition,
 	}
+	conditions := &situation.FieldCondition{
+		Weather:      "",
+		Field:        "",
+		HasReflector: false,
+	}
 
-	damages := service.Create(lv, attacker, q.Move, nil)
+	damages := service.Create(lv, attacker, q.Move, conditions)
 
 	type result struct {
 		Target         string  `json:"target"`
