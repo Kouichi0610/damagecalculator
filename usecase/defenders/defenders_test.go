@@ -34,11 +34,6 @@ func Test_Defenders(t *testing.T) {
 	if len(res) == 0 {
 		t.Error()
 	}
-	/*
-		for _, r := range res {
-			t.Errorf("%v", r)
-		}
-	*/
 }
 
 func Test_Result(t *testing.T) {

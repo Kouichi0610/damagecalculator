@@ -50,6 +50,7 @@ func (s *serverImpl) Serve() (http.Handler, error) {
 	router.GET("/stats_pattern", s.statsPattern)
 	router.GET("/ability_owner_speed", s.abilitiesOwnerSpeedEffect)
 	router.GET("/ability_other_speed", s.abilitiesOtherSpeedEffect)
+	router.GET("/defender_damages", s.defenderDamages)
 
 	return router, router.Run(":8080")
 }
