@@ -2,6 +2,7 @@ package damage
 
 import (
 	"fmt"
+	"math"
 )
 
 /*
@@ -37,14 +38,19 @@ func (d *damageRate) RateMin() float64 {
 	if d.hp == 0 {
 		return 0
 	}
-	return float64(d.dmg.Min()) / d.hp * 100
+	return calcRate(d.dmg.Min(), d.hp)
 }
 
 func (d *damageRate) RateMax() float64 {
 	if d.hp == 0 {
 		return 0
 	}
-	return float64(d.dmg.Max()) / d.hp * 100
+	return calcRate(d.dmg.Max(), d.hp)
+}
+
+func calcRate(dmg uint, hp float64) float64 {
+	tmp := float64(dmg) / hp * 1000
+	return math.Round(tmp) / 10
 }
 
 func (d *damageRate) DetermineCount() uint {

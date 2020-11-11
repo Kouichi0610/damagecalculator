@@ -33,7 +33,7 @@ export default class MovedDamages extends Vue {
 
   created() {
     console.log('test.');
-    var d = new(DefenderDamages);
+    var d = new DefenderDamages('デンジュモク', 50, 'Max', [0,0,0,252,0,252], 'ひかえめ', 'ビーストブースト', 'はかいこうせん', 'なし', '正常', '', '');
     d.getSample();
   }
   

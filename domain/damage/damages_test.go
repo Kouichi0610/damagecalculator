@@ -380,6 +380,15 @@ func Test_DamageRate(t *testing.T) {
 	if d.String() != "250.0% 確定数1" {
 		t.Errorf("%s", d.String())
 	}
+
+	d = NewDamageRate(17, NewDamages([]uint{11}))
+	if d.RateMin() != 64.7 {
+		t.Errorf("%f", d.RateMin())
+	}
+	d = NewDamageRate(17, NewDamages([]uint{13}))
+	if d.RateMin() != 76.5 {
+		t.Errorf("%f", d.RateMin())
+	}
 }
 
 func Test_DamagesArray(t *testing.T) {
