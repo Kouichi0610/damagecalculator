@@ -16,8 +16,6 @@ import (
 	そのダメージ一覧をGETする
 */
 func (s *serverImpl) defenderDamages(c *gin.Context) {
-	// TODO:DamageRate小数点２位以下まるめ
-	// TODO:(front側)取得、変換クラス作成
 	// TODO:(front側)わざ4つまで
 	// TODO:天候、フィールド、状態異常リスト
 	type query struct {

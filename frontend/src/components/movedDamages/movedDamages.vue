@@ -32,11 +32,16 @@ export default class MovedDamages extends Vue {
   private max: number = 50;
 
   created() {
-    console.log('test.');
-    var d = new DefenderDamages('デンジュモク', 50, 'Max', [0,0,0,252,0,252], 'ひかえめ', 'ビーストブースト', 'はかいこうせん', 'なし', '正常', '', '');
-    d.getSample();
+    this.getResult();
   }
-  
+  async getResult() {
+    let d = new DefenderDamages('デンジュモク', 50, 'Max', [0,0,0,252,0,252], 'ひかえめ', 'ビーストブースト', 'かみなりパンチ', 'なし', '正常', '', 'エレキフィールド');
+    let res = await d.defenderDamages();
+    for (var i = 0; i < res.length; i++) {
+      let x = res[i]
+      console.log('' + x.Target + ' Damage:' + x.DamageMin + '-' + x.DamageMax + ' Rate:' + x.RateMin + '-' + x.RateMax + ' 確定数:' + x.DetermineCount);
+    }
+  }
 }
 </script>
 
