@@ -19,12 +19,39 @@ const router = new VueRouter({
       component: () => import('../views/Select.vue'),
     },
     {
-      path: '/attacker',
+      path: '/attacker0',
       name: 'Attacker',
       component: () => import('../views/Attacker.vue'),
       props: {
         default: true,
         index: 0,
+      },
+    },
+    {
+      path: '/attacker1',
+      name: 'Attacker',
+      component: () => import('../views/Attacker.vue'),
+      props: {
+        default: true,
+        index: 1,
+      },
+    },
+    {
+      path: '/attacker2',
+      name: 'Attacker',
+      component: () => import('../views/Attacker.vue'),
+      props: {
+        default: true,
+        index: 2,
+      },
+    },
+    {
+      path: '/attacker3',
+      name: 'Attacker',
+      component: () => import('../views/Attacker.vue'),
+      props: {
+        default: true,
+        index: 3,
       },
     },
     {
