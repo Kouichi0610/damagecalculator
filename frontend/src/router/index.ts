@@ -22,6 +22,10 @@ const router = new VueRouter({
       path: '/attacker',
       name: 'Attacker',
       component: () => import('../views/Attacker.vue'),
+      props: {
+        default: true,
+        index: 0,
+      },
     },
     {
       path: '/defender',

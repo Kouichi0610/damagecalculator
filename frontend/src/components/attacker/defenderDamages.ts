@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 /*
-  ダメージ一覧を取得
+  ダメージ一覧試作
 */
 export class DefenderDamages {
   private level: number
@@ -17,7 +17,6 @@ export class DefenderDamages {
   private field: string;
 
   constructor(attacker: string, level: number, individuals: string, basePoints: number[], nature: string, ability: string, move: string, item: string, condition: string, weather: string, field: string) {
-     
     this.attacker = attacker;
     this.level = level;
     this.individuals = individuals;
@@ -74,22 +73,41 @@ export class DefenderDamages {
   }
 
   private ToDefendersResult(d: any): DefendersResult {
-    return {
-      Target:d.target,
-      DamageMin: d.damage_min,
-      DamageMax: d.damage_max,
-      RateMin: d.rate_min,
-      RateMax: d.rate_max,
-      DetermineCount: d.determine_count,
-    }
+    return new DefendersResult(d.target, d.damage_min, d.damage_max, d.rate_min, d.rate_max, d.determine_count);
   }
 }
 
-export interface DefendersResult {
+export class DefendersResult {
   Target: string;
   DamageMin: number;
   DamageMax: number;
   RateMin: number;
   RateMax: number;
   DetermineCount: number;
+
+  constructor(target: string, damageMin: number, damageMax: number, rateMin: number, rateMax: number, determineCount: number) {
+    this.Target = target;
+    this.DamageMin = damageMin;
+    this.DamageMax = damageMax;
+    this.RateMax = rateMax;
+    this.RateMin = rateMin;
+    this.DetermineCount = determineCount;
+  }
+
+  Initialized(): boolean {
+    return this.Target.length > 0;
+  }
+
+  static Defaults(count: number): DefendersResult[] {
+    let res: DefendersResult[] = [];
+    for (var i = 0; i < count; i++) {
+      res.push(this.Default());
+    }
+    return res;
+  }
+
+  static Default(): DefendersResult {
+    return new DefendersResult('', 0, 0, 0, 0, 0);
+  }
 }
+

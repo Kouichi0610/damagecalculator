@@ -2,9 +2,8 @@
 <template>
   <div class="attacker">
     <target :show="true"></target>
+    <move-result :index="index" :target="sample"></move-result>
     <div class="row mb-1">
-      <moved-damages class="col-5"></moved-damages>
-      <moved-damages class="col-5"></moved-damages>
     </div>
   </div>
 </template>
@@ -13,17 +12,18 @@
 
 */
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import Target from '../components/target/target.vue'
-import MovedDamages from '../components/movedDamages/movedDamages.vue'
+import MoveResult from '../components/attacker/moveResult.vue'
 
 @Component({
   components: {
     Target,
-    MovedDamages,
+    MoveResult,
   }
 })
 export default class Attacker extends Vue {
+  @Prop() private index!: number;
 }
 </script>
 

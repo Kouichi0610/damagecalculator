@@ -4,7 +4,6 @@ import (
 	"damagecalculator/domain/situation"
 	"damagecalculator/domain/stats"
 	"damagecalculator/usecase/defenders"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -17,6 +16,7 @@ import (
 */
 func (s *serverImpl) defenderDamages(c *gin.Context) {
 	// TODO:(front側)わざ4つまで
+	// FieldsコンポーネントをVue側に
 	// TODO:天候、フィールド、状態異常リスト
 	type query struct {
 		Level         uint
@@ -57,13 +57,8 @@ func (s *serverImpl) defenderDamages(c *gin.Context) {
 		Field:        q.Field,
 		HasReflector: false,
 	}
-	fmt.Printf("Target:%s Move:%s\n", q.Name, q.Move)
 
 	damages := service.Create(lv, attacker, q.Move, conditions)
-	fmt.Printf("Damages:%d\n", len(damages))
-	for _, damages := range damages {
-		fmt.Printf("%s %f-%f\n", damages.Target(), damages.RateMin(), damages.RateMax())
-	}
 
 	type result struct {
 		Target         string  `json:"target"`
