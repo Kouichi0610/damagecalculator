@@ -162,11 +162,12 @@ export default class Target extends Vue {
   }
 
   @Watch("targetName")
-  private nameChanged() {
+  private async nameChanged() {
     if (this.targetName == "") {
       return;
     }
-    this.getSpecies(this.targetName);
+    let name = await this.getSpecies(this.targetName);
+    this.$emit('changeTarget', name);
   }
 
   @Watch("hp")
