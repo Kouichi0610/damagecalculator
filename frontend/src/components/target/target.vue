@@ -135,7 +135,6 @@ export default class Target extends Vue {
   @Watch("individuals")
   @Watch("nature")
   private getCalculate() {
-    console.log("this.individuals:" + this.individuals);
     if (this.name.length == 0) {
       return;
     }

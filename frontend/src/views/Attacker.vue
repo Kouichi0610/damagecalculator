@@ -22,7 +22,7 @@ import MoveResult from '../components/attacker/moveResult.vue'
 })
 export default class Attacker extends Vue {
   @Prop() private index!: number;
-  private targetName!: string;
+  private targetName: string = '';
 
   targetChanged(name: string) {
     this.targetName = name;
