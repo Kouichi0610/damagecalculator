@@ -5,8 +5,6 @@ import { MovesState, MoveInfo } from './types'
 
 export const actions: ActionTree<MovesState, RootState> = {
   getMoves: ({commit}, name: string): Promise<string> => {
-    console.log('get_moves...');
-
     return new Promise((resolve, reject) => {
       axios.get('moves', {
         params: {
@@ -15,12 +13,8 @@ export const actions: ActionTree<MovesState, RootState> = {
       })
       .then((response) => {
         let json = JSON.stringify(response.data);
-        console.log(json);
         let moveArray = JSON.parse(json);
-        for (var i = 0; i < moveArray.length; i++) {
-          let d = new MoveInfo(moveArray[i]);
-          console.log('' + d.ToString());
-        }
+        commit('setMoves', moveArray);
         resolve('');
       })
       .catch((e) => {
