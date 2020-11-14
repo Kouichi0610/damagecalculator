@@ -195,6 +195,7 @@ export default class Target extends Vue {
   }
 
   created() {
+    this.$emit('target', this.name);
     this.$emit('hp', this.hp);
     this.$emit('attack', this.attack);
     this.$emit('defense', this.defense);

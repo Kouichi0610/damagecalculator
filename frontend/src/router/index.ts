@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+//import Home from '../views/Home.vue'
+//import store from '../store/index'
 
 Vue.use(VueRouter)
 
@@ -10,11 +11,6 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: Home
-    },
-    {
-      path: '/select',
       name: 'SelectPomkemon',
       component: () => import('../views/Select.vue'),
     },

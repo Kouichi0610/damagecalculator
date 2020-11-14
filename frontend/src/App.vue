@@ -1,8 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/select">対象選択</router-link> |
+      <router-link to="/">対象選択</router-link> |
       <router-link to="/attacker0">攻撃調整A</router-link> |
       <router-link to="/attacker1">攻撃調整B</router-link> |
       <router-link to="/attacker2">攻撃調整C</router-link> |

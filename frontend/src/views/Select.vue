@@ -13,6 +13,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import TargetSelect from '../components/targetSelect/targetSelect.vue'
 import Target from '../components/target/target.vue'
 
+import router from '../router/index'
+
 @Component({
   components: {
     TargetSelect,
@@ -24,6 +26,7 @@ export default class Select extends Vue {
 
   onSelect(name: string) {
     this.name = name;
+    router.push({path: '/attacker0'})
   }
 }
 </script>
