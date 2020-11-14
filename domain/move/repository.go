@@ -9,6 +9,7 @@ import (
 	"damagecalculator/domain/move/power"
 	"damagecalculator/domain/move/target"
 	"damagecalculator/domain/types"
+	"fmt"
 )
 
 type (
@@ -30,6 +31,23 @@ type (
 		Detail   detail.Detail
 	}
 )
+
+func (m *MoveFactory) Types() string {
+	return m.Type.String()
+}
+
+// 特筆事項
+func (m *MoveFactory) Mention() string {
+	res := ""
+	if m.CountMin > 1 {
+		if m.CountMin == m.CountMax {
+			res += fmt.Sprintf("%d回攻撃", m.CountMin)
+		} else {
+			res += fmt.Sprintf("%d～%d回攻撃", m.CountMin, m.CountMax)
+		}
+	}
+	return res
+}
 
 // Moveインターフェイスを生成する
 func (m *MoveFactory) Create() (Move, error) {

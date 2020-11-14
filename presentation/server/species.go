@@ -7,8 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// TODO:getCalculators(name, nature)
-
 func (s *serverImpl) getSpecies(c *gin.Context) {
 	type query struct {
 		Name string

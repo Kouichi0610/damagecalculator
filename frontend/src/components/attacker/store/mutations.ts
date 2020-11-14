@@ -1,4 +1,3 @@
-import { BIconArrowReturnRight } from 'bootstrap-vue';
 import { MutationTree } from 'vuex';
 import { AttackerState, MoveCount } from './types';
 
