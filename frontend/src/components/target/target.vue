@@ -59,7 +59,7 @@ import Nature from "../nature/nature.vue";
 import StatsDisplay from "./components/statsDisplay.vue";
 import AbilitySelector from './components/abilitySelector.vue'
 
-import { StatsPatternArgs } from "./store/types";
+import { StatePatternsLoader } from './store/statePattern'
 
 const namespace: string = "target";
 
@@ -141,7 +141,7 @@ export default class Target extends Vue {
     if (this.nature.length == 0) {
       return;
     }
-    let args = new StatsPatternArgs(
+    let args = new StatePatternsLoader(
       this.level,
       this.name,
       this.nature,

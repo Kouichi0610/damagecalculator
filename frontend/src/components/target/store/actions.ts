@@ -1,28 +1,17 @@
 import { ActionTree } from 'vuex';
 import axios from 'axios';
 import { RootState } from '@/store/types'
-import { TargetState, Species, StatsPatternArgs } from './types'
+import { TargetState, Species } from './types'
+import { StatePatternsLoader } from './statePattern'
 
 export const actions: ActionTree<TargetState, RootState> = {
   setCurrentAbility: ({commit}, name: string) => {
     commit('setCurrentAbility', name);
   },
-  getStatsPattern: ({commit}, args: StatsPatternArgs) => {
-    axios.get('stats_pattern', {
-      params: {
-        Level: args.level,
-        Name: args.name,
-        Nature: args.nature,
-        Individual: args.individual,
-      }
-    })
-    .then((response) => {
-      let json = JSON.stringify(response.data);
-      let res = JSON.parse(json);
-      commit('setStatsPattern', res);
-    })
-    .catch((e) => {
-        console.log('failed:' + e);
+  getStatsPattern: ({commit}, args: StatePatternsLoader) => {
+    args.load()
+    .then((patterns) => {
+      commit('setStatsPattern', patterns);
     });
   },
   getSpecies: ({commit}, name: string): Promise<string> => {

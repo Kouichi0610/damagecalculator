@@ -2,11 +2,12 @@ import { Module } from 'vuex'
 import { getters } from './getters';
 import { actions } from './actions';
 import { mutations } from './mutations';
-import { StatePatterns, TargetState } from './types';
+import { TargetState } from './types';
 import { Species } from './types'
 import { Individuals } from './types'
 import { BasePoints } from './types'
 import { RootState } from '@/store/types';
+import {StatePatterns} from './statePattern'
 
 export const state: TargetState = {
   name: '',

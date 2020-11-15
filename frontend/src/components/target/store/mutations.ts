@@ -1,8 +1,9 @@
 import { StatsCalculator } from '@/domain/stats';
 import { MutationTree } from 'vuex';
+import { StatePatterns } from './statePattern';
 import Individuals, { TargetState } from './types';
 import Species from './types';
-import {BasePoints, StatePatterns} from './types';
+import { BasePoints } from './types';
 
 export const mutations: MutationTree<TargetState> = {
   setName(state, payload: string) {
@@ -50,8 +51,8 @@ export const mutations: MutationTree<TargetState> = {
   changeNature(state, payload: string) {
     state.nature = payload;
   },
-  setStatsPattern(state, payload: any) {
-    state.statePatterns = new StatePatterns(payload);
+  setStatsPattern(state, payload: StatePatterns) {
+    state.statePatterns = payload;
   },
 
 }
