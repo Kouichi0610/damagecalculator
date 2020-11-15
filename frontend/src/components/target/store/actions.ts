@@ -1,8 +1,8 @@
 import { ActionTree } from 'vuex';
-import axios from 'axios';
 import { RootState } from '@/store/types'
-import { TargetState, Species } from './types'
+import { TargetState } from './types'
 import { StatePatternsLoader } from './statePattern'
+import { SpeciesLoader } from './species'
 
 export const actions: ActionTree<TargetState, RootState> = {
   setCurrentAbility: ({commit}, name: string) => {
@@ -14,27 +14,15 @@ export const actions: ActionTree<TargetState, RootState> = {
       commit('setStatsPattern', patterns);
     });
   },
-  getSpecies: ({commit}, name: string): Promise<string> => {
+  getSpecies: ({commit}, loader: SpeciesLoader): Promise<boolean> => {
     return new Promise((resolve, reject) => {
-      axios.get('get_species', {
-        params: {
-          Name: name,
-        }
-      })
-      .then((response) => {
-        let json = JSON.stringify(response.data);
-        let sp = JSON.parse(json);
-        commit('setName', sp.Name);
-        commit('setTypes', sp.Types);
-        commit('setWeight', sp.Weight);
-        let species: Species = {hp: sp.Species[0], at: sp.Species[1], df: sp.Species[2], sa: sp.Species[3], sd: sp.Species[4], sp: sp.Species[5]};
+      loader.load()
+      .then((species) => {
         commit('setSpecies', species);
-        commit('setAbilities', sp.Abilities);
-        resolve(sp.Name);
+        resolve(true);
       })
       .catch((e) => {
-          console.log('failed:' + e);
-          reject('');
+        reject(false);
       });
     });
   },

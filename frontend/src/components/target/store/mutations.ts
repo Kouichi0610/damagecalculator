@@ -1,26 +1,12 @@
-import { StatsCalculator } from '@/domain/stats';
 import { MutationTree } from 'vuex';
 import { StatePatterns } from './statePattern';
-import Individuals, { TargetState } from './types';
-import Species from './types';
+import { TargetState } from './types';
 import { BasePoints } from './types';
+import { Species } from './species'
 
 export const mutations: MutationTree<TargetState> = {
-  setName(state, payload: string) {
-    state.name = payload;
-  },
-  setTypes(state, payload: string[]) {
-    state.types = payload;
-  },
-  setWeight(state, payload: number) {
-    state.weight = payload;
-  },
   setSpecies(state, payload: Species) {
     state.species = payload;
-  },
-  setAbilities(state, payload: string[]) {
-    state.abilities = payload;
-    state.currentAbility = payload[0];
   },
   setCurrentAbility(state, payload: string) {
     state.currentAbility = payload;

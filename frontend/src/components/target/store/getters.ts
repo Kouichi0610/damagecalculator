@@ -1,25 +1,14 @@
 import { GetterTree } from 'vuex';
 import { TargetState } from './types';
 import { RootState } from '@/store/types'
+import { Species } from './species'
 
 export const getters: GetterTree<TargetState, RootState> = {
-  hasTarget: (state: TargetState) => {
-    return state.name != '';
-  },
-  level: (state: TargetState, getters, rootState: RootState) => {
+  level: (state: TargetState, getters, rootState: RootState): number => {
     return rootState.level;
   },
-  name: (state: TargetState) => {
-    return state.name;
-  },
-  types: (state: TargetState) => {
-    return state.types;
-  },
-  species: (state: TargetState) => {
+  species: (state: TargetState): Species => {
     return state.species;
-  },
-  weight: (state: TargetState) => {
-    return state.weight;
   },
   nature: (state: TargetState) => {
     return state.nature;
@@ -47,9 +36,6 @@ export const getters: GetterTree<TargetState, RootState> = {
   },
   speed (state: TargetState) {
     return state.statePatterns.speed(state.basePoints.sp);
-  },
-  abilities (state: TargetState) {
-    return state.abilities;
   },
   currentAbility (state: TargetState) {
     return state.currentAbility;

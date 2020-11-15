@@ -8,13 +8,13 @@
   <div class="target">
     <template v-if="show == false"> </template>
     <template v-else>
-      <template v-if="hasTarget">
+      <template v-if="species.hasTarget()">
         <div>対象:{{ name }}</div>
-        <ability-selector :abilities="abilities" :current="currentAbility" @changed="setCurrentAbility"></ability-selector>
+        <ability-selector :abilities="species.abilities()" :current="currentAbility" @changed="setCurrentAbility"></ability-selector>
         <!-- TODO:component -->
-        <div>{{ types }}</div>
+        <div>{{ species.types() }}</div>
         <!-- TODO:component -->
-        <div>{{ weight }}kg</div>
+        <div>{{ species.weight() }}kg</div>
         <nature @changed="changeNature"></nature>
         <individuals-adjuster
           :individuals="individuals"
@@ -60,6 +60,7 @@ import StatsDisplay from "./components/statsDisplay.vue";
 import AbilitySelector from './components/abilitySelector.vue'
 
 import { StatePatternsLoader } from './store/statePattern'
+import { Species, SpeciesLoader } from './store/species'
 
 const namespace: string = "target";
 
@@ -76,11 +77,10 @@ const namespace: string = "target";
 export default class Target extends Vue {
   @Prop() private targetName: string;
   @Prop() private show: boolean;
-
   @State("target") target: TargetState;
 
   @Action("getSpecies", { namespace })
-  private getSpecies!: (string) => Promise<boolean>;
+  private getSpecies!: (SpeciesLoader) => void;
   @Action("getStatsPattern", { namespace })
   private getStatsPattern!: (StatsPatternArgs) => void;
   @Action("setCurrentAbility", { namespace })
@@ -88,23 +88,13 @@ export default class Target extends Vue {
 
   @Getter("level", { namespace })
   private level!: number;
-  @Getter("hasTarget", { namespace })
-  private hasTarget!: boolean;
-  @Getter("name", { namespace })
-  private name!: string;
-  @Getter("abilities", { namespace })
-  private abilities!: string[];
+  @Getter("species", { namespace })
+  private species!: Species;
   @Getter("currentAbility", { namespace })
   private currentAbility!: string;
 
   @Getter("nature", { namespace })
   private nature!: string;
-  @Getter("species", { namespace })
-  private species!: Species;
-  @Getter("types", { namespace })
-  private types!: string[];
-  @Getter("weight", { namespace })
-  private weight: number;
   @Getter("individuals", { namespace })
   private individuals: Individuals;
   @Getter("basePoints", { namespace })
@@ -135,15 +125,12 @@ export default class Target extends Vue {
   @Watch("individuals")
   @Watch("nature")
   private getCalculate() {
-    if (this.name.length == 0) {
-      return;
-    }
-    if (this.nature.length == 0) {
+    if (!this.species.hasTarget()) {
       return;
     }
     let args = new StatePatternsLoader(
       this.level,
-      this.name,
+      this.species.name(),
       this.nature,
       this.individuals.hp,
       this.individuals.at,
@@ -165,8 +152,8 @@ export default class Target extends Vue {
     if (this.targetName == "") {
       return;
     }
-    let name = await this.getSpecies(this.targetName);
-    this.$emit('changeTarget', name);
+    await this.getSpecies(new SpeciesLoader(this.targetName));
+    this.$emit('changeTarget', this.targetName);
   }
 
   @Watch("hp")
@@ -195,7 +182,7 @@ export default class Target extends Vue {
   }
 
   created() {
-    this.$emit('target', this.name);
+    this.$emit('target', this.species.name());
     this.$emit('hp', this.hp);
     this.$emit('attack', this.attack);
     this.$emit('defense', this.defense);

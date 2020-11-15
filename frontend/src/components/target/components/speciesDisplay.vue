@@ -15,6 +15,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Species } from '../store/species'
 
 class SpeciesParam {
   public key: number;
@@ -37,12 +38,12 @@ export default class SpeciesDisplay extends Vue {
     // computed
     private get values(): SpeciesParam[] {
       let res: SpeciesParam[] = [
-        new SpeciesParam(0, this.species.hp),
-        new SpeciesParam(1, this.species.at),
-        new SpeciesParam(2, this.species.df),
-        new SpeciesParam(3, this.species.sa),
-        new SpeciesParam(4, this.species.sd),
-        new SpeciesParam(5, this.species.sp),
+        new SpeciesParam(0, this.species.hp()),
+        new SpeciesParam(1, this.species.attack()),
+        new SpeciesParam(2, this.species.defense()),
+        new SpeciesParam(3, this.species.spAttack()),
+        new SpeciesParam(4, this.species.spDefense()),
+        new SpeciesParam(5, this.species.speed()),
       ];
       return res;
     }

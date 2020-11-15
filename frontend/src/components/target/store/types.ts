@@ -1,4 +1,5 @@
 import { StatePatterns } from './statePattern'
+import { Species } from './species'
 /*
   対象ポケモンに関するStore
   TODO:store主体だと手続き型になるので機能クラスにアクセスする形式に変更
@@ -8,13 +9,8 @@ import { StatePatterns } from './statePattern'
   TODO:defenderDamagesをこっち側に
 */
 export interface TargetState {
-  name: string;
-  types: string[];
   species: Species;
-  weight: number;
-  abilities: string[];
   currentAbility: string;
-
   nature: string;
   individuals: Individuals;
   basePoints: BasePoints;
@@ -25,14 +21,6 @@ export interface TargetState {
   //moves: string[];
 }
 
-export interface Species {
-  hp: number;
-  at: number;
-  df: number;
-  sa: number;
-  sd: number;
-  sp: number;
-}
 export interface Individuals {
   hp: number;
   at: number;
