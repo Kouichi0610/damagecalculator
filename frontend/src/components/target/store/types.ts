@@ -1,19 +1,11 @@
 /*
   対象ポケモンに関するStore
-
-  情報
-  種族値、わざ、とくせい、おもさ
-
-  個体、基礎ポイント、性格
-
-  やりたいこと
-  すばやさ調整
-  攻撃調整
-  耐久調整
-
-  TODO:サーバから計算式を渡せないか
+  TODO:store主体だと手続き型になるので機能クラスにアクセスする形式に変更
+  TODO:target/store改修
+  TODO:action.vueからアクセス
+  TODO:moveResult.vueに現在の技(+index)を保管
+  TODO:defenderDamagesをこっち側に
 */
-
 export interface TargetState {
   name: string;
   types: string[];
@@ -27,16 +19,74 @@ export interface TargetState {
   basePoints: BasePoints;
 
   // 基礎ポイント0～252(4刻み)
-  hppattern: number[];
-  atpattern: number[];
-  dfpattern: number[];
-  sapattern: number[];
-  sdpattern: number[];
-  sppattern: number[];
+  statePatterns: StatePatterns;
 
   //moves: string[];
 }
 
+class StatePattern {
+  private values: number[];
+  value(basePoint: number): number {
+    if (this.values.length == 0) {
+      return 0;
+    }
+    let idx = basePoint/4;
+    return this.values[idx];
+  }
+  constructor(values: number[]) {
+    this.values = values;
+  }
+}
+
+export class StatePatterns {
+  private h: StatePattern;
+  private at: StatePattern;
+  private df: StatePattern;
+  private sa: StatePattern;
+  private sd: StatePattern;
+  private sp: StatePattern;
+
+  hp(basePoint: number): number {
+    return this.h.value(basePoint);
+  }
+  attack(basePoint: number): number {
+    return this.at.value(basePoint);
+  }
+  defense(basePoint: number): number {
+    return this.df.value(basePoint);
+  }
+  spAttack(basePoint: number): number {
+    return this.sa.value(basePoint);
+  }
+  spDefense(basePoint: number): number {
+    return this.sd.value(basePoint);
+  }
+  speed(basePoint: number): number {
+    return this.sp.value(basePoint);
+  }
+
+  static default(): StatePatterns {
+    return new StatePatterns({
+      hp: [],
+      attack: [],
+      defense: [],
+      sp_attack: [],
+      sp_defense: [],
+      speed: [],
+    });
+  }
+  constructor(data: any) {
+    this.h = new StatePattern(data.hp);
+    this.at = new StatePattern(data.attack);
+    this.df = new StatePattern(data.defense);
+    this.sa = new StatePattern(data.sp_attack);
+    this.sd = new StatePattern(data.sp_defense);
+    this.sp = new StatePattern(data.speed);
+  }
+}
+
+// レベル、名前、性格、個体値から能力値のパターンを取得
+// TODO:こっちにaxios持たせる
 export class StatsPatternArgs {
   level: number;
   name: string;

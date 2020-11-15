@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 /*
-  ダメージ一覧試作
+  ダメージ一覧
 */
 export class DefenderDamages {
   private level: number

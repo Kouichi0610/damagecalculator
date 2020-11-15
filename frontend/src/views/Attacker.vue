@@ -3,7 +3,7 @@
   <div class="attacker">
     Name:[{{ targetName }}]
     <target :show="true" @target="targetChanged"></target>
-    <moves :target="targetName"></moves>
+    <moves :target="targetName" @select="moveChanged"></moves>
     <move-result :index="index" :target="targetName"></move-result>
     <div class="row mb-1">
     </div>
@@ -29,6 +29,10 @@ export default class Attacker extends Vue {
 
   targetChanged(name: string) {
     this.targetName = name;
+  }
+
+  moveChanged(info: MoveInfo) {
+    console.log('' + info.name + ' ' + info.power);
   }
 }
 </script>

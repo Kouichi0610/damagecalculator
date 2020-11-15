@@ -8,15 +8,6 @@
       <b-dropdown class="col-1" id="specials-dropdown" text="特殊">
         <b-dropdown-item v-for="item in specials" :key="item.name" @click="change(item)">{{ item.name }}</b-dropdown-item>
       </b-dropdown>
-      <!-- 
-      <div class="col-1">
-        <label><input type="radio" v-model="isPhysical" value="true">物理</label>
-        <label><input type="radio" v-model="isPhysical" value="false">特殊</label>
-        -->
-      </div>
-      <div class="col-8">
-        {{ selected.name }} {{ selected.power }}
-      </div>
     </div>
   </div>
 </template>
@@ -24,7 +15,7 @@
 <script lang="ts">
 import { Vue, Prop, Watch, Component } from "vue-property-decorator";
 import { Action, Getter } from "vuex-class";
-import { MoveInfo } from './store/types'
+//import { MoveInfo } from './store/types'
 
 const namespace: string = "moves"
 
@@ -39,7 +30,6 @@ export default class Moves extends Vue {
   private specials!: MoveInfo[];
 
   private isPhysical: boolean = true;
-  private selected: MoveInfo = MoveInfo.empty();
 
   @Watch('target')
   targetChanged() {
@@ -47,10 +37,8 @@ export default class Moves extends Vue {
   }
 
   change(info: MoveInfo) {
-    this.selected = info;
+    this.$emit('select', info);
   }
-
-  
 }
 </script>
 <style scoped>

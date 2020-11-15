@@ -2,16 +2,7 @@ import { StatsCalculator } from '@/domain/stats';
 import { MutationTree } from 'vuex';
 import Individuals, { TargetState } from './types';
 import Species from './types';
-import BasePoints from './types';
-
-export interface StatsPattern {
-  hp: number[];
-  attack: number[];
-  defense: number[];
-  sp_attack: number[];
-  sp_defense: number[];
-  speed: number[];
-}
+import {BasePoints, StatePatterns} from './types';
 
 export const mutations: MutationTree<TargetState> = {
   setName(state, payload: string) {
@@ -59,13 +50,8 @@ export const mutations: MutationTree<TargetState> = {
   changeNature(state, payload: string) {
     state.nature = payload;
   },
-  setStatsPattern(state, payload: StatsPattern) {
-    state.hppattern = payload.hp;
-    state.atpattern = payload.attack;
-    state.dfpattern = payload.defense;
-    state.sapattern = payload.sp_attack;
-    state.sdpattern = payload.sp_defense;
-    state.sppattern = payload.speed;
+  setStatsPattern(state, payload: any) {
+    state.statePatterns = new StatePatterns(payload);
   },
 
 }

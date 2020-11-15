@@ -31,34 +31,22 @@ export const getters: GetterTree<TargetState, RootState> = {
     return state.basePoints;
   },
   hp (state: TargetState) {
-    if (state.hppattern.length == 0) return 0;
-    let idx = state.basePoints.hp/4;
-    return state.hppattern[idx];
+    return state.statePatterns.hp(state.basePoints.hp);
   },
   attack (state: TargetState) {
-    if (state.atpattern.length == 0) return 0;
-    let idx = state.basePoints.at/4;
-    return state.atpattern[idx];
+    return state.statePatterns.attack(state.basePoints.at);
   },
   defense (state: TargetState) {
-    if (state.dfpattern.length == 0) return 0;
-    let idx = state.basePoints.df/4;
-    return state.dfpattern[idx];
+    return state.statePatterns.defense(state.basePoints.df);
   },
   spAttack (state: TargetState) {
-    if (state.sapattern.length == 0) return 0;
-    let idx = state.basePoints.sa/4;
-    return state.sapattern[idx];
+    return state.statePatterns.spAttack(state.basePoints.sa);
   },
   spDefense (state: TargetState) {
-    if (state.sdpattern.length == 0) return 0;
-    let idx = state.basePoints.sd/4;
-    return state.sdpattern[idx];
+    return state.statePatterns.spDefense(state.basePoints.sd);
   },
   speed (state: TargetState) {
-    if (state.sppattern.length == 0) return 0;
-    let idx = state.basePoints.sp/4;
-    return state.sppattern[idx];
+    return state.statePatterns.speed(state.basePoints.sp);
   },
   abilities (state: TargetState) {
     return state.abilities;
