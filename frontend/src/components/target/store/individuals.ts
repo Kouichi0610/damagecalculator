@@ -28,6 +28,9 @@ export class Individuals {
   }
 
   public type(): string {
+    if (this._at == 0 && this._sp == 0) {
+      return "WeakestSlowest";
+    }
     if (this._at == 0) {
       return "Weakest";
     }

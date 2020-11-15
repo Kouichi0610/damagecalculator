@@ -23,6 +23,7 @@ const (
 	Max Type = iota
 	Slowest
 	Weakest
+	WeakestSlowest
 )
 
 func NewIndividual(v uint) Individual {
@@ -42,6 +43,9 @@ func ToIndividuals(name string) Individuals {
 }
 
 func (t Type) ToIndividuals() Individuals {
+	if t == WeakestSlowest {
+		return New(31, 0, 31, 31, 31, 0)
+	}
 	if t == Slowest {
 		return New(31, 31, 31, 31, 31, 0)
 	}
@@ -95,10 +99,10 @@ func (i *individuals) Speed() Individual {
 
 var typesMap map[string]Type
 
-// TODO:SlowestとWeakestを兼用できない
 func init() {
 	typesMap = make(map[string]Type, 0)
 	typesMap["Max"] = Max
 	typesMap["Slowest"] = Slowest
 	typesMap["Weakest"] = Weakest
+	typesMap["WeakestSlowest"] = WeakestSlowest
 }
