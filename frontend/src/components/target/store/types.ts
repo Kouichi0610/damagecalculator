@@ -1,5 +1,6 @@
 import { StatePatterns } from './statePattern'
 import { Species } from './species'
+import { Individuals } from './individuals'
 /*
   対象ポケモンに関するStore
   TODO:store主体だと手続き型になるので機能クラスにアクセスする形式に変更
@@ -21,14 +22,6 @@ export interface TargetState {
   //moves: string[];
 }
 
-export interface Individuals {
-  hp: number;
-  at: number;
-  df: number;
-  sa: number;
-  sd: number;
-  sp: number;
-}
 export interface BasePoints {
   hp: number;
   at: number;

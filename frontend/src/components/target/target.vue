@@ -61,6 +61,7 @@ import AbilitySelector from './components/abilitySelector.vue'
 
 import { StatePatternsLoader } from './store/statePattern'
 import { Species, SpeciesLoader } from './store/species'
+import { Individuals } from './store/individuals'
 
 const namespace: string = "target";
 
@@ -122,7 +123,7 @@ export default class Target extends Vue {
   private changeNature!: (string) => void;
 
   @Watch("name")
-  @Watch("individuals")
+  @Watch("individuals", { deep: true })
   @Watch("nature")
   private getCalculate() {
     if (!this.species.hasTarget()) {
@@ -132,12 +133,7 @@ export default class Target extends Vue {
       this.level,
       this.species.name(),
       this.nature,
-      this.individuals.hp,
-      this.individuals.at,
-      this.individuals.df,
-      this.individuals.sa,
-      this.individuals.sd,
-      this.individuals.sp
+      this.individuals
     );
     this.getStatsPattern(args);
   }

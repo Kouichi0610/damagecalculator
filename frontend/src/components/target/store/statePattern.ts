@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Individuals } from './individuals'
 
 export class StatePatternsLoader {
   private level: number;
@@ -6,17 +7,12 @@ export class StatePatternsLoader {
   private nature: string;
   private individuals: string;
 
-  constructor(level: number, name: string, nature: string, hp: number, at: number, df: number, sa: number, sd: number, sp: number) {
+  constructor(level: number, name: string, nature: string, individuals: Individuals) {
     this.level = level;
     this.name = name;
     this.nature = nature;
-    this.individuals = "Max";
-    if (at == 0) {
-      this.individuals = "Weakest";
-    }
-    if (sp == 0) {
-      this.individuals = "Slowest";
-    }
+    this.individuals = individuals.type();
+    console.log('個体値:' + this.individuals);
   }
 
   public load(): Promise<StatePatterns> {

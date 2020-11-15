@@ -12,24 +12,10 @@ export const mutations: MutationTree<TargetState> = {
     state.currentAbility = payload;
   },
   changeSlowest(state, isSlowest: boolean) {
-    state.individuals = {
-      hp: 31,
-      at: 31,
-      df: 31,
-      sa: 31,
-      sd: 31,
-      sp: isSlowest ? 0 : 31,
-    };
+    state.individuals.slowest(isSlowest);
   },
   changeWeakest(state, isWeakest: boolean) {
-    state.individuals = {
-      hp: 31,
-      at: isWeakest ? 0 : 31,
-      df: 31,
-      sa: 31,
-      sd: 31,
-      sp: 31,
-    };
+    state.individuals.weakest(isWeakest);
   },
   changeBasePoints(state, payload: BasePoints) {
     state.basePoints = payload;

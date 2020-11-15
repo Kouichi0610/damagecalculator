@@ -1,32 +1,8 @@
 import axios from 'axios'
 
-export class SpeciesLoader {
-  private name: string;
-
-  constructor(name: string) {
-    this.name = name;
-  }
-
-  public load(): Promise<Species> {
-    return new Promise((resolve, reject) => {
-      axios.get('get_species', {
-        params: {
-          Name: this.name,
-        }
-      })
-      .then((response) => {
-        let json = JSON.stringify(response.data);
-        let sp = JSON.parse(json);
-        resolve(new Species(sp));
-      })
-      .catch((e) => {
-        console.log('failed:' + e);
-        reject(new Species(null));
-      });
-    });
-  }
-}
-
+/*
+  種族固有の
+*/
 export class Species {
   private _name: string = '';
   private _types: string = '';
@@ -60,5 +36,35 @@ export class Species {
     this._weight = data.Weight;
     this._species = data.Species;
     this._abilities = data.Abilities;
+  }
+}
+
+/*
+  Species取得
+*/
+export class SpeciesLoader {
+  private name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+
+  public load(): Promise<Species> {
+    return new Promise((resolve, reject) => {
+      axios.get('get_species', {
+        params: {
+          Name: this.name,
+        }
+      })
+      .then((response) => {
+        let json = JSON.stringify(response.data);
+        let sp = JSON.parse(json);
+        resolve(new Species(sp));
+      })
+      .catch((e) => {
+        console.log('failed:' + e);
+        reject(new Species(null));
+      });
+    });
   }
 }

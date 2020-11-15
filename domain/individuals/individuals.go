@@ -95,6 +95,7 @@ func (i *individuals) Speed() Individual {
 
 var typesMap map[string]Type
 
+// TODO:SlowestとWeakestを兼用できない
 func init() {
 	typesMap = make(map[string]Type, 0)
 	typesMap["Max"] = Max
