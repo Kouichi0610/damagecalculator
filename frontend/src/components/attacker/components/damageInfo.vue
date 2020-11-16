@@ -1,11 +1,11 @@
 <template>
   <div class="damageInfo">
-    {{ result.Target }}
+    {{ result.toString() }}
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Watch, Component } from "vue-property-decorator";
+import { Vue, Prop, Component } from "vue-property-decorator";
 import { DefendersResult } from '../../target/store/defenderDamages'
 
 @Component

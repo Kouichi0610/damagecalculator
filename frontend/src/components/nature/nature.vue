@@ -22,17 +22,16 @@ export default class Nature extends Vue {
   //@State('nature') nature!: NatureState;
   @Action('initialize', { namespace })
   private initialize!: () => Promise<boolean>;
-  @Getter('initialized', { namespace })
-  private initialized!: () => boolean;
-  @Getter('natures', { namespace })
-  private natures!: () => Nature[];
+
+@Getter('natures', { namespace })
+  private natures!: Nature[];
   @Getter('current', { namespace })
-  private current!: () => string;
+  private current!: string;
   @Mutation('change', { namespace })
   private change!: (natureName: string) => void;
 
   created() {
-    if (this.initialized()) {
+    if (this.natures.length > 0) {
       return;
     }
     this.initialize();

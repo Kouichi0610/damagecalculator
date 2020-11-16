@@ -3,7 +3,7 @@
     <moves :target="damages.attacker" @select="onSelect"></moves>
     わざ：{{ currentMove.name }}
     <div v-for="res in results" :key="res.Target">
-      <div class="sample">Move:{{ res.toString() }} </div>
+      <damage-info :result="res"></damage-info>
     </div>
     候補:{{ results.length }}
   </div>
