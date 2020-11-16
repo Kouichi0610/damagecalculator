@@ -9,62 +9,55 @@
     TODO:v-for
 */
 <template>
-    <div class="basePoints">
-        <p>基礎ポイント:{{ total }}</p>
-            <fieldset>
-                <div class="row mb-1">
-                    <BasePointSlider v-bind:values="vals" index="0" @value-changed="valueChanged"></BasePointSlider><br>
-                    <BasePointSlider v-bind:values="vals" index="1" @value-changed="valueChanged"></BasePointSlider><br>
-                    <BasePointSlider v-bind:values="vals" index="2" @value-changed="valueChanged"></BasePointSlider><br>
-                    <BasePointSlider v-bind:values="vals" index="3" @value-changed="valueChanged"></BasePointSlider><br>
-                    <BasePointSlider v-bind:values="vals" index="4" @value-changed="valueChanged"></BasePointSlider><br>
-                    <BasePointSlider v-bind:values="vals" index="5" @value-changed="valueChanged"></BasePointSlider><br>
-                </div>
-            </fieldset>
-    </div>
+  <div class="basePoints">
+    <p>基礎ポイント:{{ total }}</p>
+      <fieldset>
+        <div class="row mb-1">
+          <BasePointSlider v-bind:values="vals" index="0" @value-changed="valueChanged"></BasePointSlider><br>
+          <BasePointSlider v-bind:values="vals" index="1" @value-changed="valueChanged"></BasePointSlider><br>
+          <BasePointSlider v-bind:values="vals" index="2" @value-changed="valueChanged"></BasePointSlider><br>
+          <BasePointSlider v-bind:values="vals" index="3" @value-changed="valueChanged"></BasePointSlider><br>
+          <BasePointSlider v-bind:values="vals" index="4" @value-changed="valueChanged"></BasePointSlider><br>
+          <BasePointSlider v-bind:values="vals" index="5" @value-changed="valueChanged"></BasePointSlider><br>
+        </div>
+      </fieldset>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import BasePointSlider from './basePointSlider.vue';
+import { BasePoints } from '../store/basePoints'
 
 @Component({
-      components: {
-        BasePointSlider,
-    },
+  components: {
+    BasePointSlider,
+  },
 })
 export default class BasePointsAdjuster extends Vue {
-    private vals: number[] = [0, 0, 0, 0, 0, 0];
-    private total: number = 0;
-    @Prop() private basePoints!: BasePoints;
+  private vals: number[] = [0, 0, 0, 0, 0, 0];
+  private total: number = 0;
+  @Prop() private basePoints!: BasePoints;
 
-    created() {
-        this.vals = [
-          this.basePoints.hp,
-          this.basePoints.at,
-          this.basePoints.df,
-          this.basePoints.sa,
-          this.basePoints.sd,
-          this.basePoints.sp,
-        ];
-    }
+  created() {
+    this.vals = [
+      this.basePoints.hp,
+      this.basePoints.attack,
+      this.basePoints.defense,
+      this.basePoints.spAttack,
+      this.basePoints.spDefense,
+      this.basePoints.speed,
+    ];
+  }
 
-    private valueChanged(index: number, val: number) {
-        this.vals[index] = val;
-        this.total = 0;
-        for (var i = 0; i < 6; i++) {
-            this.total += this.vals[i];
-        }
-        let bp: BasePoints = {
-          hp: this.vals[0],
-          at: this.vals[1],
-          df: this.vals[2],
-          sa: this.vals[3],
-          sd: this.vals[4],
-          sp: this.vals[5],
-        };
-        this.$emit('changed', bp);
+  private valueChanged(index: number, val: number) {
+    this.vals[index] = val;
+    this.total = 0;
+    for (var i = 0; i < 6; i++) {
+      this.total += this.vals[i];
     }
+    this.$emit('changed', new BasePoints(this.vals));
+  }
 }
 </script>
 

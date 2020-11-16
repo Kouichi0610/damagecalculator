@@ -1,6 +1,7 @@
 import { StatePatterns } from './statePattern'
 import { Species } from './species'
 import { Individuals } from './individuals'
+import { BasePoints } from './basePoints'
 /*
   対象ポケモンに関するStore
   TODO:action.vueからアクセス
@@ -17,13 +18,4 @@ export interface TargetState {
   statePatterns: StatePatterns;
 
   //moves: string[];
-}
-
-export interface BasePoints {
-  hp: number;
-  at: number;
-  df: number;
-  sa: number;
-  sd: number;
-  sp: number;
 }

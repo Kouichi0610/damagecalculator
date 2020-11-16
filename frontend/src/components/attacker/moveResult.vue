@@ -1,6 +1,6 @@
 <template>
   <div class="move-result">
-    MoveResult:{{target}} Index:{{index}}
+    Species:{{target.name}}  Index:{{index}}
   </div>
 </template>
 
@@ -8,13 +8,19 @@
 import { Vue, Prop, Component } from "vue-property-decorator";
 //import { State, Action, Getter, Mutation } from "vuex-class";
 
+import { Species } from '../target/store/species'
+
 @Component({
   components:{
   },
 })
 export default class MoveResult extends Vue {
-  @Prop() private target!: string;
-  @Prop() private index!:number;
+  @Prop() private index!: number;
+  @Prop() private target!: Species;
+
+  mounted() {
+    console.log('' + this.target.name);
+  }
 
   
 }

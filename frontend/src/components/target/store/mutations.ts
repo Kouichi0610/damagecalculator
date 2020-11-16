@@ -1,7 +1,7 @@
 import { MutationTree } from 'vuex';
 import { StatePatterns } from './statePattern';
 import { TargetState } from './types';
-import { BasePoints } from './types';
+import { BasePoints } from './basePoints';
 import { Species } from './species'
 
 export const mutations: MutationTree<TargetState> = {

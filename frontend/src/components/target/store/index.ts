@@ -7,6 +7,7 @@ import { Species } from './species'
 import { RootState } from '@/store/types';
 import { StatePatterns } from './statePattern'
 import { Individuals } from './individuals';
+import { BasePoints } from './basePoints'
 
 export const state: TargetState = {
   species: Species.default(),
@@ -14,7 +15,7 @@ export const state: TargetState = {
   currentAbility: '',
   nature: '',
   individuals: new Individuals(),
-  basePoints: {hp: 0, at: 0, df: 0, sa: 0, sd: 0, sp: 0},
+  basePoints: BasePoints.default(),
   statePatterns: StatePatterns.default(),
 }
 

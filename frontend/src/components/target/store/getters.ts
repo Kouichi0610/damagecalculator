@@ -20,22 +20,22 @@ export const getters: GetterTree<TargetState, RootState> = {
     return state.basePoints;
   },
   hp (state: TargetState) {
-    return state.statePatterns.hp(state.basePoints.hp);
+    return state.statePatterns.hp(state.basePoints);
   },
   attack (state: TargetState) {
-    return state.statePatterns.attack(state.basePoints.at);
+    return state.statePatterns.attack(state.basePoints);
   },
   defense (state: TargetState) {
-    return state.statePatterns.defense(state.basePoints.df);
+    return state.statePatterns.defense(state.basePoints);
   },
   spAttack (state: TargetState) {
-    return state.statePatterns.spAttack(state.basePoints.sa);
+    return state.statePatterns.spAttack(state.basePoints);
   },
   spDefense (state: TargetState) {
-    return state.statePatterns.spDefense(state.basePoints.sd);
+    return state.statePatterns.spDefense(state.basePoints);
   },
   speed (state: TargetState) {
-    return state.statePatterns.speed(state.basePoints.sp);
+    return state.statePatterns.speed(state.basePoints);
   },
   currentAbility (state: TargetState) {
     return state.currentAbility;

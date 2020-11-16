@@ -10,11 +10,11 @@
     <template v-else>
       <template v-if="species.hasTarget()">
         <div>対象:{{ name }}</div>
-        <ability-selector :abilities="species.abilities()" :current="currentAbility" @changed="setCurrentAbility"></ability-selector>
+        <ability-selector :abilities="species.abilities" :current="currentAbility" @changed="setCurrentAbility"></ability-selector>
         <!-- TODO:component -->
-        <div>{{ species.types() }}</div>
+        <div>{{ species.types }}</div>
         <!-- TODO:component -->
-        <div>{{ species.weight() }}kg</div>
+        <div>{{ species.weight }}kg</div>
         <nature @changed="changeNature"></nature>
         <individuals-adjuster
           :individuals="individuals"
@@ -62,6 +62,7 @@ import AbilitySelector from './components/abilitySelector.vue'
 import { StatePatternsLoader } from './store/statePattern'
 import { Species, SpeciesLoader } from './store/species'
 import { Individuals } from './store/individuals'
+import { BasePoints } from './store/basePoints'
 //import { TargetState } from './store/types'
 
 const namespace: string = "target";
@@ -132,7 +133,7 @@ export default class Target extends Vue {
     }
     let args = new StatePatternsLoader(
       this.level,
-      this.species.name(),
+      this.species.name,
       this.nature,
       this.individuals
     );
@@ -180,7 +181,7 @@ export default class Target extends Vue {
   }
 
   created() {
-    this.$emit('target', this.species.name());
+    this.$emit('target', this.species.name);
     this.$emit('hp', this.hp);
     this.$emit('attack', this.attack);
     this.$emit('defense', this.defense);

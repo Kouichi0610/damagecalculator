@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Individuals } from './individuals'
+import { BasePoints } from './basePoints'
 
 export class StatePatternsLoader {
   private level: number;
@@ -48,23 +49,23 @@ export class StatePatterns {
   private sd: StatePattern;
   private sp: StatePattern;
 
-  hp(basePoint: number): number {
-    return this.h.value(basePoint);
+  hp(basePoint: BasePoints): number {
+    return this.h.value(basePoint.hp);
   }
-  attack(basePoint: number): number {
-    return this.at.value(basePoint);
+  attack(basePoint: BasePoints): number {
+    return this.at.value(basePoint.attack);
   }
-  defense(basePoint: number): number {
-    return this.df.value(basePoint);
+  defense(basePoint: BasePoints): number {
+    return this.df.value(basePoint.defense);
   }
-  spAttack(basePoint: number): number {
-    return this.sa.value(basePoint);
+  spAttack(basePoint: BasePoints): number {
+    return this.sa.value(basePoint.spAttack);
   }
-  spDefense(basePoint: number): number {
-    return this.sd.value(basePoint);
+  spDefense(basePoint: BasePoints): number {
+    return this.sd.value(basePoint.spDefense);
   }
-  speed(basePoint: number): number {
-    return this.sp.value(basePoint);
+  speed(basePoint: BasePoints): number {
+    return this.sp.value(basePoint.speed);
   }
 
   static default(): StatePatterns {
