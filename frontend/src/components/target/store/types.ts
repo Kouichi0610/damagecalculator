@@ -3,11 +3,8 @@ import { Species } from './species'
 import { Individuals } from './individuals'
 /*
   対象ポケモンに関するStore
-  TODO:store主体だと手続き型になるので機能クラスにアクセスする形式に変更
-  TODO:target/store改修
   TODO:action.vueからアクセス
   TODO:moveResult.vueに現在の技(+index)を保管
-  TODO:defenderDamagesをこっち側に
 */
 export interface TargetState {
   species: Species;

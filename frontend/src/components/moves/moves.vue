@@ -15,11 +15,12 @@
 <script lang="ts">
 import { Vue, Prop, Watch, Component } from "vue-property-decorator";
 import { Action, Getter } from "vuex-class";
-//import { MoveInfo } from './store/types'
+import { MoveInfo } from './store/types'
 
 const namespace: string = "moves"
 
 // わざ一覧を取得
+// わざの選択
 @Component
 export default class Moves extends Vue {
   @Prop() private target!: string;

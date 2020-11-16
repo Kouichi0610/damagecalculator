@@ -12,9 +12,14 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import { State } from "vuex-class";
 import Target from '../components/target/target.vue'
 import Moves from '../components/moves/moves.vue'
 import MoveResult from '../components/attacker/moveResult.vue'
+import { MoveInfo } from '../components/moves/store/types'
+import { TargetState } from '../components/target/store/types'
+
+const namespace: string = "target";
 
 @Component({
   components: {
@@ -24,6 +29,7 @@ import MoveResult from '../components/attacker/moveResult.vue'
   }
 })
 export default class Attacker extends Vue {
+  @State("target") target: TargetState;
   @Prop() private index!: number;
   private targetName: string = '';
 
@@ -32,7 +38,7 @@ export default class Attacker extends Vue {
   }
 
   moveChanged(info: MoveInfo) {
-    console.log('' + info.name + ' ' + info.power);
+    console.log('Move:' + info.name + ' ' + info.power);
   }
 }
 </script>

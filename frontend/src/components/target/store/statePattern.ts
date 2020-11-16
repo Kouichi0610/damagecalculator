@@ -12,7 +12,6 @@ export class StatePatternsLoader {
     this.name = name;
     this.nature = nature;
     this.individuals = individuals.type();
-    console.log('個体値:' + this.individuals);
   }
 
   public load(): Promise<StatePatterns> {

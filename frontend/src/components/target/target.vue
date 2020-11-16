@@ -62,6 +62,7 @@ import AbilitySelector from './components/abilitySelector.vue'
 import { StatePatternsLoader } from './store/statePattern'
 import { Species, SpeciesLoader } from './store/species'
 import { Individuals } from './store/individuals'
+//import { TargetState } from './store/types'
 
 const namespace: string = "target";
 
@@ -78,12 +79,12 @@ const namespace: string = "target";
 export default class Target extends Vue {
   @Prop() private targetName: string;
   @Prop() private show: boolean;
-  @State("target") target: TargetState;
+  //@State("target") target: TargetState;
 
   @Action("getSpecies", { namespace })
   private getSpecies!: (SpeciesLoader) => void;
   @Action("getStatsPattern", { namespace })
-  private getStatsPattern!: (StatsPatternArgs) => void;
+  private getStatsPattern!: (StatePatternsLoader) => void;
   @Action("setCurrentAbility", { namespace })
   private setCurrentAbility!: (string) => void;
 
@@ -135,6 +136,7 @@ export default class Target extends Vue {
       this.nature,
       this.individuals
     );
+    
     this.getStatsPattern(args);
   }
 
