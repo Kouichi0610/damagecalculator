@@ -1,6 +1,6 @@
 <template>
   <div class="moves">
-    わざ一覧
+    わざ一覧 {{ target }}
     <div class="row mb-1">
       <b-dropdown  class="col-1" id="physicals-dropdown" text="物理">
         <b-dropdown-item v-for="item in physicals" :key="item.name" @click="change(item)">{{ item.name }}</b-dropdown-item>
@@ -32,9 +32,13 @@ export default class Moves extends Vue {
 
   private isPhysical: boolean = true;
 
+  created() {
+    this.getMoves(this.target);
+  }
+
   @Watch('target')
   targetChanged() {
-    this.getMoves(this.target)
+    this.getMoves(this.target);
   }
 
   change(info: MoveInfo) {

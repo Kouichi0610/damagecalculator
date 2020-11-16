@@ -5,8 +5,8 @@ import { BasePoints } from './basePoints';
   ダメージ一覧
 */
 export class DefenderDamages {
+  readonly attacker: string;
   private level: number
-  private attacker: string;
   private individuals: string;
   private basePoints: BasePoints;
   private nature: string;

@@ -32,12 +32,16 @@ export class MoveInfos {
 }
 
 export class MoveInfo {
-  name: string;
-  type: string;
-  power: number;
-  accuracy: number;
-  category: string;
-  mention: string;
+  readonly name: string;
+  readonly type: string;
+  readonly power: number;
+  readonly accuracy: number;
+  readonly category: string;
+  readonly mention: string;
+
+  enable(): boolean {
+    return this.name.length > 0;
+  }
 
   static empty(): MoveInfo {
     return new MoveInfo({name: '', type: '', power: 0, accurcy: 0, category: '', mention: ''});
