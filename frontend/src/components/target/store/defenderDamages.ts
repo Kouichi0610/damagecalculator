@@ -58,7 +58,6 @@ export class DefenderDamages {
   
         for (var i = 0; i < damages.length; i++) {
           let d = this.ToDefendersResult(damages[i]);
-          console.log('' + d.Target + 'Dmg:' + d.DamageMin + '-' + d.DamageMax + 'Rate:' + d.RateMin + '-' + d.RateMax + ' 確定数' + d.DetermineCount);
           res.push(d);
         }
         resolve(res);
@@ -77,12 +76,12 @@ export class DefenderDamages {
 }
 
 export class DefendersResult {
-  Target: string;
-  DamageMin: number;
-  DamageMax: number;
-  RateMin: number;
-  RateMax: number;
-  DetermineCount: number;
+  readonly Target: string;
+  readonly DamageMin: number;
+  readonly DamageMax: number;
+  readonly RateMin: number;
+  readonly RateMax: number;
+  readonly DetermineCount: number;
 
   constructor(target: string, damageMin: number, damageMax: number, rateMin: number, rateMax: number, determineCount: number) {
     this.Target = target;
@@ -97,15 +96,7 @@ export class DefendersResult {
     return this.Target.length > 0;
   }
 
-  static Defaults(count: number): DefendersResult[] {
-    let res: DefendersResult[] = [];
-    for (var i = 0; i < count; i++) {
-      res.push(this.Default());
-    }
-    return res;
-  }
-
-  static Default(): DefendersResult {
+  static detault(): DefendersResult {
     return new DefendersResult('', 0, 0, 0, 0, 0);
   }
 }

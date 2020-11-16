@@ -4,13 +4,14 @@ import { actions } from './actions';
 import { mutations } from './mutations';
 import { AttackerState, MoveCount } from './types';
 import { RootState } from '@/store/types';
-import { DefendersResult } from '../../target/store/defenderDamages'
+import { MoveInfo } from '../../moves/store/types';
 
 export const state: AttackerState = {
-  // target 入れ替え時初期化
-  target: '',
   current: 0,
-  results: DefendersResult.Defaults(MoveCount),
+  moveA: MoveInfo.empty(),
+  moveB: MoveInfo.empty(),
+  moveC: MoveInfo.empty(),
+  moveD: MoveInfo.empty(),
 }
 
 const namespaced: boolean = true;
