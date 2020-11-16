@@ -35,9 +35,9 @@ export default class MoveResult extends Vue {
   @Prop() private damages!: DefenderDamages;
 
   @Mutation("setCurrent", { namespace })
-  private setCurrent!: (number) => void;
+  private setCurrent!: (index: number) => void;
   @Action("setMove", { namespace })
-  private setMove!: (MoveInfo) => void;
+  private setMove!: (info: MoveInfo) => void;
 
   @Getter("currentMove", { namespace })
   private currentMove!: MoveInfo;

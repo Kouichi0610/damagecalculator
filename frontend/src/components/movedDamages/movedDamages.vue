@@ -32,8 +32,9 @@ export default class MovedDamages extends Vue {
   private max: number = 50;
 
   created() {
-    this.getResult();
+    //this.getResult();
   }
+  /*
   async getResult() {
     let d = new DefenderDamages('デンジュモク', 50, 'Max', [0,0,0,252,0,252], 'ひかえめ', 'ビーストブースト', 'なし', '正常', '', 'エレキフィールド');
     let res = await d.defenderDamages('かみなりパンチ');
@@ -42,6 +43,7 @@ export default class MovedDamages extends Vue {
       console.log('' + x.Target + ' Damage:' + x.DamageMin + '-' + x.DamageMax + ' Rate:' + x.RateMin + '-' + x.RateMax + ' 確定数:' + x.DetermineCount);
     }
   }
+  */
 }
 </script>
 

@@ -77,16 +77,15 @@ const namespace: string = "target";
   },
 })
 export default class Target extends Vue {
-  @Prop() private targetName: string;
-  @Prop() private show: boolean;
-  //@State("target") target: TargetState;
+  @Prop() private targetName!: string;
+  @Prop() private show!: boolean;
 
   @Action("getSpecies", { namespace })
-  private getSpecies!: (SpeciesLoader) => void;
+  private getSpecies!: (loader: SpeciesLoader) => void;
   @Action("getStatsPattern", { namespace })
-  private getStatsPattern!: (StatePatternsLoader) => void;
+  private getStatsPattern!: (loader: StatePatternsLoader) => void;
   @Action("setCurrentAbility", { namespace })
-  private setCurrentAbility!: (string) => void;
+  private setCurrentAbility!: (ability: string) => void;
 
   @Getter("level", { namespace })
   private level!: number;
@@ -98,30 +97,30 @@ export default class Target extends Vue {
   @Getter("nature", { namespace })
   private nature!: string;
   @Getter("individuals", { namespace })
-  private individuals: Individuals;
+  private individuals!: Individuals;
   @Getter("basePoints", { namespace })
-  private basePoints: BasePoints;
+  private basePoints!: BasePoints;
   @Getter("hp", { namespace })
-  private hp: number;
+  private hp!: number;
   @Getter("attack", { namespace })
-  private attack: number;
+  private attack!: number;
   @Getter("defense", { namespace })
-  private defense: number;
+  private defense!: number;
   @Getter("spAttack", { namespace })
-  private spAttack: number;
+  private spAttack!: number;
   @Getter("spDefense", { namespace })
-  private spDefense: number;
+  private spDefense!: number;
   @Getter("speed", { namespace })
-  private speed: number;
+  private speed!: number;
 
   @Mutation("changeSlowest", { namespace })
-  private changeSlowest!: (boolean) => void;
+  private changeSlowest!: (isSlowest: boolean) => void;
   @Mutation("changeWeakest", { namespace })
-  private changeWeakest!: (boolean) => void;
+  private changeWeakest!: (isWeakest: boolean) => void;
   @Mutation("changeBasePoints", { namespace })
-  private changeBasePoints!: (BasePoints) => void;
+  private changeBasePoints!: (basePoints: BasePoints) => void;
   @Mutation("changeNature", { namespace })
-  private changeNature!: (string) => void;
+  private changeNature!: (nature: string) => void;
 
   @Watch("name")
   @Watch("individuals", { deep: true })

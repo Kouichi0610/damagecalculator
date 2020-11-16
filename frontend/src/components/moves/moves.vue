@@ -24,7 +24,7 @@ const namespace: string = "moves"
 @Component
 export default class Moves extends Vue {
   @Prop() private target!: string;
-  @Action("getMoves", { namespace }) getMoves!: (string) => Promise<string>;
+  @Action("getMoves", { namespace }) getMoves!: (target: string) => Promise<string>;
   @Getter("physicals", { namespace })
   private physicals!: MoveInfo[];
   @Getter("specials", { namespace })

@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-//import { Species } from '../store/types'
+import { Species } from '../store/types'
 
 @Component
 export default class Candidate extends Vue {

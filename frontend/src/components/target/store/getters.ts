@@ -17,7 +17,7 @@ export const getters: GetterTree<TargetState, RootState> = {
     let condition = ''; // TODO:
     let weather = ''; // TODO:
     let field = ''; // TODO:
-    return new DefenderDamages(attacker, level, individuals, basePoints, ability, nature, move, item, condition, weather, field);
+    return new DefenderDamages(attacker, level, individuals, basePoints, nature, ability, item, condition, weather, field);
   },
   level: (state: TargetState, getters, rootState: RootState): number => {
     return rootState.level;
