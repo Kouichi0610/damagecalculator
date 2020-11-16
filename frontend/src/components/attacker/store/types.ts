@@ -1,4 +1,4 @@
-import { DefenderDamages, DefendersResult } from '../defenderDamages'
+import { DefendersResult } from '../../target/store/defenderDamages'
 
 export const MoveCount = 4;
 

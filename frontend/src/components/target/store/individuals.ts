@@ -1,7 +1,6 @@
 /*
   個体値
 */
-// TODO:WeakestとSlowestを兼用できないので修正
 export class Individuals {
   private _hp: number = 31;
   private _at: number = 31;

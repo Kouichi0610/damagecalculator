@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { BasePoints } from './basePoints';
 
 /*
   ダメージ一覧
@@ -7,43 +8,41 @@ export class DefenderDamages {
   private level: number
   private attacker: string;
   private individuals: string;
-  private basePoints: number[];
+  private basePoints: BasePoints;
   private nature: string;
   private ability: string;
-  private move: string;
   private item: string;
   private condition: string;
   private weather: string;
   private field: string;
 
-  constructor(attacker: string, level: number, individuals: string, basePoints: number[], nature: string, ability: string, move: string, item: string, condition: string, weather: string, field: string) {
+  constructor(attacker: string, level: number, individuals: string, basePoints: BasePoints, nature: string, ability: string, item: string, condition: string, weather: string, field: string) {
     this.attacker = attacker;
     this.level = level;
     this.individuals = individuals;
     this.basePoints = basePoints;
     this.ability = ability;
     this.nature = nature;
-    this.move = move;
     this.item = item;
     this.condition = condition;
     this.weather = weather;
     this.field = field;
   }
 
-  defenderDamages(): Promise<DefendersResult[]> {
+  defenderDamages(move: string): Promise<DefendersResult[]> {
     return new Promise((resolve, reject) => {
       axios.get('defender_damages', {
         params: {
           Level: this.level,
-          BaseHP: this.basePoints[0],
-          BaseAttack: this.basePoints[1],
-          BaseDefense: this.basePoints[2],
-          BaseSpAttack: this.basePoints[3],
-          BaseSpDefense: this.basePoints[4],
-          BaseSpeed: this.basePoints[5],
+          BaseHP: this.basePoints.hp,
+          BaseAttack: this.basePoints.attack,
+          BaseDefense: this.basePoints.defense,
+          BaseSpAttack: this.basePoints.spAttack,
+          BaseSpDefense: this.basePoints.spDefense,
+          BaseSpeed: this.basePoints.speed,
           Individuals: this.individuals,
           Name: this.attacker,
-          Move: this.move,
+          Move: move,
           Ability: this.ability,
           Nature: this.nature,
           Item: this.item,

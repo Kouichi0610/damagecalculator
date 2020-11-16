@@ -18,7 +18,7 @@
 // class="col-2"
 import { Vue, Component } from "vue-property-decorator";
 
-import {DefenderDamages} from "../attacker/defenderDamages"
+import { DefenderDamages } from '../target/store/defenderDamages'
 
 /*
   わざと仮想敵へのダメージ一覧
@@ -35,8 +35,8 @@ export default class MovedDamages extends Vue {
     this.getResult();
   }
   async getResult() {
-    let d = new DefenderDamages('デンジュモク', 50, 'Max', [0,0,0,252,0,252], 'ひかえめ', 'ビーストブースト', 'かみなりパンチ', 'なし', '正常', '', 'エレキフィールド');
-    let res = await d.defenderDamages();
+    let d = new DefenderDamages('デンジュモク', 50, 'Max', [0,0,0,252,0,252], 'ひかえめ', 'ビーストブースト', 'なし', '正常', '', 'エレキフィールド');
+    let res = await d.defenderDamages('かみなりパンチ');
     for (var i = 0; i < res.length; i++) {
       let x = res[i]
       console.log('' + x.Target + ' Damage:' + x.DamageMin + '-' + x.DamageMax + ' Rate:' + x.RateMin + '-' + x.RateMax + ' 確定数:' + x.DetermineCount);

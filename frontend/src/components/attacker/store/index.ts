@@ -4,7 +4,7 @@ import { actions } from './actions';
 import { mutations } from './mutations';
 import { AttackerState, MoveCount } from './types';
 import { RootState } from '@/store/types';
-import { DefendersResult } from '../defenderDamages'
+import { DefendersResult } from '../../target/store/defenderDamages'
 
 export const state: AttackerState = {
   // target 入れ替え時初期化

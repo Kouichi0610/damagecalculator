@@ -4,7 +4,7 @@
     Name:[{{ targetName }}]
     <target :show="true" @target="targetChanged"></target>
     <moves :target="targetName" @select="moveChanged"></moves>
-    <move-result :index="index" :target="target.species"></move-result>
+    <move-result :index="index"></move-result>
     <div class="row mb-1">
     </div>
   </div>
@@ -29,7 +29,6 @@ const namespace: string = "target";
   }
 })
 export default class Attacker extends Vue {
-  @State("target") target: TargetState;
   @Prop() private index!: number;
   private targetName: string = '';
 

@@ -63,7 +63,6 @@ import { StatePatternsLoader } from './store/statePattern'
 import { Species, SpeciesLoader } from './store/species'
 import { Individuals } from './store/individuals'
 import { BasePoints } from './store/basePoints'
-//import { TargetState } from './store/types'
 
 const namespace: string = "target";
 

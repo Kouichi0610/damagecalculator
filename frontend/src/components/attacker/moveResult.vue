@@ -1,6 +1,6 @@
 <template>
   <div class="move-result">
-    Species:{{target.name}}  Index:{{index}}
+    Index:{{index}}
   </div>
 </template>
 
@@ -9,6 +9,8 @@ import { Vue, Prop, Component } from "vue-property-decorator";
 //import { State, Action, Getter, Mutation } from "vuex-class";
 
 import { Species } from '../target/store/species'
+import { DefenderDamages } from '../target/store/defenderDamages'
+
 
 @Component({
   components:{
@@ -16,10 +18,9 @@ import { Species } from '../target/store/species'
 })
 export default class MoveResult extends Vue {
   @Prop() private index!: number;
-  @Prop() private target!: Species;
+  @Prop() private damages!: DefenderDamages;
 
   mounted() {
-    console.log('' + this.target.name);
   }
 
   
