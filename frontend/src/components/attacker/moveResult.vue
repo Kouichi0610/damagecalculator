@@ -1,8 +1,11 @@
 <template>
   <div class="move-result">
-    Index:{{index}} Attacker:{{damages.attacker}}
     <moves :target="damages.attacker" @select="onSelect"></moves>
     わざ：{{ currentMove.name }}
+    <div v-for="res in results" :key="res.Target">
+      <div class="sample">Move:{{ res.toString() }} </div>
+    </div>
+    候補:{{ results.length }}
   </div>
 </template>
 
@@ -17,12 +20,14 @@ import { Species } from '../target/store/species'
 import { DefenderDamages, DefendersResult } from '../target/store/defenderDamages'
 import { MoveInfo } from '../moves/store/types'
 import Moves from '../moves/moves.vue'
+import DamageInfo from './components/damageInfo.vue'
 
 const namespace: string = "attacker";
 
 @Component({
   components:{
     Moves,
+    DamageInfo,
   },
 })
 export default class MoveResult extends Vue {
@@ -39,15 +44,18 @@ export default class MoveResult extends Vue {
   @Getter("moves", { namespace })
   private moves!: MoveInfo[];
 
+  private results: DefendersResult[] = [];
+
   @Watch("damages", {deep: true})
   @Watch("currentMove", {deep: true})
   damageChanged() {
     if (this.currentMove.name.length == 0) {
+      this.results = [];
       return;
     }
     this.damages.defenderDamages(this.currentMove.name)
     .then((results) => {
-      console.log('change Move.' + this.currentMove.name);
+      this.results = results;
     });
   }
 
