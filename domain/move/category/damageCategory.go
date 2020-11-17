@@ -17,6 +17,18 @@ const (
 	ShellArms
 )
 
+func (d DamageCategory) String() string {
+	switch d {
+	case Physical:
+		return "ぶつり"
+	case BodyPress:
+		return "ぶつり"
+	case FoulPlay:
+		return "ぶつり"
+	}
+	return "とくしゅ"
+}
+
 type CategoryFunc func(attacker, defender status.StatusChecker) (at, df *status.RankedValue)
 
 func NewCategory(c DamageCategory) (CategoryFunc, error) {

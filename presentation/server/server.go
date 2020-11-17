@@ -6,7 +6,6 @@ import (
 	"damagecalculator/domain/move"
 	"damagecalculator/domain/pokenames"
 	"damagecalculator/domain/species"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -50,13 +49,14 @@ func (s *serverImpl) Serve() (http.Handler, error) {
 	router.GET("/stats_pattern", s.statsPattern)
 	router.GET("/ability_owner_speed", s.abilitiesOwnerSpeedEffect)
 	router.GET("/ability_other_speed", s.abilitiesOtherSpeedEffect)
+	router.GET("/defender_damages", s.defenderDamages)
+	router.GET("/moves", s.moves)
 
 	return router, router.Run(":8080")
 }
 
 func (s *serverImpl) getNames(c *gin.Context) {
 	n := s.n.Get()
-	fmt.Printf("Names:%d\n", len(n))
 	c.JSON(http.StatusOK, n)
 }
 

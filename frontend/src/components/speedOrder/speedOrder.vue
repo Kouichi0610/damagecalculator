@@ -42,7 +42,7 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { State, Action, Getter } from 'vuex-class';
 
 import SpeedRanking from "./components/SpeedRanking.vue"
-//import { SpeedCorrector } from './store/types';
+import { SpeedOrderState, SpeedInfo, SpeedCorrector } from './store/types';
 
 const namespace: string ="speedOrder"
 
@@ -61,15 +61,15 @@ class InfoImpl implements SpeedInfo {
   }
 })
 export default class SpeedOrder extends Vue {
-  @Prop() private targetSpeed: number;
-  @Prop() private ability: string;
+  @Prop() private targetSpeed!: number;
+  @Prop() private ability!: string;
 
-  @State('speedOrder') speedOrder: SpeedOrderState;
+  @State('speedOrder') speedOrder!: SpeedOrderState;
 
   @Action('getOrders', { namespace })
-  private getOrders!: (number) => void;
+  private getOrders!: (level: number) => void;
   @Action('getAbilityEffect', { namespace })
-  private getAbilityEffect!: (string) => void;
+  private getAbilityEffect!: (ability: string) => void;
   @Getter('hasList', { namespace })
   private hasList!: boolean;
   @Getter('list', { namespace })
@@ -108,7 +108,8 @@ export default class SpeedOrder extends Vue {
   }
 
   get nearDisplay(): SpeedInfo[] {
-    let disp = [].concat(this.display);
+    let empty: SpeedInfo[] = [];
+    let disp: SpeedInfo[] = empty.concat(this.display);
 
     var idx = 0;
     for (var i = 0; i < disp.length; i++) {
@@ -132,12 +133,12 @@ export default class SpeedOrder extends Vue {
     let a: SpeedInfo[] = [new InfoImpl('', this.correctedTargetSpeed())];
     let disp:SpeedInfo[] = a.concat(this.correctedList());
 
-    let decending = function(a, b) {
+    let decending = function(a: SpeedInfo, b: SpeedInfo) {
         if (a.speed > b.speed) return -1;
         if (a.speed < b.speed) return 1;
         return 0;
     }
-    let ascending = function(a, b) {
+    let ascending = function(a: SpeedInfo, b: SpeedInfo) {
         if (a.speed < b.speed) return -1;
         if (a.speed > b.speed) return 1;
         return 0;

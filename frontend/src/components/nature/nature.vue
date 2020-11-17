@@ -13,25 +13,25 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { State, Action, Getter, Mutation } from 'vuex-class';
+//import { NatureState } from './store/types'
 
 const namespace: string = "nature";
 
 @Component
 export default class Nature extends Vue {
-  @State('nature') nature: NatureState;
+  //@State('nature') nature!: NatureState;
   @Action('initialize', { namespace })
   private initialize!: () => Promise<boolean>;
-  @Getter('initialized', { namespace })
-  private initialized!: () => boolean;
-  @Getter('natures', { namespace })
-  private natures!: () => Nature[];
+
+@Getter('natures', { namespace })
+  private natures!: Nature[];
   @Getter('current', { namespace })
-  private current!: () => string;
+  private current!: string;
   @Mutation('change', { namespace })
-  private change!: (string) => void;
+  private change!: (natureName: string) => void;
 
   created() {
-    if (this.initialized) {
+    if (this.natures.length > 0) {
       return;
     }
     this.initialize();

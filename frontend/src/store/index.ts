@@ -7,8 +7,10 @@ import Vuex, { StoreOptions } from 'vuex'
 import { RootState } from './types'
 import { targetSelect } from '../components/targetSelect/store/index'
 import { target } from '../components/target/store/index'
-import { nature } from "../components/nature/store/index"
-import { speedOrder } from "../components/speedOrder/store/index"
+import { nature } from '../components/nature/store/index'
+import { speedOrder } from '../components/speedOrder/store/index'
+import { moves } from '../components/moves/store/index'
+import { attacker } from '../components/attacker/store/index'
 
 Vue.use(Vuex);
 
@@ -22,42 +24,9 @@ const store: StoreOptions<RootState> = {
     targetSelect,
     nature,
     speedOrder,
+    moves,
+    attacker,
   }
 }
 
 export default new Vuex.Store<RootState>(store);
-
-/*
-import Vue from 'vue'
-import Vuex from 'vuex'
-
-Vue.use(Vuex)
-
-import {counter} from './counter';
-import {stats} from './stats';
-
-// 'export default' ほかのコンポーネントでも使用できるようにする
-const store = new Vuex.Store({
-  modules: {
-    counter: counter,
-    stats: stats,
-  },
-  state: {
-    pokename: 'ライチュウ',
-  },
-  getters: {
-    myname: state => {
-      return state.pokename + store.getters['counter/count'];
-    },
-    statsString: () => {
-      return store.getters['stats/toString'];
-    },
-
-
-  },
-})
-
-console.log('myname:::' + store.getters.myname);
-
-export default store
-*/

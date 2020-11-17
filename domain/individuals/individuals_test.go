@@ -15,6 +15,9 @@ func Test_StringToIndividuals(t *testing.T) {
 	if !reflect.DeepEqual(ToIndividuals("Weakest"), New(31, 0, 31, 31, 31, 31)) {
 		t.Error()
 	}
+	if !reflect.DeepEqual(ToIndividuals("WeakestSlowest"), New(31, 0, 31, 31, 31, 0)) {
+		t.Error()
+	}
 	if !reflect.DeepEqual(ToIndividuals("その他"), New(31, 31, 31, 31, 31, 31)) {
 		t.Error()
 	}
@@ -28,6 +31,9 @@ func Test_Types(t *testing.T) {
 		t.Error()
 	}
 	if !reflect.DeepEqual(Weakest.ToIndividuals(), New(31, 0, 31, 31, 31, 31)) {
+		t.Error()
+	}
+	if !reflect.DeepEqual(WeakestSlowest.ToIndividuals(), New(31, 0, 31, 31, 31, 0)) {
 		t.Error()
 	}
 }

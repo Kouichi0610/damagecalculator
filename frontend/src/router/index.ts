@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+//import Home from '../views/Home.vue'
+//import store from '../store/index'
 
 Vue.use(VueRouter)
 
@@ -10,18 +11,44 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: Home
-    },
-    {
-      path: '/select',
       name: 'SelectPomkemon',
       component: () => import('../views/Select.vue'),
     },
     {
-      path: '/attacker',
+      path: '/attacker0',
       name: 'Attacker',
       component: () => import('../views/Attacker.vue'),
+      props: {
+        default: true,
+        index: 0,
+      },
+    },
+    {
+      path: '/attacker1',
+      name: 'Attacker',
+      component: () => import('../views/Attacker.vue'),
+      props: {
+        default: true,
+        index: 1,
+      },
+    },
+    {
+      path: '/attacker2',
+      name: 'Attacker',
+      component: () => import('../views/Attacker.vue'),
+      props: {
+        default: true,
+        index: 2,
+      },
+    },
+    {
+      path: '/attacker3',
+      name: 'Attacker',
+      component: () => import('../views/Attacker.vue'),
+      props: {
+        default: true,
+        index: 3,
+      },
     },
     {
       path: '/defender',
@@ -32,11 +59,6 @@ const router = new VueRouter({
       path: '/speed',
       name: 'Speed',
       component: () => import ('../views/SpeedAdjuster.vue'),
-    },
-    {
-      path: '/sandboxts',
-      name: 'SandBoxTs',
-      component: () => import('../views/SandBoxTs.vue'),
     },
     {
       path: '/about',

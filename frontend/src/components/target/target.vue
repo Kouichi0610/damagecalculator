@@ -8,13 +8,13 @@
   <div class="target">
     <template v-if="show == false"> </template>
     <template v-else>
-      <template v-if="hasTarget">
+      <template v-if="species.hasTarget()">
         <div>対象:{{ name }}</div>
-        <ability-selector :abilities="abilities" :current="currentAbility" @changed="setCurrentAbility"></ability-selector>
+        <ability-selector :abilities="species.abilities" :current="currentAbility" @changed="setCurrentAbility"></ability-selector>
         <!-- TODO:component -->
-        <div>{{ types }}</div>
+        <div>{{ species.types }}</div>
         <!-- TODO:component -->
-        <div>{{ weight }}kg</div>
+        <div>{{ species.weight }}kg</div>
         <nature @changed="changeNature"></nature>
         <individuals-adjuster
           :individuals="individuals"
@@ -59,7 +59,10 @@ import Nature from "../nature/nature.vue";
 import StatsDisplay from "./components/statsDisplay.vue";
 import AbilitySelector from './components/abilitySelector.vue'
 
-import { StatsPatternArgs } from "./store/types";
+import { StatePatternsLoader } from './store/statePattern'
+import { Species, SpeciesLoader } from './store/species'
+import { Individuals } from './store/individuals'
+import { BasePoints } from './store/basePoints'
 
 const namespace: string = "target";
 
@@ -74,85 +77,65 @@ const namespace: string = "target";
   },
 })
 export default class Target extends Vue {
-  @Prop() private targetName: string;
-  @Prop() private show: boolean;
-
-  @State("target") target: TargetState;
+  @Prop() private targetName!: string;
+  @Prop() private show!: boolean;
 
   @Action("getSpecies", { namespace })
-  private getSpecies!: (string) => Promise<boolean>;
+  private getSpecies!: (loader: SpeciesLoader) => void;
   @Action("getStatsPattern", { namespace })
-  private getStatsPattern!: (StatsPatternArgs) => void;
+  private getStatsPattern!: (loader: StatePatternsLoader) => void;
   @Action("setCurrentAbility", { namespace })
-  private setCurrentAbility!: (string) => void;
+  private setCurrentAbility!: (ability: string) => void;
 
   @Getter("level", { namespace })
   private level!: number;
-  @Getter("hasTarget", { namespace })
-  private hasTarget!: boolean;
-  @Getter("name", { namespace })
-  private name!: string;
-  @Getter("abilities", { namespace })
-  private abilities!: string[];
+  @Getter("species", { namespace })
+  private species!: Species;
   @Getter("currentAbility", { namespace })
   private currentAbility!: string;
 
   @Getter("nature", { namespace })
   private nature!: string;
-  @Getter("species", { namespace })
-  private species!: Species;
-  @Getter("types", { namespace })
-  private types!: string[];
-  @Getter("weight", { namespace })
-  private weight: number;
   @Getter("individuals", { namespace })
-  private individuals: Individuals;
+  private individuals!: Individuals;
   @Getter("basePoints", { namespace })
-  private basePoints: BasePoints;
+  private basePoints!: BasePoints;
   @Getter("hp", { namespace })
-  private hp: number;
+  private hp!: number;
   @Getter("attack", { namespace })
-  private attack: number;
+  private attack!: number;
   @Getter("defense", { namespace })
-  private defense: number;
+  private defense!: number;
   @Getter("spAttack", { namespace })
-  private spAttack: number;
+  private spAttack!: number;
   @Getter("spDefense", { namespace })
-  private spDefense: number;
+  private spDefense!: number;
   @Getter("speed", { namespace })
-  private speed: number;
+  private speed!: number;
 
   @Mutation("changeSlowest", { namespace })
-  private changeSlowest!: (boolean) => void;
+  private changeSlowest!: (isSlowest: boolean) => void;
   @Mutation("changeWeakest", { namespace })
-  private changeWeakest!: (boolean) => void;
+  private changeWeakest!: (isWeakest: boolean) => void;
   @Mutation("changeBasePoints", { namespace })
-  private changeBasePoints!: (BasePoints) => void;
+  private changeBasePoints!: (basePoints: BasePoints) => void;
   @Mutation("changeNature", { namespace })
-  private changeNature!: (string) => void;
+  private changeNature!: (nature: string) => void;
 
   @Watch("name")
-  @Watch("individuals")
+  @Watch("individuals", { deep: true })
   @Watch("nature")
   private getCalculate() {
-    console.log("this.individuals:" + this.individuals);
-    if (this.name.length == 0) {
+    if (!this.species.hasTarget()) {
       return;
     }
-    if (this.nature.length == 0) {
-      return;
-    }
-    let args = new StatsPatternArgs(
+    let args = new StatePatternsLoader(
       this.level,
-      this.name,
+      this.species.name,
       this.nature,
-      this.individuals.hp,
-      this.individuals.at,
-      this.individuals.df,
-      this.individuals.sa,
-      this.individuals.sd,
-      this.individuals.sp
+      this.individuals
     );
+    
     this.getStatsPattern(args);
   }
 
@@ -162,11 +145,12 @@ export default class Target extends Vue {
   }
 
   @Watch("targetName")
-  private nameChanged() {
+  private async nameChanged() {
     if (this.targetName == "") {
       return;
     }
-    this.getSpecies(this.targetName);
+    await this.getSpecies(new SpeciesLoader(this.targetName));
+    this.$emit('changeTarget', this.targetName);
   }
 
   @Watch("hp")
@@ -195,6 +179,7 @@ export default class Target extends Vue {
   }
 
   created() {
+    this.$emit('target', this.species.name);
     this.$emit('hp', this.hp);
     this.$emit('attack', this.attack);
     this.$emit('defense', this.defense);

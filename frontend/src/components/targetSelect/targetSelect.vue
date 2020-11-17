@@ -22,7 +22,8 @@ import Component from 'vue-class-component';
 import TypeButtons from './components/typeButtons.vue'
 import SpeciesTotal from './components/speciesTotal.vue'
 import Candidates from './components/candidates.vue'
-import { CandidatesFilter } from './store/types'
+import { TargetSelectState, CandidatesFilter } from './store/types'
+import { Species } from './store/types'
 
 const namespace: string = 'targetSelect';
 
@@ -34,7 +35,7 @@ const namespace: string = 'targetSelect';
   }
 })
 export default class TaretSelect extends Vue {
-  @State('targetSelect') targetSelect: TargetSelectState;
+  @State('targetSelect') targetSelect!: TargetSelectState;
   @Getter('initialTotal', { namespace })
   private initialTotal!: number;
   @Getter('initialType', { namespace })
@@ -43,12 +44,12 @@ export default class TaretSelect extends Vue {
   private candidates!: Species[];
 
   @Action('getCandidates', { namespace })
-  private getCandidates!: (CandidatesFilter) => Promise<boolean>;
+  private getCandidates!: (filter: CandidatesFilter) => Promise<boolean>;
 
   @Mutation('setInitialTotal', { namespace })
-  private setInitialTotal!: (number) => void;
+  private setInitialTotal!: (total: number) => void;
   @Mutation('setInitialType', { namespace })
-  private setInitialType!: (string) => void;
+  private setInitialType!: (type: string) => void;
 
   created() {
   }

@@ -17,6 +17,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import { SpeedInfo } from '../store/types'
 
 @Component
 export default class SpeedRanking extends Vue {

@@ -1,25 +1,29 @@
 import { GetterTree } from 'vuex';
 import { TargetState } from './types';
 import { RootState } from '@/store/types'
+import { Species } from './species'
+import { DefenderDamages } from './defenderDamages'
 
 export const getters: GetterTree<TargetState, RootState> = {
-  hasTarget: (state: TargetState) => {
-    return state.name != '';
+  defenderDamages: (state: TargetState, getters, rootState: RootState): DefenderDamages => {
+    let attacker = state.species.name;
+    let level = rootState.level;
+    let individuals = state.individuals.type();
+    let basePoints = state.basePoints;
+    let ability = state.currentAbility;
+    let nature = state.nature;
+    let move = 'はかいこうせん';  // TODO:
+    let item = '';  // TODO:
+    let condition = ''; // TODO:
+    let weather = ''; // TODO:
+    let field = ''; // TODO:
+    return new DefenderDamages(attacker, level, individuals, basePoints, nature, ability, item, condition, weather, field);
   },
-  level: (state: TargetState, getters, rootState: RootState) => {
+  level: (state: TargetState, getters, rootState: RootState): number => {
     return rootState.level;
   },
-  name: (state: TargetState) => {
-    return state.name;
-  },
-  types: (state: TargetState) => {
-    return state.types;
-  },
-  species: (state: TargetState) => {
+  species: (state: TargetState): Species => {
     return state.species;
-  },
-  weight: (state: TargetState) => {
-    return state.weight;
   },
   nature: (state: TargetState) => {
     return state.nature;
@@ -31,37 +35,22 @@ export const getters: GetterTree<TargetState, RootState> = {
     return state.basePoints;
   },
   hp (state: TargetState) {
-    if (state.hppattern.length == 0) return 0;
-    let idx = state.basePoints.hp/4;
-    return state.hppattern[idx];
+    return state.statePatterns.hp(state.basePoints);
   },
   attack (state: TargetState) {
-    if (state.atpattern.length == 0) return 0;
-    let idx = state.basePoints.at/4;
-    return state.atpattern[idx];
+    return state.statePatterns.attack(state.basePoints);
   },
   defense (state: TargetState) {
-    if (state.dfpattern.length == 0) return 0;
-    let idx = state.basePoints.df/4;
-    return state.dfpattern[idx];
+    return state.statePatterns.defense(state.basePoints);
   },
   spAttack (state: TargetState) {
-    if (state.sapattern.length == 0) return 0;
-    let idx = state.basePoints.sa/4;
-    return state.sapattern[idx];
+    return state.statePatterns.spAttack(state.basePoints);
   },
   spDefense (state: TargetState) {
-    if (state.sdpattern.length == 0) return 0;
-    let idx = state.basePoints.sd/4;
-    return state.sdpattern[idx];
+    return state.statePatterns.spDefense(state.basePoints);
   },
   speed (state: TargetState) {
-    if (state.sppattern.length == 0) return 0;
-    let idx = state.basePoints.sp/4;
-    return state.sppattern[idx];
-  },
-  abilities (state: TargetState) {
-    return state.abilities;
+    return state.statePatterns.speed(state.basePoints);
   },
   currentAbility (state: TargetState) {
     return state.currentAbility;

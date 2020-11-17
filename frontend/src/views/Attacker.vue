@@ -1,29 +1,35 @@
 // 攻撃側
 <template>
   <div class="attacker">
-    <target :show="true"></target>
+    <target :show="true" @target="targetChanged"></target>
+    <move-result :index="index" :damages="defenderDamages"></move-result>
     <div class="row mb-1">
-      <moved-damages class="col-5"></moved-damages>
-      <moved-damages class="col-5"></moved-damages>
     </div>
   </div>
 </template>
-/*
-  { 技、仮想敵 } -> DamageResult
 
-*/
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Getter } from "vuex-class";
 import Target from '../components/target/target.vue'
-import MovedDamages from '../components/movedDamages/movedDamages.vue'
+import MoveResult from '../components/attacker/moveResult.vue'
+import { MoveInfo } from '../components/moves/store/types'
+import { TargetState } from '../components/target/store/types'
+
+import { DefenderDamages } from '../components/target/store/defenderDamages'
+
+const namespace: string = "target";
 
 @Component({
   components: {
     Target,
-    MovedDamages,
+    MoveResult,
   }
 })
 export default class Attacker extends Vue {
+  @Prop() private index!: number;
+  @Getter("defenderDamages", { namespace })
+  private defenderDamages!: DefenderDamages;
 }
 </script>
 

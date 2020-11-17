@@ -31,16 +31,11 @@ type (
 		Species() []uint
 		Weight() float64
 		Abilities() []string
-		// TODO:計算式(hp, at, ...)
+		Moves() []string
 	}
 
 	Loader interface {
 		Get(name string) (Species, error)
-	}
-
-	// TODO:計算式クラス
-	StatsCalculator interface {
-		Get(name, nature string) []string
 	}
 )
 
@@ -56,6 +51,7 @@ type speciesImpl struct {
 	species   []uint
 	weight    float64
 	abilities []string
+	moves     []string
 }
 
 func (s *speciesImpl) Name() string {
@@ -72,6 +68,9 @@ func (s *speciesImpl) Weight() float64 {
 }
 func (s *speciesImpl) Abilities() []string {
 	return s.abilities
+}
+func (s *speciesImpl) Moves() []string {
+	return s.moves
 }
 
 type loader struct {
@@ -94,6 +93,7 @@ func (g *loader) Get(name string) (Species, error) {
 		weight:    s.Weight,
 		abilities: s.Abilities,
 		species:   sp,
+		moves:     s.Moves,
 	}
 
 	return res, nil

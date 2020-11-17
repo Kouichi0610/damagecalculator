@@ -1,44 +1,24 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/select">ポケモン選択</router-link> |
-      <router-link to="/attacker">攻撃調整</router-link> |
+      <router-link to="/">対象選択</router-link> |
+      <router-link to="/attacker0">攻撃調整A</router-link> |
+      <router-link to="/attacker1">攻撃調整B</router-link> |
+      <router-link to="/attacker2">攻撃調整C</router-link> |
+      <router-link to="/attacker3">攻撃調整D</router-link> |
       <router-link to="/defender">耐久調整</router-link> |
       <router-link to="/speed">速度調整</router-link> |
-      <router-link to="/sandboxts">SandBox</router-link> |
       <router-link to="/about">About</router-link>
     </div>
     <router-view/>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 
-export default {
-  name: 'App',
-  components: {
-  },
-  created: function() {
-    /*
-    // TODO:最初の通信でエラーが出てない場合ローカルモードに切り替える
-    this.axios.get('get_names')
-    .then((response) => {
-      // TODO:絞り込み
-      this.candidates = response.data;
-      console.log('pokeLen:' + this.candidates.length);
-    })
-    .catch((e) => {
-      alert('failed:' + e);
-    })
-    */
-  },
-  methods: {
-  },
-  data: function() {
-  }
-
-
+@Component
+export default class App extends Vue {
 }
 </script>
 

@@ -7,8 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// TODO:getCalculators(name, nature)
-
 func (s *serverImpl) getSpecies(c *gin.Context) {
 	type query struct {
 		Name string
@@ -23,7 +21,14 @@ func (s *serverImpl) getSpecies(c *gin.Context) {
 		return
 	}
 
-	res := speciesResult{
+	type result struct {
+		Name      string   `json:name`
+		Types     []string `json:types`
+		Species   []uint   `json:species`
+		Weight    float64  `json:weight`
+		Abilities []string `json:abilities`
+	}
+	res := result{
 		Name:      sp.Name(),
 		Types:     sp.Types(),
 		Species:   sp.Species(),
@@ -31,14 +36,4 @@ func (s *serverImpl) getSpecies(c *gin.Context) {
 		Abilities: sp.Abilities(),
 	}
 	c.JSON(http.StatusOK, res)
-}
-
-// intarfaceは無理
-// privatememberも無理
-type speciesResult struct {
-	Name      string   `json:name`
-	Types     []string `json:types`
-	Species   []uint   `json:species`
-	Weight    float64  `json:weight`
-	Abilities []string `json:abilities`
 }

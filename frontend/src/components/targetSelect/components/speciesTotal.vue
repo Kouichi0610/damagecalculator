@@ -12,7 +12,7 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 @Component
 export default class SpeciesTotal extends Vue {
   @Prop()
-  private initialTotal: number;
+  private initialTotal!: number;
 
   private total: number = 0;
   created() {
