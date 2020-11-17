@@ -61,11 +61,6 @@ const router = new VueRouter({
       component: () => import ('../views/SpeedAdjuster.vue'),
     },
     {
-      path: '/sandboxts',
-      name: 'SandBoxTs',
-      component: () => import('../views/SandBoxTs.vue'),
-    },
-    {
       path: '/about',
       name: 'About',
       // route level code-splitting
