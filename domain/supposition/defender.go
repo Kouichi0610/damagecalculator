@@ -10,7 +10,6 @@ import (
 	"damagecalculator/domain/species"
 	_ "damagecalculator/domain/stats"
 	"damagecalculator/domain/types"
-	_ "damagecalculator/domain/types"
 )
 
 /*
