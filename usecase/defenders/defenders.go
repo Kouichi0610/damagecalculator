@@ -10,6 +10,7 @@ import (
 	"damagecalculator/domain/species"
 	"damagecalculator/domain/stats"
 	"damagecalculator/domain/supposition"
+	"sort"
 )
 
 /*
@@ -65,6 +66,11 @@ func (s *service) Create(level stats.Level, attacker *situation.PokeParams, move
 		r := newResult(d.Info(), damages, rates)
 		res = append(res, r)
 	}
+
+	sort.Slice(res, func(i, j int) bool {
+		return res[i].RateMin() > res[j].RateMin()
+	})
+
 	return res
 }
 

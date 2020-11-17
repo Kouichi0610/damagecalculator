@@ -3,7 +3,7 @@
     <moves :target="damages.attacker" @select="onSelect"></moves>
     わざ：{{ currentMove.name }}
     <div v-for="res in results" :key="res.Target">
-      <damage-info :result="res"></damage-info>
+      <damage-rate :result="res"></damage-rate>
     </div>
     候補:{{ results.length }}
   </div>
@@ -20,14 +20,14 @@ import { Species } from '../target/store/species'
 import { DefenderDamages, DefendersResult } from '../target/store/defenderDamages'
 import { MoveInfo } from '../moves/store/types'
 import Moves from '../moves/moves.vue'
-import DamageInfo from './components/damageInfo.vue'
+import DamageRate from './components/damageRate.vue'
 
 const namespace: string = "attacker";
 
 @Component({
   components:{
     Moves,
-    DamageInfo,
+    DamageRate,
   },
 })
 export default class MoveResult extends Vue {

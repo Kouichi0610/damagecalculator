@@ -84,7 +84,10 @@ export class DefendersResult {
   readonly DetermineCount: number;
 
   toString(): string {
-    return this.Target + ' Dmg:' + this.DamageMin + '-' + this.DamageMax + ' Rate:' + this.RateMin + '-' + this.RateMax + ' 確定数:' + this.DetermineCount;
+    return this.Target
+     + ' ダメージ' + this.DamageMin + '～' + this.DamageMax
+     + ' ' + this.RateMin + '%～' + this.RateMax + '%'
+     + ' 確定数' + this.DetermineCount;
   }
 
   constructor(target: string, damageMin: number, damageMax: number, rateMin: number, rateMax: number, determineCount: number) {
