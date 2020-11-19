@@ -3,7 +3,7 @@ package supposition
 import (
 	"damagecalculator/domain/ability"
 	_ "damagecalculator/domain/condition"
-	"damagecalculator/domain/damage"
+	_ "damagecalculator/domain/damage"
 	"damagecalculator/domain/item"
 	"damagecalculator/domain/move"
 	"damagecalculator/domain/pokenames"
@@ -51,14 +51,20 @@ type amaker struct {
 }
 
 func (d *amaker) Attackers(defender, defendersAbility string) (Attackers, error) {
-	res := make(Attackers, 0)
-	df, err := d.sp.Get(defender)
-	if err != nil {
-		return nil, err
-	}
-	ty := types.NewTypes(df.Types...)
+	sv := newBestAbilityService(d.sp, d.mv, d.ab, d.it)
+	// TODO:リストごとに最善の
 
-	return res, nil
+	/*
+		res := make(Attackers, 0)
+		df, err := d.sp.Get(defender)
+		if err != nil {
+			return nil, err
+		}
+		ty := types.NewTypes(df.Types...)
+		return res, nil
+	*/
+	return nil, nil
+
 }
 
 /*
@@ -74,22 +80,37 @@ func (d *amaker) effectiveAttackers(ty *types.Types) Attackers {
 }
 
 /*
- */
-func (d *amaker) calcDamage(attacker, defender, move string) uint {
-	return 0
+	攻撃力の高いポケモンを絞り込んでいく
+	それぞれ一番有効なわざ(+とくせい)を取得
+
+*/
+
+// 攻撃側から最も有効なわざ(&とくせい)を選択
+func (d *amaker) bestMove(attacker, defender, defenderAbility string) (Attacker, error) {
+	/*
+		sv := damage.NewSimpleService(d.sp, d.mv, d.ab, d.it)
+		at, err := d.sp.Get(attacker)
+		if err != nil {
+			return nil, err
+		}
+
+			ある程度決め打ちで絞り込んでおく
+			もちもの、性格
+			1.タイプ一致&&物理or特殊の強いほうを選ぶ
+			2.総当たり
+
+		for _, ability := range at.Abilities {
+			m, _ := d.mv.Get("")
+			//sv.Calculate(attacker, defender, ability, defenderAbility, "")
+
+			// 代表(category, ability) Best(move)
+			// 物理、特殊強いほうで
+		}
+		// 特性込みで実際に有効か
+		//	damage.DamageService
+	*/
+	return nil, nil
 }
-
-// 攻撃側から最も有効なわざを選択
-func (d *amaker) bestMove(attacker, defender string) string {
-	// TODO:簡易situation作成(situationに持たせる)
-	// 特性込みで実際に有効か
-	//	damage.DamageService
-
-	return ""
-}
-
-// ガブリアス -> not fairy -> げきりん
-// ガブリアス -> fairy -> じしん
 
 type attacker struct {
 	param situation.PokeParams
@@ -101,4 +122,28 @@ func (a *attacker) Param() situation.PokeParams {
 }
 func (a *attacker) Move() string {
 	return a.move
+}
+
+// 暫定候補一覧
+var attackers []string
+
+func init() {
+	attackers = []string{
+		"リザードン",
+		"フーディン",
+		"カイリキー",
+		"ゲンガー",
+		"ギャラドス",
+		"カイリュー",
+		"ヘラクロス",
+		"バンギラス",
+		"ガブリアス",
+		"サザンドラ",
+		"ヒヒダルマ",
+		"シャンデラ",
+		"フェローチェ",
+		"カミツルギ",
+		"ニンフィア",
+	}
+
 }

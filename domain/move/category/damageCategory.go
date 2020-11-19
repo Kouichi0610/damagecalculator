@@ -17,6 +17,29 @@ const (
 	ShellArms
 )
 
+func List() []DamageCategory {
+	return []DamageCategory{
+		Physical,
+		Special,
+		PsycoShock,
+		BodyPress,
+		FoulPlay,
+		ShellArms,
+	}
+}
+
+func (d DamageCategory) IsPhysical() bool {
+	switch d {
+	case Physical:
+		return true
+	case BodyPress:
+		return true
+	case FoulPlay:
+		return true
+	}
+	return false
+}
+
 func (d DamageCategory) String() string {
 	switch d {
 	case Physical:
