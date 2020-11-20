@@ -30,6 +30,9 @@ func (m *mvService) Moves(name string, category category.DamageCategory) []strin
 	}
 	for _, moveName := range sp.Moves {
 		move, _ := m.mv.Get(moveName)
+		if move.Power < 60 {
+			continue
+		}
 		if move.Category == category {
 			res = append(res, moveName)
 		}

@@ -10,20 +10,10 @@ func Test_AttackersMaker(t *testing.T) {
 	if maker == nil {
 		t.Error()
 	}
-	/*
-		res, err := maker.Defenders("ピカチュウ", "シャドーパンチ")
-		if err != nil {
-			t.Error()
-		}
-
-		if len(res) == 0 {
-			t.Error()
-			return
-		}
-		if res[0].Name != "シャンデラ" {
-			t.Errorf("%s", res[0].Name)
-		}
-	*/
+	actuals := maker.Attackers("フーディン", "いしあたま")
+	for _, actual := range actuals {
+		t.Errorf("%s %s", actual.Param().Name, actual.Move())
+	}
 }
 
 func newAttackersMaker() AttackersMaker {

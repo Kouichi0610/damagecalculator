@@ -6,6 +6,7 @@ import (
 	"damagecalculator/domain/item"
 	"damagecalculator/domain/move"
 	"damagecalculator/domain/move/category"
+	"damagecalculator/domain/situation"
 	"damagecalculator/domain/species"
 )
 
@@ -27,6 +28,8 @@ type (
 		Categoty() category.DamageCategory
 		Damage() uint
 		HasEffective() bool
+
+		PokeParams(attacker string) *situation.PokeParams
 	}
 )
 
@@ -176,6 +179,48 @@ func (r *bmResult) Damage() uint {
 }
 func (r *bmResult) HasEffective() bool {
 	return r.Damage() > 0
+}
+
+func (r *bmResult) PokeParams(attacker string) *situation.PokeParams {
+	return &situation.PokeParams{
+		Name:        attacker,
+		Individuals: r.individuals(),
+		BasePoints:  r.basePoints(),
+		Ranks:       []int{0, 0, 0, 0, 0},
+		Ability:     r.Ability(),
+		Item:        "None",
+		Nature:      r.nature(),
+		Condition:   "なし",
+	}
+	return nil
+}
+
+// TODO:SimpleServiceの時点で考慮に
+func (r *bmResult) individuals() string {
+	if r.Move() == "ジャイロボール" {
+		return "Slowest"
+	}
+	return "Max"
+}
+
+func (r *bmResult) nature() string {
+	if r.Categoty() == category.Physical {
+		return "いじっぱり"
+	}
+	if r.Categoty() == category.BodyPress {
+		return "わんぱく"
+	}
+	return "ひかえめ"
+}
+
+func (r *bmResult) basePoints() []uint {
+	if r.Categoty() == category.Physical {
+		return []uint{0, 252, 0, 0, 0, 0}
+	}
+	if r.Categoty() == category.BodyPress {
+		return []uint{0, 0, 252, 0, 0, 0}
+	}
+	return []uint{0, 0, 0, 252, 0, 0}
 }
 
 func isExclude(move string) bool {
