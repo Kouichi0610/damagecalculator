@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { BasePoints } from './basePoints';
+import { BasePoints } from './basePoints'
 
 /*
-  攻撃調整
-  仮想敵へのダメージ一覧
+  耐久調整
+  仮想敵からのダメージ一覧
 */
-export class DefenderDamages {
-  readonly attacker: string;
+export class AttackerDamages {
+  private defender: string;
   private level: number
   private individuals: string;
   private basePoints: BasePoints;
@@ -16,9 +16,8 @@ export class DefenderDamages {
   private condition: string;
   private weather: string;
   private field: string;
-
-  constructor(attacker: string, level: number, individuals: string, basePoints: BasePoints, nature: string, ability: string, item: string, condition: string, weather: string, field: string) {
-    this.attacker = attacker;
+  constructor(defender: string, level: number, individuals: string, basePoints: BasePoints, nature: string, ability: string, item: string, condition: string, weather: string, field: string) {
+    this.defender = defender;
     this.level = level;
     this.individuals = individuals;
     this.basePoints = basePoints;
@@ -30,9 +29,9 @@ export class DefenderDamages {
     this.field = field;
   }
 
-  defenderDamages(move: string): Promise<DefendersResult[]> {
+  attackerDamages(): Promise<AttackersResult[]> {
     return new Promise((resolve, reject) => {
-      axios.get('defender_damages', {
+      axios.get('attacker_damages', {
         params: {
           Level: this.level,
           BaseHP: this.basePoints.hp,
@@ -42,8 +41,7 @@ export class DefenderDamages {
           BaseSpDefense: this.basePoints.spDefense,
           BaseSpeed: this.basePoints.speed,
           Individuals: this.individuals,
-          Name: this.attacker,
-          Move: move,
+          Name: this.defender,
           Ability: this.ability,
           Nature: this.nature,
           Item: this.item,
@@ -55,25 +53,26 @@ export class DefenderDamages {
       .then((response) => {
         let json = JSON.stringify(response.data);
         let damages = JSON.parse(json);
-        let res: DefendersResult[] = [];
-  
+        let res: AttackersResult[] = []
+
         for (var i = 0; i < damages.length; i++) {
-          let d = new DefendersResult(damages[i]);
+          let d = new AttackersResult(damages[i]);
           res.push(d);
         }
         resolve(res);
       })
       .catch((e) => {
         console.log('error:' + e);
-        let res: DefendersResult[] = [];
+        let res : AttackersResult[] = [];
         reject(res);
-      });
+      })
     });
   }
 }
 
-export class DefendersResult {
+export class AttackersResult {
   readonly Target: string = '';
+  readonly Move: string = '';
   readonly DamageMin: number = 0;
   readonly DamageMax: number = 0;
   readonly RateMin: number = 0;
@@ -82,16 +81,16 @@ export class DefendersResult {
 
   toString(): string {
     return this.Target
+     + ' ' + this.Move
      + ' ダメージ' + this.DamageMin + '～' + this.DamageMax
      + ' ' + this.RateMin + '%～' + this.RateMax + '%'
      + ' 確定数' + this.DetermineCount;
   }
 
   constructor(d: any) {
-    if (d == null) {
-      return;
-    }
+    if (d == null) return;
     this.Target = d.target;
+    this.Move = d.move;
     this.DamageMin = d.damage_min;
     this.DamageMax = d.damage_max;
     this.RateMax = d.rate_max;
@@ -103,8 +102,8 @@ export class DefendersResult {
     return this.Target.length > 0;
   }
 
-  static detault(): DefendersResult {
-    return new DefendersResult(null);
+  static detault(): AttackersResult {
+    return new AttackersResult(null);
   }
 }
 

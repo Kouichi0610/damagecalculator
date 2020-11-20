@@ -23,7 +23,6 @@ func (s *serverImpl) attackerDamages(c *gin.Context) {
 		BaseSpeed     uint
 		Individuals   string
 		Name          string
-		Move          string
 		Ability       string
 		Nature        string
 		Item          string
