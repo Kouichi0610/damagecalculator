@@ -10,6 +10,7 @@ import (
 	"damagecalculator/domain/species"
 	"damagecalculator/domain/stats"
 	"damagecalculator/domain/supposition"
+	"fmt"
 	"sort"
 )
 
@@ -18,17 +19,19 @@ import (
 type (
 	Result interface {
 		Target() string
+		Move() string
 		DamageMin() uint
 		DamageMax() uint
 		RateMin() float64
 		RateMax() float64
 		DetermineCount() uint
+		String() string
 	}
 
 	Results []Result
 
 	Service interface {
-		Create(level stats.Level, defender *situation.PokeParams, move string, condition *situation.FieldCondition) Results
+		Create(level stats.Level, defender *situation.PokeParams, condition *situation.FieldCondition) Results
 	}
 )
 
@@ -49,13 +52,32 @@ func NewService(nm pokenames.Repository, sp species.Repository, mv move.Reposito
 		it: it,
 	}
 }
-func (s *service) Create(level stats.Level, defender *situation.PokeParams, move string, condition *situation.FieldCondition) Results {
-	return nil
+func (s *service) Create(level stats.Level, defender *situation.PokeParams, condition *situation.FieldCondition) Results {
+	res := make(Results, 0)
+	maker := supposition.NewAttackersMaker(s.nm, s.sp, s.mv, s.ab, s.it)
+	attackers := maker.Attackers(supposition.Defender(defender.Name), supposition.DefenderAbility(defender.Ability))
+	rateService := damage.NewDamageService(s.sp, s.mv, s.ab, s.it)
+
+	for _, attacker := range attackers {
+
+		damages, rates, err := rateService.Calculate(level, attacker.Param(), defender, attacker.Move(), condition)
+		if err != nil {
+			continue
+		}
+		r := newResult(attacker.Param().Info(), attacker.Move(), damages, rates)
+		res = append(res, r)
+	}
+	sort.Slice(res, func(i, j int) bool {
+		return res[i].RateMin() > res[j].RateMin()
+	})
+
+	return res
 }
 
-func newResult(target string, dmgs damage.Damages, rate damage.DamageRate) Result {
+func newResult(target, move string, dmgs damage.Damages, rate damage.DamageRate) Result {
 	return &result{
 		t:    target,
+		move: move,
 		dmin: dmgs.Min(),
 		dmax: dmgs.Max(),
 		rmin: rate.RateMin(),
@@ -66,6 +88,7 @@ func newResult(target string, dmgs damage.Damages, rate damage.DamageRate) Resul
 
 type result struct {
 	t    string
+	move string
 	dmin uint
 	dmax uint
 	rmin float64
@@ -75,6 +98,9 @@ type result struct {
 
 func (r *result) Target() string {
 	return r.t
+}
+func (r *result) Move() string {
+	return r.move
 }
 func (r *result) DamageMin() uint {
 	return r.dmin
@@ -90,4 +116,8 @@ func (r *result) RateMax() float64 {
 }
 func (r *result) DetermineCount() uint {
 	return r.dcnt
+}
+
+func (r *result) String() string {
+	return fmt.Sprintf("%s %s Damage:%d-%d Rate:%0.1f-%0.1f, 確定数:%d", r.Target(), r.Move(), r.DamageMin(), r.DamageMax(), r.RateMin(), r.RateMax(), r.DetermineCount())
 }

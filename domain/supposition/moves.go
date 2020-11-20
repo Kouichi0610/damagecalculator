@@ -6,8 +6,6 @@ import (
 	"damagecalculator/domain/species"
 )
 
-// TODO:その中で最大火力を(とくせい)
-
 // カテゴリごとに使える技一覧を取得
 type (
 	MovesService interface {
