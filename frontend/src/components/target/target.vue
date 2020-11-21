@@ -38,7 +38,9 @@
             :speed="speed"
           ></stats-display>
         </div>
-        <weather-fields></weather-fields>
+        <weather-fields @weather="setWeather" @field="setField"></weather-fields>
+        天候:{{weather}}
+        フィールド: {{field}}
       </template>
       <template v-else>
         <div>No Target.</div>
@@ -124,6 +126,9 @@ export default class Target extends Vue {
   @Mutation("changeNature", { namespace })
   private changeNature!: (nature: string) => void;
 
+  private weather: string = '';
+  private field: string = '';
+
   @Watch("name")
   @Watch("individuals", { deep: true })
   @Watch("nature")
@@ -190,6 +195,14 @@ export default class Target extends Vue {
     this.$emit('speed', this.speed);
     this.$emit('ability', this.currentAbility);
   }
+
+  setWeather(weather: string) {
+    this.weather = weather;
+  }
+  setField(field: string) {
+    this.field = field;
+  }
+
 }
 </script>
 

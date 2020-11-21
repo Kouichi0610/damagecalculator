@@ -44,10 +44,23 @@ export default class WeatherFields extends Vue {
   private setCurrentField!: (current: string) => void;
 
   created() {
+    this.weatherChanged();
+    this.fieldChanged();
     if (this.isInitialized) {
       return;
     }
     this.getWeatherFields();
+  }
+
+  @Watch('currentWeather')
+  weatherChanged() {
+    if (this.currentWeather.length == 0) return;
+    this.$emit('weather', this.currentWeather);
+  }
+  @Watch('currentField')
+  fieldChanged() {
+    if (this.currentField.length == 0) return;
+    this.$emit('field', this.currentField);
   }
 }
 </script>
