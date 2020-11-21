@@ -38,7 +38,7 @@
             :speed="speed"
           ></stats-display>
         </div>
-        <div></div>
+        <weather-fields></weather-fields>
       </template>
       <template v-else>
         <div>No Target.</div>
@@ -58,6 +58,7 @@ import BasePointsAdjuster from "./components/basePointsAdjuster.vue";
 import Nature from "../nature/nature.vue";
 import StatsDisplay from "./components/statsDisplay.vue";
 import AbilitySelector from './components/abilitySelector.vue'
+import WeatherFields from '../weatherFields/weatherFields.vue'
 
 import { StatePatternsLoader } from './store/statePattern'
 import { Species, SpeciesLoader } from './store/species'
@@ -74,6 +75,7 @@ const namespace: string = "target";
     Nature,
     StatsDisplay,
     AbilitySelector,
+    WeatherFields,
   },
 })
 export default class Target extends Vue {

@@ -43,6 +43,22 @@ func ToField(name string) Field {
 	return NoField
 }
 
+func WeatherNames() []string {
+	res := make([]string, 0)
+	for _, n := range weatherNames {
+		res = append(res, n)
+	}
+	return res
+}
+
+func FieldNames() []string {
+	res := make([]string, 0)
+	for _, n := range fieldNames {
+		res = append(res, n)
+	}
+	return res
+}
+
 // 技のタイプから補正がかかっているか確認
 
 /*
