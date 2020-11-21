@@ -12,9 +12,7 @@
 import { Vue, Prop, Component, Watch } from "vue-property-decorator";
 
 import { AttackerDamages, AttackersResult } from '../target/store/attackerDamages'
-import DamageRate from './components/damageRate.vue'
-
-//const namespace: string = "defender";
+import DamageRate from '../damageRate/damageRate.vue'
 
 @Component({
   components: {
