@@ -20,13 +20,13 @@
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Component } from "vue-property-decorator";
-import { DefendersResult } from '../../target/store/defenderDamages'
+import { Vue, Prop, Component, Watch } from "vue-property-decorator";
+import { DamageRateInfo } from '../target/store/damageRateInfo'
 
 @Component
 export default class DamageRate extends Vue {
-  @Prop() private result!: DefendersResult;
-
+  @Prop() private result!: DamageRateInfo;
+  
   get rateMin(): number {
     return this.result.RateMin;
   }
@@ -41,7 +41,6 @@ export default class DamageRate extends Vue {
     return this.result.DetermineCount == 1;
   }
 }
-
 </script>
 
 <style scoped>

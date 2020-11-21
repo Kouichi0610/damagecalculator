@@ -20,7 +20,7 @@ import { Species } from '../target/store/species'
 import { DefenderDamages, DefendersResult } from '../target/store/defenderDamages'
 import { MoveInfo } from '../moves/store/types'
 import Moves from '../moves/moves.vue'
-import DamageRate from './components/damageRate.vue'
+import DamageRate from '../damageRate/damageRate.vue'
 
 const namespace: string = "attacker";
 

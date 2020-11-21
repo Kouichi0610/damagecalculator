@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { BasePoints } from './basePoints';
+import { DamageRateInfo } from './damageRateInfo';
 
 /*
   攻撃調整
@@ -72,7 +73,7 @@ export class DefenderDamages {
   }
 }
 
-export class DefendersResult {
+export class DefendersResult implements DamageRateInfo{
   readonly Target: string = '';
   readonly DamageMin: number = 0;
   readonly DamageMax: number = 0;
