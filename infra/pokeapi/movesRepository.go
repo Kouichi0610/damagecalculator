@@ -63,6 +63,8 @@ func (r *movesRepository) Get(name string) (*move.MoveFactory, error) {
 
 func damageCategory(name string, ct category.DamageCategory) category.DamageCategory {
 	switch name {
+	case "しんぴのつるぎ":
+		return category.PsycoShock
 	case "サイコショック":
 		return category.PsycoShock
 	case "サイコブレイク":
