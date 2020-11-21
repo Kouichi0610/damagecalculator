@@ -2,7 +2,7 @@
 <template>
   <div class="defender">
     <target :show="true"></target>
-    <move-result></move-result>
+    <move-result :damages="attackerDamages"></move-result>
   </div>
 </template>
 

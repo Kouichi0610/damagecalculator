@@ -37,7 +37,6 @@ export default class DamageRate extends Vue {
     return this.result.RateMax - this.result.RateMin;
   }
 
-
   get isDetermine1(): boolean {
     return this.result.DetermineCount == 1;
   }
