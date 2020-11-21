@@ -11,5 +11,11 @@ export const getters: GetterTree<WeatherFieldsState, RootState> = {
   },
   fields: (state: WeatherFieldsState): string[] => {
     return state.fields;
+  },
+  currentWeather: (state: WeatherFieldsState): string => {
+    return state.currentWeather;
+  },
+  currentField: (state: WeatherFieldsState): string => {
+    return state.currentField;
   }
 }

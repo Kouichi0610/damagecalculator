@@ -8,6 +8,8 @@ import { RootState } from '@/store/types';
 export const state: WeatherFieldsState = {
   weathers: [],
   fields: [],
+  currentWeather: '',
+  currentField: '',
 }
 
 const namespaced: boolean = true;

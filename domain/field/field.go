@@ -25,6 +25,13 @@ const (
 	MystField
 )
 
+func (w Weather) String() string {
+	return weatherNames[w]
+}
+func (f Field) String() string {
+	return fieldNames[f]
+}
+
 func ToWeather(name string) Weather {
 	for k, v := range weatherNames {
 		if v == name {
@@ -45,16 +52,16 @@ func ToField(name string) Field {
 
 func WeatherNames() []string {
 	res := make([]string, 0)
-	for _, n := range weatherNames {
-		res = append(res, n)
+	for _, w := range weathers {
+		res = append(res, w.String())
 	}
 	return res
 }
 
 func FieldNames() []string {
 	res := make([]string, 0)
-	for _, n := range fieldNames {
-		res = append(res, n)
+	for _, f := range fields {
+		res = append(res, f.String())
 	}
 	return res
 }
@@ -92,8 +99,6 @@ type Fields struct {
 	f Field
 	w Weather
 }
-
-// Skill -> []Corrector
 
 func NewFields(f Field, w Weather) *Fields {
 	return &Fields{
@@ -175,6 +180,8 @@ func (f Field) hasPlus(s *types.Types) bool {
 
 var weatherNames map[Weather]string
 var fieldNames map[Field]string
+var weathers []Weather
+var fields []Field
 
 func init() {
 	weatherNames = make(map[Weather]string)
@@ -190,4 +197,18 @@ func init() {
 	fieldNames[PsychoField] = "サイコフィールド"
 	fieldNames[GrassField] = "グラスフィールド"
 	fieldNames[MystField] = "ミストフィールド"
+
+	weathers = make([]Weather, 0)
+	fields = make([]Field, 0)
+
+	weathers = append(weathers, NoWeather)
+	weathers = append(weathers, Sunny)
+	weathers = append(weathers, Rainy)
+	weathers = append(weathers, Snow)
+	weathers = append(weathers, SandStorm)
+	fields = append(fields, NoField)
+	fields = append(fields, ElectricField)
+	fields = append(fields, PsychoField)
+	fields = append(fields, GrassField)
+	fields = append(fields, MystField)
 }

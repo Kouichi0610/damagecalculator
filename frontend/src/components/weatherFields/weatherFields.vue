@@ -3,12 +3,13 @@
     <div class="row mb-1">
       <div class="col-1"></div>
       <b-dropdown class="col-1" id="weather-dropdown" text="天候">
-        <b-dropdown-item v-for="item in weathers" :key="item" @click="changeWeather(item)">{{ item }}</b-dropdown-item>
+        <b-dropdown-item v-for="item in weathers" :key="item" @click="setCurrentWeather(item)">{{ item }}</b-dropdown-item>
       </b-dropdown>
+      <div class="col-1">{{ currentWeather }}</div>
       <b-dropdown class="col-1" id="field-dropdown" text="フィールド">
-        <b-dropdown-item v-for="item in fields" :key="item" @click="changeField(item)">{{ item }}</b-dropdown-item>
+        <b-dropdown-item v-for="item in fields" :key="item" @click="setCurrentField(item)">{{ item }}</b-dropdown-item>
       </b-dropdown>
-      <div class="col-1">{{current}}</div>
+      <div class="col-1">{{ currentField }}</div>
     </div>
   </div>
 </template>
@@ -18,7 +19,7 @@
   天候、フィールド
 */
 import { Vue, Prop, Component, Watch } from "vue-property-decorator";
-import { Getter, Action } from 'vuex-class';
+import { Getter, Action, Mutation } from 'vuex-class';
 import { WeatherFieldsState } from '../../store/weatherFields/types';
 
 const namespace: string = 'weatherFields';
@@ -33,19 +34,21 @@ export default class WeatherFields extends Vue {
   private weathers!: string[];
   @Getter('fields', { namespace })
   private fields!: string[];
-
+  @Getter('currentWeather', { namespace })
+  private currentWeather!: string;
+  @Getter('currentField', { namespace })
+  private currentField!: string;
+  @Mutation('setCurrentWeather', { namespace })
+  private setCurrentWeather!: (current: string) => void;
+  @Mutation('setCurrentField', { namespace })
+  private setCurrentField!: (current: string) => void;
 
   created() {
+    if (this.isInitialized) {
+      return;
+    }
     this.getWeatherFields();
   }
-
-  changeWeather(weather: string) {
-    console.log('Weather:' + weather);
-  }
-  changeField(field: string) {
-    console.log('Field:' + field);
-  }
-  
 }
 </script>
 

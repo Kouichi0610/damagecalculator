@@ -12,9 +12,6 @@ export const actions: ActionTree<WeatherFieldsState, RootState> = {
 
       commit('setWeathers', res.weathers);
       commit('setFields', res.fields);
-
-      console.log('w:' + res.weathers);
-      console.log('f:' + res.fields);
     })
     .catch((e) => {
       console.log('failed:' + e);
