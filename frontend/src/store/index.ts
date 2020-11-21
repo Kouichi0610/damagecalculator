@@ -5,6 +5,9 @@ import Vue from 'vue'
 import Vuex, { StoreOptions } from 'vuex'
 
 import { RootState } from './types'
+
+import { natureState } from './nature/index'
+
 import { targetSelect } from '../components/targetSelect/store/index'
 import { target } from '../components/target/store/index'
 import { nature } from '../components/nature/store/index'
@@ -28,6 +31,7 @@ const store: StoreOptions<RootState> = {
     moves,
     attacker,
     weatherFields,
+    natureState,
   }
 }
 
