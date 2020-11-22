@@ -7,6 +7,7 @@ import Vuex, { StoreOptions } from 'vuex'
 import { RootState } from './types'
 import { natureState } from './nature/index'
 import { individualsState } from './individuals/index'
+import { basePointsState } from './basePoints/index'
 
 import { targetSelect } from '../components/targetSelect/store/index'
 import { target } from '../components/target/store/index'
@@ -21,7 +22,7 @@ Vue.use(Vuex);
 const store: StoreOptions<RootState> = {
   state: {
     version: '1.0.0',
-    level: 50,
+    level: 50,  // TODO:LevelStateつくる
   },
   modules: {
     target,
@@ -33,6 +34,7 @@ const store: StoreOptions<RootState> = {
     weatherFields,
     natureState,
     individualsState,
+    basePointsState,
   }
 }
 
