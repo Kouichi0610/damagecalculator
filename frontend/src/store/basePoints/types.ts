@@ -13,5 +13,4 @@ export class BasePoints {
 
 export class BasePoint {
 }
-// TODO:いい機会なのでテストコードを記述
 

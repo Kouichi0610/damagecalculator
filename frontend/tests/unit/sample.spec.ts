@@ -4,9 +4,9 @@ import { shallowMount } from '@vue/test-utils'
 import {sum} from './sum'
 
 describe('sum sample', (): void => {
-  test('1+1 = 2', (): void => {
-    let response: number = sum(1, 2);
-    expect(response).toBe(3);
+  test('1+1 = 3', (): void => {
+    let response: number = sum(1, 5);
+    expect(response).toBe(6);
   });
 })
 
