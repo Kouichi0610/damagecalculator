@@ -2,7 +2,10 @@
   <div class="adjust-target">
     <template v-if="hasTarget">
       試作 {{ nature.name }}
+      {{ individuals.toString() }}
       <nature-selector :target="target" @change="changeNature"></nature-selector>
+      <individuals-selector :target="target" @change="changeIndividuals"></individuals-selector>
+      <base-points-adjuster></base-points-adjuster>
     </template>
     <template v-else>
       No Target.
@@ -21,8 +24,8 @@
     名前
     特性
     タイプ
-    性格
-    個体値
+    性格  DONE
+    個体値 DONE
     種族値
     基礎ポイント
     能力値
@@ -34,12 +37,17 @@
 import { Vue, Component, Watch } from 'vue-property-decorator';
 
 import NatureSelector from './components/natureSelector.vue'
+import IndividualsSelector from './components/individualsSelector.vue'
+import BasePointsAdjuster from './components/basePointsAdjuster.vue'
 
 import { Nature } from '../../store/nature/types'
+import { Individuals } from '../../store/individuals/types'
 
 @Component({
   components: {
-    NatureSelector
+    NatureSelector,
+    IndividualsSelector,
+    BasePointsAdjuster,
   }
 })
 export default class AdjustTarget extends Vue {
@@ -47,6 +55,7 @@ export default class AdjustTarget extends Vue {
   private target: string = 'フカマル';
 
   private nature: Nature = Nature.default();
+  private individuals: Individuals = Individuals.default();
 
   get hasTarget(): boolean {
     return true;
@@ -55,6 +64,10 @@ export default class AdjustTarget extends Vue {
   changeNature(nature: Nature) {
     this.nature = nature;
   }
+  changeIndividuals(individuals: Individuals) {
+    this.individuals = individuals;
+  }
+
 
   created() {
     //this.$emit('sample', "AdjustSample");

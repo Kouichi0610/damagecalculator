@@ -5,8 +5,8 @@ import Vue from 'vue'
 import Vuex, { StoreOptions } from 'vuex'
 
 import { RootState } from './types'
-
 import { natureState } from './nature/index'
+import { individualsState } from './individuals/index'
 
 import { targetSelect } from '../components/targetSelect/store/index'
 import { target } from '../components/target/store/index'
@@ -32,6 +32,7 @@ const store: StoreOptions<RootState> = {
     attacker,
     weatherFields,
     natureState,
+    individualsState,
   }
 }
 
