@@ -6,6 +6,7 @@
       <p>{{ basePoints.toString() }}</p>
       <nature-selector :target="target" @change="changeNature"></nature-selector>
       <individuals-selector :target="target" @change="changeIndividuals"></individuals-selector>
+      <species-display :species="species"></species-display>
       <base-points-adjuster :target="target" @change="changeBasePoints"></base-points-adjuster>
     </template>
     <template v-else>
@@ -27,7 +28,7 @@
     タイプ
     性格  DONE
     個体値 DONE
-    種族値
+    種族値 DONE
     基礎ポイント DONE
     能力値
     天候＆フィールド
@@ -40,16 +41,19 @@ import { Vue, Component, Watch } from 'vue-property-decorator';
 import NatureSelector from './components/natureSelector.vue'
 import IndividualsSelector from './components/individualsSelector.vue'
 import BasePointsAdjuster from './components/basePointsAdjuster.vue'
+import SpeciesDisplay from './components/speciesDisplay.vue'
 
 import { Nature } from '../../store/nature/types'
 import { Individuals } from '../../store/individuals/types'
 import { IBasePoints, defaultBasePoints } from '../../store/basePoints/types'
+import { Species } from '../../store/species/types'
 
 @Component({
   components: {
     NatureSelector,
     IndividualsSelector,
     BasePointsAdjuster,
+    SpeciesDisplay,
   }
 })
 export default class AdjustTarget extends Vue {
@@ -59,6 +63,7 @@ export default class AdjustTarget extends Vue {
   private nature: Nature = Nature.default();
   private individuals: Individuals = Individuals.default();
   private basePoints: IBasePoints = defaultBasePoints();
+  private species: Species = new Species(100, 80, 60, 70, 130, 50);
 
   get hasTarget(): boolean {
     return true;
