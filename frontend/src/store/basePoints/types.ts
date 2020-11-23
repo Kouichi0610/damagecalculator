@@ -10,8 +10,19 @@ const tags: string[] = [
   '特防',
   '素早さ',
 ]
+export function defaultBasePoints(): IBasePoints {
+  return new BasePoints();
+}
 
-// TODO: implements readonlyBasePoints
+export interface IBasePoints {
+  hp(): number
+  attack(): number
+  defense(): number
+  spAttack(): number
+  spDefense(): number
+  speed(): number
+  toString(): string;
+}
 
 /*
   基礎ポイント
@@ -20,13 +31,14 @@ const tags: string[] = [
   各最大252まで
   合計508まで
 */
-export class BasePoints implements IBasePointsLimit {
-  hp(): IBasePoint { return this.basePoints[0] }
-  attack(): IBasePoint { return this.basePoints[1] }
-  defense(): IBasePoint { return this.basePoints[2] }
-  spAttack(): IBasePoint { return this.basePoints[3] }
-  spDefense(): IBasePoint { return this.basePoints[4] }
-  speed(): IBasePoint { return this.basePoints[5] }
+export class BasePoints implements IBasePoints, IBasePointsLimit {
+  hp(): number { return this.basePoints[0].value; }
+  attack(): number { return this.basePoints[1].value; }
+  defense(): number { return this.basePoints[2].value; }
+  spAttack(): number { return this.basePoints[3].value; }
+  spDefense(): number { return this.basePoints[3].value; }
+  speed(): number { return this.basePoints[4].value; }
+
   array(): IBasePoint[] { return this.basePoints; }
 
   total(): number {
@@ -39,6 +51,7 @@ export class BasePoints implements IBasePointsLimit {
 
   set(index: number, value: number) {
     let next = Math.min(value, this.basePoints[index].limit());
+    if (next < 0) next = 0;
     this.basePoints[index].value = next;
   }
 

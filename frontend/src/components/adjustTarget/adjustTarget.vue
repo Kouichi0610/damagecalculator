@@ -1,11 +1,12 @@
 <template>
   <div class="adjust-target">
     <template v-if="hasTarget">
-      試作 {{ nature.name }}
-      {{ individuals.toString() }}
+      <p>試作 {{ nature.name }}</p>
+      <p>{{ individuals.toString() }}</p>
+      <p>{{ basePoints.toString() }}</p>
       <nature-selector :target="target" @change="changeNature"></nature-selector>
       <individuals-selector :target="target" @change="changeIndividuals"></individuals-selector>
-      <base-points-adjuster :target="target"></base-points-adjuster>
+      <base-points-adjuster :target="target" @change="changeBasePoints"></base-points-adjuster>
     </template>
     <template v-else>
       No Target.
@@ -27,7 +28,7 @@
     性格  DONE
     個体値 DONE
     種族値
-    基礎ポイント
+    基礎ポイント DONE
     能力値
     天候＆フィールド
     技一覧
@@ -42,6 +43,7 @@ import BasePointsAdjuster from './components/basePointsAdjuster.vue'
 
 import { Nature } from '../../store/nature/types'
 import { Individuals } from '../../store/individuals/types'
+import { IBasePoints, defaultBasePoints } from '../../store/basePoints/types'
 
 @Component({
   components: {
@@ -56,6 +58,7 @@ export default class AdjustTarget extends Vue {
 
   private nature: Nature = Nature.default();
   private individuals: Individuals = Individuals.default();
+  private basePoints: IBasePoints = defaultBasePoints();
 
   get hasTarget(): boolean {
     return true;
@@ -67,10 +70,11 @@ export default class AdjustTarget extends Vue {
   changeIndividuals(individuals: Individuals) {
     this.individuals = individuals;
   }
-
+  changeBasePoints(basePoints: IBasePoints) {
+    this.basePoints = basePoints;
+  }
 
   created() {
-    console.log('xxxx');
     //this.$emit('sample', "AdjustSample");
 
   }

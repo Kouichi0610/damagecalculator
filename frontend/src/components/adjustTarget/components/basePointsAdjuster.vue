@@ -10,7 +10,7 @@
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import { State, Action, Getter, Mutation } from "vuex-class";
-import { IBasePoint, BasePoints } from '../../../store/basePoints/types';
+import { IBasePoint, IBasePoints } from '../../../store/basePoints/types';
 import Adjuster from './basePoints/adjuster.vue';
 
 const namespace: string = "basePointsState";
@@ -23,6 +23,8 @@ const namespace: string = "basePointsState";
 export default class BasePointsAdjuster extends Vue {
   @Prop() private target!: string;
 
+  @Getter('basePoints', { namespace })
+  private basePoints!: IBasePoints;
   @Getter('basePointsArray', { namespace })
   private basePointsArray!: IBasePoint[];
 
@@ -51,6 +53,7 @@ export default class BasePointsAdjuster extends Vue {
   ];
 
   created() {
+    this.basePointsChanged();
   }
 
   change(index: number, value: number) {
@@ -60,6 +63,11 @@ export default class BasePointsAdjuster extends Vue {
   @Watch('target')
   targetChanged() {
     this.reset();
+  }
+
+  @Watch('basePoints', { deep: true })
+  basePointsChanged() {
+    this.$emit('change', this.basePoints);
   }
 }
 </script>
