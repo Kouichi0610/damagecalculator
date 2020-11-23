@@ -70,6 +70,7 @@ export default class AdjustTarget extends Vue {
 
 
   created() {
+    console.log('xxxx');
     //this.$emit('sample', "AdjustSample");
 
   }

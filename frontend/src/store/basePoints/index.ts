@@ -5,6 +5,7 @@ import { BasePoints, BasePointsState } from './types';
 import { RootState } from '@/store/types';
 
 export const state: BasePointsState = {
+  basePoints: new BasePoints()
 }
 
 const namespaced: boolean = true;
