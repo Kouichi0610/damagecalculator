@@ -37,7 +37,6 @@ export default class Adjuster extends Vue {
 
   @Watch('basePoint', { deep: true })
   private basePointChanged() {
-    console.log('Changed:' + this.basePoint.index + ' BasePoint:' + this.basePoint);
     this.current = this.basePoint.value;
   }
 }

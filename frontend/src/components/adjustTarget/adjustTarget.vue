@@ -5,7 +5,7 @@
       {{ individuals.toString() }}
       <nature-selector :target="target" @change="changeNature"></nature-selector>
       <individuals-selector :target="target" @change="changeIndividuals"></individuals-selector>
-      <base-points-adjuster></base-points-adjuster>
+      <base-points-adjuster :target="target"></base-points-adjuster>
     </template>
     <template v-else>
       No Target.
