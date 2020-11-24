@@ -62,16 +62,32 @@ class StatePattern {
 }
 
 export class StatsPatternsLoader {
-  constructor() {
+  private level: number;
+  private name: string;
+  private individuals: Individuals;
+  private nature: Nature;
+
+  public enable(): boolean {
+    if (this.name.length == 0) return false;
+    if (this.nature.name.length == 0) return false;
+    if (this.individuals.type().length == 0) return false;
+    return true;
   }
-  public load(level: number, name: string, individuals: Individuals, nature: Nature): Promise<StatsPatterns> {
+
+  constructor(level: number, name: string, individuals: Individuals, nature: Nature) {
+    this.level = level;
+    this.name = name;
+    this.individuals = individuals;
+    this.nature = nature;
+  }
+  public load(): Promise<StatsPatterns> {
     return new Promise((resolve, reject) => {
       axios.get('stats_pattern', {
         params: {
-          Level: level,
-          Name: name,
-          Nature: nature.name,
-          Individual: individuals.type(),
+          Level: this.level,
+          Name: this.name,
+          Nature: this.nature.name,
+          Individual: this.individuals.type(),
         }
       })
       .then((response) => {

@@ -1,7 +1,8 @@
 <template>
   <div class="adjust-target">
+    <species-loader @target="onTarget"></species-loader>
     <template v-if="hasTarget">
-      <p>対象:{{ nature.name }}</p>
+      <p>対象:{{ data.name }}</p>
       <nature-selector :target="target" @change="changeNature"></nature-selector>
       <individuals-selector :target="target" @change="changeIndividuals"></individuals-selector>
       <div class="row mb-1">
@@ -18,11 +19,13 @@
 
 <script lang="ts">
 /*
-  調整対象
+  調整対象の能力値表示
   TODO:species取得コンポーネントを別に作る(表示は行わない)
+  TODO:targetState必要か
   TODO:target.vueを改修してこっちを使用
   TODO:target更新時、性格、個体値などリセット(各コンポーネントにWatchさせるのが無難か)
   TODO:肥大化しているstoreを細分化
+  TODO:与、被ダメージに改名(give - take)
     名前
     特性
     タイプ
@@ -39,6 +42,7 @@
 */
 import { Vue, Component, Watch } from 'vue-property-decorator';
 
+import SpeciesLoader from '../species/speciesLoader.vue'
 import NatureSelector from './components/natureSelector.vue'
 import IndividualsSelector from './components/individualsSelector.vue'
 import BasePointsAdjuster from './components/basePointsAdjuster.vue'
@@ -47,12 +51,13 @@ import StatsDisplay from './components/statsDisplay.vue'
 
 import { Nature } from '../../store/nature/types'
 import { Individuals } from '../../store/individuals/types'
-import { IBasePoints, defaultBasePoints } from '../../store/basePoints/types'
-import { ISpecies, defaultSpecies, PokeDataLoader  } from '../../store/species/types'
+import { IBasePoints, defaultBasePoints, BasePoints } from '../../store/basePoints/types'
+import { ISpecies, PokeData } from '../../store/species/types'
 import { StatsPatterns, StatsPatternsLoader } from '../../store/stats/types'
 
 @Component({
   components: {
+    SpeciesLoader,
     NatureSelector,
     IndividualsSelector,
     BasePointsAdjuster,
@@ -61,29 +66,35 @@ import { StatsPatterns, StatsPatternsLoader } from '../../store/stats/types'
   }
 })
 export default class AdjustTarget extends Vue {
-  // TODO:store
-  private target: string = 'ガブリアス';
+  private data: PokeData = PokeData.default();
+
   private nature: Nature = Nature.default();
   private individuals: Individuals = Individuals.default();
   private basePoints: IBasePoints = defaultBasePoints();
-  private species: ISpecies = defaultSpecies();
   private statsPatterns: StatsPatterns = StatsPatterns.default();
 
-  get hasTarget(): boolean {
-    return true;
+  get target(): string {
+    return this.data.name;
   }
-
+  get hasTarget(): boolean {
+    return this.data.hasTarget();
+  }
+  get species(): ISpecies {
+    return this.data.species;
+  }
   get stats(): number[] {
     return this.statsPatterns.statsArray(this.basePoints);
   }
 
-  @Watch('target')
-  @Watch('nature', { deep: true })
-  @Watch('individuals', { deep: true })
-  @Watch('basePoints', { deep: true })
-  async loadStatsPatterns() {
-    let loader = new StatsPatternsLoader();
-    this.statsPatterns = await loader.load(50, this.target, this.individuals, this.nature);
+  @Watch('loader', { deep: true })
+  async loaderChanged() {
+    if (!this.loader.enable()) return;
+    console.log('loader;.');
+    this.statsPatterns = await this.loader.load();
+  }
+
+  get loader(): StatsPatternsLoader {
+    return new StatsPatternsLoader(50, this.data.name, this.individuals, this.nature);
   }
 
   changeNature(nature: Nature) {
@@ -94,6 +105,10 @@ export default class AdjustTarget extends Vue {
   }
   changeBasePoints(basePoints: IBasePoints) {
     this.basePoints = basePoints;
+  }
+
+  onTarget(data: PokeData) {
+    this.data = data;
   }
 
   created() {

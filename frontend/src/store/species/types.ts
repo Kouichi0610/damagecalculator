@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export interface SpeciesState {
-  species: ISpecies;
+  data: PokeData;
 }
 
 export class PokeData {

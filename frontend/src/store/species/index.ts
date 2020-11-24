@@ -2,11 +2,11 @@ import { Module } from 'vuex'
 import { getters } from './getters';
 import { actions } from './actions';
 import { mutations } from './mutations';
-import { SpeciesState, defaultSpecies } from './types';
+import { SpeciesState, PokeData } from './types';
 import { RootState } from '@/store/types';
 
 export const state: SpeciesState = {
-  species: defaultSpecies(),
+  data: PokeData.default(),
 }
 
 const namespaced: boolean = true;

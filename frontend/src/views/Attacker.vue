@@ -14,11 +14,13 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Getter } from "vuex-class";
 import AdjustTarget from '../components/adjustTarget/adjustTarget.vue'
 
+// TODO:remove
 import Target from '../components/target/target.vue'
 import MoveResult from '../components/attacker/moveResult.vue'
 import { MoveInfo } from '../components/moves/store/types'
 import { TargetState } from '../components/target/store/types'
 
+// TODO:改修
 import { DefenderDamages } from '../components/target/store/defenderDamages'
 
 const namespace: string = "target";
