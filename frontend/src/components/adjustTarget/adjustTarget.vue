@@ -2,7 +2,8 @@
   <div class="adjust-target">
     <species-loader @target="onTarget"></species-loader>
     <template v-if="hasTarget">
-      <p>対象:{{ data.name }}</p>
+      <data-display :data="data"></data-display>
+      <ability-selector :current="ability" :abilities="abilities" @change="changeAbility"></ability-selector>
       <nature-selector :target="target" @change="changeNature"></nature-selector>
       <individuals-selector :target="target" @change="changeIndividuals"></individuals-selector>
       <div class="row mb-1">
@@ -20,14 +21,16 @@
 <script lang="ts">
 /*
   調整対象の能力値表示
-  TODO:species取得コンポーネントを別に作る(表示は行わない)
+  DONE:species取得コンポーネントを別に作る(表示は行わない)
+  TODO:ability
+  TODO:item, condition, weather-fieldコンポーネント作る
   TODO:targetState必要か
   TODO:target.vueを改修してこっちを使用
   TODO:target更新時、性格、個体値などリセット(各コンポーネントにWatchさせるのが無難か)
   TODO:肥大化しているstoreを細分化
-  TODO:与、被ダメージに改名(give - take)
+  TODO:与、被ダメージに改名(give - take) (send - receive)
     名前
-    特性
+    特性 DONE
     タイプ
     おもさ
     性格  DONE
@@ -48,6 +51,8 @@ import IndividualsSelector from './components/individualsSelector.vue'
 import BasePointsAdjuster from './components/basePointsAdjuster.vue'
 import SpeciesDisplay from './components/speciesDisplay.vue'
 import StatsDisplay from './components/statsDisplay.vue'
+import AbilitySelector from './components/abilitySelector.vue'
+import DataDisplay from './components/dataDisplay.vue'
 
 import { Nature } from '../../store/nature/types'
 import { Individuals } from '../../store/individuals/types'
@@ -57,22 +62,27 @@ import { StatsPatterns, StatsPatternsLoader } from '../../store/stats/types'
 
 @Component({
   components: {
+    DataDisplay,
     SpeciesLoader,
     NatureSelector,
     IndividualsSelector,
     BasePointsAdjuster,
     SpeciesDisplay,
     StatsDisplay,
+    AbilitySelector,
   }
 })
 export default class AdjustTarget extends Vue {
   private data: PokeData = PokeData.default();
-
   private nature: Nature = Nature.default();
   private individuals: Individuals = Individuals.default();
   private basePoints: IBasePoints = defaultBasePoints();
   private statsPatterns: StatsPatterns = StatsPatterns.default();
+  private ability: string = '';
 
+  get abilities(): string[]{
+    return this.data.abilities;
+  }
   get target(): string {
     return this.data.name;
   }
@@ -89,7 +99,6 @@ export default class AdjustTarget extends Vue {
   @Watch('loader', { deep: true })
   async loaderChanged() {
     if (!this.loader.enable()) return;
-    console.log('loader;.');
     this.statsPatterns = await this.loader.load();
   }
 
@@ -105,6 +114,9 @@ export default class AdjustTarget extends Vue {
   }
   changeBasePoints(basePoints: IBasePoints) {
     this.basePoints = basePoints;
+  }
+  changeAbility(ability: string) {
+    this.ability = ability;
   }
 
   onTarget(data: PokeData) {
