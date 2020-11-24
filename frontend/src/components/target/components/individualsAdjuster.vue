@@ -27,7 +27,8 @@ export default class IndividualsAdjuster extends Vue {
     @Watch('slowest')
     private slowestChanged() {
         // this.individuals.slowest()を直接呼び出しても動作する
-        // TODO:問題点は
+        // TODO:ことの問題点は
+        // 状態変更はstoreに任せるべきか
         this.$emit('slowest', this.slowest);
     }
     @Watch('weakest')

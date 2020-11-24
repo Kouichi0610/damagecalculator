@@ -38,7 +38,9 @@
             :speed="speed"
           ></stats-display>
         </div>
-        <div></div>
+        <weather-fields @weather="setWeather" @field="setField"></weather-fields>
+        天候:{{weather}}
+        フィールド: {{field}}
       </template>
       <template v-else>
         <div>No Target.</div>
@@ -58,6 +60,7 @@ import BasePointsAdjuster from "./components/basePointsAdjuster.vue";
 import Nature from "../nature/nature.vue";
 import StatsDisplay from "./components/statsDisplay.vue";
 import AbilitySelector from './components/abilitySelector.vue'
+import WeatherFields from '../weatherFields/weatherFields.vue'
 
 import { StatePatternsLoader } from './store/statePattern'
 import { Species, SpeciesLoader } from './store/species'
@@ -74,6 +77,7 @@ const namespace: string = "target";
     Nature,
     StatsDisplay,
     AbilitySelector,
+    WeatherFields,
   },
 })
 export default class Target extends Vue {
@@ -121,6 +125,9 @@ export default class Target extends Vue {
   private changeBasePoints!: (basePoints: BasePoints) => void;
   @Mutation("changeNature", { namespace })
   private changeNature!: (nature: string) => void;
+
+  private weather: string = '';
+  private field: string = '';
 
   @Watch("name")
   @Watch("individuals", { deep: true })
@@ -188,6 +195,14 @@ export default class Target extends Vue {
     this.$emit('speed', this.speed);
     this.$emit('ability', this.currentAbility);
   }
+
+  setWeather(weather: string) {
+    this.weather = weather;
+  }
+  setField(field: string) {
+    this.field = field;
+  }
+
 }
 </script>
 

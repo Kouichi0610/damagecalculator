@@ -52,6 +52,7 @@ func (s *serverImpl) Serve() (http.Handler, error) {
 	router.GET("/defender_damages", s.defenderDamages)
 	router.GET("/attacker_damages", s.attackerDamages)
 	router.GET("/moves", s.moves)
+	router.GET("/weather_fields", s.weatherFieldsList)
 
 	return router, router.Run(":8080")
 }
