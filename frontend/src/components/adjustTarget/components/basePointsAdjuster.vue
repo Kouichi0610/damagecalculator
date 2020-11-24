@@ -53,7 +53,6 @@ export default class BasePointsAdjuster extends Vue {
   ];
 
   created() {
-    this.basePointsChanged();
   }
 
   change(index: number, value: number) {

@@ -36,8 +36,8 @@ export class BasePoints implements IBasePoints, IBasePointsLimit {
   attack(): number { return this.basePoints[1].value; }
   defense(): number { return this.basePoints[2].value; }
   spAttack(): number { return this.basePoints[3].value; }
-  spDefense(): number { return this.basePoints[3].value; }
-  speed(): number { return this.basePoints[4].value; }
+  spDefense(): number { return this.basePoints[4].value; }
+  speed(): number { return this.basePoints[5].value; }
 
   array(): IBasePoint[] { return this.basePoints; }
 

@@ -1,13 +1,13 @@
 <template>
   <div class="species">
-    <p>種族値(new)</p>
+    <p>種族値</p>
     <div v-for="param in params" :key="param.key" class="row mb-1">
-        <div class="col-sm-1">{{ param.value }}</div>
         <div class="col-sm-6 pt-1">
           <b-progress :max="255" show-value animated>
             <b-progress-bar :value="param.value" variant="warning"></b-progress-bar>
           </b-progress>
         </div>
+        <div class="col-1">{{ param.value }}</div>
     </div>
   </div>
 </template>
@@ -37,7 +37,6 @@ export default class SpeciesDisplay extends Vue {
 
   @Watch('species', { deep: true})
   speciesChanged() {
-    console.log('species...');
     this.params = [];
     this.params.push(new Params(0, this.species.hp));
     this.params.push(new Params(1, this.species.attack));

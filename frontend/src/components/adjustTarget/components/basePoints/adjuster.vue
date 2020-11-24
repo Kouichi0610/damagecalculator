@@ -1,10 +1,10 @@
 <template>
   <div class="adjuster">
     <span class="row mb-1">
-        <div class="col-8">
+        <div class="col-sm-7 pt-1">
             <input type="range" class="form-control-change" id="slider" v-model.number="current" step="4" min="0" max="252" :disabled="disabled">
         </div>
-        <div class="col-3">{{ basePoint.tag }}:{{ current }}</div>
+        <div class="col-1">{{ current }}</div>
     </span>
   </div>
 </template>
