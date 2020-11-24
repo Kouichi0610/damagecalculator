@@ -19,6 +19,7 @@
 <script lang="ts">
 /*
   調整対象
+  TODO:species取得コンポーネントを別に作る(表示は行わない)
   TODO:target.vueを改修してこっちを使用
   TODO:target更新時、性格、個体値などリセット(各コンポーネントにWatchさせるのが無難か)
   TODO:肥大化しているstoreを細分化
@@ -47,7 +48,7 @@ import StatsDisplay from './components/statsDisplay.vue'
 import { Nature } from '../../store/nature/types'
 import { Individuals } from '../../store/individuals/types'
 import { IBasePoints, defaultBasePoints } from '../../store/basePoints/types'
-import { Species } from '../../store/species/types'
+import { ISpecies, defaultSpecies, PokeDataLoader  } from '../../store/species/types'
 import { StatsPatterns, StatsPatternsLoader } from '../../store/stats/types'
 
 @Component({
@@ -65,7 +66,7 @@ export default class AdjustTarget extends Vue {
   private nature: Nature = Nature.default();
   private individuals: Individuals = Individuals.default();
   private basePoints: IBasePoints = defaultBasePoints();
-  private species: Species = new Species(100, 80, 60, 70, 130, 50);
+  private species: ISpecies = defaultSpecies();
   private statsPatterns: StatsPatterns = StatsPatterns.default();
 
   get hasTarget(): boolean {
