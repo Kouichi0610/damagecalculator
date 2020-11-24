@@ -2,19 +2,19 @@ import { Module } from 'vuex'
 import { getters } from './getters';
 import { actions } from './actions';
 import { mutations } from './mutations';
-import { WeatherFieldsState } from './types';
+import { WeatherFieldsState, Weather, Field } from './types';
 import { RootState } from '@/store/types';
 
 export const state: WeatherFieldsState = {
   weathers: [],
   fields: [],
-  currentWeather: '',
-  currentField: '',
+  currentWeather: new Weather(0, '', ''),
+  currentField: new Field(0, '', ''),
 }
 
 const namespaced: boolean = true;
 
-export const weatherFields: Module<WeatherFieldsState, RootState> = {
+export const weatherFieldsState: Module<WeatherFieldsState, RootState> = {
   namespaced,
   state,
   getters,

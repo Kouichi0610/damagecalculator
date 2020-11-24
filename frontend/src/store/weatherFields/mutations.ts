@@ -1,20 +1,19 @@
 import { MutationTree } from 'vuex';
-import { RootState } from '@/store/types'
-import { WeatherFieldsState } from './types';
+import { WeatherFieldsState, Weather, Field } from './types';
 
 export const mutations: MutationTree<WeatherFieldsState> = {
-  setWeathers(state, payload: string[]) {
+  setWeathers(state, payload: Weather[]) {
     state.weathers = payload;
     state.currentWeather = payload[0];
   },
-  setFields(state, payload: string[]) {
+  setFields(state, payload: Field[]) {
     state.fields = payload;
     state.currentField = payload[0];
   },
-  setCurrentWeather(state, payload: string) {
+  setCurrentWeather(state, payload: Weather) {
     state.currentWeather = payload;
   },
-  setCurrentField(state, payload: string) {
+  setCurrentField(state, payload: Field) {
     state.currentField = payload;
   }
 }

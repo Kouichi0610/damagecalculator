@@ -28,8 +28,14 @@ const (
 func (w Weather) String() string {
 	return weatherNames[w]
 }
+func (w Weather) Description() string {
+	return weatherDesc[w]
+}
 func (f Field) String() string {
 	return fieldNames[f]
+}
+func (f Field) Description() string {
+	return fieldDesc[f]
 }
 
 func ToWeather(name string) Weather {
@@ -50,20 +56,24 @@ func ToField(name string) Field {
 	return NoField
 }
 
-func WeatherNames() []string {
-	res := make([]string, 0)
-	for _, w := range weathers {
-		res = append(res, w.String())
+func WeatherList() []Weather {
+	return []Weather{
+		NoWeather,
+		Sunny,
+		Rainy,
+		Snow,
+		SandStorm,
 	}
-	return res
 }
 
-func FieldNames() []string {
-	res := make([]string, 0)
-	for _, f := range fields {
-		res = append(res, f.String())
+func FieldList() []Field {
+	return []Field{
+		NoField,
+		ElectricField,
+		PsychoField,
+		GrassField,
+		MystField,
 	}
-	return res
 }
 
 // 技のタイプから補正がかかっているか確認
@@ -180,8 +190,8 @@ func (f Field) hasPlus(s *types.Types) bool {
 
 var weatherNames map[Weather]string
 var fieldNames map[Field]string
-var weathers []Weather
-var fields []Field
+var weatherDesc map[Weather]string
+var fieldDesc map[Field]string
 
 func init() {
 	weatherNames = make(map[Weather]string)
@@ -198,17 +208,18 @@ func init() {
 	fieldNames[GrassField] = "グラスフィールド"
 	fieldNames[MystField] = "ミストフィールド"
 
-	weathers = make([]Weather, 0)
-	fields = make([]Field, 0)
+	weatherDesc = make(map[Weather]string)
+	fieldDesc = make(map[Field]string)
+	// TODO:書ききれないかも(ex:すなあらし時ソーラービーム、ソーラーブレードの威力0.5倍)
+	weatherDesc[NoWeather] = ""
+	weatherDesc[Sunny] = "ほのおタイプ1.5倍 みずタイプ0.5倍"
+	weatherDesc[Rainy] = "みずタイプ1.5倍 ほのおタイプ0.5倍"
+	weatherDesc[Snow] = ""
+	weatherDesc[SandStorm] = "いわタイプのポケモンの特防1.5倍"
+	fieldDesc[NoField] = ""
+	fieldDesc[ElectricField] = "でんきタイプ1.3倍"
+	fieldDesc[PsychoField] = "エスパータイプ1.3倍"
+	fieldDesc[GrassField] = "くさタイプ1.3倍 じしん・じならし・マグニチュード0.5倍"
+	fieldDesc[MystField] = "ドラゴンタイプ0.5倍"
 
-	weathers = append(weathers, NoWeather)
-	weathers = append(weathers, Sunny)
-	weathers = append(weathers, Rainy)
-	weathers = append(weathers, Snow)
-	weathers = append(weathers, SandStorm)
-	fields = append(fields, NoField)
-	fields = append(fields, ElectricField)
-	fields = append(fields, PsychoField)
-	fields = append(fields, GrassField)
-	fields = append(fields, MystField)
 }

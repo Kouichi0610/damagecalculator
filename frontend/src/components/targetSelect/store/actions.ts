@@ -4,7 +4,6 @@ import { RootState } from '@/store/types'
 import { TargetSelectState, CandidatesFilter, Species } from './types'
 
 export const actions: ActionTree<TargetSelectState, RootState> = {
-  // TODO:await.
   getCandidates: ({ commit }, filter: CandidatesFilter) => {
     axios.get('filtered_list', {
       params: {

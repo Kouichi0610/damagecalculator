@@ -11,6 +11,7 @@
         <stats-display class="col-3" :stats="stats"></stats-display>
         <base-points-adjuster class="col-3" :target="target" @change="changeBasePoints"></base-points-adjuster>
       </div>
+      <weather-field-selector></weather-field-selector>
     </template>
     <template v-else>
       No Target.
@@ -21,23 +22,15 @@
 <script lang="ts">
 /*
   調整対象の能力値表示
+  TODO:AdjustTarget -> TargetAdjuster
   DONE:species取得コンポーネントを別に作る(表示は行わない)
-  TODO:ability
+  DONE:ability
   TODO:item, condition, weather-fieldコンポーネント作る
   TODO:targetState必要か
   TODO:target.vueを改修してこっちを使用
   TODO:target更新時、性格、個体値などリセット(各コンポーネントにWatchさせるのが無難か)
   TODO:肥大化しているstoreを細分化
   TODO:与、被ダメージに改名(give - take) (send - receive)
-    名前
-    特性 DONE
-    タイプ
-    おもさ
-    性格  DONE
-    個体値 DONE
-    種族値 DONE
-    基礎ポイント DONE
-    能力値 DONE
     天候＆フィールド
     技一覧
     もちもの
@@ -53,6 +46,7 @@ import SpeciesDisplay from './components/speciesDisplay.vue'
 import StatsDisplay from './components/statsDisplay.vue'
 import AbilitySelector from './components/abilitySelector.vue'
 import DataDisplay from './components/dataDisplay.vue'
+import WeatherFieldSelector from './components/weatherFieldSelector.vue'
 
 import { Nature } from '../../store/nature/types'
 import { Individuals } from '../../store/individuals/types'
@@ -70,6 +64,7 @@ import { StatsPatterns, StatsPatternsLoader } from '../../store/stats/types'
     SpeciesDisplay,
     StatsDisplay,
     AbilitySelector,
+    WeatherFieldSelector,
   }
 })
 export default class AdjustTarget extends Vue {

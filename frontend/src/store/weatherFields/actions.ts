@@ -1,7 +1,7 @@
 import { ActionTree } from 'vuex';
 import axios from 'axios';
 import { RootState } from '@/store/types';
-import { WeatherFieldsState } from './types'
+import { WeatherFieldsState, toWeathers, toFields } from './types'
 
 export const actions: ActionTree<WeatherFieldsState, RootState> = {
   getWeatherFields: ({ commit } ) => {
@@ -10,8 +10,11 @@ export const actions: ActionTree<WeatherFieldsState, RootState> = {
       let json = JSON.stringify(response.data);
       let res = JSON.parse(json);
 
-      commit('setWeathers', res.weathers);
-      commit('setFields', res.fields);
+      let weathers = toWeathers(res);
+      let fields = toFields(res);
+
+      commit('setWeathers', weathers);
+      commit('setFields', fields);
     })
     .catch((e) => {
       console.log('failed:' + e);
