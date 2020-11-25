@@ -21,6 +21,28 @@ import (
 	"github.com/mtslzr/pokeapi-go"
 )
 
+func Test_Evolution(t *testing.T) {
+	expects := map[string]bool{
+		"ピチュー":   true,
+		"ピカチュウ":  true,
+		"ライチュウ":  false,
+		"イーブイ":   true,
+		"ニンフィア":  false,
+		"ジーランス":  false,
+		"ストライク":  true,
+		"モクロー":   true,
+		"ジュナイパー": false,
+		//"ヒバニー":   true,
+		//"エースバーン": false,
+	}
+	ev := NewEvolution()
+	for name, expect := range expects {
+		if ev.HasEvolution(name) != expect {
+			t.Errorf("%s", name)
+		}
+	}
+}
+
 func Test_Moves(t *testing.T) {
 	mv := new(movesRepository)
 	mf, err := mv.Get("rock-blast")

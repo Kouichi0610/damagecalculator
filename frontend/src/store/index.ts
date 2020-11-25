@@ -9,6 +9,7 @@ import { natureState } from './nature/index'
 import { individualsState } from './individuals/index'
 import { basePointsState } from './basePoints/index'
 import { speciesState } from './species/index'
+import { itemState } from './items/index'
 
 import { targetSelect } from '../components/targetSelect/store/index'
 import { target } from '../components/target/store/index'
@@ -37,6 +38,7 @@ const store: StoreOptions<RootState> = {
     individualsState,
     basePointsState,
     speciesState,
+    itemState,
   }
 }
 

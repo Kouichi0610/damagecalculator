@@ -57,6 +57,7 @@ func (s *speciesRepository) Get(name string) (*species.Species, error) {
 			sp = uint(s.BaseStat)
 		}
 	}
+
 	res.HP = hp
 	res.Attack = at
 	res.Defense = df

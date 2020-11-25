@@ -12,6 +12,7 @@
         <base-points-adjuster class="col-3" :target="target" @change="changeBasePoints"></base-points-adjuster>
       </div>
       <weather-field-selector></weather-field-selector>
+      <item-selector :target="target" @change="changeItem"></item-selector>
     </template>
     <template v-else>
       No Target.
@@ -23,17 +24,14 @@
 /*
   調整対象の能力値表示
   TODO:AdjustTarget -> TargetAdjuster
-  DONE:species取得コンポーネントを別に作る(表示は行わない)
-  DONE:ability
-  TODO:item, condition, weather-fieldコンポーネント作る
   TODO:targetState必要か
   TODO:target.vueを改修してこっちを使用
   TODO:target更新時、性格、個体値などリセット(各コンポーネントにWatchさせるのが無難か)
   TODO:肥大化しているstoreを細分化
   TODO:与、被ダメージに改名(give - take) (send - receive)
-    天候＆フィールド
+  DONE:天候＆フィールド
     技一覧
-    もちもの
+    DONE:もちもの一覧
     状態異常
 */
 import { Vue, Component, Watch } from 'vue-property-decorator';
@@ -47,12 +45,14 @@ import StatsDisplay from './components/statsDisplay.vue'
 import AbilitySelector from './components/abilitySelector.vue'
 import DataDisplay from './components/dataDisplay.vue'
 import WeatherFieldSelector from './components/weatherFieldSelector.vue'
+import ItemSelector from './components/itemSelector.vue'
 
 import { Nature } from '../../store/nature/types'
 import { Individuals } from '../../store/individuals/types'
 import { IBasePoints, defaultBasePoints, BasePoints } from '../../store/basePoints/types'
 import { ISpecies, PokeData } from '../../store/species/types'
 import { StatsPatterns, StatsPatternsLoader } from '../../store/stats/types'
+import { Item } from '../../store/items/types'
 
 @Component({
   components: {
@@ -65,6 +65,7 @@ import { StatsPatterns, StatsPatternsLoader } from '../../store/stats/types'
     StatsDisplay,
     AbilitySelector,
     WeatherFieldSelector,
+    ItemSelector,
   }
 })
 export default class AdjustTarget extends Vue {
@@ -74,6 +75,7 @@ export default class AdjustTarget extends Vue {
   private basePoints: IBasePoints = defaultBasePoints();
   private statsPatterns: StatsPatterns = StatsPatterns.default();
   private ability: string = '';
+  private item: Item = Item.default();
 
   get abilities(): string[]{
     return this.data.abilities;
@@ -112,6 +114,9 @@ export default class AdjustTarget extends Vue {
   }
   changeAbility(ability: string) {
     this.ability = ability;
+  }
+  changeItem(item: Item) {
+    this.item = item;
   }
 
   onTarget(data: PokeData) {

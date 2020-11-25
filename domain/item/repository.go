@@ -1,7 +1,13 @@
 package item
 
 //
-type Repository interface {
-	Get(name string, isAttacker bool) Item
-	List() []string
-}
+type (
+	ItemInfo interface {
+		Name() string
+		Description() string
+	}
+	Repository interface {
+		Get(name string, isAttacker bool) Item
+		List() []ItemInfo
+	}
+)
