@@ -24,9 +24,6 @@
 /*
   調整対象の能力値表示
   TODO:AdjustTarget -> TargetAdjuster
-  DONE:species取得コンポーネントを別に作る(表示は行わない)
-  DONE:ability
-  TODO:item, condition, weather-fieldコンポーネント作る
   TODO:targetState必要か
   TODO:target.vueを改修してこっちを使用
   TODO:target更新時、性格、個体値などリセット(各コンポーネントにWatchさせるのが無難か)
@@ -34,7 +31,7 @@
   TODO:与、被ダメージに改名(give - take) (send - receive)
   DONE:天候＆フィールド
     技一覧
-    もちもの一覧
+    DONE:もちもの一覧
     状態異常
 */
 import { Vue, Component, Watch } from 'vue-property-decorator';
