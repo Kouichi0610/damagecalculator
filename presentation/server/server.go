@@ -53,6 +53,7 @@ func (s *serverImpl) Serve() (http.Handler, error) {
 	router.GET("/attacker_damages", s.attackerDamages)
 	router.GET("/moves", s.moves)
 	router.GET("/weather_fields", s.weatherFieldsList)
+	router.GET("/usable_items", s.usableItems)
 
 	return router, router.Run(":8080")
 }
