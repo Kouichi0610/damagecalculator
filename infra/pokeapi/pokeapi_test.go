@@ -23,13 +23,17 @@ import (
 
 func Test_Evolution(t *testing.T) {
 	expects := map[string]bool{
-		"ピチュー":  true,
-		"ピカチュウ": true,
-		"ライチュウ": false,
-		"イーブイ":  true,
-		"ニンフィア": false,
-		"ジーランス": false,
-		"ストライク": true,
+		"ピチュー":   true,
+		"ピカチュウ":  true,
+		"ライチュウ":  false,
+		"イーブイ":   true,
+		"ニンフィア":  false,
+		"ジーランス":  false,
+		"ストライク":  true,
+		"モクロー":   true,
+		"ジュナイパー": false,
+		//"ヒバニー":   true,
+		//"エースバーン": false,
 	}
 	ev := NewEvolution()
 	for name, expect := range expects {
