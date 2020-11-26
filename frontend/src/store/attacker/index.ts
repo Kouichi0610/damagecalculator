@@ -7,7 +7,10 @@ import { RootState } from '@/store/types';
 
 export const state: AttackerState = {
   currentIndex: 0,
-  selectedMove: ['', '', '', ''],
+  moveA: '',
+  moveB: '',
+  moveC: '',
+  moveD: '',
   attacker: '',
   physicals: [],
   specials: [],

@@ -14,8 +14,11 @@ export class Weather {
     this.name = name;
     this.description = description;
   }
+  enable(): boolean {
+    return this.name.length > 0;
+  }
   static default(): Weather {
-    return new Weather(0, 'なし', '');
+    return new Weather(0, '', '');
   }
 }
 export class Field {
@@ -27,8 +30,11 @@ export class Field {
     this.name = name;
     this.description = description;
   }
+  enable(): boolean {
+    return this.name.length > 0;
+  }
   static default(): Field {
-    return new Field(0, 'なし', '');
+    return new Field(0, '', '');
   }
 }
 export function toFields(data: any): Field[] {

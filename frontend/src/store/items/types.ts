@@ -12,6 +12,10 @@ export class Item {
     this.description = description;
   }
 
+  enable(): boolean {
+    return this.name.length > 0;
+  }
+
   static default(): Item {
     return new Item('', '');
   }

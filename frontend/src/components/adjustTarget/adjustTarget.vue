@@ -90,7 +90,7 @@ export default class AdjustTarget extends Vue {
       this.ability,
       this.nature,
       this.item,
-      '', // condition
+      'なし', // condition
       this.weather,
       this.field
     );

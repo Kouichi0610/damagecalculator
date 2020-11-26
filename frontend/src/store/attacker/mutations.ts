@@ -4,16 +4,30 @@ import { Result } from './sendDamage'
 
 export const mutations: MutationTree<AttackerState> = {
   reset(state) {
-    for (var i = 0; i < state.selectedMove.length; i++) {
-      state.selectedMove[i] = '';
-    }
+    state.moveA = '';
+    state.moveB = '';
+    state.moveC = '';
+    state.moveD = '';
     state.result = [];
   },
   setCurrent(state, current: number) {
     state.currentIndex = current;
   },
   setMove(state, move: string) {
-    state.selectedMove[state.currentIndex] = move;
+    switch (state.currentIndex) {
+      case 0:
+        state.moveA = move;
+        break;
+      case 1:
+        state.moveB = move;
+        break;
+      case 2:
+        state.moveC = move;
+        break;
+      case 3:
+        state.moveD = move;
+        break;
+    }
   },
   setAttacker(state, payload: string) {
     state.attacker = payload;

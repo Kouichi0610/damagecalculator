@@ -3,7 +3,9 @@
   <div class="attacker">
     <adjust-target @sendDamage="changeSendDamage"></adjust-target>
     <move-selector :physicals="physicals" :specials="specials" @select="selectMove"></move-selector>
+    <p>わざ:{{currentMove}}</p>
     <div class="row mb-1">
+        
     </div>
   </div>
 </template>
@@ -39,8 +41,8 @@ export default class Attacker extends Vue {
   private specials!: Move[];
   @Getter('results', { namespace })
   private results!: Result[];
-  @Getter('move', { namespace })
-  private move!: string;
+  @Getter('currentMove', { namespace })
+  private currentMove!: string;
   @Mutation('setCurrent', { namespace })
   private setCurrent!: (current: number) => void;
   @Mutation('setMove', { namespace })
@@ -53,6 +55,21 @@ export default class Attacker extends Vue {
   @Watch('index')
   changeTab() {
     this.setCurrent(this.index);
+  }
+
+  @Watch('sendDamages', {deep: true})
+  @Watch('currentMove', {deep: true})
+  calcDamages() {
+    if (!this.sendDamages.enable()) return;
+    if (this.currentMove.length == 0) return;
+
+    console.log('calcDamages..');
+    console.log('' + this.sendDamages.toString());
+    console.log('' + this.currentMove);
+    this.sendDamages.sendDamages(this.currentMove)
+    .then((results) => {
+      this.setResults(results);
+    });
   }
 
   @Watch('sendDamages.attacker')

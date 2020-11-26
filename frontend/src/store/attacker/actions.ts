@@ -15,5 +15,5 @@ export const actions: ActionTree<AttackerState, RootState> = {
       commit('setMoves', moves);
       commit('setAttacker', attacker);
     });
-  }
+  },
 }

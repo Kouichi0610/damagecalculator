@@ -17,6 +17,32 @@ export class SendDamages {
   private weather: Weather;
   private field: Field;
 
+  enable(): boolean {
+    if (this.attacker.length == 0) return false;
+    if (this.level == 0) return false;
+    if (this.ability.length == 0) return false;
+    if (!this.nature.enable()) return false;
+    if (!this.item.enable()) return false;
+    if (this.condition.length == 0) return false;
+    if (!this.weather.enable()) return false;
+    if (!this.field.enable()) return false;
+    return true;
+  }
+
+  toString(): string {
+    return ''
+    + this.attacker + ' '
+    + this.individuals.type() + ' '
+    + this.basePoints.toString() + ' '
+    + this.ability + ' '
+    + this.nature.name + ' '
+    + this.item.name + ' '
+    + this.condition + ' '
+    + this.weather.name + ' '
+    + this.field.name;
+  }
+
+
   sendDamages(move: string): Promise<Result[]> {
     return new Promise((resolve, reject) => {
       axios.get('defender_damages', {

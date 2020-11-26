@@ -6,8 +6,12 @@ import { Result } from './sendDamage'
 */
 export interface AttackerState {
   currentIndex: number;
-  selectedMove: string[];
-  
+  // TODO:配列では上手くいかない?
+  moveA: string;
+  moveB: string;
+  moveC: string;
+  moveD: string;
+
   attacker: string;
   physicals: Move[];
   specials: Move[];
