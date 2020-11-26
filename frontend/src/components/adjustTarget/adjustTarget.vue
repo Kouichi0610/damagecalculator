@@ -11,7 +11,7 @@
         <stats-display class="col-3" :stats="stats"></stats-display>
         <base-points-adjuster class="col-3" :target="target" @change="changeBasePoints"></base-points-adjuster>
       </div>
-      <weather-field-selector></weather-field-selector>
+      <weather-field-selector @weather="changeWeather" @field="changeField"></weather-field-selector>
       <item-selector :target="target" @change="changeItem"></item-selector>
     </template>
     <template v-else>
@@ -53,6 +53,8 @@ import { IBasePoints, defaultBasePoints, BasePoints } from '../../store/basePoin
 import { ISpecies, PokeData } from '../../store/species/types'
 import { StatsPatterns, StatsPatternsLoader } from '../../store/stats/types'
 import { Item } from '../../store/items/types'
+import { Weather, Field } from '../../store/weatherFields/types'
+import { SendDamages } from '../../store/attacker/sendDamage'
 
 @Component({
   components: {
@@ -76,6 +78,34 @@ export default class AdjustTarget extends Vue {
   private statsPatterns: StatsPatterns = StatsPatterns.default();
   private ability: string = '';
   private item: Item = Item.default();
+  private weather: Weather = Weather.default();
+  private field: Field = Field.default();
+
+  get sendDamages(): SendDamages {
+    return new SendDamages(
+      this.data.name,
+      50,
+      this.individuals,
+      this.basePoints,
+      this.ability,
+      this.nature,
+      this.item,
+      '', // condition
+      this.weather,
+      this.field
+    );
+  }
+
+  // @Watch('weather.name') // 通る
+
+  /*
+    TODO:わざ選択側にemit
+    通信は技変更だけ行えばいいはず
+  */
+  @Watch('sendDamages', { deep: true })
+  sendDamageTest(after: SendDamages, before: SendDamages) {
+    this.$emit('sendDamage', after);
+  }
 
   get abilities(): string[]{
     return this.data.abilities;
@@ -117,6 +147,12 @@ export default class AdjustTarget extends Vue {
   }
   changeItem(item: Item) {
     this.item = item;
+  }
+  changeWeather(weather: Weather) {
+    this.weather = weather;
+  }
+  changeField(field: Field) {
+    this.field = field;
   }
 
   onTarget(data: PokeData) {

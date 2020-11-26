@@ -14,6 +14,9 @@ export class Weather {
     this.name = name;
     this.description = description;
   }
+  static default(): Weather {
+    return new Weather(0, 'なし', '');
+  }
 }
 export class Field {
   readonly id: number;
@@ -23,6 +26,9 @@ export class Field {
     this.id = id;
     this.name = name;
     this.description = description;
+  }
+  static default(): Field {
+    return new Field(0, 'なし', '');
   }
 }
 export function toFields(data: any): Field[] {

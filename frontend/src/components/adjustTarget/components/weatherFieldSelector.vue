@@ -43,8 +43,21 @@ export default class WeatherFieldSelector extends Vue {
   private setCurrentField!: (field: Field) => void;
 
   created() {
-    if (this.isInitialized) return;
+    if (this.isInitialized) {
+      this.weatherChanged();
+      this.fieldChanged();
+      return;
+    }
     this.getWeatherFields();
+  }
+
+  @Watch('currentWeather', { deep: true })
+  weatherChanged() {
+    this.$emit('weather', this.currentWeather);
+  }
+  @Watch('currentField', { deep: true })
+  fieldChanged() {
+    this.$emit('field', this.currentField);
   }
 }
 </script>
