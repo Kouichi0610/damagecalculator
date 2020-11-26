@@ -8,7 +8,6 @@ export const mutations: MutationTree<AttackerState> = {
     state.moveB = '';
     state.moveC = '';
     state.moveD = '';
-    state.result = [];
   },
   setCurrent(state, current: number) {
     state.currentIndex = current;
@@ -45,7 +44,4 @@ export const mutations: MutationTree<AttackerState> = {
       }
     }
   },
-  setResults(state, payload: Result[]) {
-    state.result = payload;
-  }
 }

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Result } from './sendDamage'
+
 /*
   攻撃調整
   わざ4つまで
@@ -15,7 +15,6 @@ export interface AttackerState {
   attacker: string;
   physicals: Move[];
   specials: Move[];
-  result: Result[];
 }
 
 export class Move {

@@ -4,9 +4,8 @@
     <adjust-target @sendDamage="changeSendDamage"></adjust-target>
     <move-selector :physicals="physicals" :specials="specials" @select="selectMove"></move-selector>
     <p>わざ:{{currentMove}}</p>
-    <div class="row mb-1">
-        
-    </div>
+    <list-display :results="results"></list-display>
+    <p>resulsssst.</p>
   </div>
 </template>
 
@@ -16,18 +15,18 @@ import { Action, Getter, Mutation } from "vuex-class";
 
 import AdjustTarget from '../components/adjustTarget/adjustTarget.vue'
 import MoveSelector from '../components/moves/moveSelector.vue'
+import ListDisplay from '../components/attacker/listDisplay.vue'
 
 import { SendDamages, Result } from '../store/attacker/sendDamage'
 import { Move, MoveLoader } from '../store/attacker/types'
 
 const namespace: string = "attackerState";
 
-// TODO:&結果一覧
-
 @Component({
   components: {
     AdjustTarget,
     MoveSelector,
+    ListDisplay,
   }
 })
 export default class Attacker extends Vue {
@@ -39,18 +38,15 @@ export default class Attacker extends Vue {
   private physicals!: Move[];
   @Getter('specials', { namespace })
   private specials!: Move[];
-  @Getter('results', { namespace })
-  private results!: Result[];
   @Getter('currentMove', { namespace })
   private currentMove!: string;
   @Mutation('setCurrent', { namespace })
   private setCurrent!: (current: number) => void;
   @Mutation('setMove', { namespace })
   private setMove!: (move: string) => void;
-  @Mutation('setResults', { namespace })
-  private setResults!: (results: Result[]) => void;
 
   private sendDamages: SendDamages = SendDamages.default();
+  private results: Result[] = [];
 
   @Watch('index')
   changeTab() {
@@ -63,12 +59,10 @@ export default class Attacker extends Vue {
     if (!this.sendDamages.enable()) return;
     if (this.currentMove.length == 0) return;
 
-    console.log('calcDamages..');
-    console.log('' + this.sendDamages.toString());
-    console.log('' + this.currentMove);
     this.sendDamages.sendDamages(this.currentMove)
     .then((results) => {
-      this.setResults(results);
+      console.log('result:' + results.length);
+      this.results = results;
     });
   }
 
@@ -84,12 +78,6 @@ export default class Attacker extends Vue {
   selectMove(move: Move) {
     this.setMove(move.name);
   }
-
-  @Watch('results')
-  resultsTest() {
-    console.log('ダメージ結果' + this.results.length);
-  }
-
 }
 </script>
 

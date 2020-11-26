@@ -14,7 +14,6 @@ export const state: AttackerState = {
   attacker: '',
   physicals: [],
   specials: [],
-  result: [],
 }
 
 const namespaced: boolean = true;

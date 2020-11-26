@@ -1,7 +1,6 @@
 import { GetterTree } from 'vuex';
 import { AttackerState, Move } from './types';
 import { RootState } from '@/store/types'
-import { Result } from './sendDamage'
 
 export const getters: GetterTree<AttackerState, RootState> = {
   currentMove: (state: AttackerState): string => {
@@ -19,7 +18,4 @@ export const getters: GetterTree<AttackerState, RootState> = {
   specials: (state: AttackerState): Move[] => {
     return state.specials;
   },
-  results: (state: AttackerState): Result[] => {
-    return state.result;
-  }
 }

@@ -126,29 +126,29 @@ export class SendDamages {
 }
 
 export class Result {
-  readonly Target: string = '';
-  readonly DamageMin: number = 0;
-  readonly DamageMax: number = 0;
-  readonly RateMin: number = 0;
-  readonly RateMax: number = 0;
-  readonly DetermineCount: number = 0;
+  readonly target: string = '';
+  readonly damageMin: number = 0;
+  readonly damageMax: number = 0;
+  readonly rateMin: number = 0;
+  readonly rateMax: number = 0;
+  readonly determineCount: number = 0;
 
   toString(): string {
-    return this.Target
-     + ' ダメージ' + this.DamageMin + '～' + this.DamageMax
-     + ' ' + this.RateMin + '%～' + this.RateMax + '%'
-     + ' 確定数' + this.DetermineCount;
+    return this.target
+     + ' ダメージ' + this.damageMin + '～' + this.damageMax
+     + ' ' + this.rateMin + '%～' + this.rateMax + '%'
+     + ' 確定数' + this.determineCount;
   }
 
   constructor(d: any) {
     if (d == null) {
       return;
     }
-    this.Target = d.target;
-    this.DamageMin = d.damage_min;
-    this.DamageMax = d.damage_max;
-    this.RateMax = d.rate_max;
-    this.RateMin = d.rate_min;
-    this.DetermineCount = d.determine_count;
+    this.target = d.target;
+    this.damageMin = d.damage_min;
+    this.damageMax = d.damage_max;
+    this.rateMax = d.rate_max;
+    this.rateMin = d.rate_min;
+    this.determineCount = d.determine_count;
   }
 }
