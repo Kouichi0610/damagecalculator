@@ -14,6 +14,12 @@ export class Weather {
     this.name = name;
     this.description = description;
   }
+  enable(): boolean {
+    return this.name.length > 0;
+  }
+  static default(): Weather {
+    return new Weather(0, '', '');
+  }
 }
 export class Field {
   readonly id: number;
@@ -23,6 +29,12 @@ export class Field {
     this.id = id;
     this.name = name;
     this.description = description;
+  }
+  enable(): boolean {
+    return this.name.length > 0;
+  }
+  static default(): Field {
+    return new Field(0, '', '');
   }
 }
 export function toFields(data: any): Field[] {

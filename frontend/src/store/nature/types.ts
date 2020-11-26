@@ -7,6 +7,10 @@ export class Nature {
   readonly name: string;
   readonly description: string;
 
+  enable(): boolean {
+    return this.name.length > 0;
+  }
+
   constructor(name: string, description: string) {
     this.name = name;
     this.description = description;
