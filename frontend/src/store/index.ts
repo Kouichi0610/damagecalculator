@@ -11,14 +11,13 @@ import { basePointsState } from './basePoints/index'
 import { speciesState } from './species/index'
 import { itemState } from './items/index'
 import { attackerState } from './attacker/index'
+import { weatherFieldsState } from './weatherFields/index';
 
 import { targetSelect } from '../components/targetSelect/store/index'
 import { target } from '../components/target/store/index'
 import { nature } from '../components/nature/store/index'
 import { speedOrder } from '../components/speedOrder/store/index'
 import { moves } from '../components/moves/store/index'
-import { attacker } from '../components/attacker/store/index'
-import { weatherFieldsState } from './weatherFields/index';
 
 Vue.use(Vuex);
 
@@ -33,7 +32,6 @@ const store: StoreOptions<RootState> = {
     nature,
     speedOrder,
     moves,
-    attacker,
     weatherFieldsState,
     natureState,
     individualsState,
