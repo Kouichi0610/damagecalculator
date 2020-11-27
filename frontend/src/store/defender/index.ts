@@ -2,16 +2,15 @@ import { Module } from 'vuex'
 import { getters } from './getters';
 import { actions } from './actions';
 import { mutations } from './mutations';
-import { MovesState, MoveInfos } from './types';
+import { DefenderState } from './types';
 import { RootState } from '@/store/types';
 
-export const state: MovesState = {
-  info: new MoveInfos([]),
+export const state: DefenderState = {
 }
 
 const namespaced: boolean = true;
 
-export const moves: Module<MovesState, RootState> = {
+export const defenderState: Module<DefenderState, RootState> = {
   namespaced,
   state,
   getters,

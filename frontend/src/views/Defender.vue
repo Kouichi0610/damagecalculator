@@ -1,37 +1,24 @@
 // 耐久調整
 <template>
   <div class="defender">
-    <target :show="true"></target>
-    <move-result :damages="attackerDamages"></move-result>
+    <adjust-target @sendDamage="changeSendDamage"></adjust-target>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Getter } from "vuex-class";
+import AdjustTarget from '../components/adjustTarget/adjustTarget.vue'
 
-import Target from '../components/target/target.vue'
-import MoveResult from '../components/defender/moveResult.vue'
-
-import { AttackerDamages } from '../components/target/store/attackerDamages'
-
-const namespace: string = "target";
+const namespace: string = "defenderState";
 
 @Component({
   components: {
-    Target,
-    MoveResult,
+    AdjustTarget,
   }
 })
 export default class Defender extends Vue {
-  @Getter("attackerDamages", { namespace })
-  private attackerDamages!: AttackerDamages;
-/*
-  @Watch('attackerDamages', {deep: true})
-  changed() {
-    this.attackerDamages.attackerDamages();
-  }
-  */
+  // TODO:receiveDamages.
 }
 </script>
 

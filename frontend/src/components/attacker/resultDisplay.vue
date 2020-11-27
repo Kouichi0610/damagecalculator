@@ -22,7 +22,6 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { Result } from '../../store/attacker/sendDamage'
 
-// TODO:storeなどremove
 @Component
 export default class ResultDisplay extends Vue {
   @Prop()
