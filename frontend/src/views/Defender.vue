@@ -10,6 +10,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Getter } from "vuex-class";
 import AdjustTarget from '../components/adjustTarget/adjustTarget.vue'
 
+import { ReceiveDamages } from '../store/defender/receiveDamages'
+
 const namespace: string = "defenderState";
 
 @Component({
