@@ -15,7 +15,6 @@
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import { Move } from '../../store/attacker/types'
 
-// TODO:moves, store削除
 /*
   わざ選択
 */

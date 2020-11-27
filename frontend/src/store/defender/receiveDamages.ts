@@ -1,10 +1,10 @@
 import axios from 'axios'
 import { TargetCondition } from '../target/targetCondition'
 
-export class SendDamages {
-  sendDamages(condition: TargetCondition, move: string): Promise<Result[]> {
+export class ReceiveDamages {
+  receiveDamages(condition: TargetCondition): Promise<Result[]> {
     return new Promise((resolve, reject) => {
-      axios.get('defender_damages', {
+      axios.get('attacker_damages', {
         params: {
           Level: condition.level,
           BaseHP: condition.basePoints.hp(),
@@ -15,7 +15,6 @@ export class SendDamages {
           BaseSpeed: condition.basePoints.speed(),
           Individuals: condition.individuals.type(),
           Name: condition.target,
-          Move: move,
           Ability: condition.ability,
           Nature: condition.nature.name,
           Item: condition.item.name,
@@ -46,6 +45,7 @@ export class SendDamages {
 
 export class Result {
   readonly target: string = '';
+  readonly move: string = '';
   readonly damageMin: number = 0;
   readonly damageMax: number = 0;
   readonly rateMin: number = 0;
@@ -54,6 +54,7 @@ export class Result {
 
   toString(): string {
     return this.target
+     + ' ' + this.move
      + ' ダメージ' + this.damageMin + '～' + this.damageMax
      + ' ' + this.rateMin + '%～' + this.rateMax + '%'
      + ' 確定数' + this.determineCount;
@@ -64,6 +65,7 @@ export class Result {
       return;
     }
     this.target = d.target;
+    this.move = d.move;
     this.damageMin = d.damage_min;
     this.damageMax = d.damage_max;
     this.rateMax = d.rate_max;

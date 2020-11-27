@@ -20,7 +20,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { Result } from '../../store/attacker/sendDamage'
+import { Result } from '../../store/defender/receiveDamages'
 
 @Component
 export default class ResultDisplay extends Vue {

@@ -54,7 +54,7 @@ import { ISpecies, PokeData } from '../../store/species/types'
 import { StatsPatterns, StatsPatternsLoader } from '../../store/stats/types'
 import { Item } from '../../store/items/types'
 import { Weather, Field } from '../../store/weatherFields/types'
-import { SendDamages } from '../../store/attacker/sendDamage'
+import { TargetCondition } from '../../store/target/targetCondition'
 
 @Component({
   components: {
@@ -81,8 +81,8 @@ export default class AdjustTarget extends Vue {
   private weather: Weather = Weather.default();
   private field: Field = Field.default();
 
-  get sendDamages(): SendDamages {
-    return new SendDamages(
+  get targetCondition(): TargetCondition {
+    return new TargetCondition(
       this.data.name,
       50,
       this.individuals,
@@ -96,15 +96,9 @@ export default class AdjustTarget extends Vue {
     );
   }
 
-  // @Watch('weather.name') // 通る
-
-  /*
-    TODO:わざ選択側にemit
-    通信は技変更だけ行えばいいはず
-  */
-  @Watch('sendDamages', { deep: true })
-  sendDamageTest(after: SendDamages, before: SendDamages) {
-    this.$emit('sendDamage', after);
+  @Watch('targetCondition', { deep: true })
+  changeCondition(after: TargetCondition, before: TargetCondition) {
+    this.$emit('targetCondition', after);
   }
 
   get abilities(): string[]{
@@ -157,11 +151,6 @@ export default class AdjustTarget extends Vue {
 
   onTarget(data: PokeData) {
     this.data = data;
-  }
-
-  created() {
-    //this.$emit('sample', "AdjustSample");
-
   }
 }
 </script>

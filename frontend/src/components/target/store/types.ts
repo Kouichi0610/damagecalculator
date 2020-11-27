@@ -4,8 +4,6 @@ import { Individuals } from './individuals'
 import { BasePoints } from './basePoints'
 /*
   対象ポケモンに関するStore
-  TODO:action.vueからアクセス
-  TODO:moveResult.vueに現在の技(+index)を保管
 */
 export interface TargetState {
   species: Species;
