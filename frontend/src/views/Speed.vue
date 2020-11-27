@@ -17,7 +17,7 @@ import SpeedOrder from "../components/speedOrder/speedOrder.vue";
     SpeedOrder,
   },
 })
-export default class SpeedAdjuster extends Vue {
+export default class Speed extends Vue {
   private speed: number = 0;
   private ability: string = ""
 
