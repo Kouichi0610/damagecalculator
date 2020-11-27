@@ -1,11 +1,10 @@
 // 攻撃側
 <template>
   <div class="attacker">
-    <adjust-target @targetCondition="changeTargetCondition"></adjust-target>
+    <adjust-target :speedLock="false" @targetCondition="changeTargetCondition"></adjust-target>
     <move-selector :physicals="physicals" :specials="specials" @select="selectMove"></move-selector>
     <p>わざ:{{currentMove}}</p>
     <list-display :results="results"></list-display>
-    <p>resulsssst.</p>
   </div>
 </template>
 

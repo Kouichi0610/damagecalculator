@@ -9,7 +9,7 @@
       <div class="row mb-1">
         <species-display class="col-3" :species="species"></species-display>
         <stats-display class="col-3" :stats="stats"></stats-display>
-        <base-points-adjuster class="col-3" :target="target" @change="changeBasePoints"></base-points-adjuster>
+        <base-points-adjuster class="col-3" :target="target" :speedLock="speedLock" @change="changeBasePoints"></base-points-adjuster>
       </div>
       <weather-field-selector @weather="changeWeather" @field="changeField"></weather-field-selector>
       <item-selector :target="target" @change="changeItem"></item-selector>
@@ -34,7 +34,7 @@
     DONE:もちもの一覧
     状態異常
 */
-import { Vue, Component, Watch } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 
 import SpeciesLoader from '../species/speciesLoader.vue'
 import NatureSelector from './components/natureSelector.vue'
@@ -71,6 +71,9 @@ import { TargetCondition } from '../../store/target/targetCondition'
   }
 })
 export default class AdjustTarget extends Vue {
+  @Prop()
+  speedLock!: boolean;
+  
   private data: PokeData = PokeData.default();
   private nature: Nature = Nature.default();
   private individuals: Individuals = Individuals.default();
