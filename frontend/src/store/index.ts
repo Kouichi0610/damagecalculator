@@ -13,6 +13,7 @@ import { itemState } from './items/index'
 import { weatherFieldsState } from './weatherFields/index';
 import { attackerState } from './attacker/index'
 import { defenderState } from './defender/index'
+import { speedState } from './speed/index'
 
 import { targetSelect } from '../components/targetSelect/store/index'
 import { target } from '../components/target/store/index'
@@ -39,6 +40,7 @@ const store: StoreOptions<RootState> = {
     itemState,
     attackerState,
     defenderState,
+    speedState,
   }
 }
 

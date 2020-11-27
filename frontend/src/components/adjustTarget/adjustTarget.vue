@@ -155,6 +155,7 @@ export default class AdjustTarget extends Vue {
   onTarget(data: PokeData) {
     this.data = data;
   }
+
 }
 </script>
 

@@ -15,6 +15,7 @@ class SpeedInfoImpl implements SpeedInfo {
 export const actions: ActionTree<SpeedOrderState, RootState> = {
   // 特性の影響を取得
   getAbilityEffect: ({commit}, ability: string) => {
+    // 自身に与える影響
     axios.get('ability_owner_speed?Ability=' + ability)
     .then((response) => {
       let json = JSON.stringify(response.data);
@@ -25,6 +26,7 @@ export const actions: ActionTree<SpeedOrderState, RootState> = {
       console.log('failed:' + e)
     });
 
+    // 相手に与える影響
     axios.get('ability_other_speed?Ability=' + ability)
     .then((response) => {
       let json = JSON.stringify(response.data);
