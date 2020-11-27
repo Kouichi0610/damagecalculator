@@ -61,7 +61,6 @@ export default class Attacker extends Vue {
     if (this.currentMove.length == 0) return;
     new SendDamages().sendDamages(this.targetCondition, this.currentMove)
     .then((results) => {
-      console.log('result:' + results.length);
       this.results = results;
     });
   }

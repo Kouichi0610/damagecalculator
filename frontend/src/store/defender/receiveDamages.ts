@@ -2,7 +2,7 @@ import axios from 'axios'
 import { TargetCondition } from '../target/targetCondition'
 
 export class ReceiveDamages {
-  receiveDamages(condition: TargetCondition, move: string): Promise<Result[]> {
+  receiveDamages(condition: TargetCondition): Promise<Result[]> {
     return new Promise((resolve, reject) => {
       axios.get('attacker_damages', {
         params: {
