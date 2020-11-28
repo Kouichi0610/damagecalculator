@@ -2,12 +2,13 @@
   <div class="speed-adjuster">
     <adjust-target :speedLock="true" @targetCondition="changeTargetCondition"></adjust-target>
     <b-form-checkbox id="check-trickroom" v-model="trickRoomFlag">{{ trickRoomMessage }}</b-form-checkbox>
-    <p>素早さ{{targetSpeed}} TODO:コンポーネント</p>
+    <p>素早さ{{targetSpeed}}</p>
     <div class="row mb-1">
       <div class="col-4">
-        <speed-ranking-display :infos="speedRanking"></speed-ranking-display>
+        <speed-ranking-display :infos="nearRanking"></speed-ranking-display>
       </div>
       <div class="col-4">
+        <speed-ranking-display :infos="speedRanking"></speed-ranking-display>
       </div>
     </div>
   </div>
@@ -66,6 +67,24 @@ export default class Speed extends Vue {
       return 'トリックルームON';
     }
     return 'トリックルームOFF';
+  }
+
+  // 調整対象に近いところを表示
+  get nearRanking(): SpeedInfo[] {
+    let res: SpeedInfo[] = [];
+    var i = 0;
+    var first = 0;
+    for (i = 0; i < this.speedRanking.length; i++) {
+      if (this.speedRanking[i].target) {
+        first = Math.max(0, i-5);
+        break;
+      }
+    }
+    var last = Math.min(first+10, this.speedRanking.length);
+    for (i = first; i < last; i++) {
+      res.push(this.speedRanking[i]);
+    }
+    return res;
   }
 
   @Watch('targetCondition.level')
