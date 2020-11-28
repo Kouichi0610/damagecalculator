@@ -17,7 +17,7 @@ export class GetSpeed {
         params: {
           Name: target.target,
           Level: target.level,
-          Individuals: target.individuals,
+          Individuals: target.individuals.type(),
           BasePoint: target.basePoints.speed(),
           Ability: target.ability,
           Nature: target.nature.name,
