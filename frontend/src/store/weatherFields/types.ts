@@ -1,4 +1,5 @@
 export interface WeatherFieldsState {
+  target: string;
   weathers: Weather[]; // 天候一覧
   fields: Field[]; // フィールド一覧
   currentWeather :Weather;

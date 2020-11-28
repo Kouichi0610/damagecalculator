@@ -11,7 +11,7 @@
         <stats-display class="col-3" :stats="stats"></stats-display>
         <base-points-adjuster class="col-3" :target="target" :speedLock="speedLock" @change="changeBasePoints"></base-points-adjuster>
       </div>
-      <weather-field-selector @weather="changeWeather" @field="changeField"></weather-field-selector>
+      <weather-field-selector :target="target" @weather="changeWeather" @field="changeField"></weather-field-selector>
       <item-selector :target="target" @change="changeItem"></item-selector>
     </template>
     <template v-else>
@@ -24,15 +24,7 @@
 /*
   調整対象の能力値表示
   TODO:AdjustTarget -> TargetAdjuster
-  TODO:targetState必要か
-  TODO:target.vueを改修してこっちを使用
-  TODO:target更新時、性格、個体値などリセット(各コンポーネントにWatchさせるのが無難か)
-  TODO:肥大化しているstoreを細分化
-  TODO:与、被ダメージに改名(give - take) (send - receive)
-  DONE:天候＆フィールド
-    技一覧
-    DONE:もちもの一覧
-    状態異常
+  TODO:状態異常
 */
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 

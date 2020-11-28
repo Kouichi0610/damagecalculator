@@ -24,11 +24,16 @@ const namespace: string = "weatherFieldsState";
 */
 @Component
 export default class WeatherFieldSelector extends Vue {
+  @Prop()
+  private target!: string;
+
+  @Action('initialize', { namespace })
+  private initialize!: (target: string) => void;
   @Action('getWeatherFields', { namespace })
   private getWeatherFields!: () => void;
 
-  @Getter('isInitialized', { namespace })
-  private isInitialized!: boolean;
+  @Getter('isLoaded', { namespace })
+  private isLoaded!: boolean;
   @Getter('weathers', { namespace })
   private weathers!: Weather[];
   @Getter('fields', { namespace })
@@ -43,7 +48,8 @@ export default class WeatherFieldSelector extends Vue {
   private setCurrentField!: (field: Field) => void;
 
   created() {
-    if (this.isInitialized) {
+    this.initialize(this.target);
+    if (this.isLoaded) {
       this.weatherChanged();
       this.fieldChanged();
       return;
