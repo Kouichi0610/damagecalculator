@@ -3,8 +3,12 @@
     <adjust-target :speedLock="true" @targetCondition="changeTargetCondition"></adjust-target>
     <b-form-checkbox id="check-trickroom" v-model="trickRoomFlag">{{ trickRoomMessage }}</b-form-checkbox>
     <p>素早さ{{targetSpeed}} TODO:コンポーネント</p>
-    <div v-for="item in speedRanking" :key="item.index">
-      <div>{{ item.info }} {{ item.speed }}</div>
+    <div class="row mb-1">
+      <div class="col-4">
+        <speed-ranking-display :infos="speedRanking"></speed-ranking-display>
+      </div>
+      <div class="col-4">
+      </div>
     </div>
   </div>
 </template>
@@ -13,6 +17,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { Action, Getter, Mutation } from "vuex-class";
 import AdjustTarget from '../components/adjustTarget/adjustTarget.vue'
+import SpeedRankingDisplay from '../components/speed/speedRankingDisplay.vue'
 
 import { TargetCondition } from "../store/target/targetCondition";
 import { SpeedInfo } from '../store/speed/types'
@@ -26,6 +31,7 @@ const namespace: string = "speedState";
 @Component({
   components: {
     AdjustTarget,
+    SpeedRankingDisplay,
   },
 })
 export default class Speed extends Vue {
