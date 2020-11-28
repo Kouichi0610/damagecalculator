@@ -16,7 +16,7 @@ export const state: TargetSelectState = {
 
 const namespaced: boolean = true;
 
-export const targetSelect: Module<TargetSelectState, RootState> = {
+export const targetSelectState: Module<TargetSelectState, RootState> = {
   namespaced,
   state,
   getters,

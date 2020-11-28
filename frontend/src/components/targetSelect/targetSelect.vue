@@ -22,10 +22,9 @@ import Component from 'vue-class-component';
 import TypeButtons from './components/typeButtons.vue'
 import SpeciesTotal from './components/speciesTotal.vue'
 import Candidates from './components/candidates.vue'
-import { TargetSelectState, CandidatesFilter } from './store/types'
-import { Species } from './store/types'
+import { CandidatesFilter, Species } from '../../store/targetSelect/types'
 
-const namespace: string = 'targetSelect';
+const namespace: string = 'targetSelectState';
 
 @Component({
   components: {
@@ -35,7 +34,6 @@ const namespace: string = 'targetSelect';
   }
 })
 export default class TaretSelect extends Vue {
-  @State('targetSelect') targetSelect!: TargetSelectState;
   @Getter('initialTotal', { namespace })
   private initialTotal!: number;
   @Getter('initialType', { namespace })
