@@ -25,11 +25,13 @@ const namespace: string = "natureState";
 export default class NatureSelector extends Vue {
   @Prop() private target!: string;
 
+  @Action('loadNatures', { namespace })
+  private loadNatures!: () => void;
   @Action('initialize', { namespace })
-  private initialize!: () => void;
+  private initialize!: (target: string) => void;
 
-  @Getter('isInitialized', { namespace })
-  private isInitialized!: boolean;
+  @Getter('isLoaded', { namespace })
+  private isLoaded!: boolean;
   @Getter('natures', { namespace })
   private natures!: Nature[];
   @Getter('current', { namespace })
@@ -40,11 +42,12 @@ export default class NatureSelector extends Vue {
   private clearCurrent!: () => void;
 
   created() {
-    if (this.isInitialized) {
+    this.initialize(this.target);
+    if (this.isLoaded) {
       this.currentChanged();
       return;
     }
-    this.initialize();
+    this.loadNatures();
   }
 
   @Watch('target')

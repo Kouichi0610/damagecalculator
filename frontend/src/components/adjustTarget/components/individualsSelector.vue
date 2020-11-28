@@ -17,10 +17,10 @@ const namespace: string = "individualsState";
 export default class IndividualsSelector extends Vue {
   @Prop() private target!: string;
 
+  @Action('initialize', { namespace })
+  private initialize!: (target: string) => void;
   @Getter('individuals', { namespace })
   private individuals!: Individuals;
-  @Mutation('reset', { namespace })
-  private reset!: () => void;
   @Mutation('changeSlowest', { namespace })
   private changeSlowest!: () => void;
   @Mutation('changeWeakest', { namespace })
@@ -34,12 +34,8 @@ export default class IndividualsSelector extends Vue {
   }
 
   created() {
+    this.initialize(this.target);
     this.individualsChanged();
-  }
-
-  @Watch('target')
-  clear() {
-    this.reset();
   }
 
   @Watch('individuals', { deep: true })

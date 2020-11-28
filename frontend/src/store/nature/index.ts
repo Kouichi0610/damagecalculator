@@ -6,6 +6,7 @@ import { Nature, NatureState } from './types';
 import { RootState } from '@/store/types';
 
 export const state: NatureState = {
+  target: '',
   natures: [],
   current: Nature.default(),
 }

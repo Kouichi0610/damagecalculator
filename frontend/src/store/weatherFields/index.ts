@@ -6,6 +6,7 @@ import { WeatherFieldsState, Weather, Field } from './types';
 import { RootState } from '@/store/types';
 
 export const state: WeatherFieldsState = {
+  target: '',
   weathers: [],
   fields: [],
   currentWeather: new Weather(0, '', ''),

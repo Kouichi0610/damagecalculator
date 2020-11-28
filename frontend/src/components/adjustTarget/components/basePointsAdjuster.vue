@@ -24,13 +24,13 @@ export default class BasePointsAdjuster extends Vue {
   @Prop() private target!: string;
   @Prop() private speedLock!: boolean
 
+  @Action('initialize', { namespace })
+  private initialize!: (target: string) => void;
   @Getter('basePoints', { namespace })
   private basePoints!: IBasePoints;
   @Getter('basePointsArray', { namespace })
   private basePointsArray!: IBasePoint[];
 
-  @Mutation('reset', { namespace })
-  private reset!: () => void;
   @Mutation('setHP', { namespace })
   private setHP!: (value: number) => void;
   @Mutation('setAttack', { namespace })
@@ -65,15 +65,11 @@ export default class BasePointsAdjuster extends Vue {
   ];
 
   created() {
+    this.initialize(this.target);
   }
 
   change(index: number, value: number) {
     this.setters[index](value);
-  }
-
-  @Watch('target')
-  targetChanged() {
-    this.reset();
   }
 
   @Watch('basePoints', { deep: true })
