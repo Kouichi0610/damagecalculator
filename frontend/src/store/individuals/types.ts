@@ -1,4 +1,5 @@
 export interface IndividualsState {
+  target: string;
   targetsIndividuals: Individuals;
 }
 

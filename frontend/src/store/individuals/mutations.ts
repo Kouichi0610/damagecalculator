@@ -2,7 +2,8 @@ import { MutationTree } from 'vuex';
 import { Individuals, IndividualsState } from './types';
 
 export const mutations: MutationTree<IndividualsState> = {
-  reset(state) {
+  reset(state, target: string) {
+    state.target = target;
     state.targetsIndividuals = Individuals.default();
   },
   changeSlowest(state) {

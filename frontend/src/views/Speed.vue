@@ -26,8 +26,8 @@ import { SpeedInfo } from '../store/speed/types'
 const namespace: string = "speedState";
 
 /*
-  特性変更時に補正取得
-  ぬめぬめ発動時
+  すばやさ調整
+  TODO:とくせい発動時の相手に影響を与える
 */
 @Component({
   components: {
@@ -55,8 +55,6 @@ export default class Speed extends Vue {
 
   private targetCondition: TargetCondition = TargetCondition.default();
   private trickRoomFlag: boolean = false;
-
-  // TODO:トリックルーム、targetSpeed, とくせいの相手補正からすばやさランキング作成
 
   created() {
     this.trickRoomFlag = this.trickRoom;
