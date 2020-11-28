@@ -2,7 +2,8 @@ import { MutationTree } from 'vuex';
 import { IBasePoint, BasePoints, BasePointsState } from './types';
 
 export const mutations: MutationTree<BasePointsState> = {
-  reset(state) {
+  reset(state, target: string) {
+    state.target = target;
     state.basePoints = new BasePoints();
   },
   setHP(state, value: number) {

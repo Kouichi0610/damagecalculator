@@ -1,4 +1,7 @@
+import { StringLiteral } from 'typescript';
+
 export interface BasePointsState {
+  target: string;
   basePoints: BasePoints
 }
 
