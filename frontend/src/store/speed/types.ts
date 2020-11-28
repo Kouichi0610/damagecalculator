@@ -2,9 +2,11 @@ import axios from 'axios'
 import { TargetCondition } from '../target/targetCondition'
 
 export interface SpeedState {
+  target: string,
   level: number;
   otherList: SpeedInfo[];
   targetSpeed: number; // とくせい、もちもの込みの素早さ
+  trickRoom: boolean;
 }
 
 // すばやさ取得
@@ -48,7 +50,7 @@ export class SpeedList {
         let list = JSON.parse(json);
         let res: SpeedInfo[] = [];
         for (var i = 0; i < list.length; i++) {
-          res.push(new SpeedInfo(i, list[i].info, list[i].speed));
+          res.push(new SpeedInfo(i, list[i].info, list[i].speed, false));
         }
         resolve(res);
       })
@@ -62,13 +64,37 @@ export class SpeedList {
 }
 
 export class SpeedInfo {
-  index: number;
-  info: string;
-  speed: number;
+  readonly index: number;
+  readonly info: string;
+  readonly speed: number;
+  readonly target: boolean;
 
-  constructor(index: number, info: string, speed: number) {
+  constructor(index: number, info: string, speed: number, target: boolean) {
     this.index = index;
     this.info = info;
     this.speed = speed;
+    this.target = target;
+  }
+}
+
+// 
+export class SpeedRanking {
+  ranking(target: string, targetSpeed: number, trickRoom: boolean, others: SpeedInfo[]): SpeedInfo[] {
+    let empty: SpeedInfo[] = [];
+    let res: SpeedInfo[] = empty.concat(others);
+    res.push(new SpeedInfo(-1, target, targetSpeed, true));
+    let decending = function(a: SpeedInfo, b: SpeedInfo) {
+      if (a.speed > b.speed) return -1;
+      if (a.speed < b.speed) return 1;
+      return 0;
+    }
+    let ascending = function(a: SpeedInfo, b: SpeedInfo) {
+      if (a.speed < b.speed) return -1;
+      if (a.speed > b.speed) return 1;
+      return 0;
+    }
+    let order = trickRoom ? ascending : decending;
+    res.sort(order);
+    return res;
   }
 }

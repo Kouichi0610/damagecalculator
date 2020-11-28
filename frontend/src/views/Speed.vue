@@ -1,19 +1,21 @@
 <template>
   <div class="speed-adjuster">
     <adjust-target :speedLock="true" @targetCondition="changeTargetCondition"></adjust-target>
-    <b-form-checkbox id="check-trickroom" v-model="trickroom">{{ trickRoomMessage }}</b-form-checkbox>
+    <b-form-checkbox id="check-trickroom" v-model="trickRoomFlag">{{ trickRoomMessage }}</b-form-checkbox>
     <p>素早さ{{targetSpeed}} TODO:コンポーネント</p>
+    <div v-for="item in speedRanking" :key="item.index">
+      <div>{{ item.info }} {{ item.speed }}</div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { Action, Getter } from "vuex-class";
+import { Action, Getter, Mutation } from "vuex-class";
 import AdjustTarget from '../components/adjustTarget/adjustTarget.vue'
 
 import { TargetCondition } from "../store/target/targetCondition";
-
-//import { SpeedOrder } from '../store/speed/speedOrder'
+import { SpeedInfo } from '../store/speed/types'
 
 const namespace: string = "speedState";
 
@@ -27,19 +29,34 @@ const namespace: string = "speedState";
   },
 })
 export default class Speed extends Vue {
+  @Action('initialize', { namespace })
+  private initialize!: (target: TargetCondition) => void;
   @Action('loadList', { namespace })
   private loadList!: (level: number) => void;
   @Action('getSpeed', { namespace })
   private getSpeed!: (target: TargetCondition) => void;
+  @Mutation('setTrickRoom', { namespace })
+  private setTrickRoom!: (trickRoom: boolean) => void;
 
+  @Getter('trickRoom', { namespace })
+  private trickRoom!: boolean;
   @Getter('targetSpeed', { namespace })
   private targetSpeed!: number;
 
+  @Getter('speedRanking', { namespace })
+  private speedRanking!: SpeedInfo[];
+
   private targetCondition: TargetCondition = TargetCondition.default();
-  private trickroom: boolean = false;
+  private trickRoomFlag: boolean = false;
+
+  // TODO:トリックルーム、targetSpeed, とくせいの相手補正からすばやさランキング作成
+
+  created() {
+    this.trickRoomFlag = this.trickRoom;
+  }
 
   get trickRoomMessage(): string {
-    if (this.trickroom) {
+    if (this.trickRoom) {
       return 'トリックルームON';
     }
     return 'トリックルームOFF';
@@ -50,14 +67,10 @@ export default class Speed extends Vue {
     this.loadList(this.targetCondition.level);
   }
 
-  @Watch('targetCondition.ability')
-  abilityChanged() {
-    console.log('TODO:' + this.targetCondition.ability);
-  }
-
   @Watch('targetCondition', {deep: true})
-  calcSpeed() {
+  changeCondition() {
     if (!this.targetCondition.enable()) return;
+    this.initialize(this.targetCondition);
     this.getSpeed(this.targetCondition);
 
     /*
@@ -70,6 +83,11 @@ export default class Speed extends Vue {
     s.abilityOwner(this.targetCondition);
     s.abilityOther(this.targetCondition);
     */
+  }
+
+  @Watch('trickRoomFlag')
+  changeTrickRoom() {
+    this.setTrickRoom(this.trickRoomFlag);
   }
 
   changeTargetCondition(targetCondition: TargetCondition) {

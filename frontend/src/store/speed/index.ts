@@ -6,9 +6,11 @@ import { SpeedState } from './types';
 import { RootState } from '@/store/types';
 
 export const state: SpeedState = {
+  target: '',
   level: 0,
   otherList: [],
   targetSpeed: 0,
+  trickRoom: false,
 }
 
 const namespaced: boolean = true;

@@ -5,14 +5,16 @@ import { state } from './index'
 import { TargetCondition } from '../target/targetCondition'
 
 export const actions: ActionTree<SpeedState, RootState> = {
+  initialize: ({commit}, target: TargetCondition) => {
+    if (!target.enable()) return;
+    if (state.target == target.target) return;
+    commit('setTarget', target.target);
+  },
   getSpeed: ({ commit }, target: TargetCondition) => {
     new GetSpeed().getSpeed(target)
     .then((speed) => {
       commit('setTargetSpeed', speed);
     });
-  },
-  speedOrders: ({commit}, trickRoom: boolean): SpeedInfo[] =>  {
-    return [];
   },
   loadList: ({ commit }, level: number) => {
     if (level == 0) return;
