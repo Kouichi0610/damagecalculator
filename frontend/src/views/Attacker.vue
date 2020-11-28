@@ -1,4 +1,3 @@
-// 攻撃側
 <template>
   <div class="attacker">
     <adjust-target :speedLock="false" @targetCondition="changeTargetCondition"></adjust-target>
@@ -22,6 +21,9 @@ import { Move, MoveLoader } from '../store/attacker/types'
 
 const namespace: string = "attackerState";
 
+/*
+  攻撃調整
+*/
 @Component({
   components: {
     AdjustTarget,
@@ -57,7 +59,10 @@ export default class Attacker extends Vue {
   @Watch('currentMove', {deep: true})
   calcDamages() {
     if (!this.targetCondition.enable()) return;
-    if (this.currentMove.length == 0) return;
+    if (this.currentMove.length == 0) {
+      this.results = [];
+      return;
+    }
     new SendDamages().sendDamages(this.targetCondition, this.currentMove)
     .then((results) => {
       this.results = results;
