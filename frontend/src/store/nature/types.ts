@@ -1,4 +1,5 @@
 export interface NatureState {
+  target: string;
   natures: Nature[];
   current: Nature;
 }

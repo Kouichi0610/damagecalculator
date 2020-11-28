@@ -2,6 +2,9 @@ import { MutationTree } from 'vuex';
 import { Nature, NatureState } from './types';
 
 export const mutations: MutationTree<NatureState> = {
+  setTarget(state, payload: string) {
+    state.target = payload;
+  },
   setList(state, payload: Nature[]) {
     state.natures = payload;
     state.current = payload[0];
