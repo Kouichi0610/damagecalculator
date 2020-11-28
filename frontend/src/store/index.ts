@@ -16,9 +16,6 @@ import { defenderState } from './defender/index'
 import { speedState } from './speed/index'
 
 import { targetSelect } from '../components/targetSelect/store/index'
-import { target } from '../components/target/store/index'
-import { nature } from '../components/nature/store/index'
-import { speedOrder } from '../components/speedOrder/store/index'
 
 Vue.use(Vuex);
 
@@ -28,10 +25,7 @@ const store: StoreOptions<RootState> = {
     level: 50,  // TODO:LevelStateつくる
   },
   modules: {
-    target,
     targetSelect,
-    nature,
-    speedOrder,
     weatherFieldsState,
     natureState,
     individualsState,
