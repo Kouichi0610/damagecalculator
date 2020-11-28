@@ -2,7 +2,7 @@
   <div class="adjuster">
     <span class="row mb-1">
         <div class="col-sm-7 pt-1">
-            <input type="range" class="form-control-change" id="slider" v-model.number="current" step="4" min="0" max="252" :disabled="disabled">
+            <input type="range" class="form-control-change" id="slider" v-model.number="current" step="4" min="0" max="252" :disabled="!enable">
         </div>
         <div class="col-1">{{ current }}</div>
     </span>
@@ -20,6 +20,8 @@ import { IBasePoint } from '../../../../store/basePoints/types';
 export default class Adjuster extends Vue {
   @Prop()
   private basePoint!: IBasePoint;
+  @Prop()
+  private enable!: boolean;
 
   private current: number = 0;
 

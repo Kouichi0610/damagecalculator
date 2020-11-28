@@ -1,7 +1,7 @@
 // 耐久調整
 <template>
   <div class="defender">
-    <adjust-target @targetCondition="changeTargetCondition"></adjust-target>
+    <adjust-target :speedLock="false" @targetCondition="changeTargetCondition"></adjust-target>
     <list-display :results="results"></list-display>
   </div>
 </template>

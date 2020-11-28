@@ -43,6 +43,7 @@ func (s *serverImpl) Serve() (http.Handler, error) {
 	router.GET("/get_sample", s.getSample)
 	router.POST("/post_sample", s.postSample)
 	router.GET("/filtered_list", s.filteredList)
+	router.GET("/get_speed", s.getSpeed)
 	router.GET("/speed_list", s.speedList)
 	router.GET("/get_species", s.getSpecies)
 	router.GET("/nature_list", s.natureList)

@@ -2,7 +2,7 @@
   <div class="basepoints-adjuster">
     基礎ポイント
     <div v-for="item in basePointsArray" :key="item.index">
-      <adjuster :basePoint="item" @change="change"></adjuster>
+      <adjuster :basePoint="item" @change="change" :enable="enables[item.index]"></adjuster>
     </div>
   </div>
 </template>
@@ -22,6 +22,7 @@ const namespace: string = "basePointsState";
 })
 export default class BasePointsAdjuster extends Vue {
   @Prop() private target!: string;
+  @Prop() private speedLock!: boolean
 
   @Getter('basePoints', { namespace })
   private basePoints!: IBasePoints;
@@ -42,6 +43,17 @@ export default class BasePointsAdjuster extends Vue {
   private setSpDefense!: (value: number) => void;
   @Mutation('setSpeed', { namespace })
   private setSpeed!: (value: number) => void;
+
+  get enables(): boolean[] {
+    return [
+      !this.speedLock,
+      !this.speedLock,
+      !this.speedLock,
+      !this.speedLock,
+      !this.speedLock,
+      true,
+    ];
+  }
 
   private setters: ((value: number) => void)[] = [
     this.setHP,

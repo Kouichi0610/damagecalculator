@@ -38,6 +38,7 @@ var itemList []*info = []*info{
 	{"なし", ""},
 	{"こだわりハチマキ", "こうげき1.5倍、同じ技しか出せなくなる"},
 	{"こだわりメガネ", "とくこう1.5倍、同じ技しか出せなくなる"},
+	{"こだわりスカーフ", "すばやさ1.5倍、同じ技しか出せなくなる"},
 	{"とつげきチョッキ", "とくぼう1.5倍、変化技を出せなくなる"},
 	{"くろいてっきゅう", "すばやさ半分、ひこうタイプ、ふゆうにじめんタイプが当たる"},
 	{"たつじんのおび", "こうかばつぐんの威力1.2倍"},
@@ -48,6 +49,7 @@ var itemList []*info = []*info{
 var itemMap map[string]item.ItemCreator = map[string]item.ItemCreator{
 	"こだわりハチマキ": &item.StatsCorrectData{Attack: 1.5},
 	"こだわりメガネ":  &item.StatsCorrectData{SpAttack: 1.5},
+	"こだわりスカーフ": &item.StatsCorrectData{Speed: 1.5},
 	"とつげきチョッキ": &item.StatsCorrectData{SpDefense: 1.5},
 	"くろいてっきゅう": &item.StatsCorrectData{Speed: 0.5},
 	"たつじんのおび":  &item.SuperEffectiveCorrectData{Scale: 1.2},
