@@ -63,7 +63,7 @@ func (s *service) Create(level stats.Level, attacker *situation.PokeParams, move
 		if err != nil {
 			continue
 		}
-		r := newResult(d.Info(), damages, rates)
+		r := newResult(d.DefendersInfo(), damages, rates)
 		res = append(res, r)
 	}
 

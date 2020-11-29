@@ -13,8 +13,7 @@ import { itemState } from './items/index'
 import { weatherFieldsState } from './weatherFields/index';
 import { attackerState } from './attacker/index'
 import { speedState } from './speed/index'
-
-import { targetSelect } from '../components/targetSelect/store/index'
+import { targetSelectState } from './targetSelect/index'
 
 Vue.use(Vuex);
 
@@ -24,7 +23,7 @@ const store: StoreOptions<RootState> = {
     level: 50,  // TODO:LevelStateつくる
   },
   modules: {
-    targetSelect,
+    targetSelectState,
     weatherFieldsState,
     natureState,
     individualsState,

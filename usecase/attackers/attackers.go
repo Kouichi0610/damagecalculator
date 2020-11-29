@@ -64,7 +64,7 @@ func (s *service) Create(level stats.Level, defender *situation.PokeParams, cond
 		if err != nil {
 			continue
 		}
-		r := newResult(attacker.Param().Info(), attacker.Move(), damages, rates)
+		r := newResult(attacker.Param().AttackersInfo(), attacker.Move(), damages, rates)
 		res = append(res, r)
 	}
 	sort.Slice(res, func(i, j int) bool {

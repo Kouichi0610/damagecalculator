@@ -2,6 +2,9 @@ import { MutationTree } from 'vuex';
 import { Item, ItemState } from './types';
 
 export const mutations: MutationTree<ItemState> = {
+  setTarget(state, payload: string) {
+    state.target = payload;
+  },
   setList(state, payload: Item[]) {
     state.items = payload;
     state.current = payload[0];
