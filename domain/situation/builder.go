@@ -36,8 +36,30 @@ type (
 	}
 )
 
-func (p *PokeParams) Info() string {
-	return fmt.Sprintf("%s %s ", p.Name, p.Nature)
+func (p *PokeParams) AttackersInfo() string {
+	res := p.Name
+	res += " " + p.Nature
+	if p.BasePoints[1] > 0 {
+		res += fmt.Sprintf(" 攻撃%d", p.BasePoints[1])
+	}
+	if p.BasePoints[3] > 0 {
+		res += fmt.Sprintf(" 特攻%d", p.BasePoints[3])
+	}
+	return res
+}
+func (p *PokeParams) DefendersInfo() string {
+	res := p.Name
+	res += " " + p.Nature
+	if p.BasePoints[0] > 0 {
+		res += fmt.Sprintf(" HP%d", p.BasePoints[0])
+	}
+	if p.BasePoints[2] > 0 {
+		res += fmt.Sprintf(" 防御%d", p.BasePoints[2])
+	}
+	if p.BasePoints[4] > 0 {
+		res += fmt.Sprintf(" 特防%d", p.BasePoints[4])
+	}
+	return res
 }
 
 func NewBuilder(sp species.Repository, ab ability.Repository, mv move.Repository, it item.Repository) Builder {
