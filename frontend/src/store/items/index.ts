@@ -6,6 +6,7 @@ import { Item, ItemState } from './types';
 import { RootState } from '@/store/types';
 
 export const state: ItemState = {
+  target: '',
   items: [],
   current: Item.default(),
 }

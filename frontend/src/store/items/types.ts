@@ -1,5 +1,6 @@
 export interface ItemState {
-  items: Item[]
+  target: string;
+  items: Item[];
   current: Item;
 }
 
