@@ -22,8 +22,9 @@ export default class App extends Vue {
 }
 </script>
 
-<style>
+<style scoped>
 #app {
+  width: 1000px;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

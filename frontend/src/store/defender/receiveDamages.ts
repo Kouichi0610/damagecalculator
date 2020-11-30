@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { TargetCondition } from '../target/targetCondition'
+import { IDamageResult } from '../damageResult/damageResult'
 
 export class ReceiveDamages {
   receiveDamages(condition: TargetCondition): Promise<Result[]> {
@@ -43,9 +44,9 @@ export class ReceiveDamages {
   }
 }
 
-export class Result {
+export class Result implements IDamageResult {
   readonly target: string = '';
-  readonly move: string = '';
+  private move: string = '';
   readonly damageMin: number = 0;
   readonly damageMax: number = 0;
   readonly rateMin: number = 0;
