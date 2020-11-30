@@ -1,5 +1,5 @@
 <template>
-  <div class="result-list-display">
+  <div class="container">
     <div v-for="result in results" :key="result.target">
       <result-display :result="result"></result-display>
     </div>

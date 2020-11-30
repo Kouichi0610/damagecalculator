@@ -1,18 +1,18 @@
 <template>
   <div class="result-display">
-    <div class="row mb-1">
+    <div class="row">
       <template v-if="isDetermine1">
-        <b-progress class="col-2" :max="100" show-value animated>
+        <b-progress class="col-md-2" :max="100" show-value animated>
           <b-progress-bar :value="100" :label="alpha" variant="danger"></b-progress-bar>
         </b-progress>
       </template>
       <template v-else>
-        <b-progress class="col-2" :max="100" show-value animated>
+        <b-progress class="col-md-2" :max="100" show-value animated>
           <b-progress-bar :value="rateMin" :label="alpha" variant="danger"></b-progress-bar>
           <b-progress-bar :value="rateMax" variant="warning"></b-progress-bar>
         </b-progress>
       </template>
-      <div class="col-8">
+      <div class="col-md-8">
         {{ result.toString() }}
       </div>
     </div>

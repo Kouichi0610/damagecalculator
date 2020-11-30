@@ -1,10 +1,10 @@
 <template>
   <div class="ability-selector">
     <div class="row mb-1">
-      <b-dropdown class="col-1" id="ability-dropdown" text="特性">
+      <b-dropdown class="col-md-2" id="ability-dropdown" text="特性">
         <b-dropdown-item v-for="ability in abilities" :key="ability" @click="change(ability)">{{ ability }}</b-dropdown-item>
       </b-dropdown>
-      <div class="col-1">{{ current }}</div>
+      <div class="col-md-4">{{ current }}</div>
     </div>
   </div>
 </template>

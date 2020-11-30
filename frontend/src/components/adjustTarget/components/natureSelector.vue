@@ -1,10 +1,10 @@
 <template>
   <div class="nature-selector">
     <div class="row mb-1">
-      <b-dropdown class="col-1" id="nature-dropdown" text="性格">
+      <b-dropdown class="col-md-2" id="nature-dropdown" text="性格">
         <b-dropdown-item v-for="item in natures" :key="item.name" @click="setCurrent(item)">{{ item.name }} {{ item.description }}</b-dropdown-item>
       </b-dropdown>
-      <div class="col-3">
+      <div class="col-md-4">
         性格:{{ current.name }} {{ current.description }}
       </div>
     </div>
