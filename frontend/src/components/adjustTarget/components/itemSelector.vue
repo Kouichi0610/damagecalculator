@@ -39,6 +39,9 @@ export default class ItemSelector extends Vue {
 
   created() {
     this.initialize(this.target);
+    if (this.current.enable()) {
+      this.$emit('change', this.current);
+    }
   }
 
   @Watch('current')
