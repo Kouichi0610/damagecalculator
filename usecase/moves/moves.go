@@ -3,6 +3,7 @@ package moves
 import (
 	"damagecalculator/domain/move"
 	"damagecalculator/domain/species"
+	"sort"
 )
 
 type (
@@ -53,5 +54,8 @@ func (s *loaderImpl) Moves(name string) Moves {
 		}
 		res = append(res, d)
 	}
+	sort.Slice(res, func(i, j int) bool {
+		return res[i].Power > res[j].Power
+	})
 	return res
 }
