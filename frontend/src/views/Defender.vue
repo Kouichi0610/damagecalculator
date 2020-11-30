@@ -10,7 +10,7 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { Getter } from "vuex-class";
 import AdjustTarget from '../components/adjustTarget/adjustTarget.vue'
-import ListDisplay from '../components/defender/listDisplay.vue'
+import ListDisplay from '../components/damageResult/listDisplay.vue'
 
 import { ReceiveDamages, Result } from '../store/defender/receiveDamages'
 import { TargetCondition } from '../store/target/targetCondition'

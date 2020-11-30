@@ -1,15 +1,15 @@
 <template>
-  <div class="adjust-target">
+  <div class="container">
     <species-loader @target="onTarget"></species-loader>
     <template v-if="hasTarget">
       <data-display :data="data"></data-display>
       <ability-selector :current="ability" :abilities="abilities" @change="changeAbility"></ability-selector>
       <nature-selector :target="target" @change="changeNature"></nature-selector>
       <individuals-selector :target="target" @change="changeIndividuals"></individuals-selector>
-      <div class="row mb-1">
-        <species-display class="col-3" :species="species"></species-display>
-        <stats-display class="col-3" :stats="stats"></stats-display>
-        <base-points-adjuster class="col-3" :target="target" :speedLock="speedLock" @change="changeBasePoints"></base-points-adjuster>
+      <div class="row">
+        <species-display class="col-md-4" :species="species"></species-display>
+        <stats-display class="col-md-4" :stats="stats"></stats-display>
+        <base-points-adjuster class="col-md-4" :target="target" :speedLock="speedLock" @change="changeBasePoints"></base-points-adjuster>
       </div>
       <weather-field-selector :target="target" @weather="changeWeather" @field="changeField"></weather-field-selector>
       <item-selector :target="target" @change="changeItem"></item-selector>

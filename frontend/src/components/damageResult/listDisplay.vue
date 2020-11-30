@@ -1,5 +1,5 @@
 <template>
-  <div class="result-list-display">
+  <div class="container">
     <div v-for="result in results" :key="result.target">
       <result-display :result="result"></result-display>
     </div>
@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { Result } from '../../store/attacker/sendDamage'
+import { IDamageResult } from '../../store/damageResult/damageResult'
 import ResultDisplay from './resultDisplay.vue'
 
 @Component({
@@ -18,7 +18,7 @@ import ResultDisplay from './resultDisplay.vue'
 })
 export default class ListDisplay extends Vue {
   @Prop()
-  results!: Result[];
+  results!: IDamageResult[];
 }
 </script>
 <style scoped>

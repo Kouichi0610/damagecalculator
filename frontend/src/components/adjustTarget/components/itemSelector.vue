@@ -1,15 +1,13 @@
 <template>
   <div class="item-selector">
-    <div class="row mb-1">
-      <div class="col-3">
-        <b-dropdown class="col-1" id="items-dropdown" text="もちもの">
-          <b-dropdown-item v-for="item in items" :key="item.name" @click="setCurrent(item)">{{ item.name }} {{ item.description }}</b-dropdown-item>
-        </b-dropdown>
-      </div>
+    <div class="row">
+      <b-dropdown class="col-2" id="items-dropdown" text="もちもの">
+        <b-dropdown-item v-for="item in items" :key="item.name" @click="setCurrent(item)">{{ item.name }} {{ item.description }}</b-dropdown-item>
+      </b-dropdown>
       <div class="col-3">
         {{ current.name }}
       </div>
-      <div class="col-3">
+      <div class="col-7">
         {{ current.description }}
       </div>
     </div>

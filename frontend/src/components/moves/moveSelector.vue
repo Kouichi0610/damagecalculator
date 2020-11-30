@@ -1,10 +1,10 @@
 <template>
-  <div class="move-selector">
-    <div class="row mb-1">
-      <b-dropdown  class="col-1" id="physicals-dropdown" text="物理">
+  <div class="container">
+    <div class="row">
+      <b-dropdown class="col-md-2" id="physicals-dropdown" text="物理">
         <b-dropdown-item v-for="item in physicals" :key="item.name" @click="select(item)">{{ item.name }}</b-dropdown-item>
       </b-dropdown>
-      <b-dropdown class="col-1" id="specials-dropdown" text="特殊">
+      <b-dropdown class="col-md-2" id="specials-dropdown" text="特殊">
         <b-dropdown-item v-for="item in specials" :key="item.name" @click="select(item)">{{ item.name }}</b-dropdown-item>
       </b-dropdown>
     </div>

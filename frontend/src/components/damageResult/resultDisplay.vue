@@ -1,18 +1,18 @@
 <template>
   <div class="result-display">
-    <div class="row mb-1">
+    <div class="row">
       <template v-if="isDetermine1">
-        <b-progress class="col-6" :max="100" show-value animated>
+        <b-progress class="col-md-2" :max="100" show-value animated>
           <b-progress-bar :value="100" :label="alpha" variant="danger"></b-progress-bar>
         </b-progress>
       </template>
       <template v-else>
-        <b-progress class="col-6" :max="100" show-value animated>
+        <b-progress class="col-md-2" :max="100" show-value animated>
           <b-progress-bar :value="rateMin" :label="alpha" variant="danger"></b-progress-bar>
           <b-progress-bar :value="rateMax" variant="warning"></b-progress-bar>
         </b-progress>
       </template>
-      <div class="col-4">
+      <div class="col-md-8">
         {{ result.toString() }}
       </div>
     </div>
@@ -20,12 +20,12 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { Result } from '../../store/defender/receiveDamages'
+import { IDamageResult } from '../../store/damageResult/damageResult'
 
 @Component
 export default class ResultDisplay extends Vue {
   @Prop()
-  result!: Result;
+  result!: IDamageResult;
 
   get rateMin(): number {
     return this.result.rateMin;

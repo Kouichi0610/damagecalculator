@@ -13,7 +13,7 @@ import { Action, Getter, Mutation } from "vuex-class";
 
 import AdjustTarget from '../components/adjustTarget/adjustTarget.vue'
 import MoveSelector from '../components/moves/moveSelector.vue'
-import ListDisplay from '../components/attacker/listDisplay.vue'
+import ListDisplay from '../components/damageResult/listDisplay.vue'
 
 import { SendDamages, Result } from '../store/attacker/sendDamage'
 import { TargetCondition } from '../store/target/targetCondition'
