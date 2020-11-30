@@ -1,13 +1,19 @@
 <template>
-  <div class="speed-adjuster">
-    <adjust-target :speedLock="true" @targetCondition="changeTargetCondition"></adjust-target>
-    <b-form-checkbox id="check-trickroom" v-model="trickRoomFlag">{{ trickRoomMessage }}</b-form-checkbox>
-    <p>素早さ{{targetSpeed}}</p>
+  <div class="container">
     <div class="row mb-1">
-      <div class="col-4">
+    <adjust-target :speedLock="true" @targetCondition="changeTargetCondition"></adjust-target>
+    </div>
+    <div class="row mb-1">
+      <b-form-checkbox id="check-trickroom" v-model="trickRoomFlag">{{ trickRoomMessage }}</b-form-checkbox>
+    </div>
+    <div class="row mb-1">
+      素早さ{{targetSpeed}}
+    </div>
+    <div class="row mb-1">
+      <div class="col-md-4">
         <speed-ranking-display :infos="nearRanking"></speed-ranking-display>
       </div>
-      <div class="col-4">
+      <div class="col-md-4">
         <speed-ranking-display :infos="speedRanking"></speed-ranking-display>
       </div>
     </div>
@@ -74,11 +80,11 @@ export default class Speed extends Vue {
     var first = 0;
     for (i = 0; i < this.speedRanking.length; i++) {
       if (this.speedRanking[i].target) {
-        first = Math.max(0, i-5);
+        first = Math.max(0, i-2);
         break;
       }
     }
-    var last = Math.min(first+10, this.speedRanking.length);
+    var last = Math.min(first+5, this.speedRanking.length);
     for (i = first; i < last; i++) {
       res.push(this.speedRanking[i]);
     }
