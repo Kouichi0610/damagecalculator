@@ -2,13 +2,12 @@
   <div id="app">
     <div id="nav">
       <router-link  to="/">対象選択</router-link> |
-      <router-link to="/attacker0">攻撃調整A</router-link> |
-      <router-link to="/attacker1">攻撃調整B</router-link> |
-      <router-link to="/attacker2">攻撃調整C</router-link> |
-      <router-link to="/attacker3">攻撃調整D</router-link> |
+      <router-link to="/attacker0">{{ moveA }}</router-link> |
+      <router-link to="/attacker1">{{ moveB }}</router-link> |
+      <router-link to="/attacker2">{{ moveC }}</router-link> |
+      <router-link to="/attacker3">{{ moveD }}</router-link> |
       <router-link to="/defender">耐久調整</router-link> |
-      <router-link to="/speed">速度調整</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/speed">速度調整</router-link>
     </div>
     <router-view/>
   </div>
@@ -16,9 +15,28 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Action, Getter, Mutation } from "vuex-class";
+
+const namespace: string = "attackerState";
 
 @Component
 export default class App extends Vue {
+  @Getter('selectedMoves', { namespace })
+  private selectedMoves!: string[];
+
+  get moveA(): string {
+    return '攻撃調整:' + this.selectedMoves[0];
+  }
+  get moveB(): string {
+    return '攻撃調整:' + this.selectedMoves[1];
+  }
+  get moveC(): string {
+    return '攻撃調整:' + this.selectedMoves[2];
+  }
+  get moveD(): string {
+    return '攻撃調整:' + this.selectedMoves[3];
+  }
+
 }
 </script>
 
