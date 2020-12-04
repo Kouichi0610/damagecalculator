@@ -10,31 +10,31 @@ import (
 
 */
 func Test_とくせい_へんげんじざい(t *testing.T) {
-	a := defaultSituation()
-	a.Attacker.Name = "ミュウツー"
-	a.Attacker.Ability = "へんげんじざい"
+	a := newSituation()
+	a.attacker.Name = "ミュウツー"
+	a.attacker.Ability = "へんげんじざい"
 
-	a.Move = "れいとうビーム"
-	st := toSituation(a)
+	a.move = "れいとうビーム"
+	st := a.toSituation()
 	if !st.Attacker().Types().Equal(types.NewTypes(types.Ice)) {
 		t.Error()
 	}
 
-	a.Attacker.Ability = "リベロ"
-	a.Move = "じしん"
-	st = toSituation(a)
+	a.attacker.Ability = "リベロ"
+	a.move = "じしん"
+	st = a.toSituation()
 	if !st.Attacker().Types().Equal(types.NewTypes(types.Ground)) {
 		t.Error()
 	}
 }
 
 func Test_とくせい_ふしぎなまもり(t *testing.T) {
-	a := defaultSituation()
-	a.Defender.Name = "ヌケニン"
-	a.Defender.Ability = "ふしぎなまもり"
+	a := newSituation()
+	a.defender.Name = "ヌケニン"
+	a.defender.Ability = "ふしぎなまもり"
 
-	a.Move = "れいとうビーム"
-	d, r := calcDamage(a)
+	a.move = "れいとうビーム"
+	d, r := a.calcDamage()
 	if d.Min() != 0 {
 		t.Error()
 	}
@@ -42,8 +42,8 @@ func Test_とくせい_ふしぎなまもり(t *testing.T) {
 		t.Error()
 	}
 
-	a.Move = "かえんほうしゃ"
-	d, r = calcDamage(a)
+	a.move = "かえんほうしゃ"
+	d, r = a.calcDamage()
 	if d.Min() == 0 {
 		t.Error()
 	}
@@ -53,27 +53,27 @@ func Test_とくせい_ふしぎなまもり(t *testing.T) {
 }
 
 func Test_とくせい_かたやぶり(t *testing.T) {
-	a := defaultSituation()
-	a.Defender.Name = "ヌケニン"
-	a.Defender.Ability = "ふしぎなまもり"
-	a.Attacker.Ability = "かたやぶり"
+	a := newSituation()
+	a.defender.Name = "ヌケニン"
+	a.defender.Ability = "ふしぎなまもり"
+	a.attacker.Ability = "かたやぶり"
 
-	a.Move = "れいとうビーム"
-	d, _ := calcDamage(a)
+	a.move = "れいとうビーム"
+	d, _ := a.calcDamage()
 	if d.Min() == 0 {
 		t.Error()
 	}
 }
 
 func Test_とくせい_ちからもち(t *testing.T) {
-	a := defaultSituation()
-	a.Move = "かわらわり"
+	a := newSituation()
+	a.move = "かわらわり"
 
-	d, _ := calcDamage(a)
+	d, _ := a.calcDamage()
 	min := d.Min()
 
-	a.Attacker.Ability = "ちからもち"
-	d, _ = calcDamage(a)
+	a.attacker.Ability = "ちからもち"
+	d, _ = a.calcDamage()
 
 	amin := d.Min()
 
@@ -82,15 +82,15 @@ func Test_とくせい_ちからもち(t *testing.T) {
 	}
 }
 func Test_とくせい_かがくへんかガス(t *testing.T) {
-	a := defaultSituation()
-	a.Move = "かわらわり"
-	a.Defender.Ability = "かがくへんかガス"
+	a := newSituation()
+	a.move = "かわらわり"
+	a.defender.Ability = "かがくへんかガス"
 
-	d, _ := calcDamage(a)
+	d, _ := a.calcDamage()
 	min := d.Min()
 
-	a.Attacker.Ability = "ちからもち"
-	d, _ = calcDamage(a)
+	a.attacker.Ability = "ちからもち"
+	d, _ = a.calcDamage()
 
 	amin := d.Min()
 

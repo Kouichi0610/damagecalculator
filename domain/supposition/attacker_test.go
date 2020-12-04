@@ -11,9 +11,14 @@ func Test_AttackersMaker(t *testing.T) {
 		t.Error()
 	}
 	actuals := maker.Attackers("フーディン", "いしあたま")
-	for _, actual := range actuals {
-		t.Errorf("%s %s", actual.Param().Name, actual.Move())
+	if actuals == nil {
+		t.Error()
 	}
+	/*
+		for _, actual := range actuals {
+			t.Errorf("%s %s", actual.Param().Name, actual.Move())
+		}
+	*/
 }
 
 func newAttackersMaker() AttackersMaker {

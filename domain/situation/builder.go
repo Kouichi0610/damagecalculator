@@ -3,7 +3,7 @@ package situation
 import (
 	"damagecalculator/domain/ability"
 	"damagecalculator/domain/basepoints"
-	"damagecalculator/domain/condition"
+	_ "damagecalculator/domain/condition"
 	"damagecalculator/domain/field"
 	"damagecalculator/domain/individuals"
 	"damagecalculator/domain/item"
@@ -32,6 +32,7 @@ type (
 		Weather      string
 		Field        string
 		HasReflector bool // リフレクター、ひかりのかべ
+		IsCritical   bool
 	}
 	Builder interface {
 		ToSituation(level stats.Level, attacker, defender *PokeParams, move string, cd *FieldCondition) (SituationChecker, error)
@@ -80,7 +81,6 @@ type builder struct {
 	it item.Repository
 }
 
-// TODO:factory.goから独立
 func (b *builder) ToSituation(level stats.Level, attacker, defender *PokeParams, move string, cd *FieldCondition) (SituationChecker, error) {
 	mv, err := b.move(move)
 	if err != nil {
@@ -105,57 +105,8 @@ func (b *builder) ToSituation(level stats.Level, attacker, defender *PokeParams,
 		attackersItem: b.atItem(attacker.Item),
 		defendersItem: b.dfItem(defender.Item),
 		abilities:     b.ab.Get(attacker.Ability, defender.Ability),
-		isCritical:    false,
+		isCritical:    cd.IsCritical,
 	}, nil
-}
-
-func (b *builder) ToSituationOld(level stats.Level, attacker, defender *PokeParams, move string, cd *FieldCondition) (SituationChecker, error) {
-	d := &SituationData{
-		Move: move,
-		Attacker: PokeData{
-			Name:        attacker.Name,
-			Level:       uint(level),
-			Individuals: individuals.ToIndividualType(attacker.Individuals),
-			BasePoints:  toBasePoints(attacker.BasePoints),
-			Ranks:       Ranks{0, 0, 0, 0, 0},
-			Ability:     attacker.Ability,
-			Item:        attacker.Item,
-			Nature:      stats.NameToNatureType(attacker.Nature),
-			Condition:   condition.FromString(attacker.Condition),
-		},
-		Defender: PokeData{
-			Name:        defender.Name,
-			Level:       uint(level),
-			Individuals: individuals.ToIndividualType(defender.Individuals),
-			BasePoints:  toBasePoints(defender.BasePoints),
-			Ranks:       Ranks{0, 0, 0, 0, 0},
-			Ability:     defender.Ability,
-			Item:        defender.Item,
-			Nature:      stats.NameToNatureType(defender.Nature),
-			Condition:   condition.FromString(defender.Condition),
-		},
-		Weather:       field.ToWeather(cd.Weather),
-		Field:         field.ToField(cd.Field),
-		IsCritical:    false,
-		IsReflector:   cd.HasReflector,
-		IsLightScreen: cd.HasReflector,
-	}
-	st, err := d.Create(b.mv, b.sp, b.ab, b.it)
-	if err != nil {
-		return nil, err
-	}
-	return st, nil
-}
-
-func toBasePoints(p []uint) BasePoints {
-	return BasePoints{
-		HP:        p[0],
-		Attack:    p[1],
-		Defense:   p[2],
-		SpAttack:  p[3],
-		SpDefense: p[4],
-		Speed:     p[5],
-	}
 }
 
 func (b *builder) move(move string) (move.Move, error) {

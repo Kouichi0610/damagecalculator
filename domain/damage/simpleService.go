@@ -55,6 +55,7 @@ func (s *simple) Calculate(attacker, defender, aAbility, dAbility, move string) 
 		Weather:      "なし",
 		Field:        "なし",
 		HasReflector: false,
+		IsCritical:   false,
 	}
 	st, err := builder.ToSituation(level, at, df, move, cd)
 	if err != nil {
