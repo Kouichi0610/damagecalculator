@@ -1,13 +1,8 @@
 package damage
 
 import (
-	"damagecalculator/domain/ability"
 	"damagecalculator/domain/field"
-	"damagecalculator/domain/individuals"
-	"damagecalculator/domain/item"
-	"damagecalculator/domain/move"
 	"damagecalculator/domain/situation"
-	"damagecalculator/domain/species"
 	"damagecalculator/domain/stats"
 	"damagecalculator/domain/types"
 	"damagecalculator/infra/local"
@@ -32,6 +27,7 @@ func Test_DamageService(t *testing.T) {
 		Weather:      "なし",
 		Field:        "なし",
 		HasReflector: false,
+		IsCritical:   false,
 	}
 	attacker := &situation.PokeParams{
 		Name:        "ピカチュウ",
@@ -72,15 +68,15 @@ func Test_DamageService(t *testing.T) {
 
 // デフォルトの急所補正は通常の1.5倍となること
 func Test_急所補正(t *testing.T) {
-	a := defaultSituation()
-	d, r := calcDamage(a)
+	a := newSituation()
+	d, r := a.calcDamage()
 	defaultMin := d.Min()
 	if r.DetermineCount() != 3 {
 		t.Errorf("%s", r.String())
 	}
 
-	a.IsCritical = true
-	d, r = calcDamage(a)
+	a.condition.IsCritical = true
+	d, r = a.calcDamage()
 	criticalMin := d.Min()
 
 	if criticalMin != uint(float64(defaultMin)*1.5) {
@@ -101,11 +97,11 @@ func Test_ひかりのかべ補正(t *testing.T) {
 }
 
 func Test_ウェザーボール(t *testing.T) {
-	a := defaultSituation()
-	a.Move = "ウェザーボール"
+	a := newSituation()
+	a.move = "ウェザーボール"
 	typesCheck := func(w field.Weather) *types.Types {
-		a.Weather = w
-		st := toSituation(a)
+		a.condition.Weather = w.String()
+		st := a.toSituation()
 		return st.MoveTypes()
 	}
 	typeMap := map[field.Weather]*types.Types{
@@ -123,12 +119,12 @@ func Test_ウェザーボール(t *testing.T) {
 	}
 
 	// 天候化では威力が倍になること
-	a.Attacker.Name = "バタフリー"
-	a.Defender.Name = "ケンタロス"
+	a.attacker.Name = "バタフリー"
+	a.defender.Name = "ケンタロス"
 
 	powerCheck := func(w field.Weather) uint {
-		a.Weather = w
-		st := toSituation(a)
+		a.condition.Weather = w.String()
+		st := a.toSituation()
 		co := st.Correctors()
 		res := uint(100)
 		for _, c := range co {
@@ -153,40 +149,40 @@ func Test_ウェザーボール(t *testing.T) {
 }
 
 func Test_ちきゅうなげ(t *testing.T) {
-	a := defaultSituation()
-	a.Move = "ちきゅうなげ"
-	a.Attacker.Level = 85
+	a := newSituation()
+	a.move = "ちきゅうなげ"
+	a.level = 85
 	// こうかはばつぐんでもいまひとつでもダメージに変化ない事
-	a.Defender.Name = "ラッキー"
-	d, _ := calcDamage(a)
+	a.defender.Name = "ラッキー"
+	d, _ := a.calcDamage()
 	if !(d.Min() == 85 && d.Max() == 85) {
 		t.Errorf("%d", d.Min())
 	}
-	a.Defender.Name = "スピアー"
-	d, _ = calcDamage(a)
+	a.defender.Name = "スピアー"
+	d, _ = a.calcDamage()
 	if !(d.Min() == 85 && d.Max() == 85) {
 		t.Errorf("%d", d.Min())
 	}
 	// 無効にするタイプ(ゴースト)には効かないこと
-	a.Defender.Name = "ゲンガー"
-	d, _ = calcDamage(a)
+	a.defender.Name = "ゲンガー"
+	d, _ = a.calcDamage()
 	if !(d.Min() == 0 && d.Max() == 0) {
 		t.Error()
 	}
 }
 
 func Test_ヘビーボンバー(t *testing.T) {
-	a := defaultSituation()
-	a.Move = "ヘビーボンバー"
-	a.Attacker.Name = "ピカチュウ"
-	a.Defender.Name = "ピカチュウ"
-	st := toSituation(a)
+	a := newSituation()
+	a.move = "ヘビーボンバー"
+	a.attacker.Name = "ピカチュウ"
+	a.defender.Name = "ピカチュウ"
+	st := a.toSituation()
 	power := st.Move().Power(st)
 	if power != 40 {
 		t.Errorf("%d", power)
 	}
-	a.Attacker.Name = "ハガネール"
-	st = toSituation(a)
+	a.attacker.Name = "ハガネール"
+	st = a.toSituation()
 	power = st.Move().Power(st)
 	if power != 120 {
 		t.Errorf("%d", power)
@@ -194,22 +190,22 @@ func Test_ヘビーボンバー(t *testing.T) {
 }
 
 func Test_ジャイロボール_くろいてっきゅう(t *testing.T) {
-	a := defaultSituation()
-	a.Move = "ジャイロボール"
-	a.Attacker.Name = "ハガネール"
-	a.Attacker.BasePoints.Speed = 0
-	a.Attacker.Nature = stats.Brave
-	a.Defender.Name = "プテラ"
-	a.Defender.Nature = stats.Jolly
+	a := newSituation()
+	a.move = "ジャイロボール"
+	a.attacker.Name = "ハガネール"
+	a.attacker.BasePoints[5] = 0
+	a.attacker.Nature = "ゆうかん"
+	a.defender.Name = "プテラ"
+	a.defender.Nature = "ようき"
 
-	st := toSituation(a)
+	st := a.toSituation()
 	power := st.Move().Power(st)
 	if power != 92 {
 		t.Errorf("%d", power)
 	}
 	// くろいてっきゅうのすばやさが下がる効果で威力が上がること
-	a.Attacker.Item = "くろいてっきゅう"
-	st = toSituation(a)
+	a.attacker.Item = "くろいてっきゅう"
+	st = a.toSituation()
 	power = st.Move().Power(st)
 	if power != 150 {
 		t.Errorf("%d", power)
@@ -218,12 +214,12 @@ func Test_ジャイロボール_くろいてっきゅう(t *testing.T) {
 
 // フィールド時、1.3倍
 func Test_フィールド補正(t *testing.T) {
-	a := defaultSituation()
-	d, _ := calcDamage(a)
+	a := newSituation()
+	d, _ := a.calcDamage()
 	dmin := d.Min()
 
-	a.Field = field.ElectricField
-	d, _ = calcDamage(a)
+	a.condition.Field = "エレキフィールド"
+	d, _ = a.calcDamage()
 	fmin := d.Min()
 
 	if fmin != uint(float64(dmin)*1.3) {
@@ -233,13 +229,13 @@ func Test_フィールド補正(t *testing.T) {
 
 // 天候補正時、1.5倍
 func Test_天候補正(t *testing.T) {
-	a := defaultSituation()
-	a.Move = "ほのおのパンチ"
-	d, _ := calcDamage(a)
+	a := newSituation()
+	a.move = "ほのおのパンチ"
+	d, _ := a.calcDamage()
 	dmin := d.Min()
 
-	a.Weather = field.Sunny
-	d, _ = calcDamage(a)
+	a.condition.Weather = "はれ"
+	d, _ = a.calcDamage()
 	fmin := d.Min()
 
 	if fmin != uint(float64(dmin)*1.5) {
@@ -247,17 +243,17 @@ func Test_天候補正(t *testing.T) {
 	}
 }
 func Test_すなあらしいわタイプ補正(t *testing.T) {
-	a := defaultSituation()
-	a.Move = "なみのり"
-	a.Defender.Name = "プテラ"
-	a.Weather = field.NoWeather
-	d, _ := calcDamage(a)
+	a := newSituation()
+	a.move = "なみのり"
+	a.defender.Name = "プテラ"
+	a.condition.Weather = "なし"
+	d, _ := a.calcDamage()
 	nmin := d.Min()
-	a.Weather = field.SandStorm
-	d, _ = calcDamage(a)
+	a.condition.Weather = "すなあらし"
+	d, _ = a.calcDamage()
 	smin := d.Min()
 
-	if nmin != 50 {
+	if nmin != 52 {
 		t.Error()
 	}
 	if smin != 34 {
@@ -266,14 +262,13 @@ func Test_すなあらしいわタイプ補正(t *testing.T) {
 }
 
 func Test_タイプ一致補正(t *testing.T) {
-	// カイリキー,フシギダネ(spAttack65)
-	a := defaultSituation()
-	a.Move = "エナジーボール"
-	a.Attacker.Name = "カイリキー"
-	d, _ := calcDamage(a)
+	a := newSituation()
+	a.move = "エナジーボール"
+	a.attacker.Name = "カイリキー"
+	d, _ := a.calcDamage()
 	nmin := d.Min()
-	a.Attacker.Name = "フシギダネ"
-	d, _ = calcDamage(a)
+	a.attacker.Name = "フシギダネ"
+	d, _ = a.calcDamage()
 	cmin := d.Min()
 	if nmin != 16 {
 		t.Error()
@@ -284,78 +279,76 @@ func Test_タイプ一致補正(t *testing.T) {
 }
 
 func Test_もちもの補正(t *testing.T) {
-	a := defaultSituation()
-	a.Move = "なみのり"
-	d, _ := calcDamage(a)
+	a := newSituation()
+	a.move = "なみのり"
+	d, _ := a.calcDamage()
 	if d.Min() != 27 {
 		t.Error()
 	}
 
-	a.Attacker.Item = "こだわりメガネ"
-	d, _ = calcDamage(a)
-	if d.Min() != 39 {
+	a.attacker.Item = "こだわりメガネ"
+	d, _ = a.calcDamage()
+	if d.Min() != 40 {
 		t.Error()
 	}
 
-	a.Defender.Item = "とつげきチョッキ"
-	d, _ = calcDamage(a)
+	a.defender.Item = "とつげきチョッキ"
+	d, _ = a.calcDamage()
 	if d.Min() != 27 {
 		t.Error()
 	}
 }
 
-/*
-func Test_Default(t *testing.T) {
-	a := defaultSituation()
-	a.Defender.Name = "ゼニガメ"
-	dmg, rate := calcDamage(a)
-	t.Errorf("Damages:%s", dmg.String())
-	t.Errorf("Rate:%s", rate.String())
+type battleSituation struct {
+	attacker  *situation.PokeParams
+	defender  *situation.PokeParams
+	level     uint
+	move      string
+	condition *situation.FieldCondition
 }
-*/
 
-func defaultSituation() *situation.SituationData {
-	d := &situation.SituationData{
-		Move: "かみなりパンチ",
-		Attacker: situation.PokeData{
+func newSituation() *battleSituation {
+	return &battleSituation{
+		level: 50,
+		move:  "かみなりパンチ",
+		attacker: &situation.PokeParams{
 			Name:        "ピカチュウ",
-			Level:       50,
-			Individuals: individuals.Max,
-			BasePoints:  situation.BasePoints{6, 252, 0, 0, 0, 252},
-			Ranks:       situation.Ranks{0, 0, 0, 0, 0},
-			Ability:     "none",
-			Item:        "none",
+			Individuals: "Max",
+			BasePoints:  []uint{6, 252, 0, 0, 0, 252},
+			Ranks:       []int{0, 0, 0, 0, 0},
+			Ability:     "None",
+			Item:        "None",
+			Nature:      "てれや",
+			Condition:   "なし",
 		},
-		Defender: situation.PokeData{
+		defender: &situation.PokeParams{
 			Name:        "ピジョット",
-			Level:       50,
-			Individuals: individuals.Max,
-			BasePoints:  situation.BasePoints{252, 0, 252, 0, 6, 0},
-			Ranks:       situation.Ranks{0, 0, 0, 0, 0},
-			Ability:     "none",
-			Item:        "none",
+			Individuals: "Max",
+			BasePoints:  []uint{252, 0, 252, 0, 0, 0},
+			Ranks:       []int{0, 0, 0, 0, 0},
+			Ability:     "None",
+			Item:        "None",
+			Nature:      "てれや",
+			Condition:   "なし",
 		},
-		Weather:       field.NoWeather,
-		Field:         field.NoField,
-		IsCritical:    false,
-		IsReflector:   false,
-		IsLightScreen: false,
+		condition: &situation.FieldCondition{
+			Weather:      "なし",
+			Field:        "なし",
+			HasReflector: false,
+			IsCritical:   false,
+		},
 	}
-	return d
 }
 
-func repositories() (mv move.Repository, sp species.Repository, ab ability.Repository, it item.Repository) {
-	return local.Move(), local.Species(), local.Ability(), local.Item()
+func (b *battleSituation) toSituation() situation.SituationChecker {
+	builder := situation.NewBuilder(local.Species(), local.Ability(), local.Move(), local.Item())
+	lv := stats.NewLevel(b.level)
+	res, _ := builder.ToSituation(lv, b.attacker, b.defender, b.move, b.condition)
+	return res
 }
-
-func toSituation(sd *situation.SituationData) situation.SituationChecker {
-	st, _ := sd.Create(repositories())
-	return st
-}
-
-func calcDamage(sd *situation.SituationData) (Damages, DamageRate) {
+func (b *battleSituation) calcDamage() (Damages, DamageRate) {
 	d := NewDamageCalculator()
-	st, _ := sd.Create(repositories())
+	st := b.toSituation()
 	return d.CreateDamage(st)
 }
 

@@ -44,6 +44,7 @@ func (s *speedService) Speed(args *ServiceArgs) uint {
 		Weather:      args.Weather,
 		Field:        args.Field,
 		HasReflector: false,
+		IsCritical:   false,
 	}
 	attacker := &situation.PokeParams{
 		Name:        args.Name,

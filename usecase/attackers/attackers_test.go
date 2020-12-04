@@ -23,6 +23,7 @@ func Test_Attackers(t *testing.T) {
 		Weather:      "なし",
 		Field:        "なし",
 		HasReflector: false,
+		IsCritical:   false,
 	}
 
 	res := at.Create(stats.Level(50), defender, fields)
@@ -32,9 +33,10 @@ func Test_Attackers(t *testing.T) {
 	if len(res) == 0 {
 		t.Error()
 	}
-
-	for _, r := range res {
-		t.Errorf("%s", r.String())
-	}
+	/*
+		for _, r := range res {
+			t.Errorf("%s", r.String())
+		}
+	*/
 
 }

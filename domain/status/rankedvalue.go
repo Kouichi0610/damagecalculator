@@ -1,5 +1,9 @@
 package status
 
+import (
+	"fmt"
+)
+
 const RankMax = 6
 const RankMin = -6
 
@@ -18,8 +22,17 @@ func NewRankedValue(v uint, r int) *RankedValue {
 	return res
 }
 
+func (r *RankedValue) String() string {
+	return fmt.Sprintf("%d(%d)", r.Value(), r.ignoreRank())
+}
+
 func (r *RankedValue) Value() uint {
 	return r.r.RankedStats(r.v)
+}
+
+func (r *RankedValue) ignoreRank() uint {
+	nr := newRank(0)
+	return nr.RankedStats(r.v)
 }
 
 // +の補正値を無視する

@@ -160,3 +160,6 @@ func (s *dummyStats) Speed() *status.RankedValue {
 func (s *dummyStats) Weight() status.Weight {
 	return status.Weight(s.wt)
 }
+func (s *dummyStats) String() string {
+	return ""
+}

@@ -21,4 +21,5 @@ type StatusChecker interface {
 	SpDefense() *RankedValue
 	Speed() *RankedValue
 	Weight() Weight
+	String() string
 }

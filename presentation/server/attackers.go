@@ -50,6 +50,7 @@ func (s *serverImpl) attackerDamages(c *gin.Context) {
 		Weather:      q.Weather,
 		Field:        q.Field,
 		HasReflector: false,
+		IsCritical:   false,
 	}
 
 	damages := service.Create(lv, defender, conditions)

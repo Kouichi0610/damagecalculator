@@ -25,6 +25,7 @@ func Test_Defenders(t *testing.T) {
 		Weather:      "なし",
 		Field:        "なし",
 		HasReflector: false,
+		IsCritical:   false,
 	}
 
 	res := df.Create(stats.Level(50), attacker, move, fields)
