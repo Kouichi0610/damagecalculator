@@ -102,12 +102,12 @@ func (s *SituationData) Create(mv move.Repository, sp species.Repository, ab abi
 		return nil, err
 	}
 	return &situation{
-		at:         adata.Create(),
-		df:         ddata.Create(),
-		sk:         move,
-		mv:         field.NewFields(s.Field, s.Weather),
-		atItem:     aitem,
-		dfItem:     ditem,
+		attacker:         adata.Create(),
+		defender:         ddata.Create(),
+		move:         move,
+		fields:         field.NewFields(s.Field, s.Weather),
+		attackersItem:     aitem,
+		defendersItem:     ditem,
 		abilities:  af,
 		isCritical: s.IsCritical,
 	}, nil
