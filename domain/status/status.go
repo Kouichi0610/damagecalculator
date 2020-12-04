@@ -3,6 +3,7 @@ package status
 import (
 	"damagecalculator/domain/stats"
 	"damagecalculator/domain/types"
+	"fmt"
 )
 
 // ポケモンの状態を表す
@@ -42,4 +43,8 @@ func (s *Status) Speed() *RankedValue {
 }
 func (s *Status) Weight() Weight {
 	return s.w
+}
+
+func (s *Status) String() string {
+	return fmt.Sprintf("Lv:%d %s WT:%f HP:%s AT:%s DF:%s SA:%s SD:%s SP:%s", s.Level(), s.Types().String(), s.Weight(), s.HP(), s.Attack(), s.Defense(), s.SpAttack(), s.SpDefense(), s.Speed())
 }

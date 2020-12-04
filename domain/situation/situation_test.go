@@ -54,6 +54,10 @@ func Test_Builder(t *testing.T) {
 	if st.Defender().SpDefense().Value() != 45 {
 		t.Errorf("%d", st.Defender().SpDefense().Value())
 	}
+
+	// TODO:エラーチェック厳密化
+	//t.Errorf("Attacker:%s", st.Attacker())
+	//t.Errorf("Defender:%s", st.Defender())
 }
 
 func Test_Situation生成(t *testing.T) {

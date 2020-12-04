@@ -1,5 +1,7 @@
 package status
 
+import "fmt"
+
 type HP struct {
 	value uint
 }
@@ -12,4 +14,8 @@ func NewHP(v uint) *HP {
 
 func (hp *HP) Value() uint {
 	return hp.value
+}
+
+func (hp *HP) String() string {
+	return fmt.Sprintf("%d", hp.value)
 }
