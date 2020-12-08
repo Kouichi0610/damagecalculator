@@ -56,7 +56,7 @@ func (s *serverImpl) Serve() (http.Handler, error) {
 	router.GET("/weather_fields", s.weatherFieldsList)
 	router.GET("/usable_items", s.usableItems)
 
-	return router, router.Run(":8080")
+	return router, router.Run(":5000")
 }
 
 func (s *serverImpl) getNames(c *gin.Context) {
