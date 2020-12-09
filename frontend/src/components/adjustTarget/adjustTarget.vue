@@ -41,8 +41,8 @@ import ItemSelector from './components/itemSelector.vue'
 
 import { Nature } from '../../store/nature/types'
 import { Individuals } from '../../store/individuals/types'
-import { IBasePoints, defaultBasePoints, BasePoints } from '../../store/basePoints/types'
-import { ISpecies, PokeData } from '../../store/species/types'
+import { defaultBasePoints } from '../../store/basePoints/types'
+import { PokeData } from '../../store/species/types'
 import { StatsPatterns, StatsPatternsLoader } from '../../store/stats/types'
 import { Item } from '../../store/items/types'
 import { Weather, Field } from '../../store/weatherFields/types'
@@ -92,7 +92,7 @@ export default class AdjustTarget extends Vue {
   }
 
   @Watch('targetCondition', { deep: true })
-  changeCondition(after: TargetCondition, before: TargetCondition) {
+  changeCondition(after: TargetCondition) {
     this.$emit('targetCondition', after);
   }
 
