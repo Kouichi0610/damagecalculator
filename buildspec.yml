@@ -9,27 +9,12 @@ environment_variables:
     MY_ENV: "damagecalculator"
 
 phases:
-  install:
-    commands:
-      - echo Nothing to do in the install phase...
-    finally:
-      - echo install completed.
-  pre_build:
-    commands:
-      - echo nothing to do in the prebuild phase...
-    finally:
-      - echo prebuild completed
   build:
     commands:
       - echo build started on `date`
       - go build application.go
     finally:
       - echo build completed
-  post_build:
-    commands:
-      - echo build completed on `date`
-    finally:
-      - echo postbuild completed
   artifacts:
     type: zip
     file:
