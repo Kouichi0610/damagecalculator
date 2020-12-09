@@ -30,8 +30,7 @@ phases:
       - echo build completed.
     finally:
       - echo postbuild completed
-  # TODO:
-#  artifacts:
+  artifacts:
 #    type: zip
-#    file:
-#      - damagecalculator
+    files:
+      - damagecalculator
