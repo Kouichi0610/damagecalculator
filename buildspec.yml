@@ -21,7 +21,7 @@ phases:
     commands:
       - echo build started.
       - go build application.go
-      - go test ./...
+#      - go test ./...
     finally:
       - echo build completed
   post_build:
