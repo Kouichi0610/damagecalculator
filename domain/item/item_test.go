@@ -27,7 +27,7 @@ func Test_ItemCreators(t *testing.T) {
 
 func Test_持ち物なし(t *testing.T) {
 	item := (&NoItem{}).Create(true)
-	res := testItem(item, 100, [5]uint{100, 100, 100, 100, 100}, 200.52, t)
+	res := testItem(item, 100, [5]uint{100, 100, 100, 100, 100}, 200.5, t)
 	if !res {
 		t.Error()
 	}

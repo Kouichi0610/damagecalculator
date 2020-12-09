@@ -16,8 +16,7 @@ phases:
       - echo install completed.
   pre_build:
     commands:
-      - test go files.
-      - go test ./...
+      - echo nothing to do in the prebuild phase...
     finally:
       - echo prebuild completed.
   build:
@@ -31,7 +30,7 @@ phases:
       - echo build completed.
     finally:
       - echo postbuild completed
-#  artifacts:
+  artifacts:
 #    type: zip
-#    files:
-#      - damagecalculator
+    files:
+      - damagecalculator
