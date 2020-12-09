@@ -14,7 +14,7 @@ phases:
       - echo update npm...
       - npm install -g n
       - n latest
-      - npm update -g npm
+      - npm i update -g npm to update
       - echo node -v
       - node -v
       - echo npm -v
