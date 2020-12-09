@@ -31,7 +31,7 @@ phases:
 # インデント入れるだけで失敗する
 artifacts:
   files:
-    - damagecalculator
+    - application
   discard-paths: yes
 #cache:
 #  paths:
