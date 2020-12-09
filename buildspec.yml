@@ -10,6 +10,7 @@ phases:
 #      golang: 1.12
     commands:
       - cd ./frontend
+      - ls
       - echo update npm...
       - npm install -g n
       - n latest
@@ -18,17 +19,21 @@ phases:
       - node -v
       - echo npm -v
       - npm -v
+      - cd ../
     finally:
       - echo install completed.
   pre_build:
     commands:
       - echo installing source NPM dependencies...
-#      - npm install
+      - cd ./frontend
+      - npm install
+      - cd ../
     finally:
       - echo prebuild completed.
   build:
     commands:
       - echo build frontend.
+      - cd ./frontend
       - npm run build
       - cd ../
       - echo build backend.
