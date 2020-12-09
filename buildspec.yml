@@ -1,0 +1,24 @@
+# TODO:フロントビルド
+# TODO:バックエンドビルド
+# TODO:テスト
+# 
+version: 0.1
+
+phases:
+  install:
+    commands:
+      - echo Nothing to do in the install phase...
+  pre_build:
+    commands:
+      - echo nothing to do in the prebuild phase...
+  build:
+    commands:
+      - echo build started on `date`
+      - go build application.go
+  post_build:
+    commands:
+      - echo build completed on `date`
+  artifacts:
+    type: zip
+    file:
+      - codebuild
