@@ -21,15 +21,16 @@ phases:
     commands:
       - echo build started.
       - go build application.go
-#      - go test ./...
     finally:
       - echo build completed
   post_build:
     commands:
       - echo build completed.
-    finally:
-      - echo postbuild completed
-  artifacts:
-    files:
-      - damagecalculator/damagecalculator
 
+artifacts:
+  files:
+    - damagecalculator/damagecalculator
+  discard-paths: yes
+#cache:
+#  paths:
+#    - '/root/.m2/**/*'
