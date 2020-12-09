@@ -4,6 +4,10 @@
 # 
 version: 0.1
 
+environment_variables:
+  plaintext:
+    MY_ENV: "damagecalculator"
+
 phases:
   install:
     commands:
@@ -21,4 +25,4 @@ phases:
   artifacts:
     type: zip
     file:
-      - codebuild
+      - damagecalculator
