@@ -18,15 +18,20 @@ phases:
     commands:
       - echo nothing to do in the prebuild phase...
     finally:
-      - echo prebuild completed
+      - echo prebuild completed.
   build:
     commands:
-      - echo build started on `date`
+      - echo build started.
       - go build application.go
     finally:
       - echo build completed
   post_build:
     commands:
-      - echo build completed on `date`
+      - echo build completed.
     finally:
       - echo postbuild completed
+  # TODO:
+#  artifacts:
+#    type: zip
+#    file:
+#      - damagecalculator
