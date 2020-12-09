@@ -29,7 +29,7 @@ phases:
 
 artifacts:
   files:
-    - damagecalculator/damagecalculator
+    - damagecalculator
   discard-paths: yes
 #cache:
 #  paths:
