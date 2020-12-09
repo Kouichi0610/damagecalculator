@@ -23,7 +23,7 @@ phases:
   pre_build:
     commands:
       - echo installing source NPM dependencies...
-      - npm install
+#      - npm install
     finally:
       - echo prebuild completed.
   build:
