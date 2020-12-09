@@ -26,7 +26,8 @@ phases:
     commands:
       - echo installing source NPM dependencies...
       - cd ./frontend
-      - npm install -g n
+#      - npm install -g n
+      - rm -rf node_modules package-lock.json && npm install
       - cd ../
     finally:
       - echo prebuild completed.
