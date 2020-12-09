@@ -21,6 +21,4 @@ func main() {
 	if err != nil {
 		log.Fatal("server run failed ", err)
 	}
-	// わざとエラー
-	server.X()
 }
