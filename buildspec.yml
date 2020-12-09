@@ -29,7 +29,7 @@ phases:
       - echo build completed.
     finally:
       - echo postbuild completed
-#  artifacts:
-#    type: zip
-#    files:
-#      - damagecalculator
+  artifacts:
+    files:
+      - damagecalculator/damagecalculator
+
