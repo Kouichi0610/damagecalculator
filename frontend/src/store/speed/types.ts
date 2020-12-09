@@ -40,7 +40,7 @@ export class GetSpeed {
   }
 }
 
-// 仮想敵　一覧 取得
+// 仮想敵一覧の取得
 export class SpeedList {
   speedList(level: number): Promise<SpeedInfo[]> {
     return new Promise((resolve, reject) => {
