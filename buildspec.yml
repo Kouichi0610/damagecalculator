@@ -9,12 +9,20 @@ phases:
 #    runtime-versions:
 #      golang: 1.12
     commands:
-      - echo Nothing to do in the install phase...
+      - echo update npm...
+      - npm install -g n
+      - n latest
+      - npm update -g npm
+      - echo node -v
+      - node -v
+      - echo npm -v
+      - npm -v
     finally:
       - echo install completed.
   pre_build:
     commands:
-      - echo nothing to do in the prebuild phase...
+      - echo installing source NPM dependencies...
+      - npm install
     finally:
       - echo prebuild completed.
   build:
