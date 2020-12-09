@@ -2,14 +2,12 @@
 # TODO:バックエンドビルド
 # TODO:テスト
 #
-version: 0.1
-
-environment_variables:
-  plaintext:
-    MY_ENV: "damagecalculator"
+version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      golang: 1.12
     commands:
       - echo Nothing to do in the install phase...
     finally:
@@ -23,6 +21,7 @@ phases:
     commands:
       - echo build started.
       - go build application.go
+      - go test ./...
     finally:
       - echo build completed
   post_build:
@@ -30,7 +29,7 @@ phases:
       - echo build completed.
     finally:
       - echo postbuild completed
-  artifacts:
+#  artifacts:
 #    type: zip
-    files:
-      - damagecalculator
+#    files:
+#      - damagecalculator
