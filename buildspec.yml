@@ -1,7 +1,7 @@
 # TODO:フロントビルド
 # TODO:バックエンドビルド
 # TODO:テスト
-# 
+#
 version: 0.1
 
 environment_variables:
@@ -13,7 +13,7 @@ phases:
     commands:
       - echo Nothing to do in the install phase...
     finally:
-      - echo 
+      - echo install completed.
   pre_build:
     commands:
       - echo nothing to do in the prebuild phase...
