@@ -19,7 +19,11 @@ phases:
       - echo prebuild completed.
   build:
     commands:
-      - echo build started.
+      - echo build frontend.
+      - cd ./frontend
+      - npm run build
+      - cd ../
+      - echo build backend.
       - go build application.go
     finally:
       - echo build completed
@@ -28,7 +32,8 @@ phases:
     commands:
       - echo build completed.
 
-# インデント入れるだけで失敗する
+# artifacts: 先頭にインデント入れるだけで失敗する(phaseに認識されている)
+# 作成できたファイルをS3にアップロードする
 artifacts:
   files:
     - application
