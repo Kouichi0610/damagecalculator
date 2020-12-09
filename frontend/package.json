@@ -63,7 +63,7 @@
       "parser": "@typescript-eslint/parser"
     },
     "rules": {
-      "vue/no-unused-vars": "off"
+      "no-unused-vars": "off"
     },
     "overrides": [
       {
