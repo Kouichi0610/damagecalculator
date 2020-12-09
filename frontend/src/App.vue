@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Action, Getter, Mutation } from "vuex-class";
+import { Getter } from "vuex-class";
 
 const namespace: string = "attackerState";
 
