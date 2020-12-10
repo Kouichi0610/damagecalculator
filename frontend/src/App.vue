@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link  to="/">対象選択</router-link> |
+      <router-link  to="/">調整対象選択</router-link> |
       <router-link to="/attacker0">{{ moveA }}</router-link> |
       <router-link to="/attacker1">{{ moveB }}</router-link> |
       <router-link to="/attacker2">{{ moveC }}</router-link> |
