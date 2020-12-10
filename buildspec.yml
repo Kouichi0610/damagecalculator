@@ -1,5 +1,5 @@
-# TODO:デプロイ
-# TODO:frontend/distフォルダを丸ごと
+
+# TODO:デプロイ(CodePipeline)
 # TODO:テスト
 
 version: 0.2
