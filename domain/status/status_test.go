@@ -121,7 +121,6 @@ func Test_Rank上限_下限(t *testing.T) {
 // ランク補正値が正しく取れていること
 func Test_Rank(t *testing.T) {
 	var s uint = 100
-
 	if newRank(-6).RankedStats(s) != 25 {
 		t.Error()
 	}

@@ -44,7 +44,7 @@ phases:
   post_build:
     commands:
       - echo build completed.
-      - go test ./...
+#      - go test ./...
 
 # artifacts: 先頭にインデント入れるだけで失敗する(phaseに認識されている)
 # 作成できたファイルをS3にアップロードする
