@@ -1,5 +1,8 @@
 
 # TODO:デプロイ(CodePipeline)
+# TODO:バックエンドはデプロイされている。フロント側が反映されない。
+# TODO:CodePipelineのSource -> Build
+# TODO:そもそも何がデプロイされているのか確認したい
 # TODO:テスト
 
 version: 0.2

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link  to="/">調整対象選択</router-link> |
+      <router-link to="/">対象選択</router-link> |
       <router-link to="/attacker0">{{ moveA }}</router-link> |
       <router-link to="/attacker1">{{ moveB }}</router-link> |
       <router-link to="/attacker2">{{ moveC }}</router-link> |
@@ -23,18 +23,19 @@ const namespace: string = "attackerState";
 export default class App extends Vue {
   @Getter('selectedMoves', { namespace })
   private selectedMoves!: string[];
+  readonly tag: string = '攻撃調整:';
 
   get moveA(): string {
-    return '攻撃調整:' + this.selectedMoves[0];
+    return this.tag + this.selectedMoves[0];
   }
   get moveB(): string {
-    return '攻撃調整:' + this.selectedMoves[1];
+    return this.tag + this.selectedMoves[1];
   }
   get moveC(): string {
-    return '攻撃調整:' + this.selectedMoves[2];
+    return this.tag + this.selectedMoves[2];
   }
   get moveD(): string {
-    return '攻撃調整:' + this.selectedMoves[3];
+    return this.tag + this.selectedMoves[3];
   }
 
 }
