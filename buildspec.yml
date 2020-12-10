@@ -26,7 +26,6 @@ phases:
     commands:
       - echo installing source NPM dependencies...
       - cd ./frontend
-#      - npm install -g n
       - rm -rf node_modules package-lock.json && npm install
       - cd ../
     finally:
@@ -46,11 +45,14 @@ phases:
     commands:
       - echo build completed.
 
+# TODO:フロントエンド側のデプロイ(zip必要？)
+
 # artifacts: 先頭にインデント入れるだけで失敗する(phaseに認識されている)
 # 作成できたファイルをS3にアップロードする
 artifacts:
   files:
-    - application
+    - 'application'
+    - './frontend/dist/**/*'
   discard-paths: yes
 #cache:
 #  paths:
