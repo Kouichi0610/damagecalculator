@@ -1,7 +1,7 @@
-# TODO:フロントビルド
-# TODO:バックエンドビルド
+# TODO:デプロイ
+# TODO:frontend/distフォルダを丸ごと
 # TODO:テスト
-#
+
 version: 0.2
 
 phases:
@@ -44,8 +44,7 @@ phases:
   post_build:
     commands:
       - echo build completed.
-
-# TODO:フロントエンド側のデプロイ(zip必要？)
+      - go test ./...
 
 # artifacts: 先頭にインデント入れるだけで失敗する(phaseに認識されている)
 # 作成できたファイルをS3にアップロードする
