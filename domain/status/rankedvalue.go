@@ -80,9 +80,7 @@ func newRank(r int) rank {
 func (r rank) RankedStats(s uint) uint {
 	if r < 0 {
 		x := int(-r) + 2
-		if x == 0 {
-			return s
-		}
+		// TODO:AWS CodeBuild上のテストでzero divideエラーが出る
 		res := int(s) * 2 / x
 		return uint(res)
 	}
