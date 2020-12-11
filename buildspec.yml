@@ -50,6 +50,9 @@ phases:
       - zip -r ../application.zip *
 #      - go test ./...
 
+# TODO:Code Buildリトライ-> zip をS3において elastic beanstalk試す
+# TODO:デプロイ先をS3に試す
+
 # artifacts: 先頭にインデント入れるだけで失敗する(phaseに認識されている)
 # 作成できたファイルをS3にアップロードする
 artifacts:
@@ -61,4 +64,3 @@ artifacts:
 #cache:
 #  paths:
 #    - '/root/.m2/**/*'
-# TODO:application.zip作る -> artifact
