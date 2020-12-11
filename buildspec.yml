@@ -53,7 +53,7 @@ phases:
 # 作成できたファイルをS3にアップロードする
 artifacts:
   files:
-#    - 'application'
+    - 'application'
     - './frontend/dist/**/*'
   discard-paths: no
 #cache:
