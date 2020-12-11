@@ -23,7 +23,7 @@ const namespace: string = "attackerState";
 export default class App extends Vue {
   @Getter('selectedMoves', { namespace })
   private selectedMoves!: string[];
-  readonly tag: string = '攻撃調整:';
+  readonly tag: string = '攻撃調整';
 
   get moveA(): string {
     return this.tag + this.selectedMoves[0];
