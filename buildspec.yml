@@ -47,16 +47,16 @@ phases:
   post_build:
     commands:
       - echo build completed.
-      - zip -r ../application.zip *
+#      - zip -r ../application.zip *
 #      - go test ./...
 
 # artifacts: 先頭にインデント入れるだけで失敗する(phaseに認識されている)
 # 作成できたファイルをS3にアップロードする
 artifacts:
   files:
-    - '../application.zip'
-#    - 'application'
-#    - './frontend/dist/**/*'
+#    - '../application.zip'
+    - 'application'
+    - './frontend/dist/**/*'
   discard-paths: no
 #cache:
 #  paths:
