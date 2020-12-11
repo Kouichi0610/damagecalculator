@@ -68,9 +68,9 @@ export default class Speed extends Vue {
 
   get trickRoomMessage(): string {
     if (this.trickRoom) {
-      return 'トリックルーム使用中';
+      return 'トリックルーム 使用中';
     }
-    return 'トリックルーム未使用';
+    return 'トリックルーム 未使用';
   }
 
   // 調整対象に近いところを表示
