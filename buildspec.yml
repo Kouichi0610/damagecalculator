@@ -45,7 +45,7 @@ phases:
 
 artifacts:
   files:
-    - '*'
+    - 'application.zip'
 #    - 'application'
 #    - './frontend/dist/**/*'
   discard-paths: no
