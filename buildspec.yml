@@ -47,7 +47,7 @@ phases:
   post_build:
     commands:
       - echo build completed.
-#      - zip -r ../application.zip *
+      - zip -r application.zip *
 #      - go test ./...
 
 # TODO:Code Buildリトライ-> zip をS3において elastic beanstalk試す
@@ -57,9 +57,9 @@ phases:
 # 作成できたファイルをS3にアップロードする
 artifacts:
   files:
-#    - '../application.zip'
-    - 'application'
-    - './frontend/dist/**/*'
+    - 'application.zip'
+#    - 'application'
+#    - './frontend/dist/**/*'
   discard-paths: no
 #cache:
 #  paths:
