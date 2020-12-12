@@ -52,13 +52,13 @@ func (s *lowest) create(names []string, level, species uint) SpeedInfo {
 	return newInfo(makeInfo(species, "最遅", names), stats.Lowest(stats.NewLevel(level), stats.Species(species)))
 }
 func (s *raw) create(names []string, level, species uint) SpeedInfo {
-	return newInfo(makeInfo(species, "補正なし+0", names), stats.Raw(stats.NewLevel(level), stats.Species(species)))
+	return newInfo(makeInfo(species, "性格補正なし+0", names), stats.Raw(stats.NewLevel(level), stats.Species(species)))
 }
 func (s *raw4) create(names []string, level, species uint) SpeedInfo {
-	return newInfo(makeInfo(species, "補正なし+4", names), stats.Raw4(stats.NewLevel(level), stats.Species(species)))
+	return newInfo(makeInfo(species, "性格補正なし+4", names), stats.Raw4(stats.NewLevel(level), stats.Species(species)))
 }
 func (s *raw252) create(names []string, level, species uint) SpeedInfo {
-	return newInfo(makeInfo(species, "補正なし+252", names), stats.Raw252(stats.NewLevel(level), stats.Species(species)))
+	return newInfo(makeInfo(species, "性格補正なし+252", names), stats.Raw252(stats.NewLevel(level), stats.Species(species)))
 }
 
 func makeInfo(species uint, title string, names []string) string {
