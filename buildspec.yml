@@ -36,7 +36,6 @@ phases:
       - go build application.go
     finally:
       - echo build completed
-      - ls
   post_build:
     commands:
       - echo build completed.
