@@ -39,8 +39,8 @@ phases:
       - cd ./frontend
       - npm run build
       - cd ../
-#      - echo build backend.
-#      - go build application.go
+      - echo build backend.
+      - go build application.go
     finally:
       - echo build completed
       - ls
