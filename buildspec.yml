@@ -59,5 +59,5 @@ artifacts:
   files:
 #    - 'application.zip'
 #    - 'application'
-#    - './frontend/dist/**/*'
+    - './frontend/dist/**/*'
   discard-paths: no
