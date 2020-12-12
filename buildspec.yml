@@ -62,6 +62,3 @@ artifacts:
 #    - 'application'
 #    - './frontend/dist/**/*'
   discard-paths: no
-#cache:
-#  paths:
-#    - '/root/.m2/**/*'
