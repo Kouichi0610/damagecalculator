@@ -48,6 +48,7 @@ phases:
     commands:
       - echo build completed.
       - zip -r application.zip *
+      - ls
 #      - go test ./...
 
 # TODO:Code Buildリトライ-> zip をS3において elastic beanstalk試す
