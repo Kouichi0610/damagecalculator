@@ -62,7 +62,7 @@ func (s *raw252) create(names []string, level, species uint) SpeedInfo {
 }
 
 func makeInfo(species uint, title string, names []string) string {
-	res := fmt.Sprintf("%d属 %s", species, title)
+	res := fmt.Sprintf("素早さ%d属 %s", species, title)
 	cnt := 0
 	for _, name := range names {
 		res += " " + name
