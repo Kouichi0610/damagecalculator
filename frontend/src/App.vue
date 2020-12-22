@@ -7,7 +7,8 @@
       <router-link to="/attacker2">{{ moveC }}</router-link> |
       <router-link to="/attacker3">{{ moveD }}</router-link> |
       <router-link to="/defender">耐久調整</router-link> |
-      <router-link to="/speed">速度調整</router-link>
+      <router-link to="/speed">速度調整</router-link> |
+      <router-link to="/about">このアプリについて</router-link>
     </div>
     <router-view/>
   </div>

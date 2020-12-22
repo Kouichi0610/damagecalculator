@@ -60,6 +60,11 @@ const router = new VueRouter({
       name: 'Speed',
       component: () => import ('../views/Speed.vue'),
     },
+    {
+      path: '/about',
+      name: 'About',
+      component: () => import ('../views/About.vue'),
+    },
   ],
 })
 
